@@ -11,11 +11,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public abstract class Channel {
-    public static  String request(@NonNull URL url, RequestMethod method, @NonNull String query) throws IOException {
+    public static  String request(@NonNull URL url, RequestMethod method, @NonNull String query)
+            throws IOException {
         return request(url, method, query, null);
     }
 
-    public static String request(@NonNull URL url, RequestMethod method, @NonNull String query, ContentType contentType) throws IOException {
+    public static String request(@NonNull URL url, RequestMethod method, @NonNull String query,
+                                 ContentType contentType) throws IOException {
         if (null == method)
             method = RequestMethod.GET;
 
@@ -24,9 +26,16 @@ public abstract class Channel {
 
         HttpURLConnection conn = null;
         try {
-            conn = (method == RequestMethod.GET) ? createGETConnection(url, query, contentType) : createPOSTConnection(url, query, contentType);
+            conn = (method == RequestMethod.GET) ?
+                    createGETConnection(url, query, contentType) :
+                    createPOSTConnection(url, query, contentType);
+
             int responseCode = conn.getResponseCode();
-            return getResponseBody((responseCode >= 200 && responseCode < 300) ? conn.getInputStream() : conn.getErrorStream());
+
+            InputStream input = (responseCode >= 200 && responseCode < 300) ?
+                    conn.getInputStream() :
+                    conn.getErrorStream();
+            return getResponseBody(input);
         } finally {
             if (null != conn)
                 conn.disconnect();
@@ -41,7 +50,8 @@ public abstract class Channel {
         }
     }
 
-    private static HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType) throws IOException {
+    private static HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType)
+            throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setUseCaches(false);
         conn.setDoOutput(true);
@@ -64,6 +74,7 @@ public abstract class Channel {
     }
 
     private static HttpURLConnection createGETConnection(URL url, String query, ContentType contentType) {
+        // TODO implement this method if you need it
         return null;
     }
 

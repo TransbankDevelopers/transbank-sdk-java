@@ -16,6 +16,7 @@ public class CreateTransactionResponse extends BaseResponse {
     public class Result {
         private String occ;
         private long ott;
+        private long externalUniqueNumber;
         private String qrCodeAsBase64;
     }
 }

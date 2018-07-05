@@ -1,11 +1,10 @@
 package cl.transbank.onepay.util;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
 
 public final class JsonUtil {
     private static volatile JsonUtil instance;
-    private Gson gson = null;
+    private Gson gson;
 
     private JsonUtil() {
         super();
@@ -13,13 +12,6 @@ public final class JsonUtil {
     }
 
     public String jsonEncode(Object o) {
-        try {
-            if (o instanceof Signable)
-                ((Signable) o).sign();
-        } catch (Exception e) {
-            throw new JsonIOException(e);
-        }
-
         return gson.toJson(o);
     }
 

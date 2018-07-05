@@ -1,9 +1,10 @@
 package cl.transbank.onepay.model;
 
+import cl.transbank.onepay.Onepay;
 import lombok.*;
 
-@Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PROTECTED)
+@Getter
+@Setter
 @NoArgsConstructor
 public abstract class BaseRequest {
     private String apiKey;

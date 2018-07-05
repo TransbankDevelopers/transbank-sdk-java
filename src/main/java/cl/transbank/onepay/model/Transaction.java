@@ -12,18 +12,36 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class Transaction extends Channel {
-    private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice", Onepay.getIntegrationType().getApiBase());
-    public static final String SEND_TRANSACTION = "sendtransaction";
+    private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
+            Onepay.getIntegrationType().getApiBase());
+    private static final String SEND_TRANSACTION = "sendtransaction";
+    private static final String COMMIT_TRANSACTION = "gettransactionnumber";
 
-    public static TransactionCreateResponse create(@NonNull ShoppingCart cart) throws IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
+            throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         return create(cart, null);
     }
 
-    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
+            throws IOException, InvalidKeyException, NoSuchAlgorithmException {
         TransactionCreateRequest request = OnepayRequestBuilder.getInstance().build(cart, options);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST, jsonIn);
         TransactionCreateResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, TransactionCreateResponse.class);
+        return response;
+    }
+
+    public static TransactionCommitResponse commit(String occ, String externalUniqueNumber)
+            throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        return commit(occ, externalUniqueNumber, null);
+    }
+
+    public static TransactionCommitResponse commit(String occ, String externalUniqueNumber, Options options)
+            throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+        TransactionCommitRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options);
+        String jsonIn = JsonUtil.getInstance().jsonEncode(request);
+        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);
+        TransactionCommitResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, TransactionCommitResponse.class);
         return response;
     }
 }

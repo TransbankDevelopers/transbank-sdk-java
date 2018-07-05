@@ -9,5 +9,4 @@ import lombok.*;
 public abstract class BaseRequest {
     private String apiKey;
     private String appKey;
-    private final boolean generateOttQrCode = true;
 }

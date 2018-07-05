@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @ToString
 public final class TransactionCreateRequest extends BaseRequest {
-    @NonNull private long externalUniqueNumber;
+    @NonNull private String externalUniqueNumber;
     @NonNull private long total;
     @NonNull private int itemsQuantity;
     @NonNull private long issuedAt;
@@ -18,4 +18,5 @@ public final class TransactionCreateRequest extends BaseRequest {
     @NonNull private String callbackUrl;
     @NonNull private String channel;
     private String signature;
+    private final boolean generateOttQrCode = true;
 }

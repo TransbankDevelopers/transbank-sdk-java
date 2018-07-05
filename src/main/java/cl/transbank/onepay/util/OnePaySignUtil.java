@@ -1,6 +1,7 @@
 package cl.transbank.onepay.util;
 
 import cl.transbank.onepay.Onepay;
+import cl.transbank.onepay.model.TransactionCommitRequest;
 import cl.transbank.onepay.model.TransactionCreateRequest;
 import lombok.NonNull;
 
@@ -34,6 +35,21 @@ public class OnePaySignUtil {
         data += itemsQuantityAsString.length() + itemsQuantityAsString;
         data += issuedAtAsString.length() + issuedAtAsString;
         data += Onepay.getCallbackUrl().length() + Onepay.getCallbackUrl();
+
+        byte[] crypted = crypt(data, secret);
+
+        request.setSignature(base64Encoder.encode(crypted));
+        return request;
+    }
+
+    public TransactionCommitRequest sign(@NonNull TransactionCommitRequest request, @NonNull String secret) throws InvalidKeyException {
+        String occ = request.getOcc();
+        String externalUniqueNumber = request.getExternalUniqueNumber();
+        String issuedAtAsString = String.valueOf(request.getIssuedAt());
+
+        String data = occ.length() + occ;
+        data += externalUniqueNumber.length() + externalUniqueNumber;
+        data += issuedAtAsString.length() + issuedAtAsString;
 
         byte[] crypted = crypt(data, secret);
 

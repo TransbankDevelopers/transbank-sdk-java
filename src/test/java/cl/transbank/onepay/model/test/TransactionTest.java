@@ -9,6 +9,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 public class TransactionTest {
+    private  String occ;
+    private String externalUniqueNumber;
+
     public void testSendTransactionOneWay() throws AmountException, IOException, InvalidKeyException, NoSuchAlgorithmException {
         // Setting comerce data
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
@@ -29,6 +32,7 @@ public class TransactionTest {
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
     }
 
     public void testSendTransactionSecondWay() throws AmountException, IOException, NoSuchAlgorithmException, InvalidKeyException {
@@ -53,5 +57,27 @@ public class TransactionTest {
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
+
+        occ = response.getResult().getOcc();
+        externalUniqueNumber = response.getResult().getExternalUniqueNumber();
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
+    }
+
+    public void testTransactionCommit() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+        // Setting comerce data
+        Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
+
+        // Setting comerce data
+        Options options = new Options()
+                .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
+                .setAppKey("04533c31-fe7e-43ed-bbc4-1c8ab1538afp")
+                .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
+
+        // commit transaction
+        TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber, options);
+        System.out.println(response);
+
+        assert null != response && null != response.getResponseCode();
+        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
     }
 }

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class CreateTransactionResponse extends BaseResponse {
+public class TransactionCreateResponse extends BaseResponse {
     private Result result;
 
     @Getter

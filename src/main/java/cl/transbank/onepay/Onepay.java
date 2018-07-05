@@ -4,11 +4,56 @@ import lombok.Getter;
 import lombok.ToString;
 
 public abstract class Onepay {
-    public static volatile IntegrationType integrationType = IntegrationType.TEST;
-    public static volatile String apiKey;
-    public static volatile String appKey;
-    public static volatile String callbackUrl;
-    public static volatile String sharedSecret;
+    private static volatile IntegrationType integrationType = IntegrationType.TEST;
+    private static volatile String apiKey;
+    private static volatile String appKey;
+    private static volatile String callbackUrl;
+    private static volatile String sharedSecret;
+
+    public static IntegrationType getIntegrationType() {
+        return integrationType;
+    }
+
+    public static void setIntegrationType(IntegrationType integrationType) {
+        if (null == integrationType) throw new NullPointerException("integrationType cannot be null");
+        Onepay.integrationType = integrationType;
+    }
+
+    public static String getApiKey() {
+        return apiKey;
+    }
+
+    public static void setApiKey(String apiKey) {
+        if (null == apiKey) throw new NullPointerException("apiKey cannot be null");
+        Onepay.apiKey = apiKey;
+    }
+
+    public static String getAppKey() {
+        return appKey;
+    }
+
+    public static void setAppKey(String appKey) {
+        if (null == appKey) throw new NullPointerException("appKey cannot be null");
+        Onepay.appKey = appKey;
+    }
+
+    public static String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public static void setCallbackUrl(String callbackUrl) {
+        if (null == callbackUrl) throw new NullPointerException("callbackUrl cannot be null");
+        Onepay.callbackUrl = callbackUrl;
+    }
+
+    public static String getSharedSecret() {
+        return sharedSecret;
+    }
+
+    public static void setSharedSecret(String sharedSecret) {
+        if (null == sharedSecret) throw new NullPointerException("sharedSecret cannot be null");
+        Onepay.sharedSecret = sharedSecret;
+    }
 
     @ToString public enum IntegrationType {
         LIVE(""),

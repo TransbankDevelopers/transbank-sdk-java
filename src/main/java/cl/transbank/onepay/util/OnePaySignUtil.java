@@ -3,7 +3,6 @@ package cl.transbank.onepay.util;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.model.TransactionCreateRequest;
 import lombok.NonNull;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

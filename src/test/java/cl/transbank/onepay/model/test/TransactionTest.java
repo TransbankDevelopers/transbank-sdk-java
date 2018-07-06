@@ -80,7 +80,8 @@ public class TransactionTest {
         TransactionCommitResponse response = Transaction.commit(OCC_TO_COMMIT_TRANSACTION_TEST,
                 EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST, options);
 
-        assert null != response && null != response.getResponseCode();
+        assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
+                && null != response.getResult() && null != response.getResult().getAuthorizationCode();
         log.debug(response.toString());
     }
 }

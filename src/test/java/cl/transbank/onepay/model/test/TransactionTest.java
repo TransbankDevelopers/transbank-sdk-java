@@ -34,7 +34,7 @@ public class TransactionTest {
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
 
         // Print response
-        log.info(response.toString());
+        log.debug(response.toString());
     }
 
     public void testSendTransactionSecondWay()
@@ -60,7 +60,7 @@ public class TransactionTest {
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
 
         // Print response
-        log.info(response.toString());
+        log.debug(response.toString());
     }
 
     public void testTransactionCommit()
@@ -78,6 +78,6 @@ public class TransactionTest {
         TransactionCommitResponse response = Transaction.commit("1807840337706227", "0714f513-257e-4ba6-b737-15a05deafb7b", options);
 
         assert null != response && null != response.getResponseCode();
-        log.info(response.toString());
+        log.debug(response.toString());
     }
 }

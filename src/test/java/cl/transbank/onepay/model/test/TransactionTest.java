@@ -2,17 +2,22 @@ package cl.transbank.onepay.model.test;
 
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.AmountException;
+import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.impl.SimpleLogger;
 
 import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 public class TransactionTest {
     private  String occ;
     private String externalUniqueNumber;
 
-    public void testSendTransactionOneWay() throws AmountException, IOException, InvalidKeyException, NoSuchAlgorithmException {
+    private Logger log = LoggerFactory.getLogger(TransactionTest.class);
+
+    public void testSendTransactionOneWay()
+            throws AmountException, IOException, SignException {
         // Setting comerce data
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
@@ -28,14 +33,14 @@ public class TransactionTest {
         TransactionCreateResponse response = Transaction.create(cart);
 
         // Print response
-        System.out.println(response);
+        log.info(response.toString());
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
     }
 
-    public void testSendTransactionSecondWay() throws AmountException, IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public void testSendTransactionSecondWay()
+            throws AmountException, IOException, SignException {
         // Setting comerce data
         Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
 
@@ -53,17 +58,17 @@ public class TransactionTest {
         TransactionCreateResponse response = Transaction.create(cart, options);
 
         // Print response
-        System.out.println(response);
+        log.info(response.toString());
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
 
         occ = response.getResult().getOcc();
         externalUniqueNumber = response.getResult().getExternalUniqueNumber();
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
     }
 
-    public void testTransactionCommit() throws NoSuchAlgorithmException, InvalidKeyException, IOException {
+    public void testTransactionCommit()
+            throws IOException, SignException {
         // Setting comerce data
         Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
 
@@ -74,10 +79,9 @@ public class TransactionTest {
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 
         // commit transaction
-        TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber, options);
-        System.out.println(response);
+        TransactionCommitResponse response = Transaction.commit("1807840337706227", "0714f513-257e-4ba6-b737-15a05deafb7b", options);
+        log.info(response.toString());
 
         assert null != response && null != response.getResponseCode();
-        System.out.println("///////////////////////////////////////////////////////////////////////////////////////////");
     }
 }

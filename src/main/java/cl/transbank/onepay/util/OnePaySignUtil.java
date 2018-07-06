@@ -1,6 +1,7 @@
 package cl.transbank.onepay.util;
 
 import cl.transbank.onepay.Onepay;
+import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.TransactionCommitRequest;
 import cl.transbank.onepay.model.TransactionCreateRequest;
 import lombok.NonNull;
@@ -18,13 +19,17 @@ public class OnePaySignUtil {
 
     private static volatile OnePaySignUtil instance;
 
-    public byte[] crypt(@NonNull Object data, @NonNull String secretKey) throws InvalidKeyException {
+    public byte[] crypt(@NonNull Object data, @NonNull String secretKey) throws SignException {
         Key key = new SecretKeySpec(secretKey.getBytes(), CRYPT_ALGORITHM);
-        mac.init(key);
+        try {
+            mac.init(key);
+        } catch (InvalidKeyException e) {
+            throw new SignException(e);
+        }
         return mac.doFinal(data.toString().getBytes());
     }
 
-    public TransactionCreateRequest sign(@NonNull TransactionCreateRequest request, @NonNull String secret) throws InvalidKeyException {
+    public TransactionCreateRequest sign(@NonNull TransactionCreateRequest request, @NonNull String secret) throws SignException {
         String externalUniqueNumberAsString = String.valueOf(request.getExternalUniqueNumber());
         String totalAsString = String.valueOf(request.getTotal());
         String itemsQuantityAsString = String.valueOf(request.getItemsQuantity());
@@ -42,7 +47,7 @@ public class OnePaySignUtil {
         return request;
     }
 
-    public TransactionCommitRequest sign(@NonNull TransactionCommitRequest request, @NonNull String secret) throws InvalidKeyException {
+    public TransactionCommitRequest sign(@NonNull TransactionCommitRequest request, @NonNull String secret) throws SignException {
         String occ = request.getOcc();
         String externalUniqueNumber = request.getExternalUniqueNumber();
         String issuedAtAsString = String.valueOf(request.getIssuedAt());
@@ -57,13 +62,17 @@ public class OnePaySignUtil {
         return request;
     }
 
-    private OnePaySignUtil() throws NoSuchAlgorithmException {
+    private OnePaySignUtil() throws SignException {
         super();
-        mac = Mac.getInstance(CRYPT_ALGORITHM);
+        try {
+            mac = Mac.getInstance(CRYPT_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new SignException(e);
+        }
         base64Encoder = new BASE64Encoder();
     }
 
-    public static OnePaySignUtil getInstance() throws NoSuchAlgorithmException {
+    public static OnePaySignUtil getInstance() throws SignException {
         if (null == instance) {
             synchronized (OnePaySignUtil.class) {
                 instance = new OnePaySignUtil();

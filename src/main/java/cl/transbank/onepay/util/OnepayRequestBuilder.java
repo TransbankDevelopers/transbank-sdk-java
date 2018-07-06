@@ -1,6 +1,7 @@
 package cl.transbank.onepay.util;
 
 import cl.transbank.onepay.Onepay;
+import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.*;
 import lombok.NonNull;
 
@@ -12,8 +13,7 @@ import java.util.UUID;
 public class OnepayRequestBuilder {
     private static OnepayRequestBuilder instance;
 
-    public TransactionCreateRequest build(ShoppingCart cart, Options options)
-            throws NoSuchAlgorithmException, InvalidKeyException {
+    public TransactionCreateRequest build(ShoppingCart cart, Options options) throws SignException {
         options = buildOptions(options);
         TransactionCreateRequest request = new TransactionCreateRequest(UUID.randomUUID().toString(), cart.getTotal(),
                 cart.getItemQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(), "WEB");
@@ -21,7 +21,7 @@ public class OnepayRequestBuilder {
         return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
     }
 
-    public TransactionCommitRequest build(String occ, String externalUniqueNumber, Options options) throws NoSuchAlgorithmException, InvalidKeyException {
+    public TransactionCommitRequest build(String occ, String externalUniqueNumber, Options options) throws SignException {
         options = buildOptions(options);
         TransactionCommitRequest request = new TransactionCommitRequest(occ, externalUniqueNumber, new Date().getTime()/1000);
         prepareRequest(request, options);

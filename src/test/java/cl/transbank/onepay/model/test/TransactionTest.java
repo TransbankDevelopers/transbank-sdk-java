@@ -6,13 +6,10 @@ import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.impl.SimpleLogger;
 
 import java.io.IOException;
 
 public class TransactionTest {
-    private  String occ;
-    private String externalUniqueNumber;
 
     private Logger log = LoggerFactory.getLogger(TransactionTest.class);
 
@@ -32,11 +29,12 @@ public class TransactionTest {
         // Send transaction to Transbank
         TransactionCreateResponse response = Transaction.create(cart);
 
-        // Print response
-        log.info(response.toString());
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
+
+        // Print response
+        log.info(response.toString());
     }
 
     public void testSendTransactionSecondWay()
@@ -57,14 +55,12 @@ public class TransactionTest {
         // Send transaction to Transbank
         TransactionCreateResponse response = Transaction.create(cart, options);
 
-        // Print response
-        log.info(response.toString());
 
         assert null != response && response.getResponseCode().equalsIgnoreCase("ok")
                 && null != response.getResult() && null != response.getResult().getQrCodeAsBase64();
 
-        occ = response.getResult().getOcc();
-        externalUniqueNumber = response.getResult().getExternalUniqueNumber();
+        // Print response
+        log.info(response.toString());
     }
 
     public void testTransactionCommit()
@@ -80,8 +76,8 @@ public class TransactionTest {
 
         // commit transaction
         TransactionCommitResponse response = Transaction.commit("1807840337706227", "0714f513-257e-4ba6-b737-15a05deafb7b", options);
-        log.info(response.toString());
 
         assert null != response && null != response.getResponseCode();
+        log.info(response.toString());
     }
 }

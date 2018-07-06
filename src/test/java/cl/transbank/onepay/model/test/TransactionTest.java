@@ -12,6 +12,8 @@ import java.io.IOException;
 public class TransactionTest {
 
     private Logger log = LoggerFactory.getLogger(TransactionTest.class);
+    private static final String EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST = "8934751b-aa9a-45be-b686-1f45b6c45b02";
+    private static final String OCC_TO_COMMIT_TRANSACTION_TEST = "1807419329781765";
 
     public void testSendTransactionOneWay()
             throws AmountException, IOException, SignException {
@@ -75,7 +77,8 @@ public class TransactionTest {
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 
         // commit transaction
-        TransactionCommitResponse response = Transaction.commit("1807840337706227", "0714f513-257e-4ba6-b737-15a05deafb7b", options);
+        TransactionCommitResponse response = Transaction.commit(OCC_TO_COMMIT_TRANSACTION_TEST,
+                EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST, options);
 
         assert null != response && null != response.getResponseCode();
         log.debug(response.toString());

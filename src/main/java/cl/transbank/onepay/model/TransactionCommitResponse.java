@@ -8,13 +8,20 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class TransactionCommitResponse extends BaseResponse {
-    private String occ;
-    private String authorizationCode;
-    private String signature;
-    private String transactionDesc;
-    private String buyOrder;
-    private long issuedAt;
-    private long amount;
-    private long installmentsAmount;
-    private int installmentsNumber;
+    private Result result;
+
+    @Getter
+    @Setter
+    @ToString
+    public class Result {
+        private String occ;
+        private String authorizationCode;
+        private String signature;
+        private String transactionDesc;
+        private String buyOrder;
+        private long issuedAt;
+        private long amount;
+        private long installmentsAmount;
+        private int installmentsNumber;
+    }
 }

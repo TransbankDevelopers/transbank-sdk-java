@@ -23,9 +23,11 @@ public class Transaction extends Channel {
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
             throws IOException, SignException {
-        TransactionCreateRequest request = OnepayRequestBuilder.getInstance().build(cart, options);
+        TransactionCreateRequest request = OnepayRequestBuilder.getInstance().build(cart, options,
+                TransactionCreateRequest.class);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST, jsonIn);
+        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST,
+                jsonIn);
         TransactionCreateResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, TransactionCreateResponse.class);
         return response;
     }
@@ -37,9 +39,11 @@ public class Transaction extends Channel {
 
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber, Options options)
             throws IOException, SignException {
-        TransactionCommitRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options);
+        TransactionCommitRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options,
+                TransactionCommitRequest.class);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);
+        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST,
+                jsonIn);
         TransactionCommitResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, TransactionCommitResponse.class);
         return response;
     }

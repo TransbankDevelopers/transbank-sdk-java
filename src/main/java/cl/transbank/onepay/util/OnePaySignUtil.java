@@ -2,6 +2,7 @@ package cl.transbank.onepay.util;
 
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignException;
+import cl.transbank.onepay.model.RefundCreateRequest;
 import cl.transbank.onepay.model.TransactionCommitRequest;
 import cl.transbank.onepay.model.TransactionCreateRequest;
 import lombok.NonNull;
@@ -29,7 +30,8 @@ public class OnePaySignUtil {
         return mac.doFinal(data.toString().getBytes());
     }
 
-    public TransactionCreateRequest sign(@NonNull TransactionCreateRequest request, @NonNull String secret) throws SignException {
+    public TransactionCreateRequest sign(@NonNull TransactionCreateRequest request, @NonNull String secret)
+            throws SignException {
         String externalUniqueNumberAsString = String.valueOf(request.getExternalUniqueNumber());
         String totalAsString = String.valueOf(request.getTotal());
         String itemsQuantityAsString = String.valueOf(request.getItemsQuantity());
@@ -47,7 +49,8 @@ public class OnePaySignUtil {
         return request;
     }
 
-    public TransactionCommitRequest sign(@NonNull TransactionCommitRequest request, @NonNull String secret) throws SignException {
+    public TransactionCommitRequest sign(@NonNull TransactionCommitRequest request, @NonNull String secret)
+            throws SignException {
         String occ = request.getOcc();
         String externalUniqueNumber = request.getExternalUniqueNumber();
         String issuedAtAsString = String.valueOf(request.getIssuedAt());
@@ -57,7 +60,25 @@ public class OnePaySignUtil {
         data += issuedAtAsString.length() + issuedAtAsString;
 
         byte[] crypted = crypt(data, secret);
+        request.setSignature(base64Encoder.encode(crypted));
+        return request;
+    }
 
+    public RefundCreateRequest sign(@NonNull RefundCreateRequest request, @NonNull String secret)
+        throws  SignException {
+        String occ = request.getOcc();
+        String externalUniqueNumber = request.getExternalUniqueNumber();
+        String authorizationCode = request.getAuthorizationCode();
+        String issuedAtAsString = String.valueOf(request.getIssuedAt());
+        String nullifyAmountAsString = String.valueOf(request.getNullifyAmount());
+
+        String data = occ.length() + occ;
+        data += externalUniqueNumber.length() + externalUniqueNumber;
+        data += authorizationCode.length() + authorizationCode;
+        data += issuedAtAsString.length() + issuedAtAsString;
+        data += nullifyAmountAsString.length() + nullifyAmountAsString;
+
+        byte[] crypted = crypt(data, secret);
         request.setSignature(base64Encoder.encode(crypted));
         return request;
     }

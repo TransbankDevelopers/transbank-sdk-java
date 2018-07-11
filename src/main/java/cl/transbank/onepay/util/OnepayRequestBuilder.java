@@ -14,8 +14,10 @@ public class OnepayRequestBuilder {
     public TransactionCreateRequest build(ShoppingCart cart, Options options, Class<TransactionCreateRequest> clazz)
             throws SignException {
         options = buildOptions(options);
-        TransactionCreateRequest request = new TransactionCreateRequest(UUID.randomUUID().toString(), cart.getTotal(),
-                cart.getItemQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(), "WEB");
+        //TransactionCreateRequest request = new TransactionCreateRequest(UUID.randomUUID().toString(), cart.getTotal(),
+        TransactionCreateRequest request = new TransactionCreateRequest(String.valueOf(new Date().getTime()), cart.getTotal(), // apparently the externalUniqueCode should be numeric!!
+                cart.getItemQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(),
+                "WEB");
         prepareRequest(request, options);
         return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
     }
@@ -23,7 +25,18 @@ public class OnepayRequestBuilder {
     public TransactionCommitRequest build(String occ, String externalUniqueNumber, Options options,
                                           Class<TransactionCommitRequest> clazz) throws SignException {
         options = buildOptions(options);
-        TransactionCommitRequest request = new TransactionCommitRequest(occ, externalUniqueNumber, new Date().getTime()/1000);
+        TransactionCommitRequest request = new TransactionCommitRequest(occ, externalUniqueNumber,
+                new Date().getTime()/1000);
+        prepareRequest(request, options);
+        return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
+    }
+
+    public RefundCreateRequest build(long amount, String occ, String externalUniqueNumber,
+                                     String authorizationCode, Options options, Class<RefundCreateRequest> clazz)
+        throws SignException {
+        options = buildOptions(options);
+        RefundCreateRequest request = new RefundCreateRequest(amount, occ, externalUniqueNumber, authorizationCode,
+                new Date().getTime()/1000);
         prepareRequest(request, options);
         return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
     }

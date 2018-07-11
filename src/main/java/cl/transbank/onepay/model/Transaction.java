@@ -28,6 +28,7 @@ public class Transaction extends Channel {
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST,
                 jsonIn);
+        System.out.println(jsonOut);
         TransactionCreateResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, TransactionCreateResponse.class);
         return response;
     }

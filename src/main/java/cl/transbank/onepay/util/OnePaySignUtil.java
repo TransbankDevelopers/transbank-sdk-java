@@ -3,7 +3,7 @@ package cl.transbank.onepay.util;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.TransactionCommitRequest;
-import cl.transbank.onepay.model.TransactionCreateRequest;
+import cl.transbank.onepay.net.SendTransactionRequest;
 import lombok.NonNull;
 
 import javax.crypto.Mac;
@@ -29,7 +29,7 @@ public class OnePaySignUtil {
         return mac.doFinal(data.toString().getBytes());
     }
 
-    public TransactionCreateRequest sign(@NonNull TransactionCreateRequest request, @NonNull String secret) throws SignException {
+    public SendTransactionRequest sign(@NonNull SendTransactionRequest request, @NonNull String secret) throws SignException {
         String externalUniqueNumberAsString = String.valueOf(request.getExternalUniqueNumber());
         String totalAsString = String.valueOf(request.getTotal());
         String itemsQuantityAsString = String.valueOf(request.getItemsQuantity());

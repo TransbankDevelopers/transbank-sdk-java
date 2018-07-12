@@ -32,15 +32,15 @@ public class OnepayRequestBuilder {
     protected Options buildOptions(Options options) {
         if (null == options) return Options.getDefaults();
 
-        if (null == options.getAppKey()) options.setAppKey(Onepay.getAppKey());
+        if (null == options.getApiKey()) options.setApiKey(Onepay.getApiKey());
         if (null == options.getSharedSecret()) options.setSharedSecret(Onepay.getSharedSecret());
 
         return options;
     }
 
     protected void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {
-        base.setApiKey(Onepay.API_KEY);
-        base.setAppKey(options.getAppKey());
+        base.setApiKey(options.getApiKey());
+        base.setAppKey(Onepay.APP_KEY);
     }
 
     private OnepayRequestBuilder() {

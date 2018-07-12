@@ -1,4 +1,4 @@
-package cl.transbank.onepay.model;
+package cl.transbank.onepay.net;
 
 import cl.transbank.onepay.Onepay;
 import lombok.*;

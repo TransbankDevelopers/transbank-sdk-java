@@ -9,16 +9,10 @@ import lombok.*;
 @Getter
 public class Options {
     private String apiKey;
-    private String appKey;
     private String sharedSecret;
 
     public Options setApiKey(String apiKey) {
         this.apiKey = apiKey;
-        return this;
-    }
-
-    public Options setAppKey(String appKey) {
-        this.appKey = appKey;
         return this;
     }
 
@@ -28,6 +22,6 @@ public class Options {
     }
 
     public static Options getDefaults() {
-        return new Options(Onepay.getApiKey(), Onepay.getAppKey(), Onepay.getSharedSecret());
+        return new Options(Onepay.getApiKey(), Onepay.getSharedSecret());
     }
 }

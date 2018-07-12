@@ -1,6 +1,5 @@
 package cl.transbank.onepay.net;
 
-import cl.transbank.onepay.model.BaseRequest;
 import lombok.*;
 
 @NoArgsConstructor

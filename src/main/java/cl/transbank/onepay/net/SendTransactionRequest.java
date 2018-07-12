@@ -1,5 +1,7 @@
-package cl.transbank.onepay.model;
+package cl.transbank.onepay.net;
 
+import cl.transbank.onepay.model.BaseRequest;
+import cl.transbank.onepay.model.Item;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public final class TransactionCreateRequest extends BaseRequest {
+public final class SendTransactionRequest extends BaseRequest {
     @NonNull private String externalUniqueNumber;
     @NonNull private long total;
     @NonNull private int itemsQuantity;

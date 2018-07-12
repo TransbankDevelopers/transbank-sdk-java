@@ -1,5 +1,6 @@
-package cl.transbank.onepay.model;
+package cl.transbank.onepay.net;
 
+import cl.transbank.onepay.model.BaseRequest;
 import lombok.*;
 
 @NoArgsConstructor
@@ -7,9 +8,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class TransactionCommitRequest extends BaseRequest {
+public class NullifyTransactionRequest extends BaseRequest {
+    @NonNull private long nullifyAmount;
     @NonNull private String occ;
     @NonNull private String externalUniqueNumber;
+    @NonNull private String authorizationCode;
     @NonNull private long issuedAt;
     private String signature;
 }

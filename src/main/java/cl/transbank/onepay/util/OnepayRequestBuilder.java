@@ -3,6 +3,9 @@ package cl.transbank.onepay.util;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.*;
+import cl.transbank.onepay.net.NullifyTransactionRequest;
+import cl.transbank.onepay.net.SendTransactionRequest;
+import cl.transbank.onepay.net.GetTransactionNumberRequest;
 import lombok.NonNull;
 
 import java.util.Date;
@@ -11,31 +14,26 @@ import java.util.UUID;
 public class OnepayRequestBuilder {
     private static OnepayRequestBuilder instance;
 
-    public TransactionCreateRequest build(ShoppingCart cart, Options options, Class<TransactionCreateRequest> clazz)
+    public SendTransactionRequest build(ShoppingCart cart, Options options) throws SignException {
+        options = buildOptions(options);
+        SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
+                cart.getItemQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(), "WEB");
+        prepareRequest(request, options);
+        return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
+    }
+
+    public GetTransactionNumberRequest build(String occ, String externalUniqueNumber, Options options) throws SignException {
+        options = buildOptions(options);
+        GetTransactionNumberRequest request = new GetTransactionNumberRequest(occ, externalUniqueNumber, new Date().getTime()/1000);
+        prepareRequest(request, options);
+        return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
+    }
+
+    public NullifyTransactionRequest build(long amount, String occ, String externalUniqueNumber,
+                                           String authorizationCode, Options options, Class<NullifyTransactionRequest> clazz)
             throws SignException {
         options = buildOptions(options);
-        //TransactionCreateRequest request = new TransactionCreateRequest(UUID.randomUUID().toString(), cart.getTotal(),
-        TransactionCreateRequest request = new TransactionCreateRequest(String.valueOf(new Date().getTime()), cart.getTotal(), // apparently the externalUniqueCode should be numeric!!
-                cart.getItemQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(),
-                "WEB");
-        prepareRequest(request, options);
-        return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
-    }
-
-    public TransactionCommitRequest build(String occ, String externalUniqueNumber, Options options,
-                                          Class<TransactionCommitRequest> clazz) throws SignException {
-        options = buildOptions(options);
-        TransactionCommitRequest request = new TransactionCommitRequest(occ, externalUniqueNumber,
-                new Date().getTime()/1000);
-        prepareRequest(request, options);
-        return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());
-    }
-
-    public RefundCreateRequest build(long amount, String occ, String externalUniqueNumber,
-                                     String authorizationCode, Options options, Class<RefundCreateRequest> clazz)
-        throws SignException {
-        options = buildOptions(options);
-        RefundCreateRequest request = new RefundCreateRequest(amount, occ, externalUniqueNumber, authorizationCode,
+        NullifyTransactionRequest request = new NullifyTransactionRequest(amount, occ, externalUniqueNumber, authorizationCode,
                 new Date().getTime()/1000);
         prepareRequest(request, options);
         return OnePaySignUtil.getInstance().sign(request, options.getSharedSecret());

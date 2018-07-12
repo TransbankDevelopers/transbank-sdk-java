@@ -1,7 +1,9 @@
 package cl.transbank.onepay.model.test;
 
 import cl.transbank.onepay.Onepay;
+import cl.transbank.onepay.exception.RefundCreateException;
 import cl.transbank.onepay.exception.SignException;
+import cl.transbank.onepay.exception.TransbankException;
 import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.Refund;
 import cl.transbank.onepay.model.RefundCreateResponse;
@@ -13,7 +15,7 @@ import java.io.IOException;
 public class RefundTest {
     private Logger log = LoggerFactory.getLogger(RefundTest.class);
 
-    public void testRefund() throws SignException, IOException {
+    public void testRefund() throws IOException, TransbankException {
         // Setting comerce data
         Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
 
@@ -29,7 +31,7 @@ public class RefundTest {
         log.debug(response.toString());
     }
 
-    public static void main(String[] args) throws SignException, IOException {
+    public static void main(String[] args) throws TransbankException, IOException {
         new RefundTest().testRefund();
     }
 }

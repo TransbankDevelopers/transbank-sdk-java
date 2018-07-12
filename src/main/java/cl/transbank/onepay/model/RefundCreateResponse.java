@@ -7,13 +7,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class RefundCreateResponse extends BaseResponse {
-    private Result result;
+public class RefundCreateResponse {
 
-    @Getter
-    @Setter
-    @ToString
-    public class Result {
-
-    }
 }

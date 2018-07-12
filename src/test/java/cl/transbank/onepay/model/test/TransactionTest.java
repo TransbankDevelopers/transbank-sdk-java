@@ -22,7 +22,6 @@ public class TransactionTest {
         // Setting comerce data
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
-        Onepay.setAppKey("04533c31-fe7e-43ed-bbc4-1c8ab1538afp");
         Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
 
         // Setting items to the shopping cart
@@ -52,7 +51,6 @@ public class TransactionTest {
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
-                .setAppKey("04533c31-fe7e-43ed-bbc4-1c8ab1538afp")
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         // Send transaction to Transbank
         TransactionCreateResponse response = Transaction.create(cart, options);
@@ -72,7 +70,6 @@ public class TransactionTest {
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
-                .setAppKey("04533c31-fe7e-43ed-bbc4-1c8ab1538afp")
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 
         // commit transaction

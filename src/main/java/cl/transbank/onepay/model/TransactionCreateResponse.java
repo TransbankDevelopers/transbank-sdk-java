@@ -1,6 +1,5 @@
 package cl.transbank.onepay.model;
 
-import cl.transbank.onepay.net.BaseResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.ToString;
 
 public abstract class Onepay {
+    public static final String API_KEY = "mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg";
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
-    private static volatile String apiKey;
     private static volatile String appKey;
     private static volatile String callbackUrl;
     private static volatile String sharedSecret;
@@ -17,15 +17,6 @@ public abstract class Onepay {
     public static void setIntegrationType(IntegrationType integrationType) {
         if (null == integrationType) throw new NullPointerException("integrationType cannot be null");
         Onepay.integrationType = integrationType;
-    }
-
-    public static String getApiKey() {
-        return apiKey;
-    }
-
-    public static void setApiKey(String apiKey) {
-        if (null == apiKey) throw new NullPointerException("apiKey cannot be null");
-        Onepay.apiKey = apiKey;
     }
 
     public static String getAppKey() {

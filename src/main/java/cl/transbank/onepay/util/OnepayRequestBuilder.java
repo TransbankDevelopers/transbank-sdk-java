@@ -3,6 +3,7 @@ package cl.transbank.onepay.util;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignException;
 import cl.transbank.onepay.model.*;
+import cl.transbank.onepay.net.BaseRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 import cl.transbank.onepay.net.GetTransactionNumberRequest;
 import lombok.NonNull;
@@ -31,7 +32,6 @@ public class OnepayRequestBuilder {
     protected Options buildOptions(Options options) {
         if (null == options) return Options.getDefaults();
 
-        if (null == options.getApiKey()) options.setApiKey(Onepay.getApiKey());
         if (null == options.getAppKey()) options.setAppKey(Onepay.getAppKey());
         if (null == options.getSharedSecret()) options.setSharedSecret(Onepay.getSharedSecret());
 
@@ -39,7 +39,7 @@ public class OnepayRequestBuilder {
     }
 
     protected void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {
-        base.setApiKey(options.getApiKey());
+        base.setApiKey(Onepay.API_KEY);
         base.setAppKey(options.getAppKey());
     }
 

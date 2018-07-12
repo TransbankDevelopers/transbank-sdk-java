@@ -39,7 +39,7 @@ public class OnePaySignUtil {
         data += totalAsString.length() + totalAsString;
         data += itemsQuantityAsString.length() + itemsQuantityAsString;
         data += issuedAtAsString.length() + issuedAtAsString;
-        data += Onepay.getCallbackUrl().length() + Onepay.getCallbackUrl();
+        data += Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
 
         byte[] crypted = crypt(data, secret);
 

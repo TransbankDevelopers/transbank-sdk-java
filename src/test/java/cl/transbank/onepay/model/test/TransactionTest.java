@@ -37,6 +37,8 @@ public class TransactionTest {
 
     public void testTransactionCommit()
             throws IOException, TransbankException {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")

@@ -11,5 +11,6 @@ public class TransactionCreateResponse {
     private String occ;
     private long ott;
     private String externalUniqueNumber;
+    private long issuedAt;
     private String qrCodeAsBase64;
 }

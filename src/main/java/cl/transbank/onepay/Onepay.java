@@ -5,9 +5,9 @@ import lombok.ToString;
 
 public abstract class Onepay {
     public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
+    public static final String FAKE_CALLBACK_URL = "http://nourlcallbackneededhere";
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
     private static volatile String apiKey;
-    private static volatile String callbackUrl;
     private static volatile String sharedSecret;
 
     public static IntegrationType getIntegrationType() {
@@ -28,15 +28,6 @@ public abstract class Onepay {
         Onepay.apiKey = apiKey;
     }
 
-    public static String getCallbackUrl() {
-        return callbackUrl;
-    }
-
-    public static void setCallbackUrl(String callbackUrl) {
-        if (null == callbackUrl) throw new NullPointerException("callbackUrl cannot be null");
-        Onepay.callbackUrl = callbackUrl;
-    }
-
     public static String getSharedSecret() {
         return sharedSecret;
     }
@@ -48,7 +39,8 @@ public abstract class Onepay {
 
     @ToString public enum IntegrationType {
         LIVE(""),
-        TEST("https://web2desa.test.transbank.cl");
+        TEST("https://web2desa.test.transbank.cl"),
+        MOCK("http://onepay.getsandbox.com");
 
         @Getter private String apiBase;
 

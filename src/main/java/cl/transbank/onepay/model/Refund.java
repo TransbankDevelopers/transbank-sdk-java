@@ -30,9 +30,10 @@ public class Refund extends Channel {
                 NullifyTransactionRequest.class);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), RequestMethod.POST, jsonIn);
+        System.out.println(jsonOut);
         NullifyTransactionResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, NullifyTransactionResponse.class);
 
-        if (null == response) {
+        if (null == response || null == response.getResponseCode()) {
             throw new RefundCreateException(-1, "Could not obtain the service response");
         } else if (!response.getResponseCode().equalsIgnoreCase("ok")) {
             throw new RefundCreateException(-1, String.format("%s : %s", response.getResponseCode(), response.getDescription()));

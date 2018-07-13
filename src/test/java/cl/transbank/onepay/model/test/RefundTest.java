@@ -17,9 +17,6 @@ public class RefundTest {
 
     public void testRefund() throws IOException, TransbankException {
         // Setting comerce data
-        Onepay.setCallbackUrl("http://localhost:8080/ewallet-endpoints");
-
-        // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");

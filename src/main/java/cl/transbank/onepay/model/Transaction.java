@@ -48,7 +48,6 @@ public class Transaction extends Channel {
             throws IOException, SignException, TransactionCommitException {
         GetTransactionNumberRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
-        System.out.println(jsonIn);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);
         GetTransactionNumberResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, GetTransactionNumberResponse.class);
 

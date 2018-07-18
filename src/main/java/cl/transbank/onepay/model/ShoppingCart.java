@@ -10,12 +10,14 @@ import java.util.List;
 
 public final class ShoppingCart {
     @Getter private long total;
+    @Getter private int itemsQuantity;
     private List<Item> items;
 
     public ShoppingCart() {
         super();
         this.items = new ArrayList<>();
         this.total = 0;
+        this.itemsQuantity = 0;
     }
 
     public List<Item> getItems() {
@@ -23,25 +25,22 @@ public final class ShoppingCart {
     }
 
     public boolean add(@NonNull final Item item) throws AmountException {
-        long total = this.total + item.getAmount();
+        long total = this.total + (item.getAmount() * item.getQuantity());
         if (total < 0)
             throw new AmountException(-1, "Total amount cannot be less than zero");
 
         this.total = total;
+        this.itemsQuantity += item.getQuantity();
         return this.items.add(item);
     }
 
     public boolean remove(@NonNull final Item item) throws AmountException {
-        long total = this.total - item.getAmount();
+        long total = this.total - (item.getAmount() * item.getQuantity());
         if (total < 0)
             throw new AmountException(-1, "Total amount cannot be less than zero");
 
         this.total = total;
-
+        this.itemsQuantity -= item.getQuantity();
         return this.items.remove(item);
-    }
-
-    public int getItemQuantity() {
-        return this.items.size();
     }
 }

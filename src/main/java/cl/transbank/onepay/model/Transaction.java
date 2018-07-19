@@ -1,11 +1,12 @@
 package cl.transbank.onepay.model;
 
 import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.exception.SignException;
+import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.exception.TransactionCommitException;
 import cl.transbank.onepay.exception.TransactionCreateException;
 import cl.transbank.onepay.net.*;
 import cl.transbank.onepay.util.JsonUtil;
+import cl.transbank.onepay.util.OnePaySignUtil;
 import cl.transbank.onepay.util.OnepayRequestBuilder;
 import lombok.NonNull;
 
@@ -19,12 +20,13 @@ public class Transaction extends Channel {
     private static final String COMMIT_TRANSACTION = "gettransactionnumber";
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
-            throws IOException, SignException, TransactionCreateException {
+            throws IOException, SignatureException, TransactionCreateException {
         return create(cart, null);
     }
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
-            throws IOException, SignException, TransactionCreateException {
+            throws IOException, SignatureException, TransactionCreateException {
+        options = Options.build(options);
         SendTransactionRequest request = OnepayRequestBuilder.getInstance().build(cart, options);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST, jsonIn);
@@ -36,16 +38,20 @@ public class Transaction extends Channel {
             throw new TransactionCreateException(-1, String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
 
+        if (!OnePaySignUtil.getInstance().validate(response, options.getSharedSecret()))
+            throw new SignatureException(-1, "The response signature is not valid");
+
         return response.getResult();
     }
 
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber)
-            throws IOException, SignException, TransactionCommitException {
+            throws IOException, SignatureException, TransactionCommitException {
         return commit(occ, externalUniqueNumber, null);
     }
 
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber, Options options)
-            throws IOException, SignException, TransactionCommitException {
+            throws IOException, SignatureException, TransactionCommitException {
+        options = Options.build(options);
         GetTransactionNumberRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);

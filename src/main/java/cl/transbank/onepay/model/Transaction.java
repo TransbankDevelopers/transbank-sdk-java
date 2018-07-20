@@ -27,9 +27,10 @@ public class Transaction extends Channel {
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
             throws IOException, SignatureException, TransactionCreateException {
         options = Options.build(options);
-        SendTransactionRequest request = OnepayRequestBuilder.getInstance().build(cart, options);
+        SendTransactionRequest request = OnepayRequestBuilder.getInstance().build(cart, options, SendTransactionRequest.class);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST, jsonIn);
+        System.out.println(String.format("TRANSACTION_CREATE_JSON_OUT : %s", jsonOut));
         SendTransactionResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, SendTransactionResponse.class);
 
         if (null == response) {
@@ -52,9 +53,10 @@ public class Transaction extends Channel {
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber, Options options)
             throws IOException, SignatureException, TransactionCommitException {
         options = Options.build(options);
-        GetTransactionNumberRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options);
+        GetTransactionNumberRequest request = OnepayRequestBuilder.getInstance().build(occ, externalUniqueNumber, options, GetTransactionNumberRequest.class);
         String jsonIn = JsonUtil.getInstance().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);
+        System.out.println(String.format("TRANSACTION_COMMIT_JSON_OUT : %s", jsonOut));
         GetTransactionNumberResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, GetTransactionNumberResponse.class);
 
         if (null == response) {

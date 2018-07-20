@@ -11,8 +11,8 @@ import java.io.IOException;
 public class TransactionTest {
 
     private Logger log = LoggerFactory.getLogger(TransactionTest.class);
-    private static final String EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST = "8934751b-aa9a-45be-b686-1f45b6c45b02";
-    private static final String OCC_TO_COMMIT_TRANSACTION_TEST = "1807419329781765";
+    private static final String EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST = "f506a955-800c-4185-8818-4ef9fca97aae";
+    private static final String OCC_TO_COMMIT_TRANSACTION_TEST = "1807983490979289";
 
     public void testTransactionCreate()
             throws IOException, TransbankException {

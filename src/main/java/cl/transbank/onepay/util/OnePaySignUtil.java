@@ -3,6 +3,7 @@ package cl.transbank.onepay.util;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.model.TransactionCreateResponse;
+import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.GetTransactionNumberRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 import cl.transbank.onepay.net.SendTransactionResponse;
@@ -59,7 +60,25 @@ public class OnePaySignUtil {
         data += issuedAtAsString.length() + issuedAtAsString;
 
         byte[] crypted = crypt(data, secret);
+        request.setSignature(base64Encoder.encode(crypted));
+        return request;
+    }
 
+    public NullifyTransactionRequest sign(@NonNull NullifyTransactionRequest request, @NonNull String secret)
+        throws  SignatureException {
+        String occ = request.getOcc();
+        String externalUniqueNumber = request.getExternalUniqueNumber();
+        String authorizationCode = request.getAuthorizationCode();
+        String issuedAtAsString = String.valueOf(request.getIssuedAt());
+        String nullifyAmountAsString = String.valueOf(request.getNullifyAmount());
+
+        String data = occ.length() + occ;
+        data += externalUniqueNumber.length() + externalUniqueNumber;
+        data += authorizationCode.length() + authorizationCode;
+        data += issuedAtAsString.length() + issuedAtAsString;
+        data += nullifyAmountAsString.length() + nullifyAmountAsString;
+
+        byte[] crypted = crypt(data, secret);
         request.setSignature(base64Encoder.encode(crypted));
         return request;
     }

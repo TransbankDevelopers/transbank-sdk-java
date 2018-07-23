@@ -25,7 +25,7 @@ public final class SendTransactionRequest extends BaseRequest
     private final boolean generateOttQrCode = true;
 
     @Override
-    public String getHash() {
+    public String getHashableString() {
         String externalUniqueNumberAsString = String.valueOf(getExternalUniqueNumber());
         String totalAsString = String.valueOf(getTotal());
         String itemsQuantityAsString = String.valueOf(getItemsQuantity());

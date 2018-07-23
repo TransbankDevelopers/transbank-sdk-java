@@ -18,7 +18,7 @@ public class NullifyTransactionRequest extends BaseRequest
     private String signature;
 
     @Override
-    public String getHash() {
+    public String getHashableString() {
         String occ = getOcc();
         String externalUniqueNumber = getExternalUniqueNumber();
         String authorizationCode = getAuthorizationCode();

@@ -17,7 +17,7 @@ public class TransactionCreateResponse implements Signable {
     private String signature;
 
     @Override
-    public String getHash() throws SignatureException {
+    public String getHashableString() throws SignatureException {
         String occ = getOcc();
         String externalUniqueNumber = getExternalUniqueNumber();
         String issuedAtAsString = String.valueOf(getIssuedAt());

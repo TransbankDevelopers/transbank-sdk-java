@@ -1,6 +1,5 @@
 package cl.transbank.onepay.net;
 
-import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.util.JsonUtil;
 import cl.transbank.onepay.util.OnepayRequestBuilder;
 import lombok.AllArgsConstructor;

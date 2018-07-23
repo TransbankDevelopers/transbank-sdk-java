@@ -1,6 +1,5 @@
 package cl.transbank.onepay.model.test;
 
-import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.TransbankException;
 import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.Refund;

@@ -6,8 +6,6 @@ import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.net.Channel;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.NullifyTransactionResponse;
-import cl.transbank.onepay.util.JsonUtil;
-import cl.transbank.onepay.util.OnepayRequestBuilder;
 
 import java.io.IOException;
 import java.net.URL;

@@ -4,6 +4,10 @@ public class AmountException extends TransbankException {
     public AmountException() {
     }
 
+    public AmountException(String message) {
+        super(message);
+    }
+
     public AmountException(int code, String message) {
         super(code, message);
     }

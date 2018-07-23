@@ -4,6 +4,10 @@ public class TransactionCreateException extends TransbankException {
     public TransactionCreateException() {
     }
 
+    public TransactionCreateException(String message) {
+        super(message);
+    }
+
     public TransactionCreateException(int code, String message) {
         super(code, message);
     }

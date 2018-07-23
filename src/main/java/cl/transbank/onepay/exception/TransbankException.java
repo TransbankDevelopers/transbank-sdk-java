@@ -7,6 +7,11 @@ public class TransbankException extends Throwable {
         super();
     }
 
+    public TransbankException(String message) {
+        super(message);
+        this.code = -1;
+    }
+
     public TransbankException(int code, String message) {
         super(message);
         this.code = code;

@@ -4,6 +4,10 @@ public class SignatureException extends TransbankException {
     public SignatureException() {
     }
 
+    public SignatureException(String message) {
+        super(message);
+    }
+
     public SignatureException(int code, String message) {
         super(code, message);
     }

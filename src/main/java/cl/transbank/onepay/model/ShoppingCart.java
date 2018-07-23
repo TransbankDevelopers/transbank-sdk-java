@@ -27,7 +27,7 @@ public final class ShoppingCart {
     public boolean add(@NonNull final Item item) throws AmountException {
         long total = this.total + (item.getAmount() * item.getQuantity());
         if (total < 0)
-            throw new AmountException(-1, "Total amount cannot be less than zero");
+            throw new AmountException("Total amount cannot be less than zero");
 
         this.total = total;
         this.itemsQuantity += item.getQuantity();
@@ -37,7 +37,7 @@ public final class ShoppingCart {
     public boolean remove(@NonNull final Item item) throws AmountException {
         long total = this.total - (item.getAmount() * item.getQuantity());
         if (total < 0)
-            throw new AmountException(-1, "Total amount cannot be less than zero");
+            throw new AmountException("Total amount cannot be less than zero");
 
         this.total = total;
         this.itemsQuantity -= item.getQuantity();

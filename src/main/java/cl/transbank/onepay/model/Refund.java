@@ -6,8 +6,6 @@ import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.net.Channel;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.NullifyTransactionResponse;
-import cl.transbank.onepay.util.JsonUtil;
-import cl.transbank.onepay.util.OnepayRequestBuilder;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,17 +25,16 @@ public class Refund extends Channel {
                                               String authorizationCode, Options options)
             throws IOException, SignatureException, RefundCreateException {
         options = Options.build(options);
-        NullifyTransactionRequest request = OnepayRequestBuilder.getInstance().build(amount, occ, externalUniqueNumber, authorizationCode, options,
-                NullifyTransactionRequest.class);
-        String jsonIn = JsonUtil.getInstance().jsonEncode(request);
+        NullifyTransactionRequest request = requestBuilder.buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
+                authorizationCode, options);
+        String jsonIn = jsonUtil.jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), RequestMethod.POST, jsonIn);
-        System.out.println(String.format("REFUND_CREATE_JSON_OUT : %s", jsonOut));
-        NullifyTransactionResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, NullifyTransactionResponse.class);
+        NullifyTransactionResponse response = jsonUtil.jsonDecode(jsonOut, NullifyTransactionResponse.class);
 
         if (null == response || null == response.getResponseCode()) {
-            throw new RefundCreateException(-1, "Could not obtain the service response");
+            throw new RefundCreateException("Could not obtain the service response");
         } else if (!response.getResponseCode().equalsIgnoreCase("ok")) {
-            throw new RefundCreateException(-1, String.format("%s : %s", response.getResponseCode(), response.getDescription()));
+            throw new RefundCreateException(String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
 
         return response.getResult();

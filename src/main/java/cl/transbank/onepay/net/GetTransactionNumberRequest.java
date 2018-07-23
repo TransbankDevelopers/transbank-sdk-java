@@ -1,5 +1,6 @@
 package cl.transbank.onepay.net;
 
+import cl.transbank.onepay.model.Signable;
 import lombok.*;
 
 @NoArgsConstructor
@@ -7,9 +8,23 @@ import lombok.*;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class GetTransactionNumberRequest extends BaseRequest {
+public class GetTransactionNumberRequest extends BaseRequest
+        implements Signable {
     @NonNull private String occ;
     @NonNull private String externalUniqueNumber;
     @NonNull private long issuedAt;
     private String signature;
+
+    @Override
+    public String getHashableString() {
+        String occ = getOcc();
+        String externalUniqueNumber = getExternalUniqueNumber();
+        String issuedAtAsString = String.valueOf(getIssuedAt());
+
+        String data = occ.length() + occ;
+        data += externalUniqueNumber.length() + externalUniqueNumber;
+        data += issuedAtAsString.length() + issuedAtAsString;
+
+        return data;
+    }
 }

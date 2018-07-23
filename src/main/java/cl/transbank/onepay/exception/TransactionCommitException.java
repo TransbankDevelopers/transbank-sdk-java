@@ -4,6 +4,10 @@ public class TransactionCommitException extends TransbankException {
     public TransactionCommitException() {
     }
 
+    public TransactionCommitException(String message) {
+        super(message);
+    }
+
     public TransactionCommitException(int code, String message) {
         super(code, message);
     }

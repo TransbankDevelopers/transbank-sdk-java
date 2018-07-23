@@ -27,11 +27,11 @@ public class Refund extends Channel {
                                               String authorizationCode, Options options)
             throws IOException, SignatureException, RefundCreateException {
         options = Options.build(options);
-        NullifyTransactionRequest request = OnepayRequestBuilder.getInstance().buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
+        NullifyTransactionRequest request = requestBuilder.buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
                 authorizationCode, options);
-        String jsonIn = JsonUtil.getInstance().jsonEncode(request);
+        String jsonIn = jsonUtil.jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), RequestMethod.POST, jsonIn);
-        NullifyTransactionResponse response = JsonUtil.getInstance().jsonDecode(jsonOut, NullifyTransactionResponse.class);
+        NullifyTransactionResponse response = jsonUtil.jsonDecode(jsonOut, NullifyTransactionResponse.class);
 
         if (null == response || null == response.getResponseCode()) {
             throw new RefundCreateException("Could not obtain the service response");

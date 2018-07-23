@@ -16,7 +16,7 @@ public class OnepayRequestBuilder {
     private static OnepayRequestBuilder instance;
     private static OnePaySignUtil onePaySignUtil;
 
-    public SendTransactionRequest build(ShoppingCart cart, Options options)
+    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Options options)
             throws SignatureException {
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
                 cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.FAKE_CALLBACK_URL, "WEB");
@@ -25,7 +25,7 @@ public class OnepayRequestBuilder {
         return request;
     }
 
-    public GetTransactionNumberRequest build(String occ, String externalUniqueNumber, Options options) throws SignatureException {
+    public GetTransactionNumberRequest buildGetTransactionNumberRequest(String occ, String externalUniqueNumber, Options options) throws SignatureException {
         GetTransactionNumberRequest request = new GetTransactionNumberRequest(occ, externalUniqueNumber,
                 new Date().getTime()/1000);
         prepareRequest(request, options);
@@ -33,7 +33,7 @@ public class OnepayRequestBuilder {
         return request;
     }
 
-    public NullifyTransactionRequest build(long amount, String occ, String externalUniqueNumber,
+    public NullifyTransactionRequest buildNullifyTransactionRequest(long amount, String occ, String externalUniqueNumber,
                                            String authorizationCode, Options options)
             throws SignatureException {
         NullifyTransactionRequest request = new NullifyTransactionRequest(amount, occ, externalUniqueNumber, authorizationCode,

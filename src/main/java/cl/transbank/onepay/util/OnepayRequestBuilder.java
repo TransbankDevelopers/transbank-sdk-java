@@ -16,29 +16,31 @@ public class OnepayRequestBuilder {
     private static OnepayRequestBuilder instance;
     private static OnePaySignUtil onePaySignUtil;
 
-    public SendTransactionRequest build(ShoppingCart cart, Options options, Class<SendTransactionRequest> type)
+    public SendTransactionRequest build(ShoppingCart cart, Options options)
             throws SignatureException {
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
                 cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.FAKE_CALLBACK_URL, "WEB");
         prepareRequest(request, options);
-        return onePaySignUtil.sign(request, options.getSharedSecret(), type);
+        onePaySignUtil.sign(request, options.getSharedSecret());
+        return request;
     }
 
-    public GetTransactionNumberRequest build(String occ, String externalUniqueNumber, Options options,
-                                             Class<GetTransactionNumberRequest> type) throws SignatureException {
+    public GetTransactionNumberRequest build(String occ, String externalUniqueNumber, Options options) throws SignatureException {
         GetTransactionNumberRequest request = new GetTransactionNumberRequest(occ, externalUniqueNumber,
                 new Date().getTime()/1000);
         prepareRequest(request, options);
-        return onePaySignUtil.sign(request, options.getSharedSecret(), type);
+        onePaySignUtil.sign(request, options.getSharedSecret());
+        return request;
     }
 
     public NullifyTransactionRequest build(long amount, String occ, String externalUniqueNumber,
-                                           String authorizationCode, Options options, Class<NullifyTransactionRequest> type)
+                                           String authorizationCode, Options options)
             throws SignatureException {
         NullifyTransactionRequest request = new NullifyTransactionRequest(amount, occ, externalUniqueNumber, authorizationCode,
                 new Date().getTime()/1000);
         prepareRequest(request, options);
-        return onePaySignUtil.sign(request, options.getSharedSecret(), type);
+        onePaySignUtil.sign(request, options.getSharedSecret());
+        return request;
     }
 
     protected void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {

@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString
 public class TransactionCreateResponse implements Signable {
     private String occ;
     private long ott;

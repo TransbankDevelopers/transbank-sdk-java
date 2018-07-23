@@ -28,7 +28,7 @@ public class Transaction extends Channel {
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
             throws IOException, SignatureException, TransactionCreateException {
         options = Options.build(options);
-        SendTransactionRequest request = requestBuilder.build(cart, options, SendTransactionRequest.class);
+        SendTransactionRequest request = requestBuilder.build(cart, options);
         String jsonIn = jsonUtil.jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), RequestMethod.POST, jsonIn);
         SendTransactionResponse response = jsonUtil.jsonDecode(jsonOut, SendTransactionResponse.class);
@@ -53,7 +53,7 @@ public class Transaction extends Channel {
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber, Options options)
             throws IOException, SignatureException, TransactionCommitException {
         options = Options.build(options);
-        GetTransactionNumberRequest request = requestBuilder.build(occ, externalUniqueNumber, options, GetTransactionNumberRequest.class);
+        GetTransactionNumberRequest request = requestBuilder.build(occ, externalUniqueNumber, options);
         String jsonIn = jsonUtil.jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), RequestMethod.POST, jsonIn);
         GetTransactionNumberResponse response = jsonUtil.jsonDecode(jsonOut, GetTransactionNumberResponse.class);

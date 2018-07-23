@@ -4,6 +4,10 @@ public class RefundCreateException extends TransbankException {
     public RefundCreateException() {
     }
 
+    public RefundCreateException(String message) {
+        super(message);
+    }
+
     public RefundCreateException(int code, String message) {
         super(code, message);
     }

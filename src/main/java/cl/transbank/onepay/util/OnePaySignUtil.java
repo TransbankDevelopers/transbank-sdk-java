@@ -2,8 +2,6 @@ package cl.transbank.onepay.util;
 
 import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.model.Signable;
-import cl.transbank.onepay.model.TransactionCreateResponse;
-import cl.transbank.onepay.net.*;
 import lombok.NonNull;
 
 import javax.crypto.Mac;
@@ -51,10 +49,14 @@ public class OnePaySignUtil {
         base64Encoder = new BASE64Encoder();
     }
 
-    public static OnePaySignUtil getInstance() throws SignatureException {
+    public static OnePaySignUtil getInstance() throws ExceptionInInitializerError {
         if (null == instance) {
             synchronized (OnePaySignUtil.class) {
-                instance = new OnePaySignUtil();
+                try {
+                    instance = new OnePaySignUtil();
+                } catch (SignatureException e) {
+                    throw new ExceptionInInitializerError(e);
+                }
             }
         }
 

@@ -1,5 +1,8 @@
 package cl.transbank.onepay.net;
 
+import cl.transbank.onepay.exception.SignatureException;
+import cl.transbank.onepay.util.JsonUtil;
+import cl.transbank.onepay.util.OnepayRequestBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -11,6 +14,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public abstract class Channel {
+    protected static OnepayRequestBuilder requestBuilder = OnepayRequestBuilder.getInstance();
+    protected static JsonUtil jsonUtil = JsonUtil.getInstance();
+
     public static  String request(@NonNull URL url, RequestMethod method, @NonNull String query)
             throws IOException {
         return request(url, method, query, null);

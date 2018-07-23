@@ -23,7 +23,7 @@ public class TransactionCreateResponse implements Signable {
         String issuedAtAsString = String.valueOf(getIssuedAt());
 
         if (null == occ || null == externalUniqueNumber)
-            throw new SignatureException(-1, "SendTransactionResponse.occ and SendTransactionResponse.externalUniqueNumber cannot be null");
+            throw new SignatureException("SendTransactionResponse.occ and SendTransactionResponse.externalUniqueNumber cannot be null");
 
         String data = occ.length() + occ;
         data += externalUniqueNumber.length() + externalUniqueNumber;

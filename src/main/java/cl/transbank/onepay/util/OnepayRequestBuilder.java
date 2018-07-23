@@ -51,8 +51,14 @@ public class OnepayRequestBuilder {
         onePaySignUtil = OnePaySignUtil.getInstance();
     }
 
-    public static OnepayRequestBuilder getInstance() throws SignatureException {
-        if (null == instance) instance = new OnepayRequestBuilder();
+    public static OnepayRequestBuilder getInstance() throws ExceptionInInitializerError {
+        if (null == instance) {
+            try {
+                instance = new OnepayRequestBuilder();
+            } catch (SignatureException e) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
         return instance;
     }
 }

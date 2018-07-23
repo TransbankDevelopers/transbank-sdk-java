@@ -48,18 +48,14 @@ public class OnepayRequestBuilder {
         base.setAppKey(Onepay.APP_KEY);
     }
 
-    public OnepayRequestBuilder() throws SignatureException {
+    public OnepayRequestBuilder() {
         super();
         onePaySignUtil = OnePaySignUtil.getInstance();
     }
 
-    public static OnepayRequestBuilder getInstance() throws ExceptionInInitializerError {
+    public static OnepayRequestBuilder getInstance() {
         if (null == instance) {
-            try {
-                instance = new OnepayRequestBuilder();
-            } catch (SignatureException e) {
-                throw new ExceptionInInitializerError(e);
-            }
+            instance = new OnepayRequestBuilder();
         }
         return instance;
     }

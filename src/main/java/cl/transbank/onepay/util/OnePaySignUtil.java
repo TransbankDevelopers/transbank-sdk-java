@@ -27,36 +27,31 @@ public class OnePaySignUtil {
         return mac.doFinal(data.toString().getBytes());
     }
 
-    public <T> T sign(@NonNull Signable signable, @NonNull String secret, Class<T> type) throws SignatureException {
-        byte[] crypted = crypt(signable.getHash(), secret);
+    public void sign(@NonNull Signable signable, @NonNull String secret) throws SignatureException {
+        byte[] crypted = crypt(signable.getHashableString(), secret);
         signable.setSignature(base64Encoder.encode(crypted));
-        return type.cast(signable);
     }
 
     public boolean validate(@NonNull Signable signable, String secret) throws SignatureException {
-        byte[] crypted = crypt(signable.getHash(), secret);
+        byte[] crypted = crypt(signable.getHashableString(), secret);
         String sign = base64Encoder.encode(crypted);
         return sign.equals(signable.getSignature());
     }
 
-    private OnePaySignUtil() throws SignatureException {
+    private OnePaySignUtil() {
         super();
         try {
             mac = Mac.getInstance(CRYPT_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw new SignatureException(e);
+            throw new ExceptionInInitializerError(e);
         }
         base64Encoder = new BASE64Encoder();
     }
 
-    public static OnePaySignUtil getInstance() throws ExceptionInInitializerError {
+    public static OnePaySignUtil getInstance() {
         if (null == instance) {
             synchronized (OnePaySignUtil.class) {
-                try {
-                    instance = new OnePaySignUtil();
-                } catch (SignatureException e) {
-                    throw new ExceptionInInitializerError(e);
-                }
+                instance = new OnePaySignUtil();
             }
         }
 

@@ -38,7 +38,7 @@ public class Transaction extends Channel {
             throw new TransactionCreateException(-1, String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
 
-        if (!OnePaySignUtil.getInstance().validate(response, options.getSharedSecret()))
+        if (!OnePaySignUtil.getInstance().validate(response.getResult(), options.getSharedSecret()))
             throw new SignatureException(-1, "The response signature is not valid");
 
         return response.getResult();

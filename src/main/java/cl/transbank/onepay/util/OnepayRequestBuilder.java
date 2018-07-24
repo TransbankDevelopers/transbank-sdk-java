@@ -12,9 +12,9 @@ import lombok.NonNull;
 import java.util.Date;
 import java.util.UUID;
 
-public class OnepayRequestBuilder {
+public class OnepayRequestBuilder implements RequestBuilder {
     private static OnepayRequestBuilder instance;
-    private static OnePaySignUtil onePaySignUtil;
+    private static OnepaySignUtil onePaySignUtil;
 
     public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Options options)
             throws SignatureException {
@@ -43,14 +43,14 @@ public class OnepayRequestBuilder {
         return request;
     }
 
-    protected void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {
+    private void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {
         base.setApiKey(options.getApiKey());
         base.setAppKey(Onepay.APP_KEY);
     }
 
-    public OnepayRequestBuilder() {
+    private OnepayRequestBuilder() {
         super();
-        onePaySignUtil = OnePaySignUtil.getInstance();
+        onePaySignUtil = OnepaySignUtil.getInstance();
     }
 
     public static OnepayRequestBuilder getInstance() {

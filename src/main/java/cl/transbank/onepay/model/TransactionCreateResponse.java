@@ -18,9 +18,9 @@ public class TransactionCreateResponse implements Signable {
 
     @Override
     public String getHashableString() throws SignatureException {
-        String occ = getOcc();
-        String externalUniqueNumber = getExternalUniqueNumber();
-        String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String occ = getOcc();
+        final String externalUniqueNumber = getExternalUniqueNumber();
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
 
         if (null == occ || null == externalUniqueNumber)
             throw new SignatureException("SendTransactionResponse.occ and SendTransactionResponse.externalUniqueNumber cannot be null");

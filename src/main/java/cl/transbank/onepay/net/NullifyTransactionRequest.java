@@ -19,11 +19,11 @@ public class NullifyTransactionRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        String occ = getOcc();
-        String externalUniqueNumber = getExternalUniqueNumber();
-        String authorizationCode = getAuthorizationCode();
-        String issuedAtAsString = String.valueOf(getIssuedAt());
-        String nullifyAmountAsString = String.valueOf(getNullifyAmount());
+        final String occ = getOcc();
+        final String externalUniqueNumber = getExternalUniqueNumber();
+        final String authorizationCode = getAuthorizationCode();
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String nullifyAmountAsString = String.valueOf(getNullifyAmount());
 
         return occ.length() + occ
                 + externalUniqueNumber.length() + externalUniqueNumber

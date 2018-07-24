@@ -17,9 +17,9 @@ public class GetTransactionNumberRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        String occ = getOcc();
-        String externalUniqueNumber = getExternalUniqueNumber();
-        String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String occ = getOcc();
+        final String externalUniqueNumber = getExternalUniqueNumber();
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
 
         return occ.length() + occ
                 + externalUniqueNumber.length() + externalUniqueNumber

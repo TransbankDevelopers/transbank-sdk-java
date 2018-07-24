@@ -6,6 +6,7 @@ import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.net.Channel;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.NullifyTransactionResponse;
+import cl.transbank.onepay.util.OnePaySignUtil;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,7 @@ public class Refund extends Channel {
     private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
             Onepay.getIntegrationType().getApiBase());
     private static final String CREATE_REFUND = "nullifytransaction";
+    private static OnePaySignUtil signUtil = OnePaySignUtil.getInstance();
 
     public static RefundCreateResponse create(long amount, String occ, String externalUniqueNumber,
                                               String authorizationCode)
@@ -36,6 +38,9 @@ public class Refund extends Channel {
         } else if (!response.getResponseCode().equalsIgnoreCase("ok")) {
             throw new RefundCreateException(String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
+
+        if (!signUtil.validate(response.getResult(), options.getSharedSecret()))
+            throw new SignatureException("The response signature is not valid");
 
         return response.getResult();
     }

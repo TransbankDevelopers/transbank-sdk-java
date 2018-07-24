@@ -1,21 +1,20 @@
 package cl.transbank.onepay.model;
 
+import cl.transbank.onepay.ApiBaseResource;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.RefundCreateException;
 import cl.transbank.onepay.exception.SignatureException;
-import cl.transbank.onepay.net.Channel;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.NullifyTransactionResponse;
-import cl.transbank.onepay.util.OnePaySignUtil;
+import cl.transbank.onepay.util.HttpUtil;
 
 import java.io.IOException;
 import java.net.URL;
 
-public class Refund extends Channel {
+public class Refund extends ApiBaseResource {
     private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
             Onepay.getIntegrationType().getApiBase());
     private static final String CREATE_REFUND = "nullifytransaction";
-    private static OnePaySignUtil signUtil = OnePaySignUtil.getInstance();
 
     public static RefundCreateResponse create(long amount, String occ, String externalUniqueNumber,
                                               String authorizationCode)
@@ -27,11 +26,11 @@ public class Refund extends Channel {
                                               String authorizationCode, Options options)
             throws IOException, SignatureException, RefundCreateException {
         options = Options.build(options);
-        NullifyTransactionRequest request = requestBuilder.buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
+        NullifyTransactionRequest request = getRequestBuilder().buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
                 authorizationCode, options);
-        String jsonIn = jsonUtil.jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), RequestMethod.POST, jsonIn);
-        NullifyTransactionResponse response = jsonUtil.jsonDecode(jsonOut, NullifyTransactionResponse.class);
+        String jsonIn = getJsonUtil().jsonEncode(request);
+        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), HttpUtil.RequestMethod.POST, jsonIn);
+        NullifyTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, NullifyTransactionResponse.class);
 
         if (null == response || null == response.getResponseCode()) {
             throw new RefundCreateException("Could not obtain the service response");
@@ -39,7 +38,7 @@ public class Refund extends Channel {
             throw new RefundCreateException(String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
 
-        if (!signUtil.validate(response.getResult(), options.getSharedSecret()))
+        if (!getSignUtil().validate(response.getResult(), options.getSharedSecret()))
             throw new SignatureException("The response signature is not valid");
 
         return response.getResult();

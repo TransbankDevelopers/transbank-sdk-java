@@ -1,9 +1,5 @@
-package cl.transbank.onepay.net;
+package cl.transbank.onepay.util;
 
-import cl.transbank.onepay.util.JsonUtil;
-import cl.transbank.onepay.util.OnepayRequestBuilder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NonNull;
 
 import java.io.*;
@@ -12,16 +8,15 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public abstract class Channel {
-    protected static OnepayRequestBuilder requestBuilder = OnepayRequestBuilder.getInstance();
-    protected static JsonUtil jsonUtil = JsonUtil.getInstance();
+public class OnepayHttpUtil implements HttpUtil {
+    private static volatile OnepayHttpUtil instance;
 
-    public static  String request(@NonNull URL url, RequestMethod method, @NonNull String query)
+    public String request(@NonNull URL url, RequestMethod method, @NonNull String query)
             throws IOException {
         return request(url, method, query, null);
     }
 
-    public static String request(@NonNull URL url, RequestMethod method, @NonNull String query,
+    public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
                                  ContentType contentType) throws IOException {
         if (null == method)
             method = RequestMethod.GET;
@@ -47,15 +42,7 @@ public abstract class Channel {
         }
     }
 
-    private static String getResponseBody(InputStream responseStream) throws IOException {
-        try (final Scanner scanner = new Scanner(responseStream, StandardCharsets.UTF_8.name())) {
-            final String responseBody = scanner.useDelimiter("\\A").next();
-            responseStream.close();
-            return responseBody;
-        }
-    }
-
-    private static HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType)
+    private HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType)
             throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setUseCaches(false);
@@ -78,19 +65,29 @@ public abstract class Channel {
         return conn;
     }
 
-    private static HttpURLConnection createGETConnection(URL url, String query, ContentType contentType) {
+    private HttpURLConnection createGETConnection(URL url, String query, ContentType contentType) {
         // TODO implement this method if you need it
         return null;
     }
 
-    public enum RequestMethod {
-        GET,
-        POST
+    private static String getResponseBody(InputStream responseStream) throws IOException {
+        try (final Scanner scanner = new Scanner(responseStream, StandardCharsets.UTF_8.name())) {
+            final String responseBody = scanner.useDelimiter("\\A").next();
+            responseStream.close();
+            return responseBody;
+        }
     }
 
-    @AllArgsConstructor public enum ContentType {
-        JSON("application/json");
+    private OnepayHttpUtil() {
+        super();
+    }
 
-        @Getter private String contentType;
+    public static OnepayHttpUtil getInstance() {
+        if (null == instance)
+            synchronized (OnepayHttpUtil.class) {
+                instance = new OnepayHttpUtil();
+            }
+
+        return instance;
     }
 }

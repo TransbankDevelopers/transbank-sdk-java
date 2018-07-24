@@ -10,14 +10,14 @@ import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 
-public class OnePaySignUtil {
+public class OnepaySignUtil implements SignUtil {
     private Mac mac;
     private static final String CRYPT_ALGORITHM = "HMACSHA256";
     private BASE64Encoder base64Encoder;
 
-    private static volatile OnePaySignUtil instance;
+    private static volatile OnepaySignUtil instance;
 
-    public byte[] crypt(@NonNull Object data, @NonNull String secretKey) throws SignatureException {
+    private byte[] crypt(@NonNull Object data, @NonNull String secretKey) throws SignatureException {
         Key key = new SecretKeySpec(secretKey.getBytes(), CRYPT_ALGORITHM);
         try {
             mac.init(key);
@@ -38,7 +38,7 @@ public class OnePaySignUtil {
         return sign.equals(signable.getSignature());
     }
 
-    private OnePaySignUtil() {
+    private OnepaySignUtil() {
         super();
         try {
             mac = Mac.getInstance(CRYPT_ALGORITHM);
@@ -48,10 +48,10 @@ public class OnePaySignUtil {
         base64Encoder = new BASE64Encoder();
     }
 
-    public static OnePaySignUtil getInstance() {
+    public static OnepaySignUtil getInstance() {
         if (null == instance) {
-            synchronized (OnePaySignUtil.class) {
-                instance = new OnePaySignUtil();
+            synchronized (OnepaySignUtil.class) {
+                instance = new OnepaySignUtil();
             }
         }
 

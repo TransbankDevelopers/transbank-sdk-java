@@ -6,6 +6,7 @@ import cl.transbank.onepay.model.Signable;
 import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -26,17 +27,15 @@ public final class SendTransactionRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        String externalUniqueNumberAsString = String.valueOf(getExternalUniqueNumber());
-        String totalAsString = String.valueOf(getTotal());
-        String itemsQuantityAsString = String.valueOf(getItemsQuantity());
-        String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String externalUniqueNumberAsString = Objects.toString(getExternalUniqueNumber(), "");
+        final String totalAsString = String.valueOf(getTotal());
+        final String itemsQuantityAsString = String.valueOf(getItemsQuantity());
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
 
-        String data = externalUniqueNumberAsString.length() + externalUniqueNumberAsString;
-        data += totalAsString.length() + totalAsString;
-        data += itemsQuantityAsString.length() + itemsQuantityAsString;
-        data += issuedAtAsString.length() + issuedAtAsString;
-        data += Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
-
-        return data;
+        return externalUniqueNumberAsString.length() + externalUniqueNumberAsString
+                + totalAsString.length() + totalAsString
+                + itemsQuantityAsString.length() + itemsQuantityAsString
+                + issuedAtAsString.length() + issuedAtAsString
+                + Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
     }
 }

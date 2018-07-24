@@ -3,6 +3,8 @@ package cl.transbank.onepay.net;
 import cl.transbank.onepay.model.Signable;
 import lombok.*;
 
+import java.util.Objects;
+
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Getter
@@ -19,18 +21,16 @@ public class NullifyTransactionRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        String occ = getOcc();
-        String externalUniqueNumber = getExternalUniqueNumber();
-        String authorizationCode = getAuthorizationCode();
-        String issuedAtAsString = String.valueOf(getIssuedAt());
-        String nullifyAmountAsString = String.valueOf(getNullifyAmount());
+        final String occ = Objects.toString(getOcc(), "");
+        final String externalUniqueNumber = Objects.toString(getExternalUniqueNumber(), "");
+        final String authorizationCode = Objects.toString(getAuthorizationCode(), "");
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String nullifyAmountAsString = String.valueOf(getNullifyAmount());
 
-        String data = occ.length() + occ;
-        data += externalUniqueNumber.length() + externalUniqueNumber;
-        data += authorizationCode.length() + authorizationCode;
-        data += issuedAtAsString.length() + issuedAtAsString;
-        data += nullifyAmountAsString.length() + nullifyAmountAsString;
-
-        return data;
+        return occ.length() + occ
+                + externalUniqueNumber.length() + externalUniqueNumber
+                + authorizationCode.length() + authorizationCode
+                + issuedAtAsString.length() + issuedAtAsString
+                + nullifyAmountAsString.length() + nullifyAmountAsString;
     }
 }

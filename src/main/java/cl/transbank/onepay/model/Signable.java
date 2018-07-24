@@ -1,9 +1,7 @@
 package cl.transbank.onepay.model;
 
-import cl.transbank.onepay.exception.SignatureException;
-
 public interface Signable {
-    String getHashableString() throws SignatureException;
+    String getHashableString();
     void setSignature(String signature);
     String getSignature();
 }

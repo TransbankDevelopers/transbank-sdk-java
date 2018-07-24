@@ -62,6 +62,9 @@ public class Transaction extends Channel {
             throw new TransactionCommitException(String.format("%s : %s", response.getResponseCode(), response.getDescription()));
         }
 
+        if (!signUtil.validate(response.getResult(), options.getSharedSecret()))
+            throw new SignatureException("The response signature is not valid");
+
         return response.getResult();
     }
 }

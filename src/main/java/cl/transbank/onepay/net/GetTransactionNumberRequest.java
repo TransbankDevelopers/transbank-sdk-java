@@ -21,10 +21,8 @@ public class GetTransactionNumberRequest extends BaseRequest
         String externalUniqueNumber = getExternalUniqueNumber();
         String issuedAtAsString = String.valueOf(getIssuedAt());
 
-        String data = occ.length() + occ;
-        data += externalUniqueNumber.length() + externalUniqueNumber;
-        data += issuedAtAsString.length() + issuedAtAsString;
-
-        return data;
+        return occ.length() + occ
+                + externalUniqueNumber.length() + externalUniqueNumber
+                + issuedAtAsString.length() + issuedAtAsString;
     }
 }

@@ -25,10 +25,8 @@ public class TransactionCreateResponse implements Signable {
         if (null == occ || null == externalUniqueNumber)
             throw new SignatureException("SendTransactionResponse.occ and SendTransactionResponse.externalUniqueNumber cannot be null");
 
-        String data = occ.length() + occ;
-        data += externalUniqueNumber.length() + externalUniqueNumber;
-        data += issuedAtAsString.length() + issuedAtAsString;
-
-        return data;
+        return occ.length() + occ
+                + externalUniqueNumber.length() + externalUniqueNumber
+                + issuedAtAsString.length() + issuedAtAsString;
     }
 }

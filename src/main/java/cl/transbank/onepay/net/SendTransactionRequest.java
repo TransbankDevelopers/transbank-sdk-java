@@ -31,12 +31,10 @@ public final class SendTransactionRequest extends BaseRequest
         String itemsQuantityAsString = String.valueOf(getItemsQuantity());
         String issuedAtAsString = String.valueOf(getIssuedAt());
 
-        String data = externalUniqueNumberAsString.length() + externalUniqueNumberAsString;
-        data += totalAsString.length() + totalAsString;
-        data += itemsQuantityAsString.length() + itemsQuantityAsString;
-        data += issuedAtAsString.length() + issuedAtAsString;
-        data += Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
-
-        return data;
+        return externalUniqueNumberAsString.length() + externalUniqueNumberAsString
+                + totalAsString.length() + totalAsString
+                + itemsQuantityAsString.length() + itemsQuantityAsString
+                + issuedAtAsString.length() + issuedAtAsString
+                + Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
     }
 }

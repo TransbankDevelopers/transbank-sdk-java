@@ -25,12 +25,10 @@ public class NullifyTransactionRequest extends BaseRequest
         String issuedAtAsString = String.valueOf(getIssuedAt());
         String nullifyAmountAsString = String.valueOf(getNullifyAmount());
 
-        String data = occ.length() + occ;
-        data += externalUniqueNumber.length() + externalUniqueNumber;
-        data += authorizationCode.length() + authorizationCode;
-        data += issuedAtAsString.length() + issuedAtAsString;
-        data += nullifyAmountAsString.length() + nullifyAmountAsString;
-
-        return data;
+        return occ.length() + occ
+                + externalUniqueNumber.length() + externalUniqueNumber
+                + authorizationCode.length() + authorizationCode
+                + issuedAtAsString.length() + issuedAtAsString
+                + nullifyAmountAsString.length() + nullifyAmountAsString;
     }
 }

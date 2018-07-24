@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @ToString(callSuper = true)
@@ -20,14 +22,14 @@ public class TransactionCommitResponse implements Signable {
     private int installmentsNumber;
 
     @Override
-    public String getHashableString() throws SignatureException {
-        final String occ = getOcc();
-        final String authorizationCode = getAuthorizationCode();
+    public String getHashableString() {
+        final String occ = Objects.toString(getOcc(), "");
+        final String authorizationCode = Objects.toString(getAuthorizationCode(), "");
         final String issuedAtAsString = String.valueOf(getIssuedAt());
         final String amountAsString = String.valueOf(getAmount());
         final String installmentsAmountAsString = String.valueOf(getInstallmentsAmount());
         final String installmentsNumberAsString = String.valueOf(getInstallmentsNumber());
-        final String buyOrder = getBuyOrder();
+        final String buyOrder = Objects.toString(getBuyOrder(), "");
 
         return occ.length() + occ
                 + authorizationCode.length() + authorizationCode

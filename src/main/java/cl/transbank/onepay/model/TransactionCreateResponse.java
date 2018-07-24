@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @ToString
@@ -17,13 +19,10 @@ public class TransactionCreateResponse implements Signable {
     private String signature;
 
     @Override
-    public String getHashableString() throws SignatureException {
-        final String occ = getOcc();
-        final String externalUniqueNumber = getExternalUniqueNumber();
+    public String getHashableString() {
+        final String occ = Objects.toString(getOcc(), "");
+        final String externalUniqueNumber = Objects.toString(getExternalUniqueNumber(), "");
         final String issuedAtAsString = String.valueOf(getIssuedAt());
-
-        if (null == occ || null == externalUniqueNumber)
-            throw new SignatureException("SendTransactionResponse.occ and SendTransactionResponse.externalUniqueNumber cannot be null");
 
         return occ.length() + occ
                 + externalUniqueNumber.length() + externalUniqueNumber

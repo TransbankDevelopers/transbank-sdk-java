@@ -6,6 +6,7 @@ import cl.transbank.onepay.model.Signable;
 import lombok.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public final class SendTransactionRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        final String externalUniqueNumberAsString = String.valueOf(getExternalUniqueNumber());
+        final String externalUniqueNumberAsString = Objects.toString(getExternalUniqueNumber(), "");
         final String totalAsString = String.valueOf(getTotal());
         final String itemsQuantityAsString = String.valueOf(getItemsQuantity());
         final String issuedAtAsString = String.valueOf(getIssuedAt());

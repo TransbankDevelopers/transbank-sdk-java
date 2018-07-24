@@ -3,6 +3,8 @@ package cl.transbank.onepay.net;
 import cl.transbank.onepay.model.Signable;
 import lombok.*;
 
+import java.util.Objects;
+
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Getter
@@ -17,8 +19,8 @@ public class GetTransactionNumberRequest extends BaseRequest
 
     @Override
     public String getHashableString() {
-        final String occ = getOcc();
-        final String externalUniqueNumber = getExternalUniqueNumber();
+        final String occ = Objects.toString(getOcc(), "");
+        final String externalUniqueNumber = Objects.toString(getExternalUniqueNumber(), "");
         final String issuedAtAsString = String.valueOf(getIssuedAt());
 
         return occ.length() + occ

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @ToString(callSuper = true)
@@ -17,9 +19,9 @@ public class RefundCreateResponse implements Signable {
 
     @Override
     public String getHashableString() throws SignatureException {
-        final String occ = getOcc();
-        final String externalUniqueNumber = getExternalUniqueNumber();
-        final String reverseCode = getReverseCode();
+        final String occ = Objects.toString(getOcc(), "");
+        final String externalUniqueNumber = Objects.toString(getExternalUniqueNumber(), "");
+        final String reverseCode = Objects.toString(getReverseCode(), "");
         final String issuedAtAsString = String.valueOf(getIssuedAt());
 
         return occ.length() + occ

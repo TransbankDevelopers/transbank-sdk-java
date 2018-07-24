@@ -17,6 +17,14 @@ public class RefundCreateResponse implements Signable {
 
     @Override
     public String getHashableString() throws SignatureException {
-        return null;
+        final String occ = getOcc();
+        final String externalUniqueNumber = getExternalUniqueNumber();
+        final String reverseCode = getReverseCode();
+        final String issuedAtAsString = String.valueOf(getIssuedAt());
+
+        return occ.length() + occ
+                + externalUniqueNumber.length() + externalUniqueNumber
+                + reverseCode.length() + reverseCode
+                + issuedAtAsString.length() + issuedAtAsString;
     }
 }

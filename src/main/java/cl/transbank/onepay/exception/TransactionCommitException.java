@@ -1,5 +1,7 @@
 package cl.transbank.onepay.exception;
 
+import cl.transbank.exception.TransbankException;
+
 public class TransactionCommitException extends TransbankException {
     public TransactionCommitException() {
     }

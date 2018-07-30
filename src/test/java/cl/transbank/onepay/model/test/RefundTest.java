@@ -1,6 +1,7 @@
 package cl.transbank.onepay.model.test;
 
-import cl.transbank.onepay.exception.TransbankException;
+import cl.transbank.exception.TransbankException;
+import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.Refund;
 import cl.transbank.onepay.model.RefundCreateResponse;
@@ -13,6 +14,8 @@ public class RefundTest {
     private Logger log = LoggerFactory.getLogger(RefundTest.class);
 
     public void testRefund() throws IOException, TransbankException {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")

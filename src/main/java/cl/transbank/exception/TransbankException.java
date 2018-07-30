@@ -1,4 +1,4 @@
-package cl.transbank.onepay.exception;
+package cl.transbank.exception;
 
 public class TransbankException extends Throwable {
     private int code;

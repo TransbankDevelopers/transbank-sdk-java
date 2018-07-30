@@ -45,6 +45,11 @@ public class ShoppingCartTest {
         } catch (UnsupportedOperationException e) {}
 
         assertEquals(2, cart.getItems().size());
+
+        final Item item = items.get(0);
+        item.setQuantity(10);
+
+        assertEquals(2, cart.getItems().get(0).getQuantity());
     }
 
     @Test

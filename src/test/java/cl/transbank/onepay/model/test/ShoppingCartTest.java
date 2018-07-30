@@ -33,7 +33,7 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void testInmutableList() throws AmountException {
+    public void testImmutableList() throws AmountException {
         ShoppingCart cart = new ShoppingCart();
         cart.add(itemOne);
         cart.add(itemTwo);

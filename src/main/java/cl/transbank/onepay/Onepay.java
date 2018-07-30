@@ -6,7 +6,7 @@ import lombok.ToString;
 public abstract class Onepay {
     public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
     public static final String FAKE_CALLBACK_URL = "http://nourlcallbackneededhere";
-    private static volatile IntegrationType integrationType = IntegrationType.MOCK;
+    private static volatile IntegrationType integrationType = IntegrationType.LIVE;
     private static volatile String apiKey;
     private static volatile String sharedSecret;
 

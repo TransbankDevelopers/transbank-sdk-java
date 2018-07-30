@@ -1,7 +1,7 @@
 package cl.transbank.onepay.model.test;
 
 import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.exception.TransbankException;
+import cl.transbank.exception.TransbankException;
 import cl.transbank.onepay.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,8 @@ public class TransactionTest {
 
     public void testTransactionCreate()
             throws IOException, TransbankException {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+
         // Setting comerce data
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
@@ -36,6 +38,8 @@ public class TransactionTest {
 
     public void testTransactionCommit()
             throws IOException, TransbankException {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")

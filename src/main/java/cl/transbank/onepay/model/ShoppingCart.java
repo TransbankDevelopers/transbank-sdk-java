@@ -3,9 +3,11 @@ package cl.transbank.onepay.model;
 import cl.transbank.onepay.exception.AmountException;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import java.util.*;
 
+@ToString
 public final class ShoppingCart {
     @Getter private long total;
     @Getter private int itemsQuantity;
@@ -19,7 +21,13 @@ public final class ShoppingCart {
     }
 
     public List<Item> getItems() {
-        return Collections.unmodifiableList(new ArrayList<>(this.itemMap.values())); // I don't want you can modify list content by reference
+        List<Item> copy = new ArrayList<>();
+
+        for (Item item : itemMap.values()) {
+            copy.add(item.clone());
+        }
+
+        return copy;
     }
 
     public boolean add(@NonNull final Item item) throws AmountException {

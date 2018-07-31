@@ -64,6 +64,9 @@ public class TransactionCreateExample {
 #
 ### Confirmar transacción
 
+Una vez que el usuario realizó el pago mediante la aplicación, dispones de 30 segundos para realizar la 
+confirmación de la transacción, de lo contrario, se realizará automáticamente la reversa de la transacción.
+
 ```java
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.TransbankException;
@@ -72,15 +75,15 @@ import cl.transbank.onepay.model.*;
 import java.io.IOException;
 
 public class TransactionCommitExample {
-    private static final String EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST = "f506a955-800c-4185-8818-4ef9fca97aae";
-    private static final String OCC_TO_COMMIT_TRANSACTION_TEST = "1807983490979289";
+    // externalUniqueNumber y OCC vienen dados en la respuesta de Transaction.create
+    private static final String EXTERNAL_UNIQUE_NUMBER = "f506a955-800c-4185-8818-4ef9fca97aae";
+    private static final String OCC = "1807983490979289";
 
     public static void main(String[] args) throws IOException, TransbankException {
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
         
-        TransactionCommitResponse response = Transaction.commit(OCC_TO_COMMIT_TRANSACTION_TEST,
-                   EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST);
+        TransactionCommitResponse response = Transaction.commit(OCC, EXTERNAL_UNIQUE_NUMBER);
         System.out.println(response);
     }
 }
@@ -100,6 +103,7 @@ public class TransactionRefundExample {
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
         
+        // amount, OCC y autorizathionCode se obtienen a partir de la respuesta de Transaction.commit
         RefundCreateResponse response = Refund.create(27500, "1807983490979289", "f506a955-800c-4185-8818-4ef9fca97aae",
                    "623245");
         System.out.println(response);

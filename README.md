@@ -91,6 +91,9 @@ public class TransactionCommitExample {
 #
 ### Anular transacción
 
+Cuando una transacción fue creada correctamente, se dispone de un plazo de 30 días para realizar la 
+anulación de esta.
+
 ```java
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.TransbankException;

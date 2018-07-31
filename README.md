@@ -143,7 +143,7 @@ Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
 #### MOCK
 
 Diseñado princiupalmente para efectos de test, este tipo de integracion apunta a servicios
-los cuales responden una respuesta estatica.
+los cuales responden una respuesta estática.
 
 ```java
 Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);

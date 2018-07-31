@@ -3,10 +3,13 @@ package cl.transbank.onepay.model.test;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.onepay.model.*;
+import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 public class TransactionTest {
 
@@ -14,6 +17,7 @@ public class TransactionTest {
     private static final String EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST = "f506a955-800c-4185-8818-4ef9fca97aae";
     private static final String OCC_TO_COMMIT_TRANSACTION_TEST = "1807983490979289";
 
+    @Test
     public void testTransactionCreate()
             throws IOException, TransbankException {
         Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
@@ -30,12 +34,13 @@ public class TransactionTest {
         // Send transaction to Transbank
         TransactionCreateResponse response = Transaction.create(cart);
 
-        assert null != response;
+        assertNotNull(response);
 
         // Print response
         log.debug(response.toString());
     }
 
+    @Test
     public void testTransactionCommit()
             throws IOException, TransbankException {
         Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
@@ -49,7 +54,8 @@ public class TransactionTest {
         TransactionCommitResponse response = Transaction.commit(OCC_TO_COMMIT_TRANSACTION_TEST,
                 EXTERNAL_UNIQUE_NUMBER_TO_COMMIT_TRANSACTION_TEST, options);
 
-        assert null != response;
+        assertNotNull(response);
+
         log.debug(response.toString());
     }
 }

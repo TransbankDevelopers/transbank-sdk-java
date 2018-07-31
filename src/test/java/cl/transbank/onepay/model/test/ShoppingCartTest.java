@@ -47,9 +47,20 @@ public class ShoppingCartTest {
         assertEquals(2, cart.getItems().size());
 
         final Item item = items.get(0);
+        final int quantity = item.getQuantity();
         item.setQuantity(10);
 
-        assertEquals(2, cart.getItems().get(0).getQuantity());
+        Item original = null;
+        for (Item itm : cart.getItems()) {
+            if (itm.getId().equals(item.getId())) {
+                original = itm;
+                break;
+            }
+        }
+
+        assertNotNull(original);
+
+        assertEquals(quantity, original.getQuantity());
     }
 
     @Test

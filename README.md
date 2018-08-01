@@ -12,8 +12,8 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ```xml
 <dependency>
-    <groupId>cl.transbank.onepay</groupId>
-    <artifactId>transbank-onepay-sdk-java</artifactId>
+    <groupId>com.github.transbankdevelopers</groupId>
+    <artifactId>transbank-sdk-java</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```

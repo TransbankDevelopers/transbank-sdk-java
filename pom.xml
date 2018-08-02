@@ -48,7 +48,7 @@
         <connection>scm:git:https://github.com/TransbankDevelopers/transbank-sdk-java.git</connection>
         <developerConnection>scm:git:https://github.com/TransbankDevelopers/transbank-sdk-java.git</developerConnection>
         <url>https://github.com/TransbankDevelopers/transbank-sdk-java.git</url>
-        <tag>v1.0.0</tag>
+        <tag>v1.0.1</tag>
     </scm>
 
     <licenses>

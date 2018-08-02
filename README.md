@@ -18,22 +18,6 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 </dependency>
 ```
 
-#### Agregar repositorio de Transbank 
-
-Actualmente estamos trabajando en deployar la librería en un repositorio 
-público de Maven. Mientras eso no este listo debes agregar nuestro
-repositorio privado en el archivo pom de tu proyecto:
-
-```xml
-<repositories>
-    <repository>
-        <id>transbank-repo</id>
-        <name>transbank-repo</name>
-        <url>http://142.93.18.171/maven-repo/</url>
-    </repository>
-</repositories>
-```
-
 ## Modo de uso
 
 ### Crear transación

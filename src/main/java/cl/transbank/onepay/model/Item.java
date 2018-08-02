@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @ToString
 public class Item implements Cloneable {
-    @Getter private final String id;
+    @Getter private final transient String id;
     @Getter @Setter private String description;
     @Getter @Setter private int quantity;
     @Getter @Setter private int amount;

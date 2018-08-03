@@ -44,7 +44,7 @@ Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
 ```
 
-##### 2. Pasando el `APIKEY` y `APISECRET` a cada petición
+##### 2. Pasando el APIKEY y APISECRET a cada petición
 
 Utilizando un objeto `cl.transbank.onepay.model.Options`
 
@@ -54,7 +54,7 @@ Options options = new Options()
                   .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 ```
 
-#### Ambientes `TEST` y `LIVE`
+#### Ambientes TEST y LIVE
 
 Por defecto el tipo de Integración del SDK es siempre: `TEST`.
 
@@ -74,35 +74,37 @@ Para iniciar un proceso de pago mediante la aplicación móvil de Onepay, primer
 Para esto se debe crear en primera instancia un objeto `cl.transbank.onepay.model.ShoppingCart` el cual se debe llenar con ítems
 `cl.transbank.onepay.model.Item`
 
-```csharp
-using Transbank.Onepay:
-using Transbank.Onepay.Model:
+```java
+import cl.transbank.onepay.model.*;
 
 //...
 
+final Item zapatos = new Item()
+        .setDescription("Zapatos")
+        .setQuantity(1)
+        .setAmount(15000)
+        .setAdditionalData(null)
+        .setExpire(-1);
+        
 ShoppingCart cart = new ShoppingCart();
-cart.Add(new Item(
-    description: "Zapatos",
-    quantity: 1,
-    amount: 10000,
-    additionalData: null,
-    expire: 10));
+cart.add(zapatos);
 ```
+
 El monto en el carro de compras, debe ser positivo, en caso contrario se lanzará una excepción del tipo
-`Transbank.Onepay.Exceptions.AmountException`
+`cl.transbank.onepay.exception.AmountException`
 
 Luego que el carro de compras contiene todos los ítems. Se crea la transacción:
 
-```csharp
-using Transbank.Onepay:
-using Transbank.Onepay.Model:
+```java
+import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.Create(cart);
+TransactionCreateResponse response = Transaction.create(cart);
 ```
 
-El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto `TransactionCreateResponse`.
+El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
+`cl.transbank.onepay.model.TransactionCreateResponse`.
 
 ```json
 "occ": "1807983490979289",
@@ -113,153 +115,70 @@ El resultado entregado contiene la confirmación de la creación de la transacci
 "qrCodeAsBase64": "QRBASE64STRING"
 ```
 
-En el caso que no se pueda completar la transacción o la respuesta del servicio sea distinta a `http 200`
-Se lanzara una excepción `Transbank.Onepay.Exceptions.TransactionCreateResponse`
->>>>>>> Stashed changes
+En el caso que no se pueda completar la transacción o `responseCode` en la respuesta del API sea distinto de `ok`
+Se lanzara una excepción `cl.transbank.onepay.exception.TransactionCreateException`
 
 Posteriormente, se debe presentar al usuario el código QR y el número de OTT para que pueda proceder al pago
 mediante la aplicación móvil.
 
-TransactionCreateExample.java
+#### Confirmar una transacción
+
+Una vez que el usuario realizó el pago mediante la aplicación, dispones de 30 segundos
+para realizar la confirmación de la transacción, de lo contrario, se realizará automáticamente
+la reversa de la transacción.
 
 ```java
-import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.exception.TransbankException;
 import cl.transbank.onepay.model.*;
 
-import java.io.IOException;
+//...
 
-public class TransactionCreateExample {
-    public static void main(String[] args) throws IOException, TransbankException {
-        Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-        Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
-
-        ShoppingCart cart = new ShoppingCart();
-        cart.add(new Item("Zapatos", 1, 15000, null, -1));
-        cart.add(new Item("Pantalon", 1, 12500, null, -1));
-
-        TransactionCreateResponse response = Transaction.create(cart);
-        System.out.println(response);
-    }
-}
+// externalUniqueNumber y occ vienen dados en la respuesta de Transaction.create
+String externalUniqueNumber = "f506a955-800c-4185-8818-4ef9fca97aae";
+String occ = "1807983490979289";
+TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber);
 ```
-#
-### Confirmar transacción
 
-Una vez que el usuario realizó el pago mediante la aplicación, dispones de 30 segundos para realizar la 
-confirmación de la transacción, de lo contrario, se realizará automáticamente la reversa de la transacción.
+El resultado entregado contiene la confirmación de la confirmación de la transacción, en la forma de un objeto `TransactionCreateResponse`.
+
+```json
+"occ": "1807983490979289",
+"authorizationCode": "623245",
+"issuedAt": 1532104549,
+"signature": "FfY4Ab89rC8rEf0qnpGcd0L/0mcm8SpzcWhJJMbUBK0=",
+"amount": 27500,
+"transactionDesc": "Venta Normal: Sin cuotas",
+"installmentsAmount": 27500,
+"installmentsNumber": 1,
+"buyOrder": "20180720122456123"
+```
+
+#### Anular una transacción
+
+Cuando una transacción fue creada correctamente, se dispone de un plazo de 30 días para realizar la anulación de esta.
 
 ```java
-import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.exception.TransbankException;
 import cl.transbank.onepay.model.*;
 
-import java.io.IOException;
+//...
 
-public class TransactionCommitExample {
-    // externalUniqueNumber y OCC vienen dados en la respuesta de Transaction.create
-    private static final String EXTERNAL_UNIQUE_NUMBER = "f506a955-800c-4185-8818-4ef9fca97aae";
-    private static final String OCC = "1807983490979289";
-
-    public static void main(String[] args) throws IOException, TransbankException {
-        Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-        Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
-        
-        TransactionCommitResponse response = Transaction.commit(OCC, EXTERNAL_UNIQUE_NUMBER);
-        System.out.println(response);
-    }
-}
-```
-#
-### Anular transacción
-
-Cuando una transacción fue creada correctamente, se dispone de un plazo de 30 días para realizar la 
-anulación de esta.
-
-```java
-import cl.transbank.onepay.Onepay;
-import cl.transbank.onepay.exception.TransbankException;
-import cl.transbank.onepay.model.*;
-
-import java.io.IOException;
-
-public class TransactionRefundExample {
-    public static void main(String[] args) throws IOException, TransbankException {
-        Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-        Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
-        
-        // amount, OCC y autorizathionCode se obtienen a partir de la respuesta de Transaction.commit
-        RefundCreateResponse response = Refund.create(27500, "1807983490979289", "f506a955-800c-4185-8818-4ef9fca97aae",
-                   "623245");
-        System.out.println(response);
-    }
-}
+// amount, occ y autorizathionCode se obtienen a partir de la respuesta de Transaction.commit
+long amount = 27500;
+String occ = "1807983490979289";
+String externalUniqueNumber = "f506a955-800c-4185-8818-4ef9fca97aae";
+String autorizathionCode = "623245";
+RefundCreateResponse response = Refund.create(amount, occ, externalUniqueNumber, autorizathionCode);
 ```
 
-## Ambientes
+El resultado entregado contiene la confirmación de la anulación, en la forma de un objeto `RefundCreateResponse`.
 
-El SDK incluye tres ambientes distintos para trabajar: LIVE, TEST y MOCK
-
-#### LIVE
-
-Es el ambiente productivo de Transbank y debe ser configurado una vez que tu integración
-esta probada y certificada. La forma de hacerlo es la siguiente:
-
-```java
-Onepay.setIntegrationType(Onepay.IntegrationType.LIVE);
+```json
+"occ": "1807983490979289",
+"externalUniqueNumber": "f506a955-800c-4185-8818-4ef9fca97aae",
+"reverseCode": "623245",
+"issuedAt": 1532104252,
+"signature": "52NpZBolTEs+ckNOXwGRexDetY9MOaX1QbFYkjPymf4="
 ```
 
-La configuración de ambiente se realiza en forma estática, lo que quiere decir que basta 
-con que se realice una vez durante el ciclo de vida de la aplicación y debemos asegurarnos
-de hacerlo antes de realizar cualquier tipo de transacción.
-
-#### TEST
-
-Esta es la configuración por defecto del SDK. Es decir, si no configuramos el tipo de
-integración se usaran los servidores de test.
-
-```java
-Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
-```
-
-#### MOCK
-
-Diseñado para facilitar pruebas automatizadas, este tipo de integracion apunta a servicios
-sin lógica cuya respuesta es estática.
-
-```java
-Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
-```
-#
-### Configuración por request
-
-Para aplicaciones que necesiten usar múltiples keys durante el ciclo de vida del proceso,
-es posible configurar estas por cada petición.
-
-De esta forma nuestro TransactionCreateExample podría ser también escrito de la siguiente 
-forma:
-
-```java
-import cl.transbank.onepay.exception.TransbankException;
-import cl.transbank.onepay.model.*;
-
-import java.io.IOException;
-
-public class TransactionCreateExample {
-    public static void main(String[] args) throws IOException, TransbankException {
-        ShoppingCart cart = new ShoppingCart();
-        cart.add(new Item("Zapatos", 1, 15000, null, -1));
-        cart.add(new Item("Pantalon", 1, 12500, null, -1));
-
-        Options options = new Options()
-                  .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
-                  .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-
-        TransactionCreateResponse response = Transaction.create(cart, options);
-        System.out.println(response);
-    }
-}
-```
 ## Desarrollo
 
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]

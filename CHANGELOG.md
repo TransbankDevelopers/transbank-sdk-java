@@ -11,3 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.1.0] - 2018-08-03
 ### Changed
 - Configure the setters of `cl.transbank.onepay.model.Item` as method chaining.
+
+## [1.1.1] - 2018-08-03
+### Added
+- `cl.transbank.onepay.util.Base64Coder`
+### Changed
+- Now use the new `Base64Coder.encode` in order to encode to base64
+### Removed
+- `cl.transbank.onepay.util.BASE64Encoder`
+- `cl.transbank.onepay.util.CharacterEncoder`

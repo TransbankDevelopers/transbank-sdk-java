@@ -29,7 +29,7 @@
 
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <name>Transbank Java SDK</name>
 
     <inceptionYear>2018</inceptionYear>
@@ -48,7 +48,7 @@
         <connection>scm:git:https://github.com/TransbankDevelopers/transbank-sdk-java.git</connection>
         <developerConnection>scm:git:https://github.com/TransbankDevelopers/transbank-sdk-java.git</developerConnection>
         <url>https://github.com/TransbankDevelopers/transbank-sdk-java.git</url>
-        <tag>v1.0.1</tag>
+        <tag>v1.1.0</tag>
     </scm>
 
     <licenses>

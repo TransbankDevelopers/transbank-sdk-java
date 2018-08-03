@@ -19,7 +19,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 
@@ -188,10 +188,10 @@ para tu IDE favorito con el fin de evitar que veas errores marcados por la herra
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
 
-* Librería Java [transbank-sdk-java-1.0.0.jar][jar_location]
+* Librería Java [transbank-sdk-java-1.1.1.jar][jar_location]
 * [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
 
-[jar_location]: http://142.93.18.171/maven-repo/cl/transbank/transbank-sdk-java/1.0.0/transbank-sdk-java-1.0.0.jar
+[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.1.1/transbank-sdk-java-1.1.1.jar
 [lombok]: https://projectlombok.org
 [lombok-plugins]: https://projectlombok.org/setup/overview
 

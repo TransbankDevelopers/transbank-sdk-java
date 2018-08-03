@@ -13,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 public class OnepaySignUtil implements SignUtil {
     private Mac mac;
     private static final String CRYPT_ALGORITHM = "HMACSHA256";
-    private BASE64Encoder base64Encoder;
 
     private static volatile OnepaySignUtil instance;
 
@@ -29,12 +28,12 @@ public class OnepaySignUtil implements SignUtil {
 
     public void sign(@NonNull Signable signable, @NonNull String secret) throws SignatureException {
         byte[] crypted = crypt(signable.getHashableString(), secret);
-        signable.setSignature(base64Encoder.encode(crypted));
+        signable.setSignature(String.valueOf(Base64Coder.encode(crypted)));
     }
 
     public boolean validate(@NonNull Signable signable, String secret) throws SignatureException {
         byte[] crypted = crypt(signable.getHashableString(), secret);
-        String sign = base64Encoder.encode(crypted);
+        String sign = String.valueOf(Base64Coder.encode(crypted));
         return sign.equals(signable.getSignature());
     }
 
@@ -45,7 +44,6 @@ public class OnepaySignUtil implements SignUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new ExceptionInInitializerError(e);
         }
-        base64Encoder = new BASE64Encoder();
     }
 
     public static OnepaySignUtil getInstance() {

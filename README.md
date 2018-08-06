@@ -58,14 +58,14 @@ Options options = new Options()
 
 Por defecto el tipo de Integración del SDK es siempre: `TEST`.
 
-Puedes configurar el SDK para utilizar los servicios del ambiente de `LIVE` (Producción) de la suiguiente forma:
+Puedes configurar el SDK para utilizar los servicios del ambiente de `LIVE` (Producción) de la siguiente forma:
 
 ```java
 import cl.transbank.onepay.Onepay;
 
 //...
 
-Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
+Onepay.setIntegrationType(Onepay.IntegrationType.LIVE);
 ```
 
 #### Crear una nueva transacción
@@ -116,7 +116,7 @@ El resultado entregado contiene la confirmación de la creación de la transacci
 ```
 
 En el caso que no se pueda completar la transacción o `responseCode` en la respuesta del API sea distinto de `ok`
-Se lanzara una excepción `cl.transbank.onepay.exception.TransactionCreateException`
+se lanzará una excepción `cl.transbank.onepay.exception.TransactionCreateException`
 
 Posteriormente, se debe presentar al usuario el código QR y el número de OTT para que pueda proceder al pago
 mediante la aplicación móvil.

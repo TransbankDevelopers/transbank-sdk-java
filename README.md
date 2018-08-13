@@ -141,7 +141,7 @@ String occ = "1807983490979289";
 TransactionCommitResponse response = Transaction.commit(occ, externalUniqueNumber);
 ```
 
-El resultado entregado contiene la confirmación de la confirmación de la transacción, en la forma de un objeto `TransactionCreateResponse`.
+El resultado entregado contiene la confirmación de la confirmación de la transacción, en la forma de un objeto `TransactionCommitResponse`.
 
 ```json
 "occ": "1807983490979289",

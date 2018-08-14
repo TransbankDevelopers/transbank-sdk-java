@@ -16,11 +16,11 @@ public class OnepayRequestBuilder implements RequestBuilder {
     private static OnepayRequestBuilder instance;
     private static OnepaySignUtil onePaySignUtil;
 
-    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, String channel, Options options)
+    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, Options options)
             throws SignatureException {
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
                 cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(),
-                channel);
+                channel.toString());
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());
         return request;

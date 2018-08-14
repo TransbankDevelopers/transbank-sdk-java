@@ -26,7 +26,7 @@ public class Transaction extends ApiBaseResource {
      * @throws SignatureException
      * @throws TransactionCreateException
      *
-     * @deprecated use {@link #create(ShoppingCart, String)} instead
+     * @deprecated use {@link #create(ShoppingCart, Onepay.Channel)} instead
      */
     @Deprecated
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
@@ -34,7 +34,7 @@ public class Transaction extends ApiBaseResource {
         return create(cart, Onepay.DEFAULT_CHANNEL);
     }
 
-    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull String channel)
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel)
             throws IOException, SignatureException, TransactionCreateException {
         return create(cart, channel, null);
     }
@@ -48,7 +48,7 @@ public class Transaction extends ApiBaseResource {
      * @throws SignatureException
      * @throws TransactionCreateException
      *
-     * @deprecated use {@link #create(ShoppingCart, String, Options)} instead
+     * @deprecated use {@link #create(ShoppingCart, Onepay.Channel, Options)} instead
      */
     @Deprecated
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
@@ -56,7 +56,7 @@ public class Transaction extends ApiBaseResource {
         return create(cart, Onepay.DEFAULT_CHANNEL, options);
     }
 
-    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull String channel, Options options)
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, Options options)
             throws IOException, SignatureException, TransactionCreateException {
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);

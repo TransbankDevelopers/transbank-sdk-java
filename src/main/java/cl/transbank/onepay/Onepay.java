@@ -5,7 +5,7 @@ import lombok.ToString;
 
 public abstract class Onepay {
     public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
-    public static final String DEFAULT_CHANNEL = "WEB";
+    public static final Channel DEFAULT_CHANNEL = Channel.WEB;
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
     private static volatile String apiKey;
     private static volatile String sharedSecret;
@@ -59,7 +59,7 @@ public abstract class Onepay {
         }
     }
 
-    @ToString public enum ChannelType {
+    @ToString public enum Channel {
         WEB,
         MOBILE,
         APP

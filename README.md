@@ -30,7 +30,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ### Onepay
 
-#### Configuración del APIKEY, APISECRET y CallbackUrl
+#### Configuración del APIKEY y APISECRET
 
 Existen 2 formas de configurar esta información, la cual es única para cada comercio.
 
@@ -48,7 +48,7 @@ Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
 Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
 
-##### 2. Pasando el APIKEY, APISECRET y CallbackUrl a cada petición
+##### 2. Pasando el APIKEY y APISECRET a cada petición
 
 Utilizando un objeto `cl.transbank.onepay.model.Options`
 

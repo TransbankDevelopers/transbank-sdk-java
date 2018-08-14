@@ -21,6 +21,7 @@ public final class SendTransactionRequest extends BaseRequest
     @NonNull private List<Item> items;
     @NonNull private String callbackUrl;
     @NonNull private String channel;
+    @NonNull private String appScheme;
     private String signature;
     private final boolean generateOttQrCode = true;
 

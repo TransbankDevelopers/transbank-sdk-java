@@ -10,6 +10,7 @@ public abstract class Onepay {
     private static volatile String apiKey;
     private static volatile String sharedSecret;
     private static volatile String callbackUrl = "http://no.callback.has/been.setted";
+    private static volatile String appScheme;
 
     public static IntegrationType getIntegrationType() {
         return integrationType;
@@ -45,6 +46,14 @@ public abstract class Onepay {
     public static void setCallbackUrl(String callbackUrl) {
         if (null == callbackUrl) throw new NullPointerException("callbackUrl cannot be null");
         Onepay.callbackUrl = callbackUrl;
+    }
+
+    public static String getAppScheme() {
+        return appScheme;
+    }
+
+    public static void setAppScheme(String appScheme) {
+        Onepay.appScheme = appScheme;
     }
 
     @ToString public enum IntegrationType {

@@ -58,6 +58,8 @@ public class Transaction extends ApiBaseResource {
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, Options options)
             throws IOException, SignatureException, TransactionCreateException {
+        if (channel == Onepay.Channel.APP && Onepay.getAppScheme() == null)
+            throw new TransactionCreateException("You need to set an appScheme if you want to use APP channel");
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);
         String jsonIn = getJsonUtil().jsonEncode(request);

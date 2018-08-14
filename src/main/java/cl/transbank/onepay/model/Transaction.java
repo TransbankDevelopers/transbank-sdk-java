@@ -18,6 +18,17 @@ public class Transaction extends ApiBaseResource {
     private static final String SEND_TRANSACTION = "sendtransaction";
     private static final String COMMIT_TRANSACTION = "gettransactionnumber";
 
+    /**
+     *
+     * @param cart
+     * @return
+     * @throws IOException
+     * @throws SignatureException
+     * @throws TransactionCreateException
+     *
+     * @deprecated use {@link #create(ShoppingCart, String)} instead
+     */
+    @Deprecated
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
             throws IOException, SignatureException, TransactionCreateException {
         return create(cart, Onepay.DEFAULT_CHANNEL);

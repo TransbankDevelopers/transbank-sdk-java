@@ -30,7 +30,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ### Onepay
 
-#### Configuración del APIKEY y APISECRET
+#### Configuración del APIKEY, APISECRET y CallbackUrl
 
 Existen 2 formas de configurar esta información, la cual es única para cada comercio.
 
@@ -45,9 +45,10 @@ import cl.transbank.onepay.Onepay;
 
 Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
+Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
 
-##### 2. Pasando el APIKEY y APISECRET a cada petición
+##### 2. Pasando el APIKEY, APISECRET y CallbackUrl a cada petición
 
 Utilizando un objeto `cl.transbank.onepay.model.Options`
 
@@ -103,8 +104,11 @@ import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.create(cart);
+TransactionCreateResponse response = Transaction.create(cart, channel);
 ```
+
+El parametro `channel` puede ser `WEB`, `MOBIL` o `APP` dependiendo si quien esta realizando el pago esta usando un 
+browser en versión Destop, Movil o esta utilizando alguna aplicación móvil nativa.
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
 `cl.transbank.onepay.model.TransactionCreateResponse`.

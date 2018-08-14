@@ -36,13 +36,18 @@ public class Transaction extends ApiBaseResource {
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull String channel)
             throws IOException, SignatureException, TransactionCreateException {
-        return create(cart, new Options().setChannel(channel));
+        return create(cart, channel, null);
     }
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
             throws IOException, SignatureException, TransactionCreateException {
+        return create(cart, Onepay.DEFAULT_CHANNEL, options);
+    }
+
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull String channel, Options options)
+            throws IOException, SignatureException, TransactionCreateException {
         options = Options.build(options);
-        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, options);
+        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);

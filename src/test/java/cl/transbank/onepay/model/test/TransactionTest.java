@@ -33,7 +33,7 @@ public class TransactionTest {
         cart.add(new Item("Pantalon", 1, 12500, null, -1));
 
         // Send transaction to Transbank
-        TransactionCreateResponse response = Transaction.create(cart);
+        TransactionCreateResponse response = Transaction.create(cart, "MOBIL");
 
         assertNotNull(response);
 

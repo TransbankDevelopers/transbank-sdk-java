@@ -6,10 +6,11 @@ import lombok.ToString;
 public abstract class Onepay {
     public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
     public static final Channel DEFAULT_CHANNEL = Channel.WEB;
+    public static final String DEFAULT_CALLBACK = "http://no.callback.has/been.setted";
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
     private static volatile String apiKey;
     private static volatile String sharedSecret;
-    private static volatile String callbackUrl = "http://no.callback.has/been.setted";
+    private static volatile String callbackUrl;
     private static volatile String appScheme;
 
     public static IntegrationType getIntegrationType() {

@@ -18,8 +18,11 @@ public class OnepayRequestBuilder implements RequestBuilder {
 
     public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, Options options)
             throws SignatureException {
+        String callbackUrl = Onepay.getCallbackUrl() == null || Onepay.getCallbackUrl().isEmpty() ?
+                Onepay.DEFAULT_CALLBACK : Onepay.getCallbackUrl();
+
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
-                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.getCallbackUrl(),
+                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), callbackUrl,
                 channel.toString(), Onepay.getAppScheme());
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());

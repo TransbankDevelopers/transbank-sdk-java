@@ -59,7 +59,7 @@ public abstract class Onepay {
         }
     }
 
-    @ToString public enum Channel {
+    public enum Channel {
         WEB,
         MOBILE,
         APP

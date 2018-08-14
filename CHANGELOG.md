@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - `cl.transbank.onepay.util.BASE64Encoder`
 - `cl.transbank.onepay.util.CharacterEncoder`
 
-## [1.2.0] - 2018-08-03
+## [1.2.0] - 2018-08-14
 ### Added
 - Add new callbackUrl config param to Onepay. You could set it with the following setter:
     `cl.transbank.onepay.Onepay.setCallbackUrl("a-callback-endpoint")`

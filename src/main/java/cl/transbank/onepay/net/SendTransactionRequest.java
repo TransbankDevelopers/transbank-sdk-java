@@ -1,6 +1,5 @@
 package cl.transbank.onepay.net;
 
-import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.model.Item;
 import cl.transbank.onepay.model.Signable;
 import lombok.*;
@@ -22,6 +21,7 @@ public final class SendTransactionRequest extends BaseRequest
     @NonNull private List<Item> items;
     @NonNull private String callbackUrl;
     @NonNull private String channel;
+    @NonNull private String appScheme;
     private String signature;
     private final boolean generateOttQrCode = true;
 
@@ -31,11 +31,12 @@ public final class SendTransactionRequest extends BaseRequest
         final String totalAsString = String.valueOf(getTotal());
         final String itemsQuantityAsString = String.valueOf(getItemsQuantity());
         final String issuedAtAsString = String.valueOf(getIssuedAt());
+        final String callbackUrlAsString = Objects.toString(getCallbackUrl(), "");
 
         return externalUniqueNumberAsString.length() + externalUniqueNumberAsString
                 + totalAsString.length() + totalAsString
                 + itemsQuantityAsString.length() + itemsQuantityAsString
                 + issuedAtAsString.length() + issuedAtAsString
-                + Onepay.FAKE_CALLBACK_URL.length() + Onepay.FAKE_CALLBACK_URL;
+                + callbackUrlAsString.length() + callbackUrlAsString;
     }
 }

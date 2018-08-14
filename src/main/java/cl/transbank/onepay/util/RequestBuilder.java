@@ -1,5 +1,6 @@
 package cl.transbank.onepay.util;
 
+import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.ShoppingCart;
@@ -8,7 +9,7 @@ import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 
 public interface RequestBuilder {
-    SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Options options)
+    SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, Options options)
             throws SignatureException;
     GetTransactionNumberRequest buildGetTransactionNumberRequest(String occ, String externalUniqueNumber, Options options)
             throws SignatureException;

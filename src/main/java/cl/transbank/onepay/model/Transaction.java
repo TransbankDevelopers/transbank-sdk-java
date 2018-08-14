@@ -18,15 +18,54 @@ public class Transaction extends ApiBaseResource {
     private static final String SEND_TRANSACTION = "sendtransaction";
     private static final String COMMIT_TRANSACTION = "gettransactionnumber";
 
+    /**
+     *
+     * @param cart
+     * @return
+     * @throws IOException
+     * @throws SignatureException
+     * @throws TransactionCreateException
+     *
+     * @deprecated use {@link #create(ShoppingCart, Onepay.Channel)} instead
+     */
+    @Deprecated
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
             throws IOException, SignatureException, TransactionCreateException {
-        return create(cart, null);
+        return create(cart, Onepay.DEFAULT_CHANNEL);
     }
 
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel)
+            throws IOException, SignatureException, TransactionCreateException {
+        return create(cart, channel, null);
+    }
+
+    /**
+     *
+     * @param cart
+     * @param options
+     * @return
+     * @throws IOException
+     * @throws SignatureException
+     * @throws TransactionCreateException
+     *
+     * @deprecated use {@link #create(ShoppingCart, Onepay.Channel, Options)} instead
+     */
+    @Deprecated
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
             throws IOException, SignatureException, TransactionCreateException {
+        return create(cart, Onepay.DEFAULT_CHANNEL, options);
+    }
+
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, Options options)
+            throws IOException, SignatureException, TransactionCreateException {
+        if (channel == Onepay.Channel.APP && (Onepay.getAppScheme() == null || Onepay.getAppScheme().isEmpty()))
+            throw new TransactionCreateException("You need to set an appScheme if you want to use APP channel");
+
+        if (channel == Onepay.Channel.MOBILE && (Onepay.getCallbackUrl() == null || Onepay.getCallbackUrl().isEmpty()))
+            throw new TransactionCreateException("You need to set a valid callback is you want to use MOBILE channel");
+
         options = Options.build(options);
-        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, options);
+        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);

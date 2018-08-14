@@ -5,10 +5,13 @@ import lombok.ToString;
 
 public abstract class Onepay {
     public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
-    public static final String FAKE_CALLBACK_URL = "http://nourlcallbackneededhere";
+    public static final Channel DEFAULT_CHANNEL = Channel.WEB;
+    public static final String DEFAULT_CALLBACK = "http://no.callback.has/been.setted";
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
     private static volatile String apiKey;
     private static volatile String sharedSecret;
+    private static volatile String callbackUrl;
+    private static volatile String appScheme;
 
     public static IntegrationType getIntegrationType() {
         return integrationType;
@@ -37,6 +40,23 @@ public abstract class Onepay {
         Onepay.sharedSecret = sharedSecret;
     }
 
+    public static String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public static void setCallbackUrl(String callbackUrl) {
+        if (null == callbackUrl) throw new NullPointerException("callbackUrl cannot be null");
+        Onepay.callbackUrl = callbackUrl;
+    }
+
+    public static String getAppScheme() {
+        return appScheme;
+    }
+
+    public static void setAppScheme(String appScheme) {
+        Onepay.appScheme = appScheme;
+    }
+
     @ToString public enum IntegrationType {
         LIVE(""),
         TEST("https://web2desa.test.transbank.cl"),
@@ -47,5 +67,11 @@ public abstract class Onepay {
         IntegrationType(String apiBase) {
             this.apiBase = apiBase;
         }
+    }
+
+    public enum Channel {
+        WEB,
+        MOBILE,
+        APP
     }
 }

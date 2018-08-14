@@ -22,7 +22,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -45,6 +45,7 @@ import cl.transbank.onepay.Onepay;
 
 Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
 Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
+Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
 
 ##### 2. Pasando el APIKEY y APISECRET a cada petición
@@ -103,7 +104,20 @@ import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.create(cart);
+TransactionCreateResponse response = Transaction.create(cart, channel);
+```
+
+El parametro `channel` puede ser `WEB`, `MOBILE` o `APP` dependiendo si quien esta realizando el pago esta usando un 
+browser en versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
+
+En caso que `channel` sea `APP` es obligatorio que este previamente configurado el `appScheme`:
+
+```java
+import cl.transbank.onepay.Onepay;
+
+//...
+
+Onepay.setAppScheme("STRINGAPPSCHEME");
 ```
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
@@ -191,10 +205,10 @@ para tu IDE favorito con el fin de evitar que veas errores marcados por la herra
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
 
-* Librería Java [transbank-sdk-java-1.1.1.jar][jar_location]
+* Librería Java [transbank-sdk-java-1.2.0.jar][jar_location]
 * [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
 
-[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.1.1/transbank-sdk-java-1.1.1.jar
+[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.2.0/transbank-sdk-java-1.2.0.jar
 [lombok]: https://projectlombok.org
 [lombok-plugins]: https://projectlombok.org/setup/overview
 

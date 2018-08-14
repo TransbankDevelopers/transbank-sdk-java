@@ -25,6 +25,8 @@ public class TransactionTest {
         // Setting comerce data
         Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
+        Onepay.setCallbackUrl("http://www.somecallback.com/example");
+        Onepay.setAppScheme("schemetest");
 
         // Setting items to the shopping cart
         ShoppingCart cart = new ShoppingCart();
@@ -32,7 +34,7 @@ public class TransactionTest {
         cart.add(new Item("Pantalon", 1, 12500, null, -1));
 
         // Send transaction to Transbank
-        TransactionCreateResponse response = Transaction.create(cart);
+        TransactionCreateResponse response = Transaction.create(cart, Onepay.Channel.APP);
 
         assertNotNull(response);
 

@@ -19,7 +19,7 @@ public class OnepayRequestBuilder implements RequestBuilder {
     public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Options options)
             throws SignatureException {
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
-                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), Onepay.FAKE_CALLBACK_URL, "WEB");
+                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), options.getCallbackUrl(), "WEB");
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());
         return request;

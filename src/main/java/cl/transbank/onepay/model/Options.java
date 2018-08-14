@@ -11,9 +11,10 @@ import lombok.experimental.Accessors;
 public class Options {
     @Setter @Accessors(chain = true) private String apiKey;
     @Setter @Accessors(chain = true) private String sharedSecret;
+    @Setter @Accessors(chain = true) private String callbackUrl;
 
     public static Options getDefaults() {
-        return new Options(Onepay.getApiKey(), Onepay.getSharedSecret());
+        return new Options(Onepay.getApiKey(), Onepay.getSharedSecret(), Onepay.getCallbackUrl());
     }
 
     public static Options build(Options options) {
@@ -21,6 +22,7 @@ public class Options {
 
         if (null == options.getApiKey()) options.setApiKey(Onepay.getApiKey());
         if (null == options.getSharedSecret()) options.setSharedSecret(Onepay.getSharedSecret());
+        if (null == options.getCallbackUrl()) options.setCallbackUrl(Onepay.getCallbackUrl());
 
         return options;
     }

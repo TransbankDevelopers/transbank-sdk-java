@@ -11,7 +11,7 @@ public class Item implements Cloneable {
     @Getter @Setter @Accessors(chain = true) private String description;
     @Getter @Setter @Accessors(chain = true) private int quantity;
     @Getter @Setter @Accessors(chain = true) private int amount;
-    @Getter @Setter @Accessors(chain = true) String additionalData;
+    @Getter @Setter @Accessors(chain = true) private String additionalData;
     @Getter @Setter @Accessors(chain = true) private long expire;
 
     public Item() {

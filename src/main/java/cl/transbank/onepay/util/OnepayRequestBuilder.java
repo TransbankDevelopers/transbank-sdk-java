@@ -19,13 +19,15 @@ public class OnepayRequestBuilder implements RequestBuilder {
     public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Options options)
             throws SignatureException {
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
-                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), options.getCallbackUrl(), "WEB");
+                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), options.getCallbackUrl(),
+                options.getChannel());
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());
         return request;
     }
 
-    public GetTransactionNumberRequest buildGetTransactionNumberRequest(String occ, String externalUniqueNumber, Options options) throws SignatureException {
+    public GetTransactionNumberRequest buildGetTransactionNumberRequest(String occ, String externalUniqueNumber,
+                                                                        Options options) throws SignatureException {
         GetTransactionNumberRequest request = new GetTransactionNumberRequest(occ, externalUniqueNumber,
                 new Date().getTime()/1000);
         prepareRequest(request, options);

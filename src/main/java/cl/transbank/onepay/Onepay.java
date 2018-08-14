@@ -58,4 +58,10 @@ public abstract class Onepay {
             this.apiBase = apiBase;
         }
     }
+
+    @ToString public enum ChannelType {
+        WEB,
+        MOBILE,
+        APP
+    }
 }

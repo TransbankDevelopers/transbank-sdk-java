@@ -61,7 +61,6 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        System.out.println(jsonIn);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);
 

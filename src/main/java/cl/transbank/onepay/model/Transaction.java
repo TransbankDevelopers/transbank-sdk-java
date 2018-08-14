@@ -20,7 +20,7 @@ public class Transaction extends ApiBaseResource {
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart)
             throws IOException, SignatureException, TransactionCreateException {
-        return create(cart, null);
+        return create(cart, Onepay.DEFAULT_CHANNEL);
     }
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, Options options)
@@ -41,6 +41,11 @@ public class Transaction extends ApiBaseResource {
             throw new SignatureException("The response signature is not valid");
 
         return response.getResult();
+    }
+
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull String channel)
+            throws IOException, SignatureException, TransactionCreateException {
+        return create(cart, new Options().setChannel(channel));
     }
 
     public static TransactionCommitResponse commit(String occ, String externalUniqueNumber)

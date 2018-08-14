@@ -107,7 +107,7 @@ import cl.transbank.onepay.model.*;
 TransactionCreateResponse response = Transaction.create(cart, channel);
 ```
 
-El parametro `channel` puede ser `WEB`, `MOBIL` o `APP` dependiendo si quien esta realizando el pago esta usando un 
+El parametro `channel` puede ser `WEB`, `MOBILE` o `APP` dependiendo si quien esta realizando el pago esta usando un 
 browser en versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 

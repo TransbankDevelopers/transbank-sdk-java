@@ -10,6 +10,7 @@ import cl.transbank.onepay.net.GetTransactionNumberRequest;
 import lombok.NonNull;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class OnepayRequestBuilder implements RequestBuilder {
@@ -23,7 +24,7 @@ public class OnepayRequestBuilder implements RequestBuilder {
 
         SendTransactionRequest request = new SendTransactionRequest(UUID.randomUUID().toString(), cart.getTotal(),
                 cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), callbackUrl,
-                channel.toString(), Onepay.getAppScheme());
+                channel.toString(), Objects.toString(Onepay.getAppScheme(), ""));
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());
         return request;

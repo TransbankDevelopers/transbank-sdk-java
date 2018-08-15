@@ -27,3 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     `cl.transbank.onepay.Onepay.setCallbackUrl("a-callback-endpoint")`
 - Add new `appScheme` config param to `Onepay`
 - Add new optional param `channel` to `Transaction.create`
+
+## [1.2.1] - 2018-08-16
+### Changed
+- Prevent NullPointerException when appScheme is null on request for MOBILE and WEB

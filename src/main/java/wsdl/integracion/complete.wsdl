@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="WSCompleteWebpayServiceImplService" targetNamespace="http://service.wswebpay.webpay.transbank.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.wswebpay.webpay.transbank.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://service.wswebpay.webpay.transbank.com/" version="1.0" xmlns:tns="http://service.wswebpay.webpay.transbank.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="acknowledgeCompleteTransaction" type="tns:acknowledgeCompleteTransaction"/>
+<xs:element name="acknowledgeCompleteTransactionResponse" type="tns:acknowledgeCompleteTransactionResponse"/>
+<xs:element name="authorize" type="tns:authorize"/>
+<xs:element name="authorizeResponse" type="tns:authorizeResponse"/>
+<xs:element name="initCompleteTransaction" type="tns:initCompleteTransaction"/>
+<xs:element name="initCompleteTransactionResponse" type="tns:initCompleteTransactionResponse"/>
+<xs:element name="queryShare" type="tns:queryShare"/>
+<xs:element name="queryShareResponse" type="tns:queryShareResponse"/>
+<xs:complexType name="acknowledgeCompleteTransaction">
+<xs:sequence>
+<xs:element name="tokenInput" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="acknowledgeCompleteTransactionResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="authorize">
+<xs:sequence>
+<xs:element name="token" type="xs:string"/>
+<xs:element maxOccurs="unbounded" name="paymentTypeList" type="tns:wsCompletePaymentTypeInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompletePaymentTypeInput">
+<xs:sequence>
+<xs:element name="commerceCode" type="xs:string"/>
+<xs:element name="buyOrder" type="xs:string"/>
+<xs:element minOccurs="0" name="queryShareInput" type="tns:wsCompleteQueryShareInput"/>
+<xs:element minOccurs="0" name="gracePeriod" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteQueryShareInput">
+<xs:sequence>
+<xs:element name="idQueryShare" type="xs:long"/>
+<xs:element minOccurs="0" name="deferredPeriodIndex" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="authorizeResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:wsCompleteAuthorizeOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteAuthorizeOutput">
+<xs:sequence>
+<xs:element minOccurs="0" name="accountingDate" type="xs:string"/>
+<xs:element minOccurs="0" name="buyOrder" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="detailsOutput" nillable="true" type="tns:wsTransactionDetailOutput"/>
+<xs:element minOccurs="0" name="sessionId" type="xs:string"/>
+<xs:element minOccurs="0" name="transactionDate" type="xs:dateTime"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsTransactionDetailOutput">
+<xs:complexContent>
+<xs:extension base="tns:wsTransactionDetail">
+<xs:sequence>
+<xs:element minOccurs="0" name="authorizationCode" type="xs:string"/>
+<xs:element minOccurs="0" name="paymentTypeCode" type="xs:string"/>
+<xs:element name="responseCode" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="wsTransactionDetail">
+<xs:sequence>
+<xs:element minOccurs="0" name="sharesAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="sharesNumber" type="xs:int"/>
+<xs:element name="amount" type="xs:decimal"/>
+<xs:element name="commerceCode" type="xs:string"/>
+<xs:element name="buyOrder" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="queryShare">
+<xs:sequence>
+<xs:element name="token" type="xs:string"/>
+<xs:element name="buyOrder" type="xs:string"/>
+<xs:element name="shareNumber" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="queryShareResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:wsCompleteQuerySharesOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteQuerySharesOutput">
+<xs:sequence>
+<xs:element minOccurs="0" name="buyOrder" type="xs:string"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="deferredPeriods" nillable="true" type="tns:completeDeferredPeriod"/>
+<xs:element name="queryId" type="xs:long"/>
+<xs:element minOccurs="0" name="shareAmount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="token" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="completeDeferredPeriod">
+<xs:sequence>
+<xs:element minOccurs="0" name="amount" type="xs:decimal"/>
+<xs:element name="period" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="initCompleteTransaction">
+<xs:sequence>
+<xs:element name="wsCompleteInitTransactionInput" type="tns:wsCompleteInitTransactionInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteInitTransactionInput">
+<xs:sequence>
+<xs:element name="transactionType" type="tns:wsCompleteTransactionType"/>
+<xs:element minOccurs="0" name="commerceId" type="xs:string"/>
+<xs:element minOccurs="0" name="buyOrder" type="xs:string"/>
+<xs:element minOccurs="0" name="sessionId" type="xs:string"/>
+<xs:element name="cardDetail" type="tns:completeCardDetail"/>
+<xs:element maxOccurs="unbounded" name="transactionDetails" type="tns:wsCompleteTransactionDetail"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="completeCardDetail">
+<xs:complexContent>
+<xs:extension base="tns:cardDetail">
+<xs:sequence>
+<xs:element name="cvv" type="xs:int"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="cardDetail">
+<xs:sequence>
+<xs:element name="cardNumber" type="xs:string"/>
+<xs:element name="cardExpirationDate" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteTransactionDetail">
+<xs:sequence>
+<xs:element name="amount" type="xs:decimal"/>
+<xs:element name="commerceCode" type="xs:string"/>
+<xs:element name="buyOrder" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="initCompleteTransactionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:wsCompleteInitTransactionOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="wsCompleteInitTransactionOutput">
+<xs:sequence>
+<xs:element minOccurs="0" name="token" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="wsCompleteTransactionType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="TR_COMPLETA_WS"/>
+<xs:enumeration value="TR_COMPLETA_MALL_WS"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="queryShare">
+    <wsdl:part element="tns:queryShare" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="initCompleteTransaction">
+    <wsdl:part element="tns:initCompleteTransaction" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="queryShareResponse">
+    <wsdl:part element="tns:queryShareResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="acknowledgeCompleteTransactionResponse">
+    <wsdl:part element="tns:acknowledgeCompleteTransactionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="initCompleteTransactionResponse">
+    <wsdl:part element="tns:initCompleteTransactionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="acknowledgeCompleteTransaction">
+    <wsdl:part element="tns:acknowledgeCompleteTransaction" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorizeResponse">
+    <wsdl:part element="tns:authorizeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorize">
+    <wsdl:part element="tns:authorize" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="WSCompleteWebpayService">
+    <wsdl:operation name="acknowledgeCompleteTransaction">
+      <wsdl:input message="tns:acknowledgeCompleteTransaction" name="acknowledgeCompleteTransaction">
+    </wsdl:input>
+      <wsdl:output message="tns:acknowledgeCompleteTransactionResponse" name="acknowledgeCompleteTransactionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authorize">
+      <wsdl:input message="tns:authorize" name="authorize">
+    </wsdl:input>
+      <wsdl:output message="tns:authorizeResponse" name="authorizeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryShare">
+      <wsdl:input message="tns:queryShare" name="queryShare">
+    </wsdl:input>
+      <wsdl:output message="tns:queryShareResponse" name="queryShareResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initCompleteTransaction">
+      <wsdl:input message="tns:initCompleteTransaction" name="initCompleteTransaction">
+    </wsdl:input>
+      <wsdl:output message="tns:initCompleteTransactionResponse" name="initCompleteTransactionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSCompleteWebpayServiceImplServiceSoapBinding" type="tns:WSCompleteWebpayService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="acknowledgeCompleteTransaction">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="acknowledgeCompleteTransaction">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="acknowledgeCompleteTransactionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authorize">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="authorize">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authorizeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="queryShare">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="queryShare">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="queryShareResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initCompleteTransaction">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="initCompleteTransaction">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="initCompleteTransactionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WSCompleteWebpayServiceImplService">
+    <wsdl:port binding="tns:WSCompleteWebpayServiceImplServiceSoapBinding" name="WSCompleteWebpayServiceImplPort">
+      <soap:address location="https://webpay3gint.transbank.cl:443/WSWebpayTransaction/cxf/WSCompleteWebpayService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

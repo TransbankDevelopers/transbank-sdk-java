@@ -1,0 +1,90 @@
+/**
+  * @author     Allware Ltda. (http://www.allware.cl)
+  * @copyright  2016 Transbank S.A. (http://www.tranbank.cl)
+  * @date       Jan 2015
+  * @license    GNU LGPL
+  * @version    2.0.1
+  *
+  */
+
+package cl.transbank.webpay.security;
+
+import cl.transbank.webpay.Webpay;
+
+/**
+ *
+ * @author rbertuzzi
+ */
+public class WebpayCertificateHelper {
+    private static final String WEBPAY_CERT_INTEGRATION = "-----BEGIN CERTIFICATE-----\n" +
+"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\n" +
+"-----END CERTIFICATE-----";
+    
+    private static final String WEBPAY_CERT_PRODUCTION = "-----BEGIN CERTIFICATE-----\n" +
+"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\n" +
+"-----END CERTIFICATE-----";
+    
+    public static void checkCertificate(Webpay.Environment mode, SoapSignature signature){
+        if (!signature.hasWebpayCert()){
+            signature.setWebpayCertificate(mode != Webpay.Environment.PRODUCCION? WEBPAY_CERT_INTEGRATION: WEBPAY_CERT_PRODUCTION);
+        }
+    }
+}

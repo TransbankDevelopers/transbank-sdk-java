@@ -7,7 +7,6 @@ import cl.transbank.onepay.net.BaseRequest;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 import cl.transbank.onepay.net.GetTransactionNumberRequest;
-import com.sun.istack.internal.NotNull;
 import lombok.NonNull;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public class OnepayRequestBuilder implements RequestBuilder {
     private static OnepayRequestBuilder instance;
     private static OnepaySignUtil onePaySignUtil;
 
-    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, @NotNull String externalUniqueNumber, Options options)
+    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, @NonNull String externalUniqueNumber, Options options)
             throws SignatureException {
         String callbackUrl = Onepay.getCallbackUrl() == null || Onepay.getCallbackUrl().isEmpty() ?
                 Onepay.DEFAULT_CALLBACK : Onepay.getCallbackUrl();

@@ -2,7 +2,9 @@ package cl.transbank.onepay.model.test;
 
 import cl.transbank.onepay.Onepay;
 import cl.transbank.exception.TransbankException;
+import cl.transbank.onepay.exception.TransactionCreateException;
 import cl.transbank.onepay.model.*;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

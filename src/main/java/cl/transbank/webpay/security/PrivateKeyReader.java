@@ -47,11 +47,9 @@ import javax.xml.bind.DatatypeConverter;
  * FileServer to find the file. So the file should be located in the same
  * directory as the test plan if the path is relative.
  *
- * <p/>
  * There is a cache so each file is only read once. If file is changed, it will
  * not take effect until the program restarts.
  *
- * <p/>
  * It can read PEM files with PKCS#8 or PKCS#1 encodings. It doesn't support
  * encrypted PEM files.
  *
@@ -160,7 +158,6 @@ public class PrivateKeyReader {
     /**
      * Convert PKCS#1 encoded private key into RSAPrivateCrtKeySpec.
      *
-     * <p/>
      * The ASN.1 syntax for the private key with CRT is
      *
      * <pre>
@@ -219,11 +216,9 @@ public class PrivateKeyReader {
  * PKCS#1 private keys. Especially, it doesn't handle explicitly tagged types
  * with an outer tag.
  *
- * <p/>
  * This parser can only handle one layer. To parse nested constructs, get a new
  * parser for each layer using <code>Asn1Object.getParser()</code>.
  *
- * <p/>
  * There are many DER decoders in JRE but using them will tie this program to a
  * specific JCE/JVM.
  *
@@ -323,7 +318,6 @@ class DerParser {
      * Decode the length of the field. Can only support length encoding up to 4
      * octets.
      *
-     * <p/>
      * In BER/DER encoding, length can be encoded in 2 forms,
      * <ul>
      * <li>Short form. One octet. Bit 8 has value "0" and bits 7-1 give the
@@ -383,7 +377,6 @@ class Asn1Object {
      * Construct a ASN.1 TLV. The TLV could be either a constructed or primitive
      * entity.
      *
-     * <p/>
      * The first byte in DER encoding is made of following fields,
      * <pre>
      *-------------------------------------------------

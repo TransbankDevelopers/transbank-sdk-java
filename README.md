@@ -201,6 +201,34 @@ El resultado entregado contiene la confirmación de la anulación, en la forma d
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]
 para tu IDE favorito con el fin de evitar que veas errores marcados por la herramienta de desarrollo.
 
+## Deploy manual a maven central
+
+Agregar en el setting.xml 
+
+```xml
+<settings>
+    <servers>
+        <server>
+            <id>ossrh</id>
+            <username>your-jira-id</username>
+            <password>your-jira-pwd</password>
+        </server>
+    </servers>
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+                <gpg.passphrase>your-gpg-pwd</gpg.passphrase>
+            </properties>
+       </profile>
+    </profiles>
+</settings>
+```
+
 ## No usas Maven?
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:

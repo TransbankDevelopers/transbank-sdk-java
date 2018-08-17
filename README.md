@@ -201,6 +201,8 @@ El resultado entregado contiene la confirmación de la anulación, en la forma d
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]
 para tu IDE favorito con el fin de evitar que veas errores marcados por la herramienta de desarrollo.
 
+Se recomienda usar Java 7 u 8 para compilar este SDK. En Java 9 o superior la generación de Javadocs falla debido a la introducción de módulos (y a que varias clases de JavaEE en el paquete javax.* han sido movidas a módulos separados).
+
 ## No usas Maven?
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:

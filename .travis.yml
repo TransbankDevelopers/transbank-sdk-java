@@ -1,5 +1,5 @@
 language: java
-before_install: mvn clean compile
+install: mvn clean compile
 script:
   - mvn test
   - mvn sonar:sonar -Dsonar.organization=transbankdevelopers -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN

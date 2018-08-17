@@ -100,7 +100,8 @@ public class PrivateKeyReader {
      * Get a Private Key for the file.
      *
      * @return Private key
-     * @throws IOException
+     * @throws IOException if something goes wrong reading the file
+     * @throws GeneralSecurityException if the private key cannot be generated from the key spec
      */
     public PrivateKey getPrivateKey() throws IOException, GeneralSecurityException {
         PrivateKey key = null;

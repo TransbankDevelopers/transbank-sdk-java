@@ -211,8 +211,8 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                        <passphraseServerId>${gpg.keyname}</passphraseServerId>
-                                    </configuration>
+                                    <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

@@ -229,6 +229,14 @@ Agregar en el setting.xml
 </settings>
 ```
 
+### Instalar GNUPG
+    Linux: (ubunut) apt-get install gnupg2
+    Windows: https://gpg4win.org/get-gpg4win.html
+    MAC: GPGKeyChain
+
+Java 8
+
+
 ## No usas Maven?
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:

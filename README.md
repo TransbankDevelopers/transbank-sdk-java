@@ -261,6 +261,25 @@ Si de todas maneras necesitas hacer el release manualmente a MavenCentral ya sea
 
 _*Nota*: para subir codigo a MavenCentral, este debe estar firmado._ [Mas información](https://dracoblue.net/dev/uploading-snapshots-and-releases-to-maven-central-with-travis/)
 
+Si quieres probar el snapshot que se genera en MavenCentral, debes agregar el repositorio de snapshots de Sonatype, a continuación 
+esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
+```xml
+<profiles>
+  <profile>
+     <id>allow-snapshots</id>
+        <activation><activeByDefault>true</activeByDefault></activation>
+     <repositories>
+       <repository>
+         <id>snapshots-repo</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+         <releases><enabled>false</enabled></releases>
+         <snapshots><enabled>true</enabled></snapshots>
+       </repository>
+     </repositories>
+   </profile>
+</profiles>
+```
+
 ## No usas Maven?
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:

@@ -1,5 +1,4 @@
 #!/bin/bash
-TRAVIS_TAG=v2.0.0
 
 if [ ! -z "$TRAVIS_TAG" ]
 then
@@ -12,8 +11,7 @@ then
     else
         echo "Tag does not start with v: ${TRAVIS_TAG} keep snapshot version in pom.xml"
     fi
+    mvn --settings .travis/settings.xml org.codehaus.mojo:versions-maven-plugin:2.1:set -DnewVersion=$TRAVIS_TAG 1>/dev/null 2>/dev/null
 else
-    echo "not on a tag -> keep snapshot version in pom.xml"
+    echo "not on a tag no deploy trigered"
 fi
-
-mvn clean deploy --settings .travis/settings.xml -DskipTests=true -B -U

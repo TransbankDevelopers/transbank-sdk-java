@@ -9,7 +9,7 @@ import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 
 public interface RequestBuilder {
-    SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, Options options)
+    SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, String externalUniqueNumber, Options options)
             throws SignatureException;
     GetTransactionNumberRequest buildGetTransactionNumberRequest(String occ, String externalUniqueNumber, Options options)
             throws SignatureException;

@@ -31,3 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.2.1] - 2018-08-16
 ### Changed
 - Prevent NullPointerException when appScheme is null on request for MOBILE and WEB
+
+## [1.3.0] - 2018-08-16
+### Added
+- Add externalUniqueNumber as a param, so the commerce can provide its own

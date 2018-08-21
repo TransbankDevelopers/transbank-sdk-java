@@ -22,7 +22,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ### Onepay
 
-#### Configuración del APIKEY y APISECRET
+#### Configuración del ApiKey y SharedSecret
 
 Existen 2 formas de configurar esta información, la cual es única para cada comercio.
 
@@ -48,7 +48,7 @@ Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
 Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
 
-##### 2. Pasando el APIKEY y APISECRET a cada petición
+##### 2. Pasando el ApiKey y SharedSecret a cada petición
 
 Utilizando un objeto `cl.transbank.onepay.model.Options`
 
@@ -119,6 +119,18 @@ import cl.transbank.onepay.Onepay;
 
 Onepay.setAppScheme("STRINGAPPSCHEME");
 ```
+
+Como comercio, también puedes querer especificar un identificador propio de transacción. Este parámetro se conoce como `ExternalUniqueNumber` y puede ser especificado al momento de crear la transacción. La única condición es que **debes asegurar que este identificador sea único para toda tu organización**, de lo contrario la transacción será **rechazada**.
+
+```java
+import cl.transbank.onepay.model.*;
+
+// ...
+
+String externalUniqueNumber = "My Unique Number - 123"
+TransactionCreateResponse response = Transaction.create(cart, channel, externalUniqueNumber);
+```
+Si el `ExternalUniqueNumber` no es especificado, entonces el SDK se encarga de generar un UUID, que puedes rescatar desde la respuesta de `Transaction.create(cart, channel)` por ejemplo.
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
 `cl.transbank.onepay.model.TransactionCreateResponse`.
@@ -284,10 +296,10 @@ esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
 
-* Librería Java [transbank-sdk-java-1.2.1.jar][jar_location]
+* Librería Java [transbank-sdk-java-1.3.0.jar][jar_location]
 * [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
 
-[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.2.1/transbank-sdk-java-1.2.1.jar
+[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.3.0/transbank-sdk-java-1.3.0.jar
 [lombok]: https://projectlombok.org
 [lombok-plugins]: https://projectlombok.org/setup/overview
 

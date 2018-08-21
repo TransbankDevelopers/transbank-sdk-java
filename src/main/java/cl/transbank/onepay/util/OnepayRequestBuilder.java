@@ -8,10 +8,8 @@ import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.SendTransactionRequest;
 import cl.transbank.onepay.net.GetTransactionNumberRequest;
 import lombok.NonNull;
-
 import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 public class OnepayRequestBuilder implements RequestBuilder {
     private static OnepayRequestBuilder instance;

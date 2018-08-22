@@ -159,9 +159,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <serverid>ossrh</serverid>
-                    <nexusurl>https://oss.sonatype.org/</nexusurl>
-                    <autoreleaseafterclose>true</autoreleaseafterclose>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
             <!-- To generate javadoc -->

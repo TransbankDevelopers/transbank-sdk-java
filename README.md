@@ -237,6 +237,15 @@ Además necesitas tener instalado un SDK de Java igual o superior a `jdk 1.7`
 
 ### Todas las mezclas a master se hacen mediante Pull Request.
 
+### Construir el proyecto localmente
+```bash
+mvn clean compile
+```
+### Correr los test localmente
+```bash
+mvn test
+```
+
 ## Deploy manual a maven central
 
 El deploy de una nueva version ocurre automáticamente, en Travis CI, cuando una nueva tag de git es creada.

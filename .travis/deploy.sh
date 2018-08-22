@@ -11,7 +11,7 @@ then
     else
         echo "Tag does not start with v: ${TRAVIS_TAG} keep snapshot version in pom.xml"
     fi
-    mvn clean install -Prelease --settings .travis/settings.xml
+    mvn clean deploy --settings .travis/settings.xml -B -U
 else
     echo "not on a tag no deploy trigered"
 fi

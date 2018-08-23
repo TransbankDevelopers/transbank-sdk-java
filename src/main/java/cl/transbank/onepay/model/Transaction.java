@@ -11,6 +11,7 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.UUID;
 
 public class Transaction extends ApiBaseResource {
     private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
@@ -36,7 +37,12 @@ public class Transaction extends ApiBaseResource {
 
     public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel)
             throws IOException, SignatureException, TransactionCreateException {
-        return create(cart, channel, null);
+        return create(cart, channel, (Options) null);
+    }
+
+    public static  TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, String externalUniqueNumber)
+            throws IOException, SignatureException, TransactionCreateException{
+        return create(cart, channel, externalUniqueNumber, null);
     }
 
     /**
@@ -56,7 +62,13 @@ public class Transaction extends ApiBaseResource {
         return create(cart, Onepay.DEFAULT_CHANNEL, options);
     }
 
-    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, Options options)
+    public static  TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, Options options)
+            throws  IOException, SignatureException, TransactionCreateException{
+        return create(cart, channel, UUID.randomUUID().toString() , options);
+    }
+
+
+    public static TransactionCreateResponse create(@NonNull ShoppingCart cart, @NonNull Onepay.Channel channel, @NonNull String externalUniqueNumber, Options options)
             throws IOException, SignatureException, TransactionCreateException {
         if (channel == Onepay.Channel.APP && (Onepay.getAppScheme() == null || Onepay.getAppScheme().isEmpty()))
             throw new TransactionCreateException("You need to set an appScheme if you want to use APP channel");
@@ -65,7 +77,7 @@ public class Transaction extends ApiBaseResource {
             throw new TransactionCreateException("You need to set a valid callback is you want to use MOBILE channel");
 
         options = Options.build(options);
-        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, options);
+        SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
         String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);

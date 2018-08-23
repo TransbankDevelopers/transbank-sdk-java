@@ -104,20 +104,33 @@ import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.create(cart, channel);
+TransactionCreateResponse response = Transaction.create(cart, Onepay.Channel.WEB);
 ```
 
-El parametro `channel` puede ser `WEB`, `MOBILE` o `APP` dependiendo si quien esta realizando el pago esta usando un 
-browser en versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
+El segundo parametro en el ejemplo corresponde al `channel` y puede ser puede ser `Onepay.Channel.WEB`, 
+`Onepay.Channel.MOBILE` o `Onepay.Channel.APP` dependiendo si quien esta realizando el pago esta usando un browser en 
+versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
 
-En caso que `channel` sea `APP` es obligatorio que este previamente configurado el `appScheme`:
+En caso que `channel` sea `Onepay.Channel.MOBiLE` es obligatorio que este previamente configurado el `callbackUrl` o de
+lo contrario la aplicación móvil no podrá re-direccionar a este cuando el pago se complete con éxito y como consecuencia
+no podrás confirmar la transacción.
 
 ```java
 import cl.transbank.onepay.Onepay;
 
 //...
 
-Onepay.setAppScheme("STRINGAPPSCHEME");
+Onepay.setCallbackUrl("http://www.somecallback.com/example");
+```
+
+En caso que `channel` sea `Onepay.Channel.APP` es obligatorio que este previamente configurado el `appScheme`:
+
+```java
+import cl.transbank.onepay.Onepay;
+
+//...
+
+Onepay.setAppScheme("mi-app://mi-app/onepay-result");
 ```
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 

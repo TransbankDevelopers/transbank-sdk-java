@@ -111,7 +111,7 @@ El segundo parámetro en el ejemplo corresponde al `channel` y puede ser puede s
 `Onepay.Channel.MOBILE` o `Onepay.Channel.APP` dependiendo si quien está realizando el pago está usando un browser en 
 versión Desktop, Móvil o está utilizando alguna aplicación móvil nativa.
 
-En caso que `channel` sea `Onepay.Channel.MOBiLE` es obligatorio que esté previamente configurado el `callbackUrl` o de
+En caso que `channel` sea `Onepay.Channel.MOBILE` es obligatorio que esté previamente configurado el `callbackUrl` o de
 lo contrario la aplicación móvil no podrá re-direccionar a este cuando el pago se complete con éxito y como consecuencia
 no podrás confirmar la transacción.
 

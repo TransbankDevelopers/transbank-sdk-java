@@ -104,20 +104,33 @@ import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.create(cart, channel);
+TransactionCreateResponse response = Transaction.create(cart, Onepay.Channel.WEB);
 ```
 
-El parametro `channel` puede ser `WEB`, `MOBILE` o `APP` dependiendo si quien esta realizando el pago esta usando un 
-browser en versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
+El segundo parámetro en el ejemplo corresponde al `channel` y puede ser puede ser `Onepay.Channel.WEB`, 
+`Onepay.Channel.MOBILE` o `Onepay.Channel.APP` dependiendo si quien está realizando el pago está usando un browser en 
+versión Desktop, Móvil o está utilizando alguna aplicación móvil nativa.
 
-En caso que `channel` sea `APP` es obligatorio que este previamente configurado el `appScheme`:
+En caso que `channel` sea `Onepay.Channel.MOBILE` es obligatorio que esté previamente configurado el `callbackUrl` o de
+lo contrario la aplicación móvil no podrá re-direccionar a este cuando el pago se complete con éxito y como consecuencia
+no podrás confirmar la transacción.
 
 ```java
 import cl.transbank.onepay.Onepay;
 
 //...
 
-Onepay.setAppScheme("STRINGAPPSCHEME");
+Onepay.setCallbackUrl("http://www.somecallback.com/example");
+```
+
+En caso que `channel` sea `Onepay.Channel.APP` es obligatorio que esté previamente configurado el `appScheme`:
+
+```java
+import cl.transbank.onepay.Onepay;
+
+//...
+
+Onepay.setAppScheme("mi-app://mi-app/onepay-result");
 ```
 
 Como comercio, también puedes querer especificar un identificador propio de transacción. Este parámetro se conoce como `ExternalUniqueNumber` y puede ser especificado al momento de crear la transacción. La única condición es que **debes asegurar que este identificador sea único para toda tu organización**, de lo contrario la transacción será **rechazada**.

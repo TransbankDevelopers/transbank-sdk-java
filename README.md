@@ -22,7 +22,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -30,7 +30,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ### Onepay
 
-#### Configuración del APIKEY y APISECRET
+#### Configuración del ApiKey y SharedSecret
 
 Existen 2 formas de configurar esta información, la cual es única para cada comercio.
 
@@ -48,7 +48,7 @@ Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
 Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
 
-##### 2. Pasando el APIKEY y APISECRET a cada petición
+##### 2. Pasando el ApiKey y SharedSecret a cada petición
 
 Utilizando un objeto `cl.transbank.onepay.model.Options`
 
@@ -104,21 +104,46 @@ import cl.transbank.onepay.model.*;
 
 // ...
 
-TransactionCreateResponse response = Transaction.create(cart, channel);
+TransactionCreateResponse response = Transaction.create(cart, Onepay.Channel.WEB);
 ```
 
-El parametro `channel` puede ser `WEB`, `MOBILE` o `APP` dependiendo si quien esta realizando el pago esta usando un 
-browser en versión Desktop, Móvil o esta utilizando alguna aplicación móvil nativa.
+El segundo parámetro en el ejemplo corresponde al `channel` y puede ser puede ser `Onepay.Channel.WEB`, 
+`Onepay.Channel.MOBILE` o `Onepay.Channel.APP` dependiendo si quien está realizando el pago está usando un browser en 
+versión Desktop, Móvil o está utilizando alguna aplicación móvil nativa.
 
-En caso que `channel` sea `APP` es obligatorio que este previamente configurado el `appScheme`:
+En caso que `channel` sea `Onepay.Channel.MOBILE` es obligatorio que esté previamente configurado el `callbackUrl` o de
+lo contrario la aplicación móvil no podrá re-direccionar a este cuando el pago se complete con éxito y como consecuencia
+no podrás confirmar la transacción.
 
 ```java
 import cl.transbank.onepay.Onepay;
 
 //...
 
-Onepay.setAppScheme("STRINGAPPSCHEME");
+Onepay.setCallbackUrl("http://www.somecallback.com/example");
 ```
+
+En caso que `channel` sea `Onepay.Channel.APP` es obligatorio que esté previamente configurado el `appScheme`:
+
+```java
+import cl.transbank.onepay.Onepay;
+
+//...
+
+Onepay.setAppScheme("mi-app://mi-app/onepay-result");
+```
+
+Como comercio, también puedes querer especificar un identificador propio de transacción. Este parámetro se conoce como `ExternalUniqueNumber` y puede ser especificado al momento de crear la transacción. La única condición es que **debes asegurar que este identificador sea único para toda tu organización**, de lo contrario la transacción será **rechazada**.
+
+```java
+import cl.transbank.onepay.model.*;
+
+// ...
+
+String externalUniqueNumber = "My Unique Number - 123"
+TransactionCreateResponse response = Transaction.create(cart, channel, externalUniqueNumber);
+```
+Si el `ExternalUniqueNumber` no es especificado, entonces el SDK se encarga de generar un UUID, que puedes rescatar desde la respuesta de `Transaction.create(cart, channel)` por ejemplo.
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
 `cl.transbank.onepay.model.TransactionCreateResponse`.
@@ -203,14 +228,100 @@ para tu IDE favorito con el fin de evitar que veas errores marcados por la herra
 
 Se recomienda usar Java 7 u 8 para compilar este SDK. En Java 9 o superior la generación de Javadocs falla debido a la introducción de módulos (y a que varias clases de JavaEE en el paquete javax.* han sido movidas a módulos separados).
 
+### Standares
+
+- Para los commits respetamos las siguientes normas: https://chris.beams.io/posts/git-commit/
+- Usamos ingles, para los mensajes de commit.
+- Se pueden usar tokens como WIP, en el subject de un commit, separando el token con `:`, por ejemplo:
+`WIP: This is a useful commit message`
+- Para los nombres de ramas también usamos ingles.
+- Se asume, que una rama de feature no mezclada, es un feature no terminado.
+- El nombre de las ramas va en minúsculas.
+- Las palabras se separan con `-`.
+- Las ramas comienzan con alguno de los short lead tokens definidos, por ejemplo: `feat/tokens-configuration`
+
+#### Short lead tokens
+##### Commits
+- WIP = Trabajo en progreso.
+##### Ramas
+- feat = Nuevos features
+- chore = Tareas, que no son visibles al usuario.
+- bug = Resolución de bugs.
+
+### Todas las mezclas a master se hacen mediante Pull Request.
+
+### Construir el proyecto localmente
+```bash
+mvn clean compile
+```
+### Correr los test localmente
+```bash
+mvn test
+```
+
+## Deploy manual a maven central
+
+El deploy de una nueva version ocurre automáticamente, en Travis CI, cuando una nueva tag de git es creada.
+Los tag de git deben respetar el standard de [SemVer](https://semver.org/). Además si el commit (o PR) a master no tiene un tag asociada, se generara una version snapshot.
+Si de todas maneras necesitas hacer el release manualmente a MavenCentral ya sea de un snapshot o una nueva version, entonces debes configurar lo siguiente en tu archivo settings de maven, comúnmente ubicado en `~/.m2/settings.xml`
+
+```xml
+<settings>
+    <servers>
+        <server>
+            <id>ossrh</id>
+            <username>your-jira-id</username>
+            <password>your-jira-pwd</password>
+        </server>
+    </servers>
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.executable>gpg</gpg.executable>
+                <gpg.passphrase>your-gpg-pwd</gpg.passphrase>
+            </properties>
+       </profile>
+    </profiles>
+</settings>
+```
+
+- `your-jira-id`: Usuario de Jira del repositorio Nexus.
+- `your-jira-pwd`: Password del usuario Jira de Nexus.
+- `your-gpg-pwd`: Frase para la el certificado de firma gpg.
+
+_*Nota*: para subir codigo a MavenCentral, este debe estar firmado._ [Mas información](https://dracoblue.net/dev/uploading-snapshots-and-releases-to-maven-central-with-travis/)
+
+Si quieres probar el snapshot que se genera en MavenCentral, debes agregar el repositorio de snapshots de Sonatype, a continuación 
+esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
+```xml
+<profiles>
+  <profile>
+     <id>allow-snapshots</id>
+        <activation><activeByDefault>true</activeByDefault></activation>
+     <repositories>
+       <repository>
+         <id>snapshots-repo</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+         <releases><enabled>false</enabled></releases>
+         <snapshots><enabled>true</enabled></snapshots>
+       </repository>
+     </repositories>
+   </profile>
+</profiles>
+```
+
 ## No usas Maven?
 
 Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
 
-* Librería Java [transbank-sdk-java-1.2.1.jar][jar_location]
+* Librería Java [transbank-sdk-java-1.3.0.jar][jar_location]
 * [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
 
-[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.2.1/transbank-sdk-java-1.2.1.jar
+[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.3.0/transbank-sdk-java-1.3.0.jar
 [lombok]: https://projectlombok.org
 [lombok-plugins]: https://projectlombok.org/setup/overview
 

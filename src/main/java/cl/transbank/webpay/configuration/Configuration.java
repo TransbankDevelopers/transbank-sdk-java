@@ -18,6 +18,7 @@ public class Configuration {
     String public_cert;
     String webpay_cert;
     String commerce_code;
+    @Deprecated
     ArrayList store_codes;
     String environment;
 
@@ -32,6 +33,7 @@ public class Configuration {
         this.environment = environment;
     }
     
+    @Deprecated
     public Configuration(String private_key, String public_cert, String webpay_cert, String commerce_code, String environment, ArrayList store_codes) {
         this.private_key = private_key;
         this.public_cert = public_cert;
@@ -81,10 +83,12 @@ public class Configuration {
         this.environment = environment;
     }
 
+    @Deprecated
     public ArrayList getStoreCodes() {
         return store_codes;
     }
 
+    @Deprecated
     public void setStoreCodes(ArrayList store_codes) {
         this.store_codes = store_codes;
     }

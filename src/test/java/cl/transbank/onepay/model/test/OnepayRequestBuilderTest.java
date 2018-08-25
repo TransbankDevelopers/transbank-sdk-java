@@ -34,14 +34,14 @@ public class OnepayRequestBuilderTest {
     @Test
     public void testOnepayRequestBuilderSendTransactionRequest()
             throws TransbankException {
+        Onepay.setCallbackUrl("https://something");
         ShoppingCart cart = createCart();
         String externalUniqueNumber = "123-456-789";
         SendTransactionRequest request = OnepayRequestBuilder.getInstance().buildSendTransactionRequest(cart,Onepay.Channel.WEB,
                 externalUniqueNumber, createOptions());
-
         assertEquals("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg", request.getApiKey());
         assertEquals("04533c31-fe7e-43ed-bbc4-1c8ab1538afp", request.getAppKey());
-        assertEquals("http://no.callback.has/been.set", request.getCallbackUrl());
+        assertEquals("https://something", request.getCallbackUrl());
         assertEquals("WEB", request.getChannel());
         assertEquals("123-456-789", request.getExternalUniqueNumber());
         assertEquals(2, request.getItems().size());

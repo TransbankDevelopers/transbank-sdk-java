@@ -29,7 +29,7 @@
 
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <name>Transbank Java SDK</name>
 
     <inceptionYear>2018</inceptionYear>

@@ -329,7 +329,7 @@
   </wsdl:binding>
   <wsdl:service name="OneClickPaymentServiceImplService">
     <wsdl:port binding="tns:OneClickPaymentServiceImplServiceSoapBinding" name="OneClickPaymentServiceImplPort">
-      <soap:address location="https://webpay3gint.transbank.cl:443/webpayserver/wswebpay/OneClickPaymentService"/>
+      <soap:address location="https://webpay3g.transbank.cl:443/webpayserver/wswebpay/OneClickPaymentService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

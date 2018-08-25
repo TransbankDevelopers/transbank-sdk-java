@@ -125,7 +125,7 @@
   </wsdl:binding>
   <wsdl:service name="WSCommerceIntegrationServiceImplService">
     <wsdl:port binding="tns:WSCommerceIntegrationServiceImplServiceSoapBinding" name="WSCommerceIntegrationServiceImplPort">
-      <soap:address location="https://webpay3gint.transbank.cl:443/WSWebpayTransaction/cxf/WSCommerceIntegrationService"/>
+      <soap:address location="https://webpay3g.transbank.cl:443/WSWebpayTransaction/cxf/WSCommerceIntegrationService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

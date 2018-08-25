@@ -252,7 +252,7 @@
   </wsdl:binding>
   <wsdl:service name="WSCompleteWebpayServiceImplService">
     <wsdl:port binding="tns:WSCompleteWebpayServiceImplServiceSoapBinding" name="WSCompleteWebpayServiceImplPort">
-      <soap:address location="https://webpay3gint.transbank.cl:443/WSWebpayTransaction/cxf/WSCompleteWebpayService"/>
+      <soap:address location="https://webpay3g.transbank.cl:443/WSWebpayTransaction/cxf/WSCompleteWebpayService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

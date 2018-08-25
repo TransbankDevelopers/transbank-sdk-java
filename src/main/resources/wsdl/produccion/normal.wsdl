@@ -190,8 +190,7 @@
   </wsdl:binding>
   <wsdl:service name="WSWebpayServiceImplService">
     <wsdl:port binding="tns:WSWebpayServiceImplServiceSoapBinding" name="WSWebpayServiceImplPort">
-      <!--<soap:address location="https://webpay3gint.transbank.cl:443/WSWebpayTransaction/cxf/WSWebpayService"/>-->
-      <soap:address location="http://tbk.orangepeople.cl:443/WSWebpayTransaction/cxf/WSWebpayService"/>
+      <soap:address location="https://webpay3.transbank.cl:443/WSWebpayTransaction/cxf/WSWebpayService"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

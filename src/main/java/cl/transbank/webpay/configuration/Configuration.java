@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class Configuration {
    
     
-    String private_key; 
-    String public_cert;
-    String webpay_cert;
-    String commerce_code;
+    private String private_key;
+    private String public_cert;
+    private String webpay_cert ;
+    private String commerce_code;
     @Deprecated
-    ArrayList store_codes;
-    String environment;
+    private ArrayList store_codes;
+    private String environment = "INTEGRACION";
 
     public Configuration() {
     }

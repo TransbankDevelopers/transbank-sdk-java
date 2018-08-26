@@ -18,11 +18,86 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 
 ## Primeros pasos
+
+### Webpay
+
+#### Iniciar una transacción Webpay Plus Normal
+
+Lo primero que necesitas es preparar una instancia de `WebpayNormal` con la
+`Configuration` que incluye el código de comercio y los certificados a usar.
+
+Una forma fácil de comenzar es usar la configuración para pruebas que viene
+incluida en el SDK:
+
+
+```java
+import cl.transbank.webpay.configuration.Configuration;
+import cl.transbank.webpay.Webpay;
+import cl.transbank.webpay.WebpayNormal;
+// ...
+Webpay webpay = new Webpay(Configuration.forTestingWebpayPlusNormal());
+WebpayNormal transaction = webpay.getNormalTransaction();
+```
+
+> **Tip**: Como necesitarás ese objeto `transaction` en múltiples ocasiones, es buena idea
+encapsular la lógica que lo genera en algún método que puedas reutilizar.
+
+Una vez que ya cuentas con esa preparación, puedes iniciar transacciones:
+
+```java
+import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
+// ...
+double amount = 1000; // Pesos Chilenos
+String sessionId = "identificador que será retornado en el callback de resultado";
+String buyOrder = "identificador unico de orden de compra";
+String returnUrl = "http://callback/resultado/de/transaccion";
+String finalUrl = "http://callback/final/post/comprobante/webpay";
+WsInitTransactionOutput initResult = transaction.initTransaction(
+        amount, sessionId, buyOrder, returnUrl, finalUrl);
+
+String formAction = initResult.getUrl();
+String wsToken = initResult.getToken();
+```
+
+La URL y el token retornados te indican donde debes redirigir al usuario para
+que comience el flujo de pago. Esta redirección debe ser vía `POST` por lo que
+deberás crear un formulario web con un campo `ws_token` hidden y enviarlo
+programáticamente para entregar el control a Webpay.
+
+Una vez que el tarjetahabiente ha pagado (o declinado, o ha ocurrido un error),
+Webpay retornará el control via `POST` a la URL que indicaste en el `returnUrl`.
+Recibirás también el parámetro `ws_token` que te permitirá conocer el resultado
+de la transacción:
+
+```java
+import com.transbank.webpay.wswebpay.service.TransactionResultOutput;
+import com.transbank.webpay.wswebpay.service.WsTransactionDetailOutput;
+// ...
+TransactionResultOutput result =
+    transaction.getTransactionResult(request.getParameter("ws_token"));
+WsTransactionDetailOutput output = result.getDetailOutput().get(0);
+if (output.getResponseCode() == 0) {
+    // Transaccion exitosa, puedes procesar el resultado con el contenido de
+    // las variables result y output.
+}
+```
+
+En el caso exitoso deberás llevar el control via `POST` nuevamente a Webpay para
+que el tarjetahabiente vea el comprobante que le deja claro que se ha realizado
+el cargo en su tarjeta. Nuevamente deberás generar un formulario con el
+`ws_token` como un campo hidden. La URL para redirigir la debes obtener desde
+`result.getUrlRedirection()`.
+
+Finalmente después del comprobante Webpay redigirá otra vez (via `POST`) a tu
+sitio, esta vez a la URL que indicaste en el `finalUrl` cuando iniciaste la
+transacción. Tal como antes, recibirás el `ws_token` que te permitirá
+identificar la transacción y mostrar un comprobante o página de éxito a tu
+usuario.
 
 ### Onepay
 

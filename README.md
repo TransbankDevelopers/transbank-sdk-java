@@ -8,13 +8,9 @@ SDK oficial de Transbank
 ## Requisitos
 - Java 1.7+
 
-## Dependencias
-Al realizar la instalación con Maven las dependencias debieran instalarse automáticamente.
-- [Google Gson](https://github.com/google/gson)
-
 ## Instalación
 
-### Instalar como depenedencia Maven
+### Instalar como dependencia Maven
 
 Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
@@ -316,14 +312,15 @@ esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
 
 ## No usas Maven?
 
-Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
+Si usas Gradle, Ivy, Grape o cualquier otro gestor compatible con Maven simplemente indica el grupo `com.github.transbankdevelopers` y el nombre de artefacto `transbank-sdk-java` y tu herramienta se encargará de todo.
 
-* Librería Java [transbank-sdk-java-1.3.0.jar][jar_location]
-* [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
+Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes opciones:
 
-[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.3.0/transbank-sdk-java-1.3.0.jar
-[lombok]: https://projectlombok.org
-[lombok-plugins]: https://projectlombok.org/setup/overview
+- Puedes [descargar manualmente el archivo "jar" desde Maven Central](https://search.maven.org/search?q=g:com.github.transbankdevelopers%20AND%20a:transbank-sdk-java&core=gav), pero tendrás también que buscar las dependencias (listadas en el archivo `pom.xml`) y descargarlas tú mismo manualmente (y quizás tengas que hacerlo recursivamente para las dependencias de las dependencias)
+
+- Otra alternativa es que en lugar de descargar el "jar", descargues el archivo "with-all-deps-included.jar" que como sospecharás, incluye todas las dependencias. Eso te evitará buscar las dependencias a mano, pero te puede generar conflictos si ya estás usando una librería que este SDK ya usa, pero en una versión diferente y no compatible.
+
+(Por eso te recomendamos fuertemente que uses maven u otra herramienta que gestione las dependencias por tí)
 
 <!--
 # vim: set tw=79:

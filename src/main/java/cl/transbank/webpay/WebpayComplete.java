@@ -1,15 +1,8 @@
-/**
-  * @author     Allware Ltda. (http://www.allware.cl)
-  * @copyright  2015 Transbank S.A. (http://www.tranbank.cl)
-  * @date       Jan 2016
-  * @license    GNU LGPL
-  * @version    2.0.1
-  *
-  */
-
 package cl.transbank.webpay;
 
 import cl.transbank.webpay.security.SoapSignature;
+import cl.transbank.webpay.wrapper.WSCommerceIntegrationServiceWrapper;
+import cl.transbank.webpay.wrapper.WSCompleteWebpayServiceWrapper;
 import com.transbank.webpay.wswebpay.service.CompleteCardDetail;
 import com.transbank.webpay.wswebpay.service.QueryShare;
 import com.transbank.webpay.wswebpay.service.WSCompleteWebpayService;
@@ -27,33 +20,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jguerrero
- */
-public class WebpayComplete {
+public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
 
-WSCompleteWebpayService port;
     String commerceCode;
     
     public WebpayComplete(Webpay.Environment mode, String commerceCode, SoapSignature signature) throws Exception {
+        super(mode, signature);
         this.commerceCode = commerceCode;
-        
-        URL wsdl = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/complete.wsdl");
+    }
 
-        WSCompleteWebpayServiceImplService ss = new WSCompleteWebpayServiceImplService(wsdl);        
-        this.port = ss.getWSCompleteWebpayServiceImplPort();
-        if (signature != null){
-            signature.applySignature(port);
-        }       
-    }
-   
-    
-    public WsCompleteInitTransactionOutput initCompleteTransaction(WsCompleteInitTransactionInput input){
-        return port.initCompleteTransaction(input);
-    }
-            
-    
     public WsCompleteInitTransactionOutput initCompleteTransaction(double amount, String buyOrder, String sessionId,  String cardExpirationDate, String cvv, String cardNumber){
         
         WsCompleteInitTransactionInput in = new WsCompleteInitTransactionInput();
@@ -91,19 +66,13 @@ WSCompleteWebpayService port;
         qsresponse = this.queryShare(queryShare);        
         return qsresponse;
     }
-    
-    public WsCompleteQuerySharesOutput queryShare(QueryShare queryShare){          
-        return port.queryShare(queryShare.getToken(), queryShare.getBuyOrder(), queryShare.getShareNumber());
-    }  
-    
-    
-    public WsCompleteAuthorizeOutput autorize(String valor, List<WsCompletePaymentTypeInput> input){
 
-        return port.authorize(valor, input);
+    @Deprecated
+    public WsCompleteAuthorizeOutput autorize(String token, String buyOrder, boolean gracePeriod,  int idQueryShare, int deferredPeriodIndex) {
+        return authorize(token, buyOrder, gracePeriod, idQueryShare, deferredPeriodIndex);
     }
-    
-    public WsCompleteAuthorizeOutput autorize(String token, String buyOrder, boolean gracePeriod,  int idQueryShare, int deferredPeriodIndex){
-        
+
+    public WsCompleteAuthorizeOutput authorize(String token, String buyOrder, boolean gracePeriod,  int idQueryShare, int deferredPeriodIndex){
         WsCompleteAuthorizeOutput result = new WsCompleteAuthorizeOutput();
         WsCompletePaymentTypeInput input = new WsCompletePaymentTypeInput();
         input.setBuyOrder(buyOrder);
@@ -123,16 +92,10 @@ WSCompleteWebpayService port;
         
         ArrayList<WsCompletePaymentTypeInput> list = new ArrayList<>();
         list.add(input);
-        
-        result = port.authorize(token, list);
+
+        result = authorize(token, list);
         acknowledgeCompleteTransaction(token);
                 
         return result;
-    }   
-    
-    
-    public void acknowledgeCompleteTransaction(String token){
-        port.acknowledgeCompleteTransaction(token);
     }
-        
 }

@@ -1,12 +1,3 @@
-/**
-  * @author     Allware Ltda. (http://www.allware.cl)
-  * @copyright  2016 Transbank S.A. (http://www.tranbank.cl)
-  * @date       Jan 2015
-  * @license    GNU LGPL
-  * @version    2.0.1
-  *
-  */
-
 package cl.transbank.webpay.security;
 
 import java.io.IOException;
@@ -26,10 +17,6 @@ import org.apache.wss4j.common.crypto.Merlin;
 import org.apache.wss4j.common.ext.WSPasswordCallback;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 
-/**
- *
- * @author rbertuzzi
- */
 public class SoapSignature {
     
     private String privateKey;

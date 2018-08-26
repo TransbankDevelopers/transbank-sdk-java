@@ -1,12 +1,3 @@
-/**
-  * @author     Allware Ltda. (http://www.allware.cl)
-  * @copyright  2016 Transbank S.A. (http://www.tranbank.cl)
-  * @date       Jan 2015
-  * @license    GNU LGPL
-  * @version    2.0.1
-  *
-  */
-
 package cl.transbank.webpay.security;
 
 import java.io.ByteArrayInputStream;
@@ -19,11 +10,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import org.apache.cxf.helpers.IOUtils;
 
-
-/**
- *
- * @author rbertuzzi
- */
 public class Utils {
     public static Key loadKey(String pemContent) throws Exception {
         PrivateKeyReader reader = new PrivateKeyReader(pemContent);

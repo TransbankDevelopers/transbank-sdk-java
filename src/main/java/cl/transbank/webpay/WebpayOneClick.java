@@ -36,7 +36,7 @@ public class WebpayOneClick {
     public WebpayOneClick(Environment mode, String commerceCode, SoapSignature signature) throws Exception {
         this.commerceCode = commerceCode;
         
-        URL wsdl = this.getClass().getResource("/wsdl/" + mode.name().toLowerCase() + "/oneclick.wsdl");
+        URL wsdl = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/oneclick.wsdl");
         //URL wsdl = new URL(WSDL.get(mode));
 
         OneClickPaymentServiceImplService ss = new OneClickPaymentServiceImplService(wsdl);

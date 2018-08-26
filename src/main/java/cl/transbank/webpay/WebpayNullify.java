@@ -32,7 +32,7 @@ public class WebpayNullify {
         this.commerceCode = commerceCode;
         
         //Nullify
-        URL wsdlNullify = this.getClass().getResource("/wsdl/" + mode.name().toLowerCase() + "/nullify.wsdl");
+        URL wsdlNullify = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/nullify.wsdl");
         WSCommerceIntegrationServiceImplService ssNullify = new WSCommerceIntegrationServiceImplService(wsdlNullify);        
         this.port = ssNullify.getWSCommerceIntegrationServiceImplPort();        
         if (signature != null){

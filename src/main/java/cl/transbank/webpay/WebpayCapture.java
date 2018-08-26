@@ -29,7 +29,7 @@ public class WebpayCapture {
     public WebpayCapture(Webpay.Environment mode, String commerceCode, SoapSignature signature) throws Exception {
         this.commerceCode = commerceCode;
         
-        URL wsdl = this.getClass().getResource("/wsdl/" + mode.name().toLowerCase() + "/nullify.wsdl");
+        URL wsdl = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/nullify.wsdl");
 
         WSCommerceIntegrationServiceImplService ss = new WSCommerceIntegrationServiceImplService(wsdl);        
         this.port = ss.getWSCommerceIntegrationServiceImplPort();

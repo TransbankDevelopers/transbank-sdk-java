@@ -39,7 +39,7 @@ WSCompleteWebpayService port;
     public WebpayComplete(Webpay.Environment mode, String commerceCode, SoapSignature signature) throws Exception {
         this.commerceCode = commerceCode;
         
-        URL wsdl = this.getClass().getResource("/wsdl/" + mode.name().toLowerCase() + "/complete.wsdl");
+        URL wsdl = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/complete.wsdl");
 
         WSCompleteWebpayServiceImplService ss = new WSCompleteWebpayServiceImplService(wsdl);        
         this.port = ss.getWSCompleteWebpayServiceImplPort();

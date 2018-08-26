@@ -33,7 +33,7 @@ public class WebpayMallNormal {
     public WebpayMallNormal(Environment mode, String commerceCode, SoapSignature signature) throws Exception {
         this.commerceCode = commerceCode;
         
-        URL wsdl = this.getClass().getResource("/wsdl/" + mode.name().toLowerCase() + "/normal.wsdl");
+        URL wsdl = this.getClass().getResource("/wsdl/" + mode.getInternalName() + "/normal.wsdl");
         //URL wsdl = new URL(WSDL.get(mode));
 
         WSWebpayServiceImplService ss = new WSWebpayServiceImplService(wsdl);        

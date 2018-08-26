@@ -58,9 +58,14 @@ public class WebpayMallNormal {
     public void acknowledgeTransaction(String token){
         port.acknowledgeTransaction(token);
     }
-            
-    public WsInitTransactionOutput initTransaction(String buyOrder, String sessionId, String returnUrl, String finalUrl, ArrayList storesTransactions){
-        
+
+
+    @Deprecated
+    public WsInitTransactionOutput initTransaction(String buyOrder, String sessionId, String returnUrl, String finalUrl, ArrayList storesTransactions) {
+        return initTransaction(buyOrder, sessionId, returnUrl, finalUrl, (List) storesTransactions);
+    }
+
+    public WsInitTransactionOutput initTransaction(String buyOrder, String sessionId, String returnUrl, String finalUrl, List<WsTransactionDetail> storesTransactions) {
         WsInitTransactionInput in = new WsInitTransactionInput();
         in.setWSTransactionType(WsTransactionType.TR_MALL_WS);        
         in.setBuyOrder(buyOrder);
@@ -68,15 +73,7 @@ public class WebpayMallNormal {
         in.setReturnURL(returnUrl);
         in.setFinalURL(finalUrl);
         in.setCommerceId(this.commerceCode);
-                
-        List<WsTransactionDetail> list = in.getTransactionDetails();
-       
-        for(int i=0; i<storesTransactions.size(); i++){
-            WsTransactionDetail txDetail = new WsTransactionDetail();
-            txDetail = (WsTransactionDetail)storesTransactions.get(i);
-            list.add(txDetail);
-        }
-        
+        in.getTransactionDetails().addAll(storesTransactions);
         return this.initTransaction(in);
     }
      

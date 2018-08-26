@@ -18,11 +18,6 @@ public class WebpayMallNormal extends WSWebpayServiceWrapper {
         this.commerceCode = commerceCode;
     }
 
-    @Deprecated
-    public WsInitTransactionOutput initTransaction(String buyOrder, String sessionId, String returnUrl, String finalUrl, ArrayList storesTransactions) {
-        return initTransaction(buyOrder, sessionId, returnUrl, finalUrl, (List) storesTransactions);
-    }
-
     public WsInitTransactionOutput initTransaction(String buyOrder, String sessionId, String returnUrl, String finalUrl, List<WsTransactionDetail> storesTransactions) {
         WsInitTransactionInput in = new WsInitTransactionInput();
         in.setWSTransactionType(WsTransactionType.TR_MALL_WS);        

@@ -26,7 +26,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto:
 
 ### Webpay
 
-#### Iniciar una transacción Webpay Plus Normal
+#### Webpay Plus Normal
 
 Lo primero que necesitas es preparar una instancia de `WebpayNormal` con la
 `Configuration` que incluye el código de comercio y los certificados a usar.
@@ -40,8 +40,9 @@ import cl.transbank.webpay.configuration.Configuration;
 import cl.transbank.webpay.Webpay;
 import cl.transbank.webpay.WebpayNormal;
 // ...
-Webpay webpay = new Webpay(Configuration.forTestingWebpayPlusNormal());
-WebpayNormal transaction = webpay.getNormalTransaction();
+
+WebpayNormal transaction =
+    new Webpay(Configuration.forTestingWebpayPlusNormal()).getNormalTransaction();
 ```
 
 > **Tip**: Como necesitarás ese objeto `transaction` en múltiples ocasiones, es buena idea
@@ -52,9 +53,9 @@ Una vez que ya cuentas con esa preparación, puedes iniciar transacciones:
 ```java
 import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
 // ...
-double amount = 1000; // Pesos Chilenos
+double amount = 1000;
 String sessionId = "identificador que será retornado en el callback de resultado";
-String buyOrder = "identificador unico de orden de compra";
+String buyOrder = "identificador único de orden de compra";
 String returnUrl = "http://callback/resultado/de/transaccion";
 String finalUrl = "http://callback/final/post/comprobante/webpay";
 WsInitTransactionOutput initResult = transaction.initTransaction(

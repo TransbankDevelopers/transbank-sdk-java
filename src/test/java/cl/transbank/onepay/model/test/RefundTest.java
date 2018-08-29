@@ -5,6 +5,7 @@ import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.Refund;
 import cl.transbank.onepay.model.RefundCreateResponse;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +17,14 @@ import static org.junit.Assert.*;
 public class RefundTest {
     private Logger log = LoggerFactory.getLogger(RefundTest.class);
 
+    @Before
+    public void setUp() {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+    }
+
+
     @Test
     public void testRefund() throws IOException, TransbankException {
-        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
-
         // Setting comerce data
         Options options = new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")

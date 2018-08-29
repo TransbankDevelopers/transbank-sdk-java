@@ -31,6 +31,11 @@ public class OnepayRequestBuilderTest {
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
     }
 
+    @Before
+    public void setUp() {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+    }
+
     @Test
     public void testOnepayRequestBuilderSendTransactionRequest()
             throws TransbankException {

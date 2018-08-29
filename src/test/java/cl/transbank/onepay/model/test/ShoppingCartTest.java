@@ -1,8 +1,10 @@
 package cl.transbank.onepay.model.test;
 
+import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.exception.AmountException;
 import cl.transbank.onepay.model.Item;
 import cl.transbank.onepay.model.ShoppingCart;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,6 +15,12 @@ public class ShoppingCartTest {
     private Item itemOne = new Item("item one", 2, 1000, null, -1);
     private Item itemTwo =new Item("item two", 4, 1000, null, -1);
     private Item itemThree =new Item("item three", 1, 1000, null, -1);
+
+    @Before
+    public void setUp() {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
+    }
+
 
     @Test
     public void testTotalAmount() throws AmountException {

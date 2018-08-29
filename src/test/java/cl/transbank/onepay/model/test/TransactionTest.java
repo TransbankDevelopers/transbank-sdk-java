@@ -26,6 +26,7 @@ public class TransactionTest {
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
         Onepay.setCallbackUrl("http://www.somecallback.com/example");
         Onepay.setAppScheme("schemetest");
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
     }
 
     public ShoppingCart createCart() throws TransbankException{
@@ -39,8 +40,6 @@ public class TransactionTest {
     @Test
     public void testTransactionCreate()
             throws IOException, TransbankException {
-        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
-
         // Send transaction to Transbank
         TransactionCreateResponse response = Transaction.create(createCart(), Onepay.Channel.APP);
         assertNotNull(response);
@@ -52,8 +51,6 @@ public class TransactionTest {
     @Test
     public void testTransactionCreateCustomEUN()
         throws IOException, TransbankException {
-        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
-
         String externalUniqueNumber = "1234-456-789";
         TransactionCreateResponse response = Transaction.create(createCart(), Onepay.Channel.WEB, externalUniqueNumber);
         assertNotNull(response);
@@ -62,7 +59,6 @@ public class TransactionTest {
     @Test
     public void testTransactionCommit()
             throws IOException, TransbankException {
-        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
 
         // Setting comerce data
         Options options = new Options()

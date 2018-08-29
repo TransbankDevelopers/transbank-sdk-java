@@ -7,7 +7,6 @@ import com.transbank.webpay.wswebpay.service.WsInitTransactionInput;
 import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
 import com.transbank.webpay.wswebpay.service.WsTransactionDetail;
 import com.transbank.webpay.wswebpay.service.WsTransactionType;
-import java.util.ArrayList;
 import java.util.List;
 
 public class WebpayMallNormal extends WSWebpayServiceWrapper {

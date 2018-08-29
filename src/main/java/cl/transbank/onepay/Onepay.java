@@ -65,14 +65,16 @@ public abstract class Onepay {
     }
 
     @ToString public enum IntegrationType {
-        LIVE("https://www.onepay.cl"),
-        TEST("https://onepay.ionix.cl"),
-        MOCK("http://onepay.getsandbox.com");
+        LIVE("https://www.onepay.cl", "7968CDF8-F4CC-4BC5-8E27-D0513B88EB95"),
+        TEST("https://onepay.ionix.cl", "fe9d371d-10ae-4138-8cfb-e2215b82c0d3"),
+        MOCK("http://onepay.getsandbox.com", "WHATEVER");
 
         @Getter private String apiBase;
+        @Getter private String appKey;
 
-        IntegrationType(String apiBase) {
+        IntegrationType(String apiBase, String appKey) {
             this.apiBase = apiBase;
+            this.appKey = appKey;
         }
     }
 

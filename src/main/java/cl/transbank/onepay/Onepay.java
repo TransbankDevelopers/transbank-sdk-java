@@ -65,8 +65,8 @@ public abstract class Onepay {
     }
 
     @ToString public enum IntegrationType {
-        LIVE(""),
-        TEST("https://web2desa.test.transbank.cl"),
+        LIVE("https://www.onepay.cl"),
+        TEST("https://onepay.ionix.cl"),
         MOCK("http://onepay.getsandbox.com");
 
         @Getter private String apiBase;

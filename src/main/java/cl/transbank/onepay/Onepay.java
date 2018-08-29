@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 public abstract class Onepay {
-    public static final String APP_KEY = "04533c31-fe7e-43ed-bbc4-1c8ab1538afp";
     public static final Channel DEFAULT_CHANNEL = Channel.WEB;
     public static final String DEFAULT_CALLBACK = "http://no.callback.has/been.set";
     private static volatile IntegrationType integrationType = IntegrationType.TEST;

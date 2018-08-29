@@ -17,6 +17,13 @@ public abstract class Onepay {
         return integrationType;
     }
 
+    public static String getCurrentIntegrationTypeUrl() {
+        return String.format(
+                "%s/ewallet-plugin-api-services/services/transactionservice",
+                getIntegrationType().getApiBase());
+
+    }
+
     public static void setIntegrationType(IntegrationType integrationType) {
         if (null == integrationType) throw new NullPointerException("integrationType cannot be null");
         Onepay.integrationType = integrationType;

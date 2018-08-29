@@ -1,6 +1,6 @@
 package cl.transbank.exception;
 
-public class TransbankException extends Throwable {
+public class TransbankException extends Exception {
     private int code;
 
     public TransbankException() {

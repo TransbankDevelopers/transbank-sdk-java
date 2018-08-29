@@ -14,8 +14,6 @@ import java.net.URL;
 import java.util.UUID;
 
 public class Transaction extends ApiBaseResource {
-    private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
-            Onepay.getIntegrationType().getApiBase());
     private static final String SEND_TRANSACTION = "sendtransaction";
     private static final String COMMIT_TRANSACTION = "gettransactionnumber";
 
@@ -79,7 +77,9 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, SEND_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
+        String jsonOut = request(
+                new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), SEND_TRANSACTION)),
+                HttpUtil.RequestMethod.POST, jsonIn);
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);
 
         if (null == response) {
@@ -104,7 +104,9 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         GetTransactionNumberRequest request = getRequestBuilder().buildGetTransactionNumberRequest(occ, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, COMMIT_TRANSACTION)), HttpUtil.RequestMethod.POST, jsonIn);
+        String jsonOut = request(
+                new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), COMMIT_TRANSACTION)),
+                HttpUtil.RequestMethod.POST, jsonIn);
         GetTransactionNumberResponse response = getJsonUtil().jsonDecode(jsonOut, GetTransactionNumberResponse.class);
 
         if (null == response) {

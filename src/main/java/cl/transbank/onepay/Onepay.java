@@ -46,6 +46,15 @@ public abstract class Onepay {
         Onepay.sharedSecret = sharedSecret;
     }
 
+    /**
+     * Sets the credentials published by Transbank to play on the TEST
+     * environment.
+     */
+    public static void setIntegrationApiKeyAndSharedSecret() {
+        setApiKey("dKVhq1WGt_XapIYirTXNyUKoWTDFfxaEV63-O5jcsdw");
+        setSharedSecret("?XW#WOLG##FBAGEAYSNQ5APD#JF@$AYZ");
+    }
+
     public static String getCallbackUrl() {
         return callbackUrl;
     }

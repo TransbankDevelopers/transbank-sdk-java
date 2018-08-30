@@ -1,47 +1,44 @@
 # Changelog
-All notable changes to this project will be documented in this file.
+Todos los cambios notables a este proyecto serán docuemntados en este archivo.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.3.1] - 2018-08-29
 ### Changed
-- Environments are now pointing to the official TEST and LIVE servers. From now
-on, the SDK can be used for official testing and will be interoperable with
-tools provided by Transbank to assist the integration (such as the dashboard
-to simulate transactions).
+- Apunta entornos a los servidores oficiales para `TEST` y `LIVE`. De ahora en
+adelante, el SDK puede ser usado para validaciones oficiales y será
+interoperable con las herramientas provistas por Transbank para ayudar esa
+integración y validación (como el dashboard para simular transacciones).
 
 ## [1.3.0] - 2018-08-16
 ### Added
-- Add externalUniqueNumber as a param, so the commerce can provide its own
+- Agrega `externalUniqueNumber` como parámetro, para que el comercio pueda proveer
+sus propios valores.
 
 ## [1.2.1] - 2018-08-16
 ### Changed
-- Prevent NullPointerException when appScheme is null on request for MOBILE and WEB
+- Evita `NullPointerException` cuando `appScheme` es `null` en peticiones para canales
+ `MOBILE` y `WEB`.
 
 ## [1.2.0] - 2018-08-14
 ### Added
-- Add new `callbackUrl` config param to `Onepay`. You could set it with the following setter:
-    `cl.transbank.onepay.Onepay.setCallbackUrl("a-callback-endpoint")`
-- Add new `appScheme` config param to `Onepay`
-- Add new optional param `channel` to `Transaction.create`
+- Agrega nuevo parámetro de configuración `callbackUrl` a `Onepay`.
+- Agrega nuevo parámetro de configuración `appScheme` a `Onepay`
+- Agrega nuevo parámetro opcional `channel` a `Transaction.create`
 
 ## [1.1.1] - 2018-08-03
-### Added
-- `cl.transbank.onepay.util.Base64Coder`
 ### Changed
-- Now use the new `Base64Coder.encode` in order to encode to base64
-### Removed
-- `cl.transbank.onepay.util.BASE64Encoder`
-- `cl.transbank.onepay.util.CharacterEncoder`
+- Cambia internamente la forma de encodear en base64.
 
 ## [1.1.0] - 2018-08-03
 ### Changed
-- Configure the setters of `cl.transbank.onepay.model.Item` as method chaining.
+- Configura los setters de `cl.transbank.onepay.model.Item` para usar
+*method chaining*.
 
 
 ## [1.0.1] - 2018-08-02
 ### Changed
-- Set `cl.transbank.onepay.model.Item.id` as `transient` so it is not serialized to json.
+- Evita que `cl.transbank.onepay.model.Item.id` sea serializado en JSON.
 
 

@@ -30,6 +30,18 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 </dependency>
 ```
 
+### No usas Maven?
+
+Si usas Gradle, Ivy, Grape o cualquier otro gestor compatible con Maven simplemente indica el grupo `com.github.transbankdevelopers` y el nombre de artefacto `transbank-sdk-java` y tu herramienta se encargará de todo.
+
+Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes opciones:
+
+- Puedes [descargar manualmente el archivo "jar" desde Maven Central](https://search.maven.org/search?q=g:com.github.transbankdevelopers%20AND%20a:transbank-sdk-java&core=gav), pero tendrás también que buscar las dependencias (listadas en el archivo `pom.xml`) y descargarlas tú mismo manualmente (y quizás tengas que hacerlo recursivamente para las dependencias de las dependencias)
+
+- Otra alternativa es que en lugar de descargar el "jar", descargues el archivo "with-all-deps-included.jar" que como sospecharás, incluye todas las dependencias. Eso te evitará buscar las dependencias a mano, pero te puede generar conflictos si ya estás usando una librería que este SDK ya usa, pero en una versión diferente y no compatible.
+
+(Por eso te recomendamos fuertemente que uses maven u otra herramienta que gestione las dependencias por tí)
+
 ## Primeros pasos
 
 ### Webpay
@@ -392,18 +404,6 @@ esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
    </profile>
 </profiles>
 ```
-
-## No usas Maven?
-
-Si usas Gradle, Ivy, Grape o cualquier otro gestor compatible con Maven simplemente indica el grupo `com.github.transbankdevelopers` y el nombre de artefacto `transbank-sdk-java` y tu herramienta se encargará de todo.
-
-Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes opciones:
-
-- Puedes [descargar manualmente el archivo "jar" desde Maven Central](https://search.maven.org/search?q=g:com.github.transbankdevelopers%20AND%20a:transbank-sdk-java&core=gav), pero tendrás también que buscar las dependencias (listadas en el archivo `pom.xml`) y descargarlas tú mismo manualmente (y quizás tengas que hacerlo recursivamente para las dependencias de las dependencias)
-
-- Otra alternativa es que en lugar de descargar el "jar", descargues el archivo "with-all-deps-included.jar" que como sospecharás, incluye todas las dependencias. Eso te evitará buscar las dependencias a mano, pero te puede generar conflictos si ya estás usando una librería que este SDK ya usa, pero en una versión diferente y no compatible.
-
-(Por eso te recomendamos fuertemente que uses maven u otra herramienta que gestione las dependencias por tí)
 
 <!--
 # vim: set tw=79:

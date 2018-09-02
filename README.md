@@ -185,7 +185,7 @@ mvn clean compile
 mvn test
 ```
 
-## Generar una nueva versión (con deploy automático a maven)
+### Generar una nueva versión (con deploy automático a maven)
 
 Para generar una nueva versión, se debe crear un PR (con un título "Prepare release X.Y.Z" con los valores que correspondan para `X`, `Y` y `Z`). Se debe seguir el estándar semver para determinar si se incrementa el valor de `X` (si hay cambios no retrocompatibles), `Y` (para mejoras retrocompatibles) o `Z` (si sólo hubo correcciones a bugs).
 
@@ -199,7 +199,7 @@ Luego de obtener aprobación del pull request, debe mezclarse a master e inmedia
 
 Con eso Travis CI generará automáticamente una nueva versión de la librería y la publicará en Maven Central.
 
-## Deploy manual a maven central
+### Deploy manual a maven central
 
 El deploy de una nueva version ocurre automáticamente, en Travis CI, cuando una nueva tag de git es creada.
 Los tag de git deben respetar el standard de [SemVer](https://semver.org/). Además si el commit (o PR) a master no tiene un tag asociada, se generara una version snapshot.

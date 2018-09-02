@@ -7,13 +7,8 @@ import cl.transbank.onepay.net.SendTransactionRequest;
 import cl.transbank.onepay.util.OnepayRequestBuilder;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class OnepayRequestBuilderTest {
 
@@ -29,6 +24,11 @@ public class OnepayRequestBuilderTest {
         return new Options()
                 .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
                 .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
+    }
+
+    @Before
+    public void setUp() {
+        Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
     }
 
     @Test

@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Refund extends ApiBaseResource {
-    private static final String SERVICE_URI = String.format("%s/ewallet-plugin-api-services/services/transactionservice",
-            Onepay.getIntegrationType().getApiBase());
     private static final String CREATE_REFUND = "nullifytransaction";
 
     public static RefundCreateResponse create(long amount, String occ, String externalUniqueNumber,
@@ -29,7 +27,9 @@ public class Refund extends ApiBaseResource {
         NullifyTransactionRequest request = getRequestBuilder().buildNullifyTransactionRequest(amount, occ, externalUniqueNumber,
                 authorizationCode, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        String jsonOut = request(new URL(String.format("%s/%s", SERVICE_URI, CREATE_REFUND)), HttpUtil.RequestMethod.POST, jsonIn);
+        String jsonOut = request(
+                new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), CREATE_REFUND)),
+                HttpUtil.RequestMethod.POST, jsonIn);
         NullifyTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, NullifyTransactionResponse.class);
 
         if (null == response || null == response.getResponseCode()) {

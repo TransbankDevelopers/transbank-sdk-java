@@ -49,7 +49,7 @@ public class OnepayRequestBuilder implements RequestBuilder {
 
     private void prepareRequest(@NonNull BaseRequest base, @NonNull Options options) {
         base.setApiKey(options.getApiKey());
-        base.setAppKey(Onepay.APP_KEY);
+        base.setAppKey(Onepay.getIntegrationType().getAppKey());
     }
 
     private OnepayRequestBuilder() {

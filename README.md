@@ -1,24 +1,32 @@
-[![Build Status](https://semaphoreci.com/api/v1/continuum/transbank-onepay-sdk-java/branches/master/badge.svg)](https://semaphoreci.com/continuum/transbank-onepay-sdk-java)
+[![Build Status](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java.svg?branch=master)](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.github.transbankdevelopers%3Atransbank-sdk-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.transbankdevelopers%3Atransbank-sdk-java)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.transbankdevelopers/transbank-sdk-java/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.github.transbankdevelopers/transbank-sdk-java)
 
 # Transbank Java SDK
 SDK oficial de Transbank
 
+* [Requisitos](#requisitos)
+* [Instalación](#instalación)
+* [Primeros pasos](#primeros-pasos)
+  * [Onepay](#onepay)
+    * [Configuración de callbacks](#configuración-de-callbacks)
+    * [Crear una nueva transacción](#crear-una-nueva-transacción)
+    * [Confirmar una transacción](#confirmar-una-transacción)
+    * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
+* [Información para contribuir y desarrollar este SDK](#información-para-contribuir-y-desarrollar-este-sdk)
+
 ## Requisitos
 - Java 1.7+
 
 ## Instalación
 
-### Instalar como dependencia Maven
-
-Agrega la siguiente dependencia en el archivo pom de tu proyecto:
+Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 
 ```xml
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.4.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
@@ -155,46 +163,23 @@ Luego todo sigue el mismo flujo que [el indicado en el caso de Webpay Plus Norma
 
 ### Onepay
 
-#### Configuración del ApiKey y SharedSecret
+#### Configuración de callbacks
 
-Existen 2 formas de configurar esta información, la cual es única para cada comercio.
-
-##### 1. En la inicialización de tu proyecto. (Solo una vez, al iniciar)
-
-La clase `Onepay` contiene la configuración básica de tu comercio.
-
-```java
-import cl.transbank.onepay.Onepay;
-
-//...
-
-Onepay.setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
-Onepay.setCallbackUrl("http://www.somecallback.com/example");
-```
-
-##### 2. Pasando el ApiKey y SharedSecret a cada petición
-
-Utilizando un objeto `cl.transbank.onepay.model.Options`
-
-```java
-Options options = new Options()
-                  .setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg")
-                  .setSharedSecret("P4DCPS55QB2QLT56SQH6#W#LV76IAPYX");
-```
-
-#### Ambientes TEST y LIVE
-
-Por defecto el tipo de Integración del SDK es siempre: `TEST`.
-
-Puedes configurar el SDK para utilizar los servicios del ambiente de `LIVE` (Producción) de la siguiente forma:
+A través de la clase `Onepay` puedes fijar los parámetros globales de la
+configuración de tu comercio. Lo mínimo necesario es configurar los callbacks
+en que Onepay retornará el control a tu backend después que el usuario haya
+autorizado o abortado la transacción:
 
 ```java
 import cl.transbank.onepay.Onepay;
 
-//...
 
-Onepay.setIntegrationType(Onepay.IntegrationType.LIVE);
+// URL de retorno para canal MOBILE (web móvil). También será usada en canal WEB
+// si integras la modalidad checkout del SDK javascript.
+Onepay.setCallbackUrl("http://www.misitioweb.com/onepay-result");
+// URL de retorno para canal APP (app móvil). Si no integras Onepay en tu app,
+// entonces no es necesario.
+Onepay.setAppScheme("mi-app://mi-app/onepay-result");
 ```
 
 #### Crear una nueva transacción
@@ -222,7 +207,7 @@ cart.add(zapatos);
 El monto en el carro de compras, debe ser positivo, en caso contrario se lanzará una excepción del tipo
 `cl.transbank.onepay.exception.AmountException`
 
-Luego que el carro de compras contiene todos los ítems. Se crea la transacción:
+Luego que el carro de compras contiene todos los ítems, se crea la transacción:
 
 ```java
 import cl.transbank.onepay.model.*;
@@ -236,39 +221,11 @@ El segundo parámetro en el ejemplo corresponde al `channel` y puede ser puede s
 `Onepay.Channel.MOBILE` o `Onepay.Channel.APP` dependiendo si quien está realizando el pago está usando un browser en 
 versión Desktop, Móvil o está utilizando alguna aplicación móvil nativa.
 
-En caso que `channel` sea `Onepay.Channel.MOBILE` es obligatorio que esté previamente configurado el `callbackUrl` o de
+En caso que `channel` sea `Onepay.Channel.MOBILE` es obligatorio que esté [previamente configurado el `callbackUrl`](#configuracion-de-callbacks) o de
 lo contrario la aplicación móvil no podrá re-direccionar a este cuando el pago se complete con éxito y como consecuencia
 no podrás confirmar la transacción.
 
-```java
-import cl.transbank.onepay.Onepay;
-
-//...
-
-Onepay.setCallbackUrl("http://www.somecallback.com/example");
-```
-
-En caso que `channel` sea `Onepay.Channel.APP` es obligatorio que esté previamente configurado el `appScheme`:
-
-```java
-import cl.transbank.onepay.Onepay;
-
-//...
-
-Onepay.setAppScheme("mi-app://mi-app/onepay-result");
-```
-
-Como comercio, también puedes querer especificar un identificador propio de transacción. Este parámetro se conoce como `ExternalUniqueNumber` y puede ser especificado al momento de crear la transacción. La única condición es que **debes asegurar que este identificador sea único para toda tu organización**, de lo contrario la transacción será **rechazada**.
-
-```java
-import cl.transbank.onepay.model.*;
-
-// ...
-
-String externalUniqueNumber = "My Unique Number - 123"
-TransactionCreateResponse response = Transaction.create(cart, channel, externalUniqueNumber);
-```
-Si el `ExternalUniqueNumber` no es especificado, entonces el SDK se encarga de generar un UUID, que puedes rescatar desde la respuesta de `Transaction.create(cart, channel)` por ejemplo.
+En caso que `channel` sea `Onepay.Channel.APP` es obligatorio que esté [previamente configurado el `appScheme`](#configuración-de-callbacks).
 
 El resultado entregado contiene la confirmación de la creación de la transacción, en la forma de un objeto 
 `cl.transbank.onepay.model.TransactionCreateResponse`.
@@ -282,15 +239,19 @@ El resultado entregado contiene la confirmación de la creación de la transacci
 "qrCodeAsBase64": "QRBASE64STRING"
 ```
 
+El `externalUniqueNumber` corresponde a un UUID generado por SDK que identifica
+la transacción en el lado del comercio. Opcionalmente, puedes [especificar tus
+propios external unique numbers](doc/Onepay.md#especificar-tus-propios-external-unique-numbers)
+
 En el caso que no se pueda completar la transacción o `responseCode` en la respuesta del API sea distinto de `ok`
 se lanzará una excepción `cl.transbank.onepay.exception.TransactionCreateException`
 
-Posteriormente, se debe presentar al usuario el código QR y el número de OTT para que pueda proceder al pago
-mediante la aplicación móvil.
+Esta información debes hacerla llegar a tu frontend web o app móvil para conectar
+con la app Onepay donde el usuario podrá autorizar la transacción creada.
 
 #### Confirmar una transacción
 
-Una vez que el usuario realizó el pago mediante la aplicación, dispones de 30 segundos
+Una vez que el usuario autorizó el pago mediante la aplicación, dispones de 30 segundos
 para realizar la confirmación de la transacción, de lo contrario, se realizará automáticamente
 la reversa de la transacción.
 
@@ -319,34 +280,13 @@ El resultado entregado contiene la confirmación de la confirmación de la trans
 "buyOrder": "20180720122456123"
 ```
 
-#### Anular una transacción
+#### Otras funcionalidades de Onepay
 
-Cuando una transacción fue creada correctamente, se dispone de un plazo de 30 días para realizar la anulación de esta.
+Eso concluye lo mínimo para crear y confirmar una transacción de Onepay.
+En [doc/Onepay.md](doc/Onepay.md) puedes encontrar más información sobre otras
+funcionalidades disponibles para Onepay.
 
-```java
-import cl.transbank.onepay.model.*;
-
-//...
-
-// amount, occ y autorizathionCode se obtienen a partir de la respuesta de Transaction.commit
-long amount = 27500;
-String occ = "1807983490979289";
-String externalUniqueNumber = "f506a955-800c-4185-8818-4ef9fca97aae";
-String autorizathionCode = "623245";
-RefundCreateResponse response = Refund.create(amount, occ, externalUniqueNumber, autorizathionCode);
-```
-
-El resultado entregado contiene la confirmación de la anulación, en la forma de un objeto `RefundCreateResponse`.
-
-```json
-"occ": "1807983490979289",
-"externalUniqueNumber": "f506a955-800c-4185-8818-4ef9fca97aae",
-"reverseCode": "623245",
-"issuedAt": 1532104252,
-"signature": "52NpZBolTEs+ckNOXwGRexDetY9MOaX1QbFYkjPymf4="
-```
-
-## Desarrollo
+## Información para contribuir y desarrollar este SDK
 
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]
 para tu IDE favorito con el fin de evitar que veas errores marcados por la herramienta de desarrollo.
@@ -384,7 +324,21 @@ mvn clean compile
 mvn test
 ```
 
-## Deploy manual a maven central
+### Generar una nueva versión (con deploy automático a maven)
+
+Para generar una nueva versión, se debe crear un PR (con un título "Prepare release X.Y.Z" con los valores que correspondan para `X`, `Y` y `Z`). Se debe seguir el estándar semver para determinar si se incrementa el valor de `X` (si hay cambios no retrocompatibles), `Y` (para mejoras retrocompatibles) o `Z` (si sólo hubo correcciones a bugs).
+
+En ese PR deben incluirse los siguientes cambios:
+
+1. Modificar el archivo CHANGELOG.md para incluir una nueva entrada (al comienzo) para `X.Y.Z` que explique en español los cambios **de cara al usuario del SDK**.
+2. Modificar este README.md para que los ejemplos usen la nueva versión `X.Y.Z`
+3. Modificar el archivo pom.xml para que la versión snapshot sea `X.Y.{Z+1}` (de manera que los snapshots que se generen después del release sean de la siguiente versión).
+
+Luego de obtener aprobación del pull request, debe mezclarse a master e inmediatamente generar un release en GitHub con el tag `vX.Y.Z`. En la descripción del release debes poner lo mismo que agregaste al changelog.
+
+Con eso Travis CI generará automáticamente una nueva versión de la librería y la publicará en Maven Central.
+
+### Deploy manual a maven central
 
 El deploy de una nueva version ocurre automáticamente, en Travis CI, cuando una nueva tag de git es creada.
 Los tag de git deben respetar el standard de [SemVer](https://semver.org/). Además si el commit (o PR) a master no tiene un tag asociada, se generara una version snapshot.

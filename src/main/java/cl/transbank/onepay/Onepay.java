@@ -9,6 +9,7 @@ public abstract class Onepay {
     private static volatile IntegrationType integrationType = IntegrationType.TEST;
     private static volatile String apiKey;
     private static volatile String sharedSecret;
+    static { setIntegrationApiKeyAndSharedSecret(); }
     private static volatile String callbackUrl;
     private static volatile String appScheme;
 

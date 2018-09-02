@@ -5,6 +5,16 @@
 # Transbank Java SDK
 SDK oficial de Transbank
 
+* [Requisitos](#requisitos)
+* [Instalación](#instalación)
+* [Primeros pasos](#primeros-pasos)
+  * [Onepay](#onepay)
+    * [Configuración de callbacks](#configuración-de-callbacks)
+    * [Crear una nueva transacción](#crear-una-nueva-transacción)
+    * [Confirmar una transacción](#confirmar-una-transacción)
+    * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
+* [Información para contribuir y desarrollar este SDK](#información-para-contribuir-y-desarrollar-este-sdk)
+
 ## Requisitos
 - Java 1.7+
 

@@ -17,7 +17,11 @@ public class WebpayNullify extends WSCommerceIntegrationServiceWrapper {
         this.commerceCode = commerceCode;
     }
 
-    public NullificationOutput nullify (String authorizationCode, BigDecimal authorizedAmount, String buyOrder,BigDecimal nullifyAmount, Long commercecode){
+    public NullificationOutput nullify(String authorizationCode, BigDecimal authorizedAmount, String buyOrder,BigDecimal nullifyAmount) {
+        return nullify(authorizationCode, authorizedAmount, buyOrder, nullifyAmount, null);
+    }
+
+    public NullificationOutput nullify(String authorizationCode, BigDecimal authorizedAmount, String buyOrder,BigDecimal nullifyAmount, Long commercecode){
         
             NullificationInput input = new NullificationInput();
             NullifyResponse response =  new NullifyResponse();

@@ -7,12 +7,19 @@ SDK oficial de Transbank
 
 * [Requisitos](#requisitos)
 * [Instalación](#instalación)
+    * [No usas Maven?](#no-usas-maven)
 * [Primeros pasos](#primeros-pasos)
-  * [Onepay](#onepay)
-    * [Configuración de callbacks](#configuración-de-callbacks)
-    * [Crear una nueva transacción](#crear-una-nueva-transacción)
-    * [Confirmar una transacción](#confirmar-una-transacción)
-    * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
+    * [Webpay Plus](#webpay-plus)
+        * [Crear una transacción Webpay Plus Normal](#crear-una-transacción-webpay-plus-normal)
+        * [Otras funcionalidades de Webpay Plus](#otras-funcionalidades-de-webpay-plus)
+    * [Webpay OneClick](#webpay-oneclick)
+        * [Crear una transacción Webpay OneClick](#crear-una-transacción-webpay-oneclick)
+      * [Otras funcionalidades de Webpay OneClick](#otras-funcionalidades-de-webpay-oneclick)
+    * [Onepay](#onepay)
+        * [Configuración de callbacks](#configuración-de-callbacks)
+        * [Crear una nueva transacción](#crear-una-nueva-transacción)
+        * [Confirmar una transacción](#confirmar-una-transacción)
+        * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
 * [Información para contribuir y desarrollar este SDK](#información-para-contribuir-y-desarrollar-este-sdk)
 
 ## Requisitos
@@ -44,16 +51,17 @@ Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes o
 
 ## Primeros pasos
 
-### Webpay
+### Webpay Plus
 
-#### Webpay Plus Normal
+#### Crear una transacción Webpay Plus Normal
 
-Lo primero que necesitas es preparar una instancia de `WebpayNormal` con la
-`Configuration` que incluye el código de comercio y los certificados a usar.
+Para una transacción asociada a un único comercio (también conocida como
+"normal"), lo primero que necesitas es preparar una instancia de `WebpayNormal`
+con la `Configuration` que incluye el código de comercio y los certificados a
+usar.
 
 Una forma fácil de comenzar es usar la configuración para pruebas que viene
 incluida en el SDK:
-
 
 ```java
 import cl.transbank.webpay.configuration.Configuration;
@@ -76,8 +84,8 @@ import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
 double amount = 1000;
 String sessionId = "identificador que será retornado en el callback de resultado";
 String buyOrder = "identificador único de orden de compra";
-String returnUrl = "http://callback/resultado/de/transaccion";
-String finalUrl = "http://callback/final/post/comprobante/webpay";
+String returnUrl = "https://callback/resultado/de/transaccion";
+String finalUrl = "https://callback/final/post/comprobante/webpay";
 WsInitTransactionOutput initResult = transaction.initTransaction(
         amount, sessionId, buyOrder, returnUrl, finalUrl);
 
@@ -120,58 +128,96 @@ transacción. Tal como antes, recibirás el `ws_token` que te permitirá
 identificar la transacción y mostrar un comprobante o página de éxito a tu
 usuario.
 
-#### Webpay Plus Mall
+#### Otras funcionalidades de Webpay Plus
 
-En Webpay Plus Mall, puedes realizar cargos atribuibles a múltiples comercios dentro de una agrupación denominada *mall*. En la `Configuration` de `Webpay` se indica el código de comercio del *mall*. Y al realizar transacciones se asocian al código de comercio de cada *store* que pertenecen al *mall*.
+Eso concluye lo mínimo para crear y confirmar una transacción Webpay Plus.
+En [doc/WebpayPlus.md](doc/WebpayPlus.md) puedes encontrar más información sobre otras funcionalidades disponibles para Webpay Plus.
 
-Para comenzar, obtener una instancia de `WebpayMallNormal` es muy similar a lo visto anteriormente para `WebpayNormal`:
+### Webpay OneClick
+
+#### Crear una transacción Webpay OneClick
+
+Para usar Webpay Onelick en transacciones asociadas a a un único comercio, lo
+primero que necesitas es preparar una instancia de `WebpayOneClick` con la
+`Configuration` que incluye el código de comercio y los certificados a
+usar
+
+Una forma fácil de comenzar es usar la configuración para pruebas que viene
+incluida en el SDK:
 
 ```java
 import cl.transbank.webpay.configuration.Configuration;
 import cl.transbank.webpay.Webpay;
-import cl.transbank.webpay.WebpayMallNormal;
+import cl.transbank.webpay.WebpayOneClick;
 // ...
-WebpayMallNormal transaction =
-    new Webpay(Configuration.forTestingWebpayPlusMall()).getMallNormalTransaction();
+
+WebpayOneClick transaction =
+    new Webpay(Configuration.forTestingWebpayOneClickNormal()).getOneClickTransaction();
 ```
 
-Luego se deben crear las transacciones de los *stores*:
+> **Tip**: Como necesitarás ese objeto `transaction` en múltiples ocasiones, es buena idea
+encapsular la lógica que lo genera en algún método que puedas reutilizar.
+
+Una vez que ya cuentas con esa preparación, puedes iniciar transacciones:
 
 ```java
-import com.transbank.webpay.wswebpay.service.WsTransactionDetail;
-import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
+import com.transbank.webpayserver.webservices.OneClickInscriptionOutput;
+//...
 
-
-// Configuration.forTestingWebpayPlusMall() configura un mall cuyos stores
-// tienen el código 597020000543 y 597020000544
-List<WsTransactionDetail> storeDetails = new ArrayList<WsTransactionDetail>();
-
-WsTransactionDetail detail = new WsTransactionDetail();
-detail.setCommerceCode("597020000543");
-detail.setAmount(2000);
-detail.setBuyOrder("identificador único de la orden para este store");
-storeDetails.add(detail);
-
-WsTransactionDetail detail = new WsTransactionDetail();
-detail.setCommerceCode("597020000544");
-detail.setAmount(3000);
-detail.setBuyOrder("identificador único de la orden para este store");
-storeDetails.add(detail);
+String username = "identificador-del-usuario-en-comercio";
+String email = "email@del.usuario";
+String urlReturn = "https://callback/resultado/de/transaccion";
+OneClickInscriptionOutput initResult =
+    transaction.initInscription(username, email, urlReturn);
+String formAction = initResult.getUrl();
+String tbkToken = initResult.getToken();
 ```
 
-Y finalmente iniciar la transacción:
+Tal como en el caso de Webpay Plus, debes redireccionar via `POST` el
+navegador del usuario a la url retornada en `initInscription`. A diferencia
+de Webpay Plus, acá el nombre del parámetro que contiene el token se debe
+llamar `TBK_TOKEN`.
+
+Una vez que el usuario autorice la inscripción, retornará el control al
+comercio via `POST` en la url indicada en `urlReturn`, con el parámetro
+`TBK_TOKEN` identificando la transacción. Con esa información se puede
+finalizar la inscripción:
 
 ```java
-String buyorder = "identificador único de la orden completa"
-String sessionId = "identificador que será retornado en el callback de resultado";
-String returnUrl = "http://callback/resultado/de/transaccion";
-String finalUrl = "http://callback/final/post/comprobante/webpay";
-WsInitTransactionOutput initResult = transaction.initTransaction(
-        buyOrder, sessionId, returnUrl, finalUrl, storeDetails);
+import com.transbank.webpayserver.webservices.OneClickFinishInscriptionOutput;
+//...
 
+OneClickFinishInscriptionOutput result =
+    transaction.finishInscription(tbkToken);
+if (result.responseCode == 0) {
+    // Inscripcion exitosa.
+    // Ahora puedes usar result.tbkUser para autorizar transacciones
+    // oneclick sin nueva intervención del usuario.
+}
 ```
 
-Luego todo sigue el mismo flujo que [el indicado en el caso de Webpay Plus Normal](#webpay-plus-normal), con la diferencia de que en el resultado de `getTransactionResult` al llamar al método `result.getDetailOutput()` obtendrás tantos resultados como detalles de transacciones hayas enviado y debes verificar el resultado para cada uno de esos *outputs*.
+Finalmente, puedes autorizar transacciones usando el `tbkUser` retornado:
+
+```java
+import com.transbank.webpayserver.webservices.OneClickPayOutput;
+//...
+Long buyOrder = 1234; // identificador único de orden de compra;
+String tbkUser = "tbkuser retornado por finishInscription";
+String username = "identificador-del-usuario-en-comercio"; // El mismo usado en initInscription.
+BigDecimal amount = BigDecimal.valueof(50000);
+OneClickPayOutput output =
+    transaction.authorize(buyOrder, tbkUser, username, amount);
+if (output.responseCode == 0) {
+    // Transacción exitosa, procesar output
+}
+```
+
+#### Otras funcionalidades de Webpay OneClick
+
+Eso concluye lo mínimo para crear y confirmar una transacción Webpay
+OneClick. En [doc/WebpayOneClick.md](doc/WebpayOneClick.md) puedes
+encontrar más información sobre otras funcionalidades disponibles para
+Webpay Plus.
 
 ### Onepay
 
@@ -188,7 +234,7 @@ import cl.transbank.onepay.Onepay;
 
 // URL de retorno para canal MOBILE (web móvil). También será usada en canal WEB
 // si integras la modalidad checkout del SDK javascript.
-Onepay.setCallbackUrl("http://www.misitioweb.com/onepay-result");
+Onepay.setCallbackUrl("https://www.misitioweb.com/onepay-result");
 // URL de retorno para canal APP (app móvil). Si no integras Onepay en tu app,
 // entonces no es necesario.
 Onepay.setAppScheme("mi-app://mi-app/onepay-result");

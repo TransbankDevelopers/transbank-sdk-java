@@ -98,6 +98,11 @@ que comience el flujo de pago. Esta redirección debe ser vía `POST` por lo que
 deberás crear un formulario web con un campo `ws_token` hidden y enviarlo
 programáticamente para entregar el control a Webpay.
 
+> Tip: En el ambiente de integración puedes usar la tarjeta VISA
+> 4051885600446623 para hacer pruebas. El CVV es 123 y la fecha de vencimiento
+> cualquiera superior a la fecha actual. Luego para la autenticación bancaria
+> usa el RUT 11.111.111-1 y la clave 123.
+
 Una vez que el tarjetahabiente ha pagado (o declinado, o ha ocurrido un error),
 Webpay retornará el control via `POST` a la URL que indicaste en el `returnUrl`.
 Recibirás también el parámetro `ws_token` que te permitirá conocer el resultado

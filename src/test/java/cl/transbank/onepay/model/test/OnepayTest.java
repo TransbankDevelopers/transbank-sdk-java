@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class OnepayTest {
     @Test
-    public void testSetIntegrationApiKeyAndSharedSecret() throws TransbankException, Exception {
+    public void testSetIntegrationApiKeyAndSharedSecret() throws Exception {
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
         Onepay.setIntegrationApiKeyAndSharedSecret();
         Assert.assertNotNull(Onepay.getApiKey());

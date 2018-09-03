@@ -207,8 +207,8 @@ configuration.setPublicCert( // pega acá tu certificado público
     "-----END CERTIFICATE-----");
 
 Webpay webpay = new Webpay(configuration);
-// Ahora puedes obtener las instancias de las transacciones de webpay que
-// usarás:
+// Ahora puedes obtener las instancias de las transacciones de Webpay Plus
+// que usarás:
 WebpayNormal normalTransaction = webpay.getNormalTransaction();
 WebpayMallNormal mallTransaction = webpay.getMallNormalTransaction();
 WebpayCapture captureTransaction = webpay.getCaptureTransaction();
@@ -221,7 +221,8 @@ Para cambiar el ambiente al que apunta el SDK (que por defecto es integración),
 también debes usar el objeto `Configuration` (antes de crear una instancia de
 `Webpay`):
 
-```
+```java
 Configuration configuration = new Configuration();
 configuration.setEnvironment(Webpay.Environment.PRODUCCION);
+// agregar también configuración del código de comercio y certificados
 ```

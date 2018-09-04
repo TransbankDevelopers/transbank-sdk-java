@@ -275,7 +275,7 @@ class DerParser {
      *
      * @param in The DER encoded stream
      */
-    public DerParser(InputStream in) throws IOException {
+    public DerParser(InputStream in) {
         this.in = in;
     }
 
@@ -285,7 +285,7 @@ class DerParser {
      * @param bytes The encoded bytes
      * @throws IOException
      */
-    public DerParser(byte[] bytes) throws IOException {
+    public DerParser(byte[] bytes) {
         this(new ByteArrayInputStream(bytes));
     }
 

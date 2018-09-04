@@ -11,10 +11,10 @@ import java.util.ArrayList;
 
 public class Configuration {
 
-    private String private_key;
-    private String public_cert;
-    private String webpay_cert ;
-    private String commerce_code;
+    private String privateKey;
+    private String publicCert;
+    private String webpayCert;
+    private String commerceCode;
     @Deprecated
     private ArrayList store_codes;
     private Webpay.Environment environment = Webpay.Environment.INTEGRACION;
@@ -23,55 +23,55 @@ public class Configuration {
     }
 
     @Deprecated
-    public Configuration(String private_key, String public_cert, String webpay_cert, String commerce_code, String environment) {
-        this.private_key = private_key;
-        this.public_cert = public_cert;
-        this.webpay_cert = webpay_cert;
-        this.commerce_code = commerce_code;
+    public Configuration(String privateKey, String publicCert, String webpayCert, String commerceCode, String environment) {
+        this.privateKey = privateKey;
+        this.publicCert = publicCert;
+        this.webpayCert = webpayCert;
+        this.commerceCode = commerceCode;
         setEnvironment(environment);
     }
     
     @Deprecated
-    public Configuration(String private_key, String public_cert, String webpay_cert, String commerce_code, String environment, ArrayList store_codes) {
-        this.private_key = private_key;
-        this.public_cert = public_cert;
-        this.webpay_cert = webpay_cert;
-        this.commerce_code = commerce_code;
+    public Configuration(String privateKey, String publicCert, String webpayCert, String commerceCode, String environment, ArrayList store_codes) {
+        this.privateKey = privateKey;
+        this.publicCert = publicCert;
+        this.webpayCert = webpayCert;
+        this.commerceCode = commerceCode;
         setEnvironment(environment);
         this.store_codes = store_codes;
     }
 
     public String getPrivateKey() {
-        return private_key;
+        return privateKey;
     }
 
     public void setPrivateKey(String private_key) {
-        this.private_key = private_key;
+        this.privateKey = private_key;
     }
 
     public String getPublicCert() {
-        return public_cert;
+        return publicCert;
     }
 
     public void setPublicCert(String public_cert) {
-        this.public_cert = public_cert;
+        this.publicCert = public_cert;
     }
 
     public String getWebpayCert() {
-        return webpay_cert;
+        return webpayCert;
     }
 
     @Deprecated
     public void setWebpayCert(String webpay_cert) {
-        this.webpay_cert = webpay_cert;
+        this.webpayCert = webpay_cert;
     }
 
     public String getCommerceCode() {
-        return commerce_code;
+        return commerceCode;
     }
 
     public void setCommerceCode(String commerce_code) {
-        this.commerce_code = commerce_code;
+        this.commerceCode = commerce_code;
     }
 
     public Webpay.Environment getEnvironment() {

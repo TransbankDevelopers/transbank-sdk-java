@@ -24,8 +24,6 @@ public class WebpayNullify extends WSCommerceIntegrationServiceWrapper {
     public NullificationOutput nullify(String authorizationCode, BigDecimal authorizedAmount, String buyOrder,BigDecimal nullifyAmount, Long commercecode){
         
             NullificationInput input = new NullificationInput();
-            NullifyResponse response =  new NullifyResponse();
-
             /** Código de autorización de la transacción que se requiere anular. Para el caso que se esté anulando una transacción de captura en línea,
              *  este código corresponde al código de autorización de la captura */
             input.setAuthorizationCode(authorizationCode);

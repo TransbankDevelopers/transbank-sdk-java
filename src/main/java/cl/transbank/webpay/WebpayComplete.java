@@ -55,15 +55,12 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
     }
     
     public WsCompleteQuerySharesOutput queryShare(String token, String buyOrder, int shareNumber){
-        
-        WsCompleteQuerySharesOutput qsresponse = new WsCompleteQuerySharesOutput();
-        
         QueryShare queryShare = new QueryShare();
         queryShare.setBuyOrder(buyOrder);
         queryShare.setShareNumber(shareNumber);
         queryShare.setToken(token);
 
-        qsresponse = this.queryShare(queryShare);        
+        WsCompleteQuerySharesOutput qsresponse = this.queryShare(queryShare);
         return qsresponse;
     }
 
@@ -73,7 +70,6 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
     }
 
     public WsCompleteAuthorizeOutput authorize(String token, String buyOrder, boolean gracePeriod,  int idQueryShare, int deferredPeriodIndex){
-        WsCompleteAuthorizeOutput result = new WsCompleteAuthorizeOutput();
         WsCompletePaymentTypeInput input = new WsCompletePaymentTypeInput();
         input.setBuyOrder(buyOrder);
         input.setCommerceCode(this.commerceCode);
@@ -93,7 +89,7 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
         ArrayList<WsCompletePaymentTypeInput> list = new ArrayList<>();
         list.add(input);
 
-        result = authorize(token, list);
+        WsCompleteAuthorizeOutput result = authorize(token, list);
         acknowledgeCompleteTransaction(token);
                 
         return result;

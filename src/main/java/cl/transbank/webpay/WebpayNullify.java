@@ -4,7 +4,6 @@ import cl.transbank.webpay.security.SoapSignature;
 import cl.transbank.webpay.wrapper.WSCommerceIntegrationServiceWrapper;
 import com.transbank.webpay.wswebpay.service.NullificationInput;
 import com.transbank.webpay.wswebpay.service.NullificationOutput;
-import com.transbank.webpay.wswebpay.service.NullifyResponse;
 
 import java.math.BigDecimal;
 

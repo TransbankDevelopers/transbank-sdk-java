@@ -1,12 +1,9 @@
 package cl.transbank.webpay;
 
 import cl.transbank.webpay.security.SoapSignature;
-import cl.transbank.webpay.wrapper.WSCommerceIntegrationServiceWrapper;
 import cl.transbank.webpay.wrapper.WSCompleteWebpayServiceWrapper;
 import com.transbank.webpay.wswebpay.service.CompleteCardDetail;
 import com.transbank.webpay.wswebpay.service.QueryShare;
-import com.transbank.webpay.wswebpay.service.WSCompleteWebpayService;
-import com.transbank.webpay.wswebpay.service.WSCompleteWebpayServiceImplService;
 import com.transbank.webpay.wswebpay.service.WsCompleteAuthorizeOutput;
 import com.transbank.webpay.wswebpay.service.WsCompleteInitTransactionInput;
 import com.transbank.webpay.wswebpay.service.WsCompleteInitTransactionOutput;
@@ -16,9 +13,7 @@ import com.transbank.webpay.wswebpay.service.WsCompleteQuerySharesOutput;
 import com.transbank.webpay.wswebpay.service.WsCompleteTransactionDetail;
 import com.transbank.webpay.wswebpay.service.WsCompleteTransactionType;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
 

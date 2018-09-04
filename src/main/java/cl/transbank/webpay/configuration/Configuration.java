@@ -16,7 +16,7 @@ public class Configuration {
     private String webpayCert;
     private String commerceCode;
     @Deprecated
-    private ArrayList store_codes;
+    private ArrayList storeCodes;
     private Webpay.Environment environment = Webpay.Environment.INTEGRACION;
 
     public Configuration() {
@@ -32,21 +32,21 @@ public class Configuration {
     }
     
     @Deprecated
-    public Configuration(String privateKey, String publicCert, String webpayCert, String commerceCode, String environment, ArrayList store_codes) {
+    public Configuration(String privateKey, String publicCert, String webpayCert, String commerceCode, String environment, ArrayList storeCodes) {
         this.privateKey = privateKey;
         this.publicCert = publicCert;
         this.webpayCert = webpayCert;
         this.commerceCode = commerceCode;
         setEnvironment(environment);
-        this.store_codes = store_codes;
+        this.storeCodes = storeCodes;
     }
 
     public String getPrivateKey() {
         return privateKey;
     }
 
-    public void setPrivateKey(String private_key) {
-        this.privateKey = private_key;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 
     public String getPublicCert() {
@@ -62,8 +62,8 @@ public class Configuration {
     }
 
     @Deprecated
-    public void setWebpayCert(String webpay_cert) {
-        this.webpayCert = webpay_cert;
+    public void setWebpayCert(String webpayCert) {
+        this.webpayCert = webpayCert;
     }
 
     public String getCommerceCode() {
@@ -89,12 +89,12 @@ public class Configuration {
 
     @Deprecated
     public ArrayList getStoreCodes() {
-        return store_codes;
+        return storeCodes;
     }
 
     @Deprecated
-    public void setStoreCodes(ArrayList store_codes) {
-        this.store_codes = store_codes;
+    public void setStoreCodes(ArrayList storeCodes) {
+        this.storeCodes = storeCodes;
     }
 
     /**

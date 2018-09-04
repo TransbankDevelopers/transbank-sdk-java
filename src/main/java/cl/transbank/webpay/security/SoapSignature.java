@@ -58,7 +58,7 @@ public class SoapSignature {
     }
     
     private Map<String,Object> getProperties(boolean input) throws Exception {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String,Object> map = new HashMap<>();
         map.put(WSHandlerConstants.ACTION, "Signature");       
         map.put(WSHandlerConstants.SIG_PROP_REF_ID, "wsCryptoProperties");
         if (!input){

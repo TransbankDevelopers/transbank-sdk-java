@@ -67,10 +67,7 @@ public class PrivateKeyReader {
             = "-----BEGIN PRIVATE KEY"; //$NON-NLS-1$
     public static final String P8_END_MARKER
             = "-----END PRIVATE KEY"; //$NON-NLS-1$
-
-    private static Map<String, PrivateKey> keyCache
-            = Collections.synchronizedMap(new HashMap<String, PrivateKey>());
-
+    
     protected final File file;
     protected final String keyString;
 

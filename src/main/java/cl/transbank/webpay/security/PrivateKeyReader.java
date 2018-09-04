@@ -114,37 +114,37 @@ public class PrivateKeyReader {
             else{
                 is = new ByteArrayInputStream(keyString.getBytes("UTF-8"));
             }
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            StringBuilder builder = new StringBuilder();
-            boolean inKey = false;
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                if (!inKey) {
-                    if (line.startsWith("-----BEGIN ")
-                            && line.endsWith(" PRIVATE KEY-----")) {
-                        inKey = true;
-                        isRSAKey = line.contains("RSA");
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                StringBuilder builder = new StringBuilder();
+                boolean inKey = false;
+                for (String line = br.readLine(); line != null; line = br.readLine()) {
+                    if (!inKey) {
+                        if (line.startsWith("-----BEGIN ")
+                                && line.endsWith(" PRIVATE KEY-----")) {
+                            inKey = true;
+                            isRSAKey = line.contains("RSA");
+                        }
+                        continue;
+                    } else {
+                        if (line.startsWith("-----END ")
+                                && line.endsWith(" PRIVATE KEY-----")) {
+                            inKey = false;
+                            isRSAKey = line.contains("RSA");
+                            break;
+                        }
+                        builder.append(line);
                     }
-                    continue;
-                } else {
-                    if (line.startsWith("-----END ")
-                            && line.endsWith(" PRIVATE KEY-----")) {
-                        inKey = false;
-                        isRSAKey = line.contains("RSA");
-                        break;
-                    }
-                    builder.append(line);
                 }
+                KeySpec keySpec = null;
+                byte[] encoded = DatatypeConverter.parseBase64Binary(builder.toString());
+                if (isRSAKey) {
+                    keySpec = getRSAKeySpec(encoded);
+                } else {
+                    keySpec = new PKCS8EncodedKeySpec(encoded);
+                }
+                KeyFactory kf = KeyFactory.getInstance("RSA");
+                key = kf.generatePrivate(keySpec);
             }
-            KeySpec keySpec = null;
-            byte[] encoded = DatatypeConverter.parseBase64Binary(builder.toString());
-            if (isRSAKey) {
-                keySpec = getRSAKeySpec(encoded);
-            } else {
-                keySpec = new PKCS8EncodedKeySpec(encoded);
-            }
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            key = kf.generatePrivate(keySpec);
         } finally {
             if (is != null) {
                 try {

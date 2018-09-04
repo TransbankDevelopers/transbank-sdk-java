@@ -19,8 +19,7 @@ public class Utils {
     public static Certificate loadCertificate(String pemContent) throws Exception{
         CertificateFactory fact = CertificateFactory.getInstance("X.509");
         InputStream is = new ByteArrayInputStream(pemContent.getBytes("UTF-8"));
-        X509Certificate cert = (X509Certificate) fact.generateCertificate(is);        
-        return cert;
+        return fact.generateCertificate(is);
     }
     
     public static String getFileContents(String filename) throws IOException {

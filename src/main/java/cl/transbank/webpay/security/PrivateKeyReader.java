@@ -282,7 +282,7 @@ class DerParser {
     /**
      * Create a new DER decoder from a byte array.
      *
-     * @param The encoded bytes
+     * @param bytes The encoded bytes
      * @throws IOException
      */
     public DerParser(byte[] bytes) throws IOException {

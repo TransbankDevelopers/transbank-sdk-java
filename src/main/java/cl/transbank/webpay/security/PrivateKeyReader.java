@@ -36,9 +36,6 @@ import java.security.PrivateKey;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.bind.DatatypeConverter;
 

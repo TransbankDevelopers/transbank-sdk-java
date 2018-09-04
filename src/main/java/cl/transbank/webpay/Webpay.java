@@ -119,15 +119,15 @@ public class Webpay {
         this.mode = conf.getEnvironment();
         this.commerceCode = conf.getCommerceCode();
         
-        SoapSignature signature = new SoapSignature();
-        signature.setPrivateCertificate(conf.getPrivateKey(), conf.getPublicCert());
+        SoapSignature sig = new SoapSignature();
+        sig .setPrivateCertificate(conf.getPrivateKey(), conf.getPublicCert());
         if (conf.getWebpayCert() != null) {
             // For backwards compatibility with the old libwebpay:
-            signature.setWebpayCertificate(conf.getWebpayCert());
+            sig.setWebpayCertificate(conf.getWebpayCert());
         } else {
-            signature.setWebpayCertificate(getWebPayCertificate(mode));
+            sig.setWebpayCertificate(getWebPayCertificate(mode));
         }
-        setSignature(signature);
+        setSignature(sig);
         
     }
 

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import org.apache.cxf.helpers.IOUtils;
 
 public class Utils {

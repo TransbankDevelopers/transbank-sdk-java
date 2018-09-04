@@ -70,8 +70,8 @@ public class Configuration {
         return commerceCode;
     }
 
-    public void setCommerceCode(String commerce_code) {
-        this.commerceCode = commerce_code;
+    public void setCommerceCode(String commerceCode) {
+        this.commerceCode = commerceCode;
     }
 
     public Webpay.Environment getEnvironment() {

@@ -10,7 +10,7 @@ public class Webpay {
     public static final String INTERNAL_NAME_INTEGRACION = "integracion";
     public static final String INTERNAL_NAME_PRODUCCION = "produccion";
 
-    public static enum Environment {
+    public enum Environment {
         /*
         There are only 2 Webpay environments by 2018:
          - Produccion: The live system
@@ -42,7 +42,7 @@ public class Webpay {
 
     private static final Map<String, String> WEBPAY_CERTS;
     static {
-        WEBPAY_CERTS = new HashMap<String, String>();
+        WEBPAY_CERTS = new HashMap<>();
         WEBPAY_CERTS.put(INTERNAL_NAME_INTEGRACION,
             "-----BEGIN CERTIFICATE-----\n" +
             "MIIDKTCCAhECBFZl7uIwDQYJKoZIhvcNAQEFBQAwWTELMAkGA1UEBhMCQ0wxDjAMBgNVBAgMBUNo\n" +

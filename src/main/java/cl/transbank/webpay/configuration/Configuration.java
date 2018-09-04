@@ -53,8 +53,8 @@ public class Configuration {
         return publicCert;
     }
 
-    public void setPublicCert(String public_cert) {
-        this.publicCert = public_cert;
+    public void setPublicCert(String publicCert) {
+        this.publicCert = publicCert;
     }
 
     public String getWebpayCert() {

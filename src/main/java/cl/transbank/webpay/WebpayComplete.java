@@ -39,7 +39,7 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
         in.setTransactionType(WsCompleteTransactionType.TR_COMPLETA_WS);
         
         WsCompleteTransactionDetail txDetail = new WsCompleteTransactionDetail();
-        txDetail.setAmount(new BigDecimal(amount));
+        txDetail.setAmount(BigDecimal.valueOf(amount));
         txDetail.setBuyOrder(buyOrder);
         txDetail.setCommerceCode(this.commerceCode);
         

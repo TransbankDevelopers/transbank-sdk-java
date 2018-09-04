@@ -25,7 +25,7 @@ public class WebpayNormal extends WSWebpayServiceWrapper {
         in.setFinalURL(finalUrl);
         List<WsTransactionDetail> list = in.getTransactionDetails();
         WsTransactionDetail detail = new WsTransactionDetail();
-        detail.setAmount(new BigDecimal(amount));
+        detail.setAmount(BigDecimal.valueOf(amount));
         detail.setBuyOrder(buyOrder);
         detail.setCommerceCode(this.commerceCode);
         list.add(detail);

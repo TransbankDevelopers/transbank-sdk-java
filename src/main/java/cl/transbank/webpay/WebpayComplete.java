@@ -54,9 +54,7 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
         queryShare.setBuyOrder(buyOrder);
         queryShare.setShareNumber(shareNumber);
         queryShare.setToken(token);
-
-        WsCompleteQuerySharesOutput qsresponse = this.queryShare(queryShare);
-        return qsresponse;
+        return this.queryShare(queryShare);
     }
 
     @Deprecated

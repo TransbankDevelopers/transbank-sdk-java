@@ -7,12 +7,19 @@ SDK oficial de Transbank
 
 * [Requisitos](#requisitos)
 * [Instalación](#instalación)
+    * [No usas Maven?](#no-usas-maven)
 * [Primeros pasos](#primeros-pasos)
-  * [Onepay](#onepay)
-    * [Configuración de callbacks](#configuración-de-callbacks)
-    * [Crear una nueva transacción](#crear-una-nueva-transacción)
-    * [Confirmar una transacción](#confirmar-una-transacción)
-    * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
+    * [Webpay Plus](#webpay-plus)
+        * [Crear una transacción Webpay Plus Normal](#crear-una-transacción-webpay-plus-normal)
+        * [Otras funcionalidades de Webpay Plus](#otras-funcionalidades-de-webpay-plus)
+    * [Webpay OneClick](#webpay-oneclick)
+        * [Crear una transacción Webpay OneClick](#crear-una-transacción-webpay-oneclick)
+      * [Otras funcionalidades de Webpay OneClick](#otras-funcionalidades-de-webpay-oneclick)
+    * [Onepay](#onepay)
+        * [Configuración de callbacks](#configuración-de-callbacks)
+        * [Crear una nueva transacción](#crear-una-nueva-transacción)
+        * [Confirmar una transacción](#confirmar-una-transacción)
+        * [Otras funcionalidades de Onepay](#otras-funcionalidades-de-onepay)
 * [Información para contribuir y desarrollar este SDK](#información-para-contribuir-y-desarrollar-este-sdk)
 
 ## Requisitos
@@ -30,7 +37,192 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 </dependency>
 ```
 
+### No usas Maven?
+
+Si usas Gradle, Ivy, Grape o cualquier otro gestor compatible con Maven simplemente indica el grupo `com.github.transbankdevelopers` y el nombre de artefacto `transbank-sdk-java` y tu herramienta se encargará de todo.
+
+Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes opciones:
+
+- Puedes [descargar manualmente el archivo "jar" desde Maven Central](https://search.maven.org/search?q=g:com.github.transbankdevelopers%20AND%20a:transbank-sdk-java&core=gav), pero tendrás también que buscar las dependencias (listadas en el archivo `pom.xml`) y descargarlas tú mismo manualmente (y quizás tengas que hacerlo recursivamente para las dependencias de las dependencias)
+
+- Otra alternativa es que en lugar de descargar el "jar", descargues el archivo "with-all-deps-included.jar" que como sospecharás, incluye todas las dependencias. Eso te evitará buscar las dependencias a mano, pero te puede generar conflictos si ya estás usando una librería que este SDK ya usa, pero en una versión diferente y no compatible.
+
+(Por eso te recomendamos fuertemente que uses maven u otra herramienta que gestione las dependencias por tí)
+
 ## Primeros pasos
+
+### Webpay Plus
+
+#### Crear una transacción Webpay Plus Normal
+
+Para una transacción asociada a un único comercio (también conocida como
+"normal"), lo primero que necesitas es preparar una instancia de `WebpayNormal`
+con la `Configuration` que incluye el código de comercio y los certificados a
+usar.
+
+Una forma fácil de comenzar es usar la configuración para pruebas que viene
+incluida en el SDK:
+
+```java
+import cl.transbank.webpay.configuration.Configuration;
+import cl.transbank.webpay.Webpay;
+import cl.transbank.webpay.WebpayNormal;
+// ...
+
+WebpayNormal transaction =
+    new Webpay(Configuration.forTestingWebpayPlusNormal()).getNormalTransaction();
+```
+
+> **Tip**: Como necesitarás ese objeto `transaction` en múltiples ocasiones, es buena idea
+encapsular la lógica que lo genera en algún método que puedas reutilizar.
+
+Una vez que ya cuentas con esa preparación, puedes iniciar transacciones:
+
+```java
+import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
+// ...
+double amount = 1000;
+String sessionId = "identificador que será retornado en el callback de resultado";
+String buyOrder = "identificador único de orden de compra";
+String returnUrl = "https://callback/resultado/de/transaccion";
+String finalUrl = "https://callback/final/post/comprobante/webpay";
+WsInitTransactionOutput initResult = transaction.initTransaction(
+        amount, sessionId, buyOrder, returnUrl, finalUrl);
+
+String formAction = initResult.getUrl();
+String wsToken = initResult.getToken();
+```
+
+La URL y el token retornados te indican donde debes redirigir al usuario para
+que comience el flujo de pago. Esta redirección debe ser vía `POST` por lo que
+deberás crear un formulario web con un campo `ws_token` hidden y enviarlo
+programáticamente para entregar el control a Webpay.
+
+> Tip: En el ambiente de integración puedes usar la tarjeta VISA
+> 4051885600446623 para hacer pruebas. El CVV es 123 y la fecha de vencimiento
+> cualquiera superior a la fecha actual. Luego para la autenticación bancaria
+> usa el RUT 11.111.111-1 y la clave 123.
+
+Una vez que el tarjetahabiente ha pagado (o declinado, o ha ocurrido un error),
+Webpay retornará el control vía `POST` a la URL que indicaste en el `returnUrl`.
+Recibirás también el parámetro `ws_token` que te permitirá conocer el resultado
+de la transacción:
+
+```java
+import com.transbank.webpay.wswebpay.service.TransactionResultOutput;
+import com.transbank.webpay.wswebpay.service.WsTransactionDetailOutput;
+// ...
+TransactionResultOutput result =
+    transaction.getTransactionResult(request.getParameter("ws_token"));
+WsTransactionDetailOutput output = result.getDetailOutput().get(0);
+if (output.getResponseCode() == 0) {
+    // Transaccion exitosa, puedes procesar el resultado con el contenido de
+    // las variables result y output.
+}
+```
+
+En el caso exitoso deberás llevar el control vía `POST` nuevamente a Webpay para
+que el tarjetahabiente vea el comprobante que le deja claro que se ha realizado
+el cargo en su tarjeta. Nuevamente deberás generar un formulario con el
+`ws_token` como un campo hidden. La URL para redirigir la debes obtener desde
+`result.getUrlRedirection()`.
+
+Finalmente después del comprobante Webpay redirigirá otra vez (vía `POST`) a tu
+sitio, esta vez a la URL que indicaste en el `finalUrl` cuando iniciaste la
+transacción. Tal como antes, recibirás el `ws_token` que te permitirá
+identificar la transacción y mostrar un comprobante o página de éxito a tu
+usuario.
+
+#### Otras funcionalidades de Webpay Plus
+
+Eso concluye lo mínimo para crear y confirmar una transacción Webpay Plus.
+En [doc/WebpayPlus.md](doc/WebpayPlus.md) puedes encontrar más información sobre otras funcionalidades disponibles para Webpay Plus.
+
+### Webpay OneClick
+
+#### Crear una transacción Webpay OneClick
+
+Para usar Webpay Onelick en transacciones asociadas a un único comercio, lo
+primero que necesitas es preparar una instancia de `WebpayOneClick` con la
+`Configuration` que incluye el código de comercio y los certificados a
+usar
+
+Una forma fácil de comenzar es usar la configuración para pruebas que viene
+incluida en el SDK:
+
+```java
+import cl.transbank.webpay.configuration.Configuration;
+import cl.transbank.webpay.Webpay;
+import cl.transbank.webpay.WebpayOneClick;
+// ...
+
+WebpayOneClick transaction =
+    new Webpay(Configuration.forTestingWebpayOneClickNormal()).getOneClickTransaction();
+```
+
+> **Tip**: Como necesitarás ese objeto `transaction` en múltiples ocasiones, es buena idea
+encapsular la lógica que lo genera en algún método que puedas reutilizar.
+
+Una vez que ya cuentas con esa preparación, puedes iniciar transacciones:
+
+```java
+import com.transbank.webpayserver.webservices.OneClickInscriptionOutput;
+//...
+
+String username = "identificador-del-usuario-en-comercio";
+String email = "email@del.usuario";
+String urlReturn = "https://callback/resultado/de/transaccion";
+OneClickInscriptionOutput initResult =
+    transaction.initInscription(username, email, urlReturn);
+String formAction = initResult.getUrl();
+String tbkToken = initResult.getToken();
+```
+
+Tal como en el caso de Webpay Plus, debes redireccionar vía `POST` el
+navegador del usuario a la url retornada en `initInscription`. A diferencia
+de Webpay Plus, acá el nombre del parámetro que contiene el token se debe
+llamar `TBK_TOKEN`.
+
+Una vez que el usuario autorice la inscripción, retornará el control al
+comercio vía `POST` en la url indicada en `urlReturn`, con el parámetro
+`TBK_TOKEN` identificando la transacción. Con esa información se puede
+finalizar la inscripción:
+
+```java
+import com.transbank.webpayserver.webservices.OneClickFinishInscriptionOutput;
+//...
+
+OneClickFinishInscriptionOutput result =
+    transaction.finishInscription(tbkToken);
+if (result.responseCode == 0) {
+    // Inscripcion exitosa.
+    // Ahora puedes usar result.tbkUser para autorizar transacciones
+    // oneclick sin nueva intervención del usuario.
+}
+```
+
+Finalmente, puedes autorizar transacciones usando el `tbkUser` retornado:
+
+```java
+import com.transbank.webpayserver.webservices.OneClickPayOutput;
+//...
+Long buyOrder = 1234; // identificador único de orden de compra generado por el comercio;
+String tbkUser = "tbkuser retornado por finishInscription";
+String username = "identificador-del-usuario-en-comercio"; // El mismo usado en initInscription.
+BigDecimal amount = BigDecimal.valueof(50000);
+OneClickPayOutput output =
+    transaction.authorize(buyOrder, tbkUser, username, amount);
+if (output.responseCode == 0) {
+    // Transacción exitosa, procesar output
+}
+```
+
+#### Otras funcionalidades de Webpay OneClick
+
+Eso concluye lo mínimo para crear y confirmar una transacción Webpay
+OneClick. En [doc/WebpayOneClick.md](doc/WebpayOneClick.md) puedes
+encontrar más información sobre otras funcionalidades disponibles para
+Webpay Plus.
 
 ### Onepay
 
@@ -47,7 +239,7 @@ import cl.transbank.onepay.Onepay;
 
 // URL de retorno para canal MOBILE (web móvil). También será usada en canal WEB
 // si integras la modalidad checkout del SDK javascript.
-Onepay.setCallbackUrl("http://www.misitioweb.com/onepay-result");
+Onepay.setCallbackUrl("https://www.misitioweb.com/onepay-result");
 // URL de retorno para canal APP (app móvil). Si no integras Onepay en tu app,
 // entonces no es necesario.
 Onepay.setAppScheme("mi-app://mi-app/onepay-result");
@@ -162,7 +354,7 @@ funcionalidades disponibles para Onepay.
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]
 para tu IDE favorito con el fin de evitar que veas errores marcados por la herramienta de desarrollo.
 
-Además necesitas tener instalado un SDK de Java igual o superior a `jdk 1.7`
+Se recomienda usar Java 7 u 8 para compilar este SDK. En Java 9 o superior la generación de Javadocs falla debido a la introducción de módulos (y a que varias clases de JavaEE en el paquete javax.* han sido movidas a módulos separados).
 
 ### Standares
 
@@ -263,17 +455,6 @@ esta la configuración que debes agregar a tu settings `~/.m2/settings.xml`
    </profile>
 </profiles>
 ```
-
-## No usas Maven?
-
-Necesitaras descargar y agregar en forma manual los siguientes archivos JARs en tus dependencias:
-
-* Librería Java [transbank-sdk-java-1.3.0.jar][jar_location]
-* [Google Gson](https://github.com/google/gson) from <https://repo1.maven.org/maven2/com/google/code/gson/gson/2.6.2/gson-2.6.2.jar>.
-
-[jar_location]: http://search.maven.org/remotecontent?filepath=com/github/transbankdevelopers/transbank-sdk-java/1.3.0/transbank-sdk-java-1.3.0.jar
-[lombok]: https://projectlombok.org
-[lombok-plugins]: https://projectlombok.org/setup/overview
 
 <!--
 # vim: set tw=79:

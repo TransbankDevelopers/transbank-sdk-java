@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions name="OneClickPaymentServiceImplService" targetNamespace="http://webservices.webpayserver.transbank.com/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://webservices.webpayserver.transbank.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+<xs:schema elementFormDefault="unqualified" targetNamespace="http://webservices.webpayserver.transbank.com/" version="1.0" xmlns:tns="http://webservices.webpayserver.transbank.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:element name="authorize" type="tns:authorize"/>
+<xs:element name="authorizeResponse" type="tns:authorizeResponse"/>
+<xs:element name="codeReverseOneClick" type="tns:codeReverseOneClick"/>
+<xs:element name="codeReverseOneClickResponse" type="tns:codeReverseOneClickResponse"/>
+<xs:element name="finishInscription" type="tns:finishInscription"/>
+<xs:element name="finishInscriptionResponse" type="tns:finishInscriptionResponse"/>
+<xs:element name="initInscription" type="tns:initInscription"/>
+<xs:element name="initInscriptionResponse" type="tns:initInscriptionResponse"/>
+<xs:element name="removeUser" type="tns:removeUser"/>
+<xs:element name="removeUserResponse" type="tns:removeUserResponse"/>
+<xs:element name="reverse" type="tns:reverse"/>
+<xs:element name="reverseResponse" type="tns:reverseResponse"/>
+<xs:complexType name="removeUser">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickRemoveUserInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickRemoveUserInput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="tbkUser" type="xs:string"/>
+<xs:element minOccurs="0" name="username" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="baseBean">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="removeUserResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="initInscription">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickInscriptionInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickInscriptionInput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="email" type="xs:string"/>
+<xs:element minOccurs="0" name="responseURL" type="xs:string"/>
+<xs:element minOccurs="0" name="username" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="initInscriptionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:oneClickInscriptionOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickInscriptionOutput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="token" type="xs:string"/>
+<xs:element minOccurs="0" name="urlWebpay" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="finishInscription">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickFinishInscriptionInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickFinishInscriptionInput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="token" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="finishInscriptionResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:oneClickFinishInscriptionOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickFinishInscriptionOutput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="authCode" type="xs:string"/>
+<xs:element minOccurs="0" name="creditCardType" type="tns:creditCardType"/>
+<xs:element minOccurs="0" name="last4CardDigits" type="xs:string"/>
+<xs:element name="responseCode" type="xs:int"/>
+<xs:element minOccurs="0" name="tbkUser" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="codeReverseOneClick">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickReverseInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickReverseInput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="buyorder" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="codeReverseOneClickResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:oneClickReverseOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickReverseOutput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="reverseCode" type="xs:long"/>
+<xs:element name="reversed" type="xs:boolean"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="authorize">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickPayInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickPayInput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="amount" type="xs:decimal"/>
+<xs:element minOccurs="0" name="buyOrder" type="xs:long"/>
+<xs:element minOccurs="0" name="tbkUser" type="xs:string"/>
+<xs:element minOccurs="0" name="username" type="xs:string"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="authorizeResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="return" type="tns:oneClickPayOutput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="oneClickPayOutput">
+<xs:complexContent>
+<xs:extension base="tns:baseBean">
+<xs:sequence>
+<xs:element minOccurs="0" name="authorizationCode" type="xs:string"/>
+<xs:element minOccurs="0" name="creditCardType" type="tns:creditCardType"/>
+<xs:element minOccurs="0" name="last4CardDigits" type="xs:string"/>
+<xs:element name="responseCode" type="xs:int"/>
+<xs:element name="transactionId" type="xs:long"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="reverse">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="tns:oneClickReverseInput"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="reverseResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="creditCardType">
+<xs:restriction base="xs:string">
+<xs:enumeration value="Visa"/>
+<xs:enumeration value="AmericanExpress"/>
+<xs:enumeration value="MasterCard"/>
+<xs:enumeration value="Diners"/>
+<xs:enumeration value="Magna"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="initInscriptionResponse">
+    <wsdl:part element="tns:initInscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="initInscription">
+    <wsdl:part element="tns:initInscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeUser">
+    <wsdl:part element="tns:removeUser" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="finishInscriptionResponse">
+    <wsdl:part element="tns:finishInscriptionResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="codeReverseOneClick">
+    <wsdl:part element="tns:codeReverseOneClick" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reverseResponse">
+    <wsdl:part element="tns:reverseResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reverse">
+    <wsdl:part element="tns:reverse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="finishInscription">
+    <wsdl:part element="tns:finishInscription" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeUserResponse">
+    <wsdl:part element="tns:removeUserResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorizeResponse">
+    <wsdl:part element="tns:authorizeResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="authorize">
+    <wsdl:part element="tns:authorize" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="codeReverseOneClickResponse">
+    <wsdl:part element="tns:codeReverseOneClickResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="OneClickPaymentService">
+    <wsdl:operation name="removeUser">
+      <wsdl:input message="tns:removeUser" name="removeUser">
+    </wsdl:input>
+      <wsdl:output message="tns:removeUserResponse" name="removeUserResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initInscription">
+      <wsdl:input message="tns:initInscription" name="initInscription">
+    </wsdl:input>
+      <wsdl:output message="tns:initInscriptionResponse" name="initInscriptionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="finishInscription">
+      <wsdl:input message="tns:finishInscription" name="finishInscription">
+    </wsdl:input>
+      <wsdl:output message="tns:finishInscriptionResponse" name="finishInscriptionResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="codeReverseOneClick">
+      <wsdl:input message="tns:codeReverseOneClick" name="codeReverseOneClick">
+    </wsdl:input>
+      <wsdl:output message="tns:codeReverseOneClickResponse" name="codeReverseOneClickResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authorize">
+      <wsdl:input message="tns:authorize" name="authorize">
+    </wsdl:input>
+      <wsdl:output message="tns:authorizeResponse" name="authorizeResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reverse">
+      <wsdl:input message="tns:reverse" name="reverse">
+    </wsdl:input>
+      <wsdl:output message="tns:reverseResponse" name="reverseResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="OneClickPaymentServiceImplServiceSoapBinding" type="tns:OneClickPaymentService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="removeUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="removeUser">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="removeUserResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="finishInscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="finishInscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="finishInscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="initInscription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="initInscription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="initInscriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="authorize">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="authorize">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="authorizeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="codeReverseOneClick">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="codeReverseOneClick">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="codeReverseOneClickResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="reverse">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="reverse">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reverseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="OneClickPaymentServiceImplService">
+    <wsdl:port binding="tns:OneClickPaymentServiceImplServiceSoapBinding" name="OneClickPaymentServiceImplPort">
+      <soap:address location="https://webpay3gint.transbank.cl:443/webpayserver/wswebpay/OneClickPaymentService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

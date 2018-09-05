@@ -142,7 +142,7 @@ En [doc/WebpayPlus.md](doc/WebpayPlus.md) puedes encontrar más información sob
 
 #### Crear una transacción Webpay OneClick
 
-Para usar Webpay Onelick en transacciones asociadas a a un único comercio, lo
+Para usar Webpay Onelick en transacciones asociadas a un único comercio, lo
 primero que necesitas es preparar una instancia de `WebpayOneClick` con la
 `Configuration` que incluye el código de comercio y los certificados a
 usar

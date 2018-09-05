@@ -39,13 +39,13 @@ List<WsTransactionDetail> storeDetails = new ArrayList<WsTransactionDetail>();
 WsTransactionDetail detail = new WsTransactionDetail();
 detail.setCommerceCode("597020000543");
 detail.setAmount(2000);
-detail.setBuyOrder("identificador único de la orden para este store");
+detail.setBuyOrder("identificador único de la orden de compra para este store"); // generado por el comercio
 storeDetails.add(detail);
 
 WsTransactionDetail detail = new WsTransactionDetail();
 detail.setCommerceCode("597020000544");
 detail.setAmount(3000);
-detail.setBuyOrder("identificador único de la orden para este store");
+detail.setBuyOrder("identificador único de la orden de compra para este store"); // generado por el comercio
 storeDetails.add(detail);
 ```
 

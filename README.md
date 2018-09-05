@@ -104,7 +104,7 @@ programáticamente para entregar el control a Webpay.
 > usa el RUT 11.111.111-1 y la clave 123.
 
 Una vez que el tarjetahabiente ha pagado (o declinado, o ha ocurrido un error),
-Webpay retornará el control via `POST` a la URL que indicaste en el `returnUrl`.
+Webpay retornará el control vía `POST` a la URL que indicaste en el `returnUrl`.
 Recibirás también el parámetro `ws_token` que te permitirá conocer el resultado
 de la transacción:
 
@@ -121,13 +121,13 @@ if (output.getResponseCode() == 0) {
 }
 ```
 
-En el caso exitoso deberás llevar el control via `POST` nuevamente a Webpay para
+En el caso exitoso deberás llevar el control vía `POST` nuevamente a Webpay para
 que el tarjetahabiente vea el comprobante que le deja claro que se ha realizado
 el cargo en su tarjeta. Nuevamente deberás generar un formulario con el
 `ws_token` como un campo hidden. La URL para redirigir la debes obtener desde
 `result.getUrlRedirection()`.
 
-Finalmente después del comprobante Webpay redigirá otra vez (via `POST`) a tu
+Finalmente después del comprobante Webpay redigirá otra vez (vía `POST`) a tu
 sitio, esta vez a la URL que indicaste en el `finalUrl` cuando iniciaste la
 transacción. Tal como antes, recibirás el `ws_token` que te permitirá
 identificar la transacción y mostrar un comprobante o página de éxito a tu
@@ -178,13 +178,13 @@ String formAction = initResult.getUrl();
 String tbkToken = initResult.getToken();
 ```
 
-Tal como en el caso de Webpay Plus, debes redireccionar via `POST` el
+Tal como en el caso de Webpay Plus, debes redireccionar vía `POST` el
 navegador del usuario a la url retornada en `initInscription`. A diferencia
 de Webpay Plus, acá el nombre del parámetro que contiene el token se debe
 llamar `TBK_TOKEN`.
 
 Una vez que el usuario autorice la inscripción, retornará el control al
-comercio via `POST` en la url indicada en `urlReturn`, con el parámetro
+comercio vía `POST` en la url indicada en `urlReturn`, con el parámetro
 `TBK_TOKEN` identificando la transacción. Con esa información se puede
 finalizar la inscripción:
 

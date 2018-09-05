@@ -127,7 +127,7 @@ el cargo en su tarjeta. Nuevamente deberás generar un formulario con el
 `ws_token` como un campo hidden. La URL para redirigir la debes obtener desde
 `result.getUrlRedirection()`.
 
-Finalmente después del comprobante Webpay redigirá otra vez (vía `POST`) a tu
+Finalmente después del comprobante Webpay redirigirá otra vez (vía `POST`) a tu
 sitio, esta vez a la URL que indicaste en el `finalUrl` cuando iniciaste la
 transacción. Tal como antes, recibirás el `ws_token` que te permitirá
 identificar la transacción y mostrar un comprobante o página de éxito a tu

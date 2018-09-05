@@ -206,7 +206,7 @@ Finalmente, puedes autorizar transacciones usando el `tbkUser` retornado:
 ```java
 import com.transbank.webpayserver.webservices.OneClickPayOutput;
 //...
-Long buyOrder = 1234; // identificador único de orden de compra;
+Long buyOrder = 1234; // identificador único de orden de compra generado por el comercio;
 String tbkUser = "tbkuser retornado por finishInscription";
 String username = "identificador-del-usuario-en-comercio"; // El mismo usado en initInscription.
 BigDecimal amount = BigDecimal.valueof(50000);

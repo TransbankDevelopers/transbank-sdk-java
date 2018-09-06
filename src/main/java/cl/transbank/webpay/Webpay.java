@@ -1,5 +1,6 @@
 package cl.transbank.webpay;
 
+import cl.transbank.patpass.PatPassByWebpayNormal;
 import cl.transbank.webpay.configuration.Configuration;
 import cl.transbank.webpay.security.SoapSignature;
 
@@ -113,8 +114,7 @@ public class Webpay {
     }
     
     SoapSignature signature;
-    Environment mode;
-    String commerceCode;
+    Configuration configuration;
     
     WebpayNormal normalTransaction;
     WebpayOneClick oneClickTransaction;
@@ -122,6 +122,7 @@ public class Webpay {
     WebpayComplete completeTransaction;
     WebpayCapture captureTransaction;
     WebpayNullify nullifyTransaction;
+    PatPassByWebpayNormal patPassByWebpayTransaction;
 
     @Deprecated
     public Webpay(Environment env, String commerceCode, SoapSignature signature){
@@ -142,16 +143,15 @@ public class Webpay {
     }
     
     public Webpay(Configuration conf){
-        this.mode = conf.getEnvironment();
-        this.commerceCode = conf.getCommerceCode();
-        
+        this.configuration = conf;
+
         SoapSignature sig = new SoapSignature();
         sig .setPrivateCertificate(conf.getPrivateKey(), conf.getPublicCert());
         if (conf.getWebpayCert() != null) {
             // For backwards compatibility with the old libwebpay:
             sig.setWebpayCertificate(conf.getWebpayCert());
         } else {
-            sig.setWebpayCertificate(getWebPayCertificate(mode));
+            sig.setWebpayCertificate(getWebPayCertificate(conf.getEnvironment()));
         }
         setSignature(sig);
         
@@ -167,44 +167,63 @@ public class Webpay {
     
     public synchronized WebpayNormal getNormalTransaction() throws Exception {
         if (normalTransaction == null){
-            normalTransaction = new WebpayNormal(mode, commerceCode, signature);
+            normalTransaction = new WebpayNormal(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return normalTransaction;
     }
     
     public synchronized WebpayOneClick getOneClickTransaction() throws Exception {
         if (oneClickTransaction == null){
-            oneClickTransaction = new WebpayOneClick(mode, commerceCode, signature);
+            oneClickTransaction = new WebpayOneClick(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return oneClickTransaction;
     }
     
     public synchronized WebpayMallNormal getMallNormalTransaction() throws Exception {
         if (mallNormalTransaction == null){
-            mallNormalTransaction = new WebpayMallNormal(mode, commerceCode, signature);
+            mallNormalTransaction = new WebpayMallNormal(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return mallNormalTransaction;
     }
     
     public synchronized WebpayComplete getCompleteTransaction() throws Exception {
         if (completeTransaction == null){
-            completeTransaction = new WebpayComplete(mode, commerceCode, signature);
+            completeTransaction = new WebpayComplete(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return completeTransaction;
     }
     
     public synchronized WebpayCapture getCaptureTransaction() throws Exception {
         if (captureTransaction == null){
-            captureTransaction = new WebpayCapture(mode, commerceCode, signature);
+            captureTransaction = new WebpayCapture(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return captureTransaction;
     }
     
     public synchronized WebpayNullify getNullifyTransaction() throws Exception {
         if (nullifyTransaction == null){
-            nullifyTransaction = new WebpayNullify(mode, commerceCode, signature);
+            nullifyTransaction = new WebpayNullify(
+                    configuration.getEnvironment(),
+                    configuration.getCommerceCode(), signature);
         }
         return nullifyTransaction;
     }
-    
+
+    public synchronized PatPassByWebpayNormal getPatPassByWebpayTransaction() throws Exception {
+        if (patPassByWebpayTransaction == null){
+            patPassByWebpayTransaction = new PatPassByWebpayNormal(configuration, signature);
+        }
+        return patPassByWebpayTransaction;
+    }
+
 }

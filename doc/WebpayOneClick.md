@@ -72,8 +72,8 @@ dólares (USD).
 
 Por lo tanto, es clave que antes de operar con las clases que permiten
 realizar transacciones (`WebpayNormal`, `WebpayMallNormal`, `WebpayCapture`,
-`WebpayNullify`) se configure correctamente el objeto `Webpay` desde donde se
-obtienen dichas instancias.
+`WebpayNullify`, `WebpayOneClick`) se configure correctamente el objeto 
+`Webpay` desde donde se obtienen dichas instancias.
 
 Ese objeto `Webpay` se configura en base a un objeto `Configuration`. Y si bien
 para hacer pruebas iniciales pueden usarse las credenciales pre-configuradas

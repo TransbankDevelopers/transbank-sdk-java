@@ -34,7 +34,7 @@ public class PatPassByWebpayNormal extends WSWebpayServiceWrapper {
         in.setFinalURL(finalUrl);
         List<WsTransactionDetail> list = in.getTransactionDetails();
         WsTransactionDetail detail = new WsTransactionDetail();
-        detail.setAmount(new BigDecimal(amount));
+        detail.setAmount(BigDecimal.valueOf(amount));
         detail.setBuyOrder(buyOrder);
         detail.setCommerceCode(config.getCommerceCode());
         list.add(detail);

@@ -155,7 +155,7 @@ WebpayCapture nullifyTransaction =
     new Webpay(Configuration.forTestingWebpayPlusMall()).getNullifyTransaction();
 
 // Configuration.forTestingWebpayPlusMall() configura un mall cuyos stores
-// tienen el código 597020000543 y 597020000544
+// tienen el código 597044444402 y 597044444403
 String storeCommerceCode = "597044444402";
 NullificationOutput result = nullifyTransaction.nullify(
     authorizationCode, authAmount, buyOrder, nullAmount, storeCommerceCode);

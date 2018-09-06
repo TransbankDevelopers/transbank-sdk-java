@@ -98,7 +98,7 @@ public class Configuration {
     }
 
     /**
-     * @return a configuration for commerce code 597020000541 for the TEST
+     * @return a configuration for commerce code 597020000540 for the TEST
      * environment to be used with {@link Webpay#getNormalTransaction()} and
      * {@link Webpay#getNullifyTransaction()}.
      */
@@ -161,7 +161,7 @@ public class Configuration {
     }
 
     /**
-     * @return a configuration for commerce code 597020000546 for the TEST
+     * @return a configuration for commerce code 597044444404 for the TEST
      * environment to be used with {@link Webpay#getNormalTransaction()} plus
      * {@link Webpay#getCaptureTransaction()}.
      */
@@ -291,7 +291,7 @@ public class Configuration {
     }
 
     /**
-     * @return a configuration for commerce code 597020000547 for the TEST
+     * @return a configuration for commerce code 597044444405 for the TEST
      * environment to be used with {@link Webpay#getOneClickTransaction()}
      */
     public static Configuration forTestingWebpayOneClickNormal() {

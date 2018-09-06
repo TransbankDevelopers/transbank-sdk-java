@@ -5,10 +5,13 @@ El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [1.4.0] - 2018-09-06
-### Changed
-- Incluye credenciales pre-configuradas para Onepay
+### Added
 - Incluye soporte de Webpay
 - Incluye soporte experimental de PatPass by Webpay.
+
+### Changed
+- Credenciales pre-configuradas para Onepay. No es necesario configurar Api Key
+ni Shared Secret para operar en ambiente `TEST`.
 
 
 ## [1.3.1] - 2018-08-29

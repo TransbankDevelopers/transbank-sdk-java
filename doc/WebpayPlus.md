@@ -33,17 +33,17 @@ import com.transbank.webpay.wswebpay.service.WsInitTransactionOutput;
 
 
 // Configuration.forTestingWebpayPlusMall() configura un mall cuyos stores
-// tienen el código 597020000543 y 597020000544
+// tienen el código 597044444402 y 597044444403
 List<WsTransactionDetail> storeDetails = new ArrayList<WsTransactionDetail>();
 
 WsTransactionDetail detail = new WsTransactionDetail();
-detail.setCommerceCode("597020000543");
+detail.setCommerceCode("597044444402");
 detail.setAmount(2000);
 detail.setBuyOrder("identificador único de la orden de compra para este store"); // generado por el comercio
 storeDetails.add(detail);
 
 WsTransactionDetail detail = new WsTransactionDetail();
-detail.setCommerceCode("597020000544");
+detail.setCommerceCode("597044444403");
 detail.setAmount(3000);
 detail.setBuyOrder("identificador único de la orden de compra para este store"); // generado por el comercio
 storeDetails.add(detail);
@@ -156,7 +156,7 @@ WebpayCapture nullifyTransaction =
 
 // Configuration.forTestingWebpayPlusMall() configura un mall cuyos stores
 // tienen el código 597020000543 y 597020000544
-String storeCommerceCode = "597020000543";
+String storeCommerceCode = "597044444402";
 NullificationOutput result = nullifyTransaction.nullify(
     authorizationCode, authAmount, buyOrder, nullAmount, storeCommerceCode);
 ```

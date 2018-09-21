@@ -148,7 +148,10 @@ public class Webpay {
         SoapSignature sig = new SoapSignature();
         sig .setPrivateCertificate(conf.getPrivateKey(), conf.getPublicCert());
         if (conf.getWebpayCert() != null) {
-            // For backwards compatibility with the old libwebpay:
+            // For backwards compatibility with the old libwebpay and in case
+            // someone wants to override the certificate
+            // (perhaps they don't want to update the SDK because of a code
+            // freeze or something like that)
             sig.setWebpayCertificate(conf.getWebpayCert());
         } else {
             sig.setWebpayCertificate(getWebPayCertificate(conf.getEnvironment()));

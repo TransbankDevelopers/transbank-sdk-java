@@ -66,7 +66,6 @@ public class Configuration {
         return webpayCert;
     }
 
-    @Deprecated
     public void setWebpayCert(String webpayCert) {
         this.webpayCert = webpayCert;
     }

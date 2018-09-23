@@ -43,7 +43,7 @@ public class WebpayCapture extends WSCommerceIntegrationServiceWrapper {
      * @return
      */
     public CaptureOutput capture(String authorizationCode, BigDecimal captureAmount, String buyOrder) {
-        capture(authorizationCode, captureAmount, buyOrder, Long.valueOf(commerceCode));
+        return capture(authorizationCode, captureAmount, buyOrder, Long.valueOf(commerceCode));
     }
 
 }

@@ -13,15 +13,37 @@ public class WebpayCapture extends WSCommerceIntegrationServiceWrapper {
         super(mode, signature);
         this.commerceCode = commerceCode;
     }
-    
-    public CaptureOutput capture(String authorizationCode, BigDecimal captureAmount, String buyOrder){
+
+    /**
+     * Capture a transaction created by {@link WebpayMallNormal}, specifying the
+     * store code for the transaction to capture
+     * @param authorizationCode authorization code of the transaction to capture
+     * @param captureAmount amount to capture
+     * @param buyOrder buy order of the transaction to capture
+     * @param storeCode "commerce code" of the store associated with the transaction.
+     * @return the result of the capture operation
+     */
+    public CaptureOutput capture(String authorizationCode, BigDecimal captureAmount, String buyOrder, Long storeCode){
         CaptureInput input = new CaptureInput();
         input.setAuthorizationCode(authorizationCode);
         input.setBuyOrder(buyOrder);
         input.setCaptureAmount(captureAmount);    
-        input.setCommerceId(new Long(commerceCode));
+        input.setCommerceId(storeCode);
         return capture(input);        
-    }      
+    }
 
+    /**
+     * Capture a transaction created by {@link WebpayNormal}.
+     *
+     * It'll use the commerce code associated with the configuration passed to
+     * the {@link Webpay} instance used to create the capture transaction.
+     * @param authorizationCode authorization code of the transaction to capture
+     * @param captureAmount amount to capture
+     * @param buyOrder
+     * @return
+     */
+    public CaptureOutput capture(String authorizationCode, BigDecimal captureAmount, String buyOrder) {
+        return capture(authorizationCode, captureAmount, buyOrder, Long.valueOf(commerceCode));
+    }
 
 }

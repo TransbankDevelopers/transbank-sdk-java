@@ -4,19 +4,29 @@ import cl.transbank.webpay.Webpay;
 import cl.transbank.webpay.security.SoapSignature;
 import com.transbank.webpay.wswebpay.service.*;
 
+import javax.xml.namespace.QName;
+
 public class WSCommerceIntegrationServiceWrapper extends ServiceWrapperBase {
 
     private WSCommerceIntegrationService port;
 
-    @Override
-    protected String getWsdlName() {
-        return "transbank-ws-commerce-integration-service.wsdl";
-    }
-
     protected WSCommerceIntegrationServiceWrapper(Webpay.Environment environment, SoapSignature signature) throws Exception {
         super(environment, signature);
-        this.port = new WSCommerceIntegrationServiceImplService(getWsdlUrl()).getWSCommerceIntegrationServiceImplPort();
-        initPort(port);
+        // WSCommerceIntegrationServiceImplService was NOT generated using CXF
+        // so we are forced to copy/paste the QNames for the service and port :(
+        this.port = initPort(
+                WSCommerceIntegrationService.class,
+                new QName(
+                        "http://service.wswebpay.webpay.transbank.com/",
+                        "WSCommerceIntegrationServiceImplService"
+                ),
+                new QName(
+                        "http://service.wswebpay.webpay.transbank.com/",
+                        "WSCommerceIntegrationServiceImplPort"
+                ),
+                "transbank-ws-commerce-integration-service.wsdl"
+        );
+
     }
 
     public CaptureOutput capture(CaptureInput input){

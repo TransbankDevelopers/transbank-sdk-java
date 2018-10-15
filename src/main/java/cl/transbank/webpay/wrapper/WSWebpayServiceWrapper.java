@@ -3,18 +3,21 @@ package cl.transbank.webpay.wrapper;
 import cl.transbank.webpay.Webpay;
 import cl.transbank.webpay.security.SoapSignature;
 import com.transbank.webpay.wswebpay.service.*;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.wsdl.service.factory.ReflectionServiceFactoryBean;
 
 public class WSWebpayServiceWrapper extends ServiceWrapperBase {
 
     private WSWebpayService port;
 
-    @Override
-    protected String getWsdlName() { return "transbank-ws-webpay-service.wsdl"; }
-
     protected  WSWebpayServiceWrapper(Webpay.Environment environment, SoapSignature signature) throws Exception {
         super(environment, signature);
-        this.port = new WSWebpayServiceImplService(getWsdlUrl()).getWSWebpayServiceImplPort();
-        initPort(port);
+        this.port = initPort(
+                WSWebpayService.class,
+                WSWebpayServiceImplService.SERVICE,
+                WSWebpayServiceImplService.WSWebpayServiceImplPort,
+                "transbank-ws-webpay-service.wsdl"
+        );
     }
 
     public WsInitTransactionOutput initTransaction(WsInitTransactionInput input){

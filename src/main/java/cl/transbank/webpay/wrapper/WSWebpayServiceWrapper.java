@@ -3,8 +3,6 @@ package cl.transbank.webpay.wrapper;
 import cl.transbank.webpay.Webpay;
 import cl.transbank.webpay.security.SoapSignature;
 import com.transbank.webpay.wswebpay.service.*;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
-import org.apache.cxf.wsdl.service.factory.ReflectionServiceFactoryBean;
 
 public class WSWebpayServiceWrapper extends ServiceWrapperBase {
 

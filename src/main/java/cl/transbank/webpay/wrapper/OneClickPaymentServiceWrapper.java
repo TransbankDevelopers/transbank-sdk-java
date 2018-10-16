@@ -8,15 +8,14 @@ public class OneClickPaymentServiceWrapper extends ServiceWrapperBase {
 
     private OneClickPaymentService port;
 
-    @Override
-    protected String getWsdlName() {
-        return "transbank-oneclick-payment-service.wsdl";
-    }
-
     protected OneClickPaymentServiceWrapper(Webpay.Environment environment, SoapSignature signature) throws Exception {
         super(environment, signature);
-        this.port = new OneClickPaymentServiceImplService(getWsdlUrl()).getOneClickPaymentServiceImplPort();
-        initPort(port);
+        this.port = initPort(
+                OneClickPaymentService.class,
+                OneClickPaymentServiceImplService.SERVICE,
+                OneClickPaymentServiceImplService.OneClickPaymentServiceImplPort,
+                "transbank-oneclick-payment-service.wsdl"
+        );
     }
 
     public OneClickInscriptionOutput initInscription(OneClickInscriptionInput input){

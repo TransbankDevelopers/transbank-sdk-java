@@ -10,15 +10,14 @@ public class WSCompleteWebpayServiceWrapper extends ServiceWrapperBase {
 
     private WSCompleteWebpayService port;
 
-    @Override
-    protected String getWsdlName() {
-        return "transbank-ws-complete-webpay-service.wsdl";
-    }
-
     protected WSCompleteWebpayServiceWrapper(Webpay.Environment environment, SoapSignature signature) throws Exception {
         super(environment, signature);
-        this.port = new WSCompleteWebpayServiceImplService(getWsdlUrl()).getWSCompleteWebpayServiceImplPort();
-        initPort(port);
+        this.port = initPort(
+                WSCompleteWebpayService.class,
+                WSCompleteWebpayServiceImplService.SERVICE,
+                WSCompleteWebpayServiceImplService.WSCompleteWebpayServiceImplPort,
+                "transbank-ws-complete-webpay-service.wsdl"
+        );
     }
 
     public WsCompleteInitTransactionOutput initCompleteTransaction(WsCompleteInitTransactionInput input){

@@ -5,6 +5,12 @@ El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [1.5.1] - 2018-10-04
+### Changed
+- Corrige errores relacionados con Apache CXF en entornos donde existe otro
+  proveedor JAX-WS seleccionado por defecto. Si te tocó ver errores que mencionaban "...cannot be cast to
+  `org.apache.cxf.frontend.ClientProxy`" eso está corregido desde esta versión.
+
 ## [1.5.0] - 2018-10-04
 ### Added
 - Incluye soporte para comercios mall que usan sólo captura diferida.

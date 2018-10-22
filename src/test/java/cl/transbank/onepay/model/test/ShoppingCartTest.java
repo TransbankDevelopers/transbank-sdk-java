@@ -13,8 +13,9 @@ import static org.junit.Assert.*;
 
 public class ShoppingCartTest {
     private Item itemOne = new Item("item one", 2, 1000, null, -1);
-    private Item itemTwo =new Item("item two", 4, 1000, null, -1);
-    private Item itemThree =new Item("item three", 1, 1000, null, -1);
+    private Item itemTwo = new Item("item two", 4, 1000, null, -1);
+    private Item itemThree = new Item("item three", 1, 1000, null, -1);
+    private Item itemNegative = new Item("item discount", 1, -10, null, -1);
 
     @Before
     public void setUp() {
@@ -29,6 +30,26 @@ public class ShoppingCartTest {
         cart.add(itemTwo);
 
         assertEquals(6000, cart.getTotal());
+    }
+
+    @Test
+    public void testTotalAmountWithItemNegativeValue() throws AmountException {
+        ShoppingCart cart = new ShoppingCart();
+        cart.add(itemOne);
+        cart.add(itemTwo);
+        cart.add(itemNegative);
+
+        assertEquals(5990, cart.getTotal());
+    }
+
+    @Test(expected = AmountException.class)
+    public void testTotalAmountWithItemNegativeValueGreaterThanTotalAmount() throws AmountException {
+        ShoppingCart cart = new ShoppingCart();
+        cart.add(itemOne);
+        cart.add(itemTwo);
+
+        itemNegative.setAmount(-((int)cart.getTotal() + 1));
+        cart.add(itemNegative);
     }
 
     @Test

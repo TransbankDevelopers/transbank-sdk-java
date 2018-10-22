@@ -76,7 +76,7 @@ public abstract class Onepay {
     @ToString public enum IntegrationType {
         LIVE("https://www.onepay.cl", "7968CDF8-F4CC-4BC5-8E27-D0513B88EB95"),
         TEST("https://onepay.ionix.cl", "fe9d371d-10ae-4138-8cfb-e2215b82c0d3"),
-        MOCK("http://onepay.getsandbox.com", "04533c31-fe7e-43ed-bbc4-1c8ab1538afp");
+        MOCK("https://transbank-onepay-ewallet-mock.herokuapp.com", "04533c31-fe7e-43ed-bbc4-1c8ab1538afp");
 
         @Getter private String apiBase;
         @Getter private String appKey;

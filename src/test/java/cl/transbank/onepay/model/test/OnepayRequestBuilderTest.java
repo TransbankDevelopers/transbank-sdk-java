@@ -45,8 +45,8 @@ public class OnepayRequestBuilderTest {
         assertEquals("WEB", request.getChannel());
         assertEquals("123-456-789", request.getExternalUniqueNumber());
         assertEquals(2, request.getItems().size());
-        assertEquals(2, request.getItemsQuantity());
-        assertEquals(27500, request.getTotal());
+        assertEquals(2, request.getItemsQuantity().intValue());
+        assertEquals(27500, request.getTotal().longValue());
     }
 
     @Test(expected = NullPointerException.class)

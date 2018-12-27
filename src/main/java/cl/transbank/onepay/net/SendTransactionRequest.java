@@ -15,9 +15,9 @@ import java.util.Objects;
 public final class SendTransactionRequest extends BaseRequest
         implements Signable {
     @NonNull private String externalUniqueNumber;
-    @NonNull private long total;
-    @NonNull private int itemsQuantity;
-    @NonNull private long issuedAt;
+    @NonNull private Long total;
+    @NonNull private Integer itemsQuantity;
+    @NonNull private Long issuedAt;
     @NonNull private List<Item> items;
     @NonNull private String callbackUrl;
     @NonNull private String channel;
@@ -27,7 +27,7 @@ public final class SendTransactionRequest extends BaseRequest
     private String signature;
     private final boolean generateOttQrCode = true;
 
-    public SendTransactionRequest(String externalUniqueNumber, long total, int itemsQuantity, long issuedAt,
+    public SendTransactionRequest(String externalUniqueNumber, Long total, Integer itemsQuantity, Long issuedAt,
                                   List<Item> items, String callbackUrl, String channel, String appScheme,
                                   Integer widthHeight, String commerceLogoUrl) {
         super();

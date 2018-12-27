@@ -12,11 +12,11 @@ import java.util.Objects;
 @ToString(callSuper = true)
 public class NullifyTransactionRequest extends BaseRequest
         implements Signable {
-    @NonNull private long nullifyAmount;
+    @NonNull private Long nullifyAmount;
     @NonNull private String occ;
     @NonNull private String externalUniqueNumber;
     @NonNull private String authorizationCode;
-    @NonNull private long issuedAt;
+    @NonNull private Long issuedAt;
     private String signature;
 
     @Override

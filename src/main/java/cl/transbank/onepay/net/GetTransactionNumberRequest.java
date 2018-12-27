@@ -14,7 +14,7 @@ public class GetTransactionNumberRequest extends BaseRequest
         implements Signable {
     @NonNull private String occ;
     @NonNull private String externalUniqueNumber;
-    @NonNull private long issuedAt;
+    @NonNull private Long issuedAt;
     private String signature;
 
     @Override

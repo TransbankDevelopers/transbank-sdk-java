@@ -3,6 +3,7 @@ package cl.transbank.onepay.model.test;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.onepay.Onepay;
 import cl.transbank.onepay.model.Item;
+import cl.transbank.onepay.model.Options;
 import cl.transbank.onepay.model.ShoppingCart;
 import cl.transbank.onepay.model.Transaction;
 import org.junit.Assert;
@@ -17,7 +18,9 @@ public class OnepayTest {
         Assert.assertNotNull(Onepay.getSharedSecret());
         // We will actually hit the TEST endpoint. It's the best way to test that
         // the secret and api key works :)
-        Transaction.create(createCart(), Onepay.Channel.APP);
+        Transaction.create(createCart(), Onepay.Channel.APP, new Options()
+                .setCommerceLogoUrl("http://www.google.cl/?q=gohan")
+                .setQrWidthHeight(300));
     }
 
     private ShoppingCart createCart() throws TransbankException {

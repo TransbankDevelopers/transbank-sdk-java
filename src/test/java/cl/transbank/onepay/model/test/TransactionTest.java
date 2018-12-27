@@ -26,6 +26,8 @@ public class TransactionTest {
         Onepay.setApiKey("mUc0GxYGor6X8u-_oB3e-HWJulRG01WoC96-_tUA3Bg");
         Onepay.setCallbackUrl("http://www.somecallback.com/example");
         Onepay.setAppScheme("schemetest");
+        Onepay.setQrWidthHeight(200);
+        //Onepay.setCommerceLogoUrl("http://www.google.cl?q=vegeta");
         Onepay.setIntegrationType(Onepay.IntegrationType.MOCK);
     }
 

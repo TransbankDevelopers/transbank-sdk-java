@@ -22,8 +22,26 @@ public final class SendTransactionRequest extends BaseRequest
     @NonNull private String callbackUrl;
     @NonNull private String channel;
     @NonNull private String appScheme;
+    private Integer widthHeight;
+    private String commerceLogoUrl;
     private String signature;
     private final boolean generateOttQrCode = true;
+
+    public SendTransactionRequest(String externalUniqueNumber, long total, int itemsQuantity, long issuedAt,
+                                  List<Item> items, String callbackUrl, String channel, String appScheme,
+                                  Integer widthHeight, String commerceLogoUrl) {
+        super();
+        this.externalUniqueNumber = externalUniqueNumber;
+        this.total = total;
+        this.itemsQuantity = itemsQuantity;
+        this.issuedAt = issuedAt;
+        this.items = items;
+        this.callbackUrl = callbackUrl;
+        this.channel = channel;
+        this.appScheme = appScheme;
+        this.widthHeight = widthHeight;
+        this.commerceLogoUrl = commerceLogoUrl;
+    }
 
     @Override
     public String getHashableString() {

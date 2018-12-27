@@ -77,7 +77,6 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        System.out.println(jsonIn);
         String jsonOut = request(
                 new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), SEND_TRANSACTION)),
                 HttpUtil.RequestMethod.POST, jsonIn);

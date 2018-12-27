@@ -8,13 +8,13 @@ import lombok.ToString;
 public abstract class Onepay {
     public static final Channel DEFAULT_CHANNEL = Channel.WEB;
     public static final String DEFAULT_CALLBACK = "http://no.callback.has/been.set";
-    @NonNull @Setter @Getter private static volatile IntegrationType integrationType = IntegrationType.TEST;
-    @NonNull @Setter @Getter private static volatile String apiKey;
-    @NonNull @Setter @Getter private static volatile String sharedSecret;
-    @NonNull @Setter @Getter private static volatile String callbackUrl;
-    @Setter @Getter private static volatile String appScheme;
-    @Setter @Getter private static volatile Integer qrWidthHeight;
-    @Setter @Getter private static volatile String commerceLogoUrl;
+    @NonNull @Setter @Getter private static IntegrationType integrationType = IntegrationType.TEST;
+    @NonNull @Setter @Getter private static String apiKey;
+    @NonNull @Setter @Getter private static String sharedSecret;
+    @NonNull @Setter @Getter private static String callbackUrl;
+    @Setter @Getter private static String appScheme;
+    @Setter @Getter private static Integer qrWidthHeight;
+    @Setter @Getter private static String commerceLogoUrl;
 
     static { setIntegrationApiKeyAndSharedSecret(); }
 

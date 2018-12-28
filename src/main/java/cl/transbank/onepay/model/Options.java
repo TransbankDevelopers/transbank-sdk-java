@@ -5,15 +5,22 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @ToString
 @Getter
 public class Options {
-    @Setter @Accessors(chain = true) private String apiKey;
-    @Setter @Accessors(chain = true) private String sharedSecret;
+    @NonNull @Setter @Accessors(chain = true) private String apiKey;
+    @NonNull @Setter @Accessors(chain = true) private String sharedSecret;
+    @Setter @Accessors(chain = true) private Integer qrWidthHeight;
+    @Setter @Accessors(chain = true) private String commerceLogoUrl;
 
     public static Options getDefaults() {
-        return new Options(Onepay.getApiKey(), Onepay.getSharedSecret());
+        return new Options(
+                Onepay.getApiKey(),
+                Onepay.getSharedSecret(),
+                Onepay.getQrWidthHeight(),
+                Onepay.getCommerceLogoUrl());
     }
 
     public static Options build(Options options) {
@@ -21,6 +28,8 @@ public class Options {
 
         if (null == options.getApiKey()) options.setApiKey(Onepay.getApiKey());
         if (null == options.getSharedSecret()) options.setSharedSecret(Onepay.getSharedSecret());
+        if (null == options.getQrWidthHeight()) options.setQrWidthHeight(Onepay.getQrWidthHeight());
+        if (null == options.getCommerceLogoUrl()) options.setCommerceLogoUrl(Onepay.getCommerceLogoUrl());
 
         return options;
     }

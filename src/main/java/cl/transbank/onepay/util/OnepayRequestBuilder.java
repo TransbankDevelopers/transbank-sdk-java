@@ -15,14 +15,25 @@ public class OnepayRequestBuilder implements RequestBuilder {
     private static OnepayRequestBuilder instance;
     private static OnepaySignUtil onePaySignUtil;
 
-    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart, Onepay.Channel channel, @NonNull String externalUniqueNumber, Options options)
+    public SendTransactionRequest buildSendTransactionRequest(ShoppingCart cart,
+                                                              Onepay.Channel channel,
+                                                              @NonNull String externalUniqueNumber,
+                                                              @NonNull Options options)
             throws SignatureException {
         String callbackUrl = Onepay.getCallbackUrl() == null || Onepay.getCallbackUrl().isEmpty() ?
                 Onepay.DEFAULT_CALLBACK : Onepay.getCallbackUrl();
 
-        SendTransactionRequest request = new SendTransactionRequest(externalUniqueNumber, cart.getTotal(),
-                cart.getItemsQuantity(), new Date().getTime()/1000, cart.getItems(), callbackUrl,
-                channel.toString(), Objects.toString(Onepay.getAppScheme(), ""));
+        SendTransactionRequest request = new SendTransactionRequest(
+                externalUniqueNumber,
+                cart.getTotal(),
+                cart.getItemsQuantity(),
+                new Date().getTime()/1000,
+                cart.getItems(), callbackUrl,
+                channel.toString(),
+                Objects.toString(Onepay.getAppScheme(), ""),
+                options.getQrWidthHeight(),
+                options.getCommerceLogoUrl()
+        );
         prepareRequest(request, options);
         onePaySignUtil.sign(request, options.getSharedSecret());
         return request;

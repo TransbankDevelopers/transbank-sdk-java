@@ -34,7 +34,7 @@ public class WebpayNullify extends WSCommerceIntegrationServiceWrapper {
             input.setBuyOrder(buyOrder); // string
 
             if (commercecode == null){
-                input.setCommerceId(new Long(commerceCode.trim()));
+                input.setCommerceId(Long.valueOf(commerceCode.trim()));
             } else {
                 input.setCommerceId(commercecode);
             }            

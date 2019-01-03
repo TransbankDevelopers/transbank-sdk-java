@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -106,7 +107,7 @@ public class PrivateKeyReader {
                 is = new FileInputStream(file);
             }
             else{
-                is = new ByteArrayInputStream(keyString.getBytes("UTF-8"));
+                is = new ByteArrayInputStream(keyString.getBytes(StandardCharsets.UTF_8));
             }
             try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
                 StringBuilder builder = new StringBuilder();
@@ -118,7 +119,6 @@ public class PrivateKeyReader {
                             inKey = true;
                             isRSAKey = line.contains("RSA");
                         }
-                        continue;
                     } else {
                         if (line.startsWith("-----END ")
                                 && line.endsWith(" PRIVATE KEY-----")) {

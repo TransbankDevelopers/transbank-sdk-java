@@ -53,13 +53,8 @@ public class OnepayHttpUtil implements HttpUtil {
         conn.setRequestProperty("Content-Type", String.format(
                 "%s;charset=%s", contentType.getContentType(), StandardCharsets.UTF_8.name().toLowerCase()));
 
-        OutputStream out = null;
-        try {
-            out = conn.getOutputStream();
+        try (OutputStream out = conn.getOutputStream()) {
             out.write(query.getBytes(StandardCharsets.UTF_8));
-        } finally {
-            if (null != out)
-                out.close();
         }
 
         return conn;

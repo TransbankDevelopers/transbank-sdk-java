@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
@@ -17,7 +18,7 @@ public class Utils {
     
     public static Certificate loadCertificate(String pemContent) throws Exception{
         CertificateFactory fact = CertificateFactory.getInstance("X.509");
-        InputStream is = new ByteArrayInputStream(pemContent.getBytes("UTF-8"));
+        InputStream is = new ByteArrayInputStream(pemContent.getBytes(StandardCharsets.UTF_8));
         return fact.generateCertificate(is);
     }
     

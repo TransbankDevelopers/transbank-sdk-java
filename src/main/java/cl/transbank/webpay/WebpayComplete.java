@@ -41,7 +41,7 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
         CompleteCardDetail cardDetail = new CompleteCardDetail();
         cardDetail.setCardExpirationDate(cardExpirationDate);
         cardDetail.setCardNumber(cardNumber);
-        cardDetail.setCvv(new Integer(cvv));
+        cardDetail.setCvv(Integer.valueOf(cvv));
         
         in.setCardDetail(cardDetail);
         in.getTransactionDetails().add(txDetail);

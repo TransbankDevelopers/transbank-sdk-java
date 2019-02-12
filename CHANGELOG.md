@@ -6,7 +6,7 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 
 ## [1.6.1] - 2019-02-12
 ### Changed
-- Las credenciales de PatPass by Webpay para ambiente de Integración han sido actualizados
+- Las credenciales de PatPass by Webpay para ambiente de Integración han sido actualizadas
 
 ## [1.6.0] - 2018-12-31
 ### Added

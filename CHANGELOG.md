@@ -4,6 +4,10 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2019-02-12
+### Changed
+- Las credenciales de PatPass by Webpay para ambiente de Integración han sido actualizados
+
 ## [1.6.0] - 2018-12-31
 ### Added
 - Se agrega soporte para poder configurar `commerceLogoUrl` y `qrWidthHeight`. El primero entrega soporte para que el app de onepay pueda mostrar el logo de comercio, mientras que el segundo entrega la posibilidad de pedir que la imagen QR venga en un tamaño especifico (útil para la modalidad de QR directo.)

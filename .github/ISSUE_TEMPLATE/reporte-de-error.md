@@ -32,7 +32,7 @@ Si aplica, agrega aquí capturas de pantalla que ayuden a explicar tu problema.
 
 **Versiones (por favor agrega aquí la siguiente información):**
 - SDK: [e.g. 1.1.0]
-- Python: [e.g. 3.4]
+- JDK: [e.g. 8u211]
 
 **Contexto adicional**
 

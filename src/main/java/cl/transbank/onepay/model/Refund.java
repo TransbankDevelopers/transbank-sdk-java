@@ -6,7 +6,7 @@ import cl.transbank.onepay.exception.RefundCreateException;
 import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.net.NullifyTransactionRequest;
 import cl.transbank.onepay.net.NullifyTransactionResponse;
-import cl.transbank.onepay.util.HttpUtil;
+import cl.transbank.util.HttpUtil;
 
 import java.io.IOException;
 import java.net.URL;

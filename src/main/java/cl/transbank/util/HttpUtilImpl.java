@@ -1,4 +1,4 @@
-package cl.transbank.onepay.util;
+package cl.transbank.util;
 
 import lombok.NonNull;
 
@@ -8,8 +8,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class OnepayHttpUtil implements HttpUtil {
-    private static volatile OnepayHttpUtil instance;
+public class HttpUtilImpl implements HttpUtil {
+    private static volatile HttpUtilImpl instance;
 
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query)
             throws IOException {
@@ -73,14 +73,14 @@ public class OnepayHttpUtil implements HttpUtil {
         }
     }
 
-    private OnepayHttpUtil() {
+    private HttpUtilImpl() {
         super();
     }
 
-    public static OnepayHttpUtil getInstance() {
+    public static HttpUtilImpl getInstance() {
         if (null == instance)
-            synchronized (OnepayHttpUtil.class) {
-                instance = new OnepayHttpUtil();
+            synchronized (HttpUtilImpl.class) {
+                instance = new HttpUtilImpl();
             }
 
         return instance;

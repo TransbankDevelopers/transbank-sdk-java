@@ -28,6 +28,7 @@ public interface HttpUtil {
     enum RequestMethod {
         GET,
         POST,
-        DELETE
+        DELETE,
+        PUT
     }
 }

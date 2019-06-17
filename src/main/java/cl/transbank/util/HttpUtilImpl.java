@@ -4,9 +4,9 @@ import lombok.NonNull;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.Scanner;
 
 public class HttpUtilImpl implements HttpUtil {
@@ -14,11 +14,21 @@ public class HttpUtilImpl implements HttpUtil {
 
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query)
             throws IOException {
-        return request(url, method, query, null);
+        return request(url, method, query, null, null);
     }
 
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
                                  ContentType contentType) throws IOException {
+        return request(url, method, query, contentType, null);
+    }
+
+    public String request(@NonNull URL url, RequestMethod method, @NonNull String query, Map<String, String> headers)
+            throws IOException {
+        return request(url, method, query, null, headers);
+    }
+
+    public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
+                          ContentType contentType, Map<String, String> headers) throws IOException {
         if (null == method)
             method = RequestMethod.GET;
 
@@ -26,10 +36,23 @@ public class HttpUtilImpl implements HttpUtil {
             contentType = ContentType.JSON;
 
         HttpURLConnection conn = null;
+
         try {
-            conn = (method == RequestMethod.GET) ?
-                    createGETConnection(url, query) :
-                    createPOSTConnection(url, query, contentType);
+            switch (method) {
+                case GET:
+                    conn = createGETConnection(url, query);
+                    break;
+                case POST:
+                    conn = createPOSTConnection(url, query, contentType);
+                    break;
+                case DELETE:
+                    conn = createDeleteConnection(url, query);
+                    break;
+            }
+
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
 
             int responseCode = conn.getResponseCode();
 
@@ -62,12 +85,17 @@ public class HttpUtilImpl implements HttpUtil {
     }
 
     private HttpURLConnection createGETConnection(URL url, String query) throws IOException {
-        if (null == url)
-            return null;
-
         String getUrl = formatUrl(url.toString(), query);
         HttpURLConnection conn = (HttpURLConnection) new URL(getUrl).openConnection();
         conn.setRequestMethod(RequestMethod.GET.toString());
+
+        return conn;
+    }
+
+    private HttpURLConnection createDeleteConnection(URL url, String query) throws IOException {
+        String deleteUrl = formatUrl(url.toString(), query);
+        HttpURLConnection conn = (HttpURLConnection) new URL(deleteUrl).openConnection();
+        conn.setRequestMethod("DELETE");
 
         return conn;
     }

@@ -9,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
 
+import static cl.transbank.util.HttpUtil.RequestMethod.*;
+
 public class HttpUtilImpl implements HttpUtil {
     private static volatile HttpUtilImpl instance;
 
@@ -30,7 +32,7 @@ public class HttpUtilImpl implements HttpUtil {
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
                           ContentType contentType, Map<String, String> headers) throws IOException {
         if (null == method)
-            method = RequestMethod.GET;
+            method = GET;
 
         if (null == contentType)
             contentType = ContentType.JSON;
@@ -39,15 +41,18 @@ public class HttpUtilImpl implements HttpUtil {
 
         try {
             switch (method) {
-                case GET:
-                    conn = createGETConnection(url, query);
-                    break;
                 case POST:
                     conn = createPOSTConnection(url, query, contentType);
                     break;
                 case DELETE:
                     conn = createDeleteConnection(url, query);
                     break;
+                case PUT:
+                    conn = createPUTConnection(url, query);
+                    break;
+                case GET:
+                default:
+                    conn = createGETConnection(url, query);
             }
 
             for (Map.Entry<String, String> header : headers.entrySet()) {
@@ -71,7 +76,7 @@ public class HttpUtilImpl implements HttpUtil {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setUseCaches(false);
         conn.setDoOutput(true);
-        conn.setRequestMethod(RequestMethod.POST.toString());
+        conn.setRequestMethod(POST.toString());
         conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Content-Type", String.format(
@@ -87,7 +92,7 @@ public class HttpUtilImpl implements HttpUtil {
     private HttpURLConnection createGETConnection(URL url, String query) throws IOException {
         String getUrl = formatUrl(url.toString(), query);
         HttpURLConnection conn = (HttpURLConnection) new URL(getUrl).openConnection();
-        conn.setRequestMethod(RequestMethod.GET.toString());
+        conn.setRequestMethod(GET.toString());
 
         return conn;
     }
@@ -95,7 +100,16 @@ public class HttpUtilImpl implements HttpUtil {
     private HttpURLConnection createDeleteConnection(URL url, String query) throws IOException {
         String deleteUrl = formatUrl(url.toString(), query);
         HttpURLConnection conn = (HttpURLConnection) new URL(deleteUrl).openConnection();
-        conn.setRequestMethod("DELETE");
+        conn.setRequestMethod(DELETE.toString());
+
+        return conn;
+    }
+
+    private HttpURLConnection createPUTConnection(URL url, String query) throws IOException {
+        String deleteUrl = formatUrl(url.toString(), query);
+        HttpURLConnection conn = (HttpURLConnection) new URL(deleteUrl).openConnection();
+        conn.setRequestMethod(PUT.toString());
+        conn.setDoOutput(true);
 
         return conn;
     }

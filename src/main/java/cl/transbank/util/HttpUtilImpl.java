@@ -47,7 +47,7 @@ public class HttpUtilImpl implements HttpUtil {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setUseCaches(false);
         conn.setDoOutput(true);
-        conn.setRequestMethod("POST");
+        conn.setRequestMethod(RequestMethod.POST.toString());
         conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Content-Type", String.format(

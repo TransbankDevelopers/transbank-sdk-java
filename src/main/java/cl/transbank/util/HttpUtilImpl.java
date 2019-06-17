@@ -4,6 +4,7 @@ import lombok.NonNull;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -27,7 +28,7 @@ public class HttpUtilImpl implements HttpUtil {
         HttpURLConnection conn = null;
         try {
             conn = (method == RequestMethod.GET) ?
-                    createGETConnection(url, query, contentType) :
+                    createGETConnection(url, query) :
                     createPOSTConnection(url, query, contentType);
 
             int responseCode = conn.getResponseCode();
@@ -60,9 +61,23 @@ public class HttpUtilImpl implements HttpUtil {
         return conn;
     }
 
-    private HttpURLConnection createGETConnection(URL url, String query, ContentType contentType) {
-        // TODO implement this method if you need it
-        return null;
+    private HttpURLConnection createGETConnection(URL url, String query) throws IOException {
+        if (null == url)
+            return null;
+
+        String getUrl = formatUrl(url.toString(), query);
+        HttpURLConnection conn = (HttpURLConnection) new URL(getUrl).openConnection();
+        conn.setRequestMethod(RequestMethod.GET.toString());
+
+        return conn;
+    }
+
+    private String formatUrl(String url, String query) {
+        if (null == query || query.trim().isEmpty())
+            return url;
+
+        String separator = url.contains("?") ? "&" : "?";
+        return String.format("%s%s%s", url, separator, query);
     }
 
     private static String getResponseBody(InputStream responseStream) throws IOException {

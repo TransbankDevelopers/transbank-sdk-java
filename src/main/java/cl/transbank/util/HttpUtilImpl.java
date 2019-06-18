@@ -55,8 +55,10 @@ public class HttpUtilImpl implements HttpUtil {
                     conn = createGETConnection(url, query);
             }
 
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                conn.setRequestProperty(header.getKey(), header.getValue());
+            if (null != headers) {
+                for (Map.Entry<String, String> header : headers.entrySet()) {
+                    conn.setRequestProperty(header.getKey(), header.getValue());
+                }
             }
 
             int responseCode = conn.getResponseCode();

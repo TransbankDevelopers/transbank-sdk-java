@@ -1,4 +1,4 @@
-package cl.transbank.onepay.util;
+package cl.transbank.util;
 
 public interface JsonUtil {
     String jsonEncode(Object o);

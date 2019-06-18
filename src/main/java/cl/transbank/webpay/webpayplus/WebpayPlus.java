@@ -33,18 +33,18 @@ public class WebpayPlus {
         return WebpayPlus.getOptions().getIntegrationType();
     }
 
-    public static void configureForWebpayPlusNormal() {
+    public static void configureNormalForTesting() {
         WebpayPlus.setOptions(new Options("597055555532",
                 "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST));
     }
 
-    public static void configureForWebpayPlusMall() {
+    public static void configureMallForTesting() {
         // TODO we have not the commerce code yet
         WebpayPlus.setOptions(new Options("",
                 "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST));
     }
 
-    public static void configureForWebpayPlusDeferred() {
+    public static void configureDeferredForTesting() {
         // TODO we have not the commerce code yet
         WebpayPlus.setOptions(new Options("",
                 "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST));

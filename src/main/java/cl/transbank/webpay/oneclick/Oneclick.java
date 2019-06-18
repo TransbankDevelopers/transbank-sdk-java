@@ -33,12 +33,6 @@ public class Oneclick {
         return Oneclick.getOptions().getIntegrationType();
     }
 
-    public static void configureNormalForTesting() {
-        // TODO we have not the commerce code yet
-        Oneclick.setOptions(new Options("",
-                "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST));
-    }
-
     public static void configureMallForTesting() {
         // TODO we have not the commerce code yet
         Oneclick.setOptions(new Options("",

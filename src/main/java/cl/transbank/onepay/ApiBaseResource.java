@@ -1,6 +1,10 @@
 package cl.transbank.onepay;
 
 import cl.transbank.onepay.util.*;
+import cl.transbank.util.HttpUtil;
+import cl.transbank.util.HttpUtilImpl;
+import cl.transbank.util.JsonUtil;
+import cl.transbank.util.JsonUtilImpl;
 import lombok.NonNull;
 
 import java.io.IOException;
@@ -8,9 +12,9 @@ import java.net.URL;
 
 public abstract class ApiBaseResource {
     private static RequestBuilder requestBuilder = OnepayRequestBuilder.getInstance();
-    private static JsonUtil jsonUtil = OnepayJsonUtil.getInstance();
+    private static JsonUtil jsonUtil = JsonUtilImpl.getInstance();
     private static SignUtil signUtil = OnepaySignUtil.getInstance();
-    private static HttpUtil httpUtil = OnepayHttpUtil.getInstance();
+    private static HttpUtil httpUtil = HttpUtilImpl.getInstance();
 
     protected static RequestBuilder getRequestBuilder() {
         return requestBuilder;
@@ -44,12 +48,12 @@ public abstract class ApiBaseResource {
         ApiBaseResource.httpUtil = httpUtil;
     }
 
-    protected static String request(@NonNull URL url, OnepayHttpUtil.RequestMethod method, @NonNull String query)
+    protected static String request(@NonNull URL url, HttpUtilImpl.RequestMethod method, @NonNull String query)
             throws IOException {
         return getHttpUtil().request(url, method, query);
     }
 
-    public String request(@NonNull URL url, OnepayHttpUtil.RequestMethod method, @NonNull String query,
+    public String request(@NonNull URL url, HttpUtilImpl.RequestMethod method, @NonNull String query,
                           HttpUtil.ContentType contentType) throws IOException {
         return getHttpUtil().request(url, method, query, contentType);
     }

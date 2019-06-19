@@ -6,7 +6,7 @@ import cl.transbank.onepay.exception.SignatureException;
 import cl.transbank.onepay.exception.TransactionCommitException;
 import cl.transbank.onepay.exception.TransactionCreateException;
 import cl.transbank.onepay.net.*;
-import cl.transbank.onepay.util.HttpUtil;
+import cl.transbank.util.HttpUtil;
 import lombok.NonNull;
 
 import java.io.IOException;

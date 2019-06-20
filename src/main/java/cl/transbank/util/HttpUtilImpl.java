@@ -1,6 +1,9 @@
 package cl.transbank.util;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -14,9 +17,18 @@ import static cl.transbank.util.HttpUtil.RequestMethod.*;
 public class HttpUtilImpl implements HttpUtil {
     private static volatile HttpUtilImpl instance;
 
+    @Setter @Getter(AccessLevel.PRIVATE) private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
+
+    public <T> T request(@NonNull URL url, RequestMethod method, @NonNull Object request, Map<String, String> headers,
+                         Class<T> clazz) throws IOException {
+        final String jsonIn = getJsonUtil().jsonEncode(request);
+        final String jsonOut = request(url, method, jsonIn, headers);
+        return getJsonUtil().jsonDecode(jsonOut, clazz);
+    }
+
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query)
             throws IOException {
-        return request(url, method, query, null, null);
+        return request(url, method, query, (ContentType) null, (Map<String, String>) null);
     }
 
     public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
@@ -42,7 +54,7 @@ public class HttpUtilImpl implements HttpUtil {
         try {
             switch (method) {
                 case POST:
-                    conn = createPOSTConnection(url, query, contentType);
+                    conn = createPOSTConnection(url, query, contentType, headers);
                     break;
                 case DELETE:
                     conn = createDeleteConnection(url, query);
@@ -53,12 +65,6 @@ public class HttpUtilImpl implements HttpUtil {
                 case GET:
                 default:
                     conn = createGETConnection(url, query);
-            }
-
-            if (null != headers) {
-                for (Map.Entry<String, String> header : headers.entrySet()) {
-                    conn.setRequestProperty(header.getKey(), header.getValue());
-                }
             }
 
             int responseCode = conn.getResponseCode();
@@ -73,7 +79,7 @@ public class HttpUtilImpl implements HttpUtil {
         }
     }
 
-    private HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType)
+    private HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType, Map<String, String> headers)
             throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setUseCaches(false);
@@ -83,6 +89,12 @@ public class HttpUtilImpl implements HttpUtil {
         conn.setRequestProperty("Accept", "application/json");
         conn.setRequestProperty("Content-Type", String.format(
                 "%s;charset=%s", contentType.getContentType(), StandardCharsets.UTF_8.name().toLowerCase()));
+
+        if (null != headers) {
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
 
         try (OutputStream out = conn.getOutputStream()) {
             out.write(query.getBytes(StandardCharsets.UTF_8));

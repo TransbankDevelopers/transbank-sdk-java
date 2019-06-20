@@ -11,7 +11,7 @@ public class Options implements Cloneable {
     public Options buildOptions(Options options) {
         Options alt = clone();
 
-        // if method recive an options then rewrite each property, this is mandatory
+        // If the method receives an options object then rewrite each property, this is mandatory
         if (null != options) {
             if (null != options.getCommerceCode() && !options.getCommerceCode().trim().isEmpty())
                 alt.setCommerceCode(options.getCommerceCode());

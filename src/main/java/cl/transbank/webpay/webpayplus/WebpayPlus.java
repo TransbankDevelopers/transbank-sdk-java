@@ -2,7 +2,9 @@ package cl.transbank.webpay.webpayplus;
 
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
+import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.webpayplus.model.CommitWebpayPlusTransactionResponse;
 import cl.transbank.webpay.webpayplus.model.CreateWebpayPlusTransactionResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -61,6 +63,15 @@ public class WebpayPlus {
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, Options options)
                 throws TransactionCreateException {
+            return null;
+        }
+
+        public static CommitWebpayPlusTransactionResponse commit(String token) throws TransactionCommitException {
+            return null;
+        }
+
+        public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
+                throws TransactionCommitException {
             return null;
         }
     }

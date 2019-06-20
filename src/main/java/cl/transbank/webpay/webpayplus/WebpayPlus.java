@@ -102,6 +102,8 @@ public class WebpayPlus {
                     throw new TransactionCreateException(out.getErrorMessage());
 
                 return new CreateWebpayPlusTransactionResponse(out.getToken(), out.getUrl());
+            } catch (TransactionCreateException txe) {
+                throw txe;
             } catch (Exception e) {
                 throw new TransactionCreateException(e);
             }

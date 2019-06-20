@@ -96,7 +96,7 @@ public class WebpayPlus {
                         buildHeaders(options), TransactionCreateResponse.class);
 
                 if (null == out)
-                    throw new TransactionCreateException("No fue posible obtener respuesta desde el servicio de transbank");
+                    throw new TransactionCreateException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
                     throw new TransactionCreateException(out.getErrorMessage());

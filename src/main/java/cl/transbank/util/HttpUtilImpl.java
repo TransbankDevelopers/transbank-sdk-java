@@ -19,29 +19,29 @@ public class HttpUtilImpl implements HttpUtil {
 
     @Setter @Getter(AccessLevel.PRIVATE) private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
 
-    public <T> T request(@NonNull URL url, RequestMethod method, @NonNull Object request, Map<String, String> headers,
+    public <T> T request(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
                          Class<T> clazz) throws IOException {
         final String jsonIn = getJsonUtil().jsonEncode(request);
         final String jsonOut = request(url, method, jsonIn, headers);
         return getJsonUtil().jsonDecode(jsonOut, clazz);
     }
 
-    public String request(@NonNull URL url, RequestMethod method, @NonNull String query)
+    public String request(@NonNull URL url, RequestMethod method, String query)
             throws IOException {
         return request(url, method, query, (ContentType) null, (Map<String, String>) null);
     }
 
-    public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
+    public String request(@NonNull URL url, RequestMethod method, String query,
                                  ContentType contentType) throws IOException {
         return request(url, method, query, contentType, null);
     }
 
-    public String request(@NonNull URL url, RequestMethod method, @NonNull String query, Map<String, String> headers)
+    public String request(@NonNull URL url, RequestMethod method, String query, Map<String, String> headers)
             throws IOException {
         return request(url, method, query, null, headers);
     }
 
-    public String request(@NonNull URL url, RequestMethod method, @NonNull String query,
+    public String request(@NonNull URL url, RequestMethod method, String query,
                           ContentType contentType, Map<String, String> headers) throws IOException {
         if (null == method)
             method = GET;
@@ -60,7 +60,7 @@ public class HttpUtilImpl implements HttpUtil {
                     conn = createDeleteConnection(url, query);
                     break;
                 case PUT:
-                    conn = createPUTConnection(url, query);
+                    conn = createPUTConnection(url, query, headers);
                     break;
                 case GET:
                 default:
@@ -119,11 +119,17 @@ public class HttpUtilImpl implements HttpUtil {
         return conn;
     }
 
-    private HttpURLConnection createPUTConnection(URL url, String query) throws IOException {
-        String deleteUrl = formatUrl(url.toString(), query);
-        HttpURLConnection conn = (HttpURLConnection) new URL(deleteUrl).openConnection();
+    private HttpURLConnection createPUTConnection(URL url, String query, Map<String, String> headers) throws IOException {
+        String putUrl = formatUrl(url.toString(), query);
+        HttpURLConnection conn = (HttpURLConnection) new URL(putUrl).openConnection();
         conn.setRequestMethod(PUT.toString());
         conn.setDoOutput(true);
+
+        if (null != headers) {
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
 
         return conn;
     }

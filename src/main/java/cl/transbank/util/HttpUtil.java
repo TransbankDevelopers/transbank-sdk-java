@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.Map;
 
 public interface HttpUtil {
+    <T> T request(@NonNull URL url, RequestMethod method, @NonNull Object request, Map<String, String> headers,
+                  Class<T> clazz) throws IOException;
     String request(URL url, HttpUtilImpl.RequestMethod method, String query) throws IOException;
     String request(URL url, HttpUtilImpl.RequestMethod method, String query, HttpUtil.ContentType contentType)
             throws IOException;

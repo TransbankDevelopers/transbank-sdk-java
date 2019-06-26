@@ -6,13 +6,13 @@ import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.model.CardDetail;
 import cl.transbank.webpay.webpayplus.model.CommitWebpayPlusTransactionResponse;
 import cl.transbank.webpay.webpayplus.model.CreateWebpayPlusTransactionResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
 import java.net.URL;
 
 public class WebpayPlus {
@@ -110,20 +110,47 @@ public class WebpayPlus {
         }
 
         public static CommitWebpayPlusTransactionResponse commit(String token) throws TransactionCommitException {
-            return null;
+            return commit(token, null);
         }
 
         public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
                 throws TransactionCommitException {
-            return null;
+            try {
+                options = buildNormalOptions(options);
+
+                final URL endpoint = new URL(
+                        String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+                final TransactionCommitResponse out = getHttpUtil().request(endpoint, HttpUtil.RequestMethod.PUT, null,
+                        buildHeaders(options), TransactionCommitResponse.class);
+
+                if (null == out)
+                    throw new TransactionCommitException("Could not obtain a response from transbank webservice");
+
+                if (null != out.getErrorMessage())
+                    throw new TransactionCreateException(out.getErrorMessage());
+
+                return new CommitWebpayPlusTransactionResponse(
+                        out.getVci(), out.getAmount(), out.getStatus(), out.getBuyOrder(), out.getSessionId(),
+                        new CardDetail(out.getCardDetail().getCardNumber()), out.getAccountingDate(), out.getTransactionDate(),
+                        out.getAuthorizationCode(), out.getPaymentTypeCode(), out.getResponseCode(), out.getInstallmentsAmount(),
+                        out.getInstallmentsNumber(), out.getBalance());
+            } catch (TransactionCommitException txe) {
+                throw txe;
+            } catch (Exception e) {
+                throw new TransactionCommitException(e);
+            }
         }
     }
 
-    public static void main(String[] args) throws TransactionCreateException {
+    public static void main(String[] args) throws TransactionCreateException, TransactionCommitException {
         //Options options = new Options(null, null, IntegrationType.LIVE);
         Options options = null;
         final CreateWebpayPlusTransactionResponse response = Transaction.create("afdgef346456",
                 "432453sdfgdfgh", 1000, "http://localhost:8080", options);
         System.out.println(response);
+
+        String token = "e3185dca43dddba6532754f80c680f092b386e376d7c23128c3413385e7a3c97";
+        final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
+        System.out.println(commit);
     }
 }

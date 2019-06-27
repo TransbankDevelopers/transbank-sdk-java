@@ -64,7 +64,7 @@ public class HttpUtilImpl implements HttpUtil {
                     break;
                 case GET:
                 default:
-                    conn = createGETConnection(url, query);
+                    conn = createGETConnection(url, query, headers);
             }
 
             int responseCode = conn.getResponseCode();
@@ -103,10 +103,16 @@ public class HttpUtilImpl implements HttpUtil {
         return conn;
     }
 
-    private HttpURLConnection createGETConnection(URL url, String query) throws IOException {
+    private HttpURLConnection createGETConnection(URL url, String query, Map<String, String> headers) throws IOException {
         String getUrl = formatUrl(url.toString(), query);
         HttpURLConnection conn = (HttpURLConnection) new URL(getUrl).openConnection();
         conn.setRequestMethod(GET.toString());
+
+        if (null != headers) {
+            for (Map.Entry<String, String> header : headers.entrySet()) {
+                conn.setRequestProperty(header.getKey(), header.getValue());
+            }
+        }
 
         return conn;
     }

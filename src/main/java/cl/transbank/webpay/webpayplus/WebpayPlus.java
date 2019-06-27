@@ -7,10 +7,12 @@ import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.exception.TransactionRefundException;
+import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.model.CardDetail;
 import cl.transbank.webpay.webpayplus.model.CommitWebpayPlusTransactionResponse;
 import cl.transbank.webpay.webpayplus.model.CreateWebpayPlusTransactionResponse;
 import cl.transbank.webpay.webpayplus.model.RefundWebpayPlusTransactionResponse;
+import cl.transbank.webpay.webpayplus.model.StatusWebpayPlusTransactionResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -196,26 +198,77 @@ public class WebpayPlus {
                         out.getResponseCode(),
                         out.getAuthorizationDate(),
                         out.getNullifiedAmount());
+            } catch (TransactionRefundException txr) {
+                throw txr;
             } catch (Exception e) {
                 throw new TransactionRefundException(e);
             }
         }
+
+        public static StatusWebpayPlusTransactionResponse status(String token) throws TransactionStatusException {
+            return WebpayPlus.Transaction.status(token, null);
+        }
+
+        public static StatusWebpayPlusTransactionResponse status(String token, Options options)
+                throws TransactionStatusException {
+            try {
+                options = WebpayPlus.buildNormalOptions(options);
+
+                final URL endpoint = new URL(
+                        String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
+                final TransactionStatusResponse out = WebpayApiResource.getHttpUtil().request(
+                        endpoint,
+                        HttpUtil.RequestMethod.GET,
+                        null,
+                        WebpayApiResource.buildHeaders(options),
+                        TransactionStatusResponse.class);
+                System.out.println(out);
+
+                if (null == out)
+                    throw new TransactionStatusException("Could not obtain a response from transbank webservice");
+
+                if (null != out.getErrorMessage())
+                    throw new TransactionStatusException(out.getErrorMessage());
+
+                return new StatusWebpayPlusTransactionResponse(
+                        out.getVci(),
+                        out.getAmount(),
+                        out.getStatus(),
+                        out.getBuyOrder(),
+                        out.getSessionId(),
+                        new CardDetail(out.getCardDetail().getCardNumber()),
+                        out.getAccountingDate(),
+                        out.getTransactionDate(),
+                        out.getAuthorizationCode(),
+                        out.getPaymentTypeCode(),
+                        out.getResponseCode(),
+                        out.getInstallmentsAmount(),
+                        out.getInstallmentsNumber(),
+                        out.getBalance());
+            } catch (TransactionStatusException txs) {
+                throw txs;
+            } catch (Exception e) {
+                throw new TransactionStatusException(e);
+            }
+        }
     }
 
-    public static void main(String[] args) throws TransactionCreateException, TransactionCommitException, TransactionRefundException {
+    public static void main(String[] args) throws TransactionCreateException, TransactionCommitException, TransactionRefundException, TransactionStatusException {
         //Options options = new Options(null, null, IntegrationType.LIVE);
         Options options = null;
         final CreateWebpayPlusTransactionResponse response = Transaction.create("afdgef346456",
                 "432453sdfgdfgh", 1000, "http://localhost:8080", options);
         System.out.println(response);
 
-        String token = "e3185dca43dddba6532754f80c680f092b386e376d7c23128c3413385e7a3c97";
+        String token = "ee5f1ad82bc04b889f7326b9ec60ab8f3f1e71c70586d7ad7c0f15af77c7beef";
         final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
         System.out.println(commit);
 
         final RefundWebpayPlusTransactionResponse refund = Transaction.refund(token, 10);
         System.out.println(refund);
 
-
+        final StatusWebpayPlusTransactionResponse status = Transaction.status(token);
+        System.out.println(status);
     }
 }

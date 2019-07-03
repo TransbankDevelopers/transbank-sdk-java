@@ -1,12 +1,13 @@
 package cl.transbank.webpay;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 @ToString @NoArgsConstructor @AllArgsConstructor
 public class Options implements Cloneable {
-    @Setter @Getter private String commerceCode;
-    @Setter @Getter private String apiKey;
-    @Setter @Getter private IntegrationType integrationType;
+    @Setter @Getter @Accessors(chain = true) private String commerceCode;
+    @Setter @Getter @Accessors(chain = true) private String apiKey;
+    @Setter @Getter @Accessors(chain = true) private IntegrationType integrationType;
 
     public Options buildOptions(Options options) {
         Options alt = clone();
@@ -39,5 +40,11 @@ public class Options implements Cloneable {
         return (null == commerceCode || commerceCode.trim().isEmpty()) &&
                 (null == apiKey || apiKey.trim().isEmpty()) &&
                 (null == integrationType || integrationType.toString().isEmpty());
+    }
+
+    public static boolean isEmpty(Options options) {
+        return (null == options || (null == options.getCommerceCode() || options.getCommerceCode().trim().isEmpty()) &&
+                (null == options.getApiKey() || options.getApiKey().trim().isEmpty()) &&
+                (null == options.getIntegrationType() || options.getIntegrationType().toString().isEmpty()));
     }
 }

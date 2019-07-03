@@ -278,15 +278,38 @@ public class WebpayPlus {
             }
         }
 
+        /*
+         * Webpay Plus Deferred Capture
+         */
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String buyOrder, String authorizationCode, double amount) throws TransactionCaptureException {
             return capture(token, buyOrder, authorizationCode, amount, null);
         }
 
+        /*
+         * Webpay Plus Deferred Capture
+         */
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String buyOrder, String authorizationCode, double amount, Options options)
                 throws TransactionCaptureException {
             return _capture(token, null, buyOrder, authorizationCode, amount, options);
+        }
+
+        /*
+         * Webpay Plus Mall Deferred Capture
+         */
+        public static CaptureWebpayPlusTransactionResponse capture(
+                String token, String commerceCode, String buyOrder, String authorizationCode, double amount) throws TransactionCaptureException {
+            return capture(token, commerceCode, buyOrder, authorizationCode, amount, null);
+        }
+
+        /*
+         * Webpay Plus Mall Deferred Capture
+         */
+        public static CaptureWebpayPlusTransactionResponse capture(
+                String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
+                throws TransactionCaptureException {
+            return _capture(token, commerceCode, buyOrder, authorizationCode, amount, options);
         }
 
         private static CaptureWebpayPlusTransactionResponse _capture(

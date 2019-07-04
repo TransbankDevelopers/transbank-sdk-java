@@ -60,7 +60,7 @@ public class HttpUtilImpl implements HttpUtil {
                     conn = createDeleteConnection(url, query);
                     break;
                 case PUT:
-                    conn = createPUTConnection(url, query, headers);
+                    conn = createPUTConnection(url, query, contentType, headers);
                     break;
                 case GET:
                 default:
@@ -81,26 +81,7 @@ public class HttpUtilImpl implements HttpUtil {
 
     private HttpURLConnection createPOSTConnection(URL url, String query, ContentType contentType, Map<String, String> headers)
             throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setUseCaches(false);
-        conn.setDoOutput(true);
-        conn.setRequestMethod(POST.toString());
-        conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("Content-Type", String.format(
-                "%s;charset=%s", contentType.getContentType(), StandardCharsets.UTF_8.name().toLowerCase()));
-
-        if (null != headers) {
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                conn.setRequestProperty(header.getKey(), header.getValue());
-            }
-        }
-
-        try (OutputStream out = conn.getOutputStream()) {
-            out.write(query.getBytes(StandardCharsets.UTF_8));
-        }
-
-        return conn;
+        return createSendingDataConnection(POST, url, query, contentType, headers);
     }
 
     private HttpURLConnection createGETConnection(URL url, String query, Map<String, String> headers) throws IOException {
@@ -125,16 +106,30 @@ public class HttpUtilImpl implements HttpUtil {
         return conn;
     }
 
-    private HttpURLConnection createPUTConnection(URL url, String query, Map<String, String> headers) throws IOException {
-        String putUrl = formatUrl(url.toString(), query);
-        HttpURLConnection conn = (HttpURLConnection) new URL(putUrl).openConnection();
-        conn.setRequestMethod(PUT.toString());
+    private HttpURLConnection createPUTConnection(
+            URL url, String query, ContentType contentType, Map<String, String> headers) throws IOException {
+        return createSendingDataConnection(PUT, url, query, contentType, headers);
+    }
+
+    private HttpURLConnection createSendingDataConnection(
+            RequestMethod method, URL url, String query, ContentType contentType, Map<String, String> headers) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setUseCaches(false);
         conn.setDoOutput(true);
+        conn.setRequestMethod(method.toString());
+        conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setRequestProperty("Content-Type", String.format(
+                "%s;charset=%s", contentType.getContentType(), StandardCharsets.UTF_8.name().toLowerCase()));
 
         if (null != headers) {
             for (Map.Entry<String, String> header : headers.entrySet()) {
                 conn.setRequestProperty(header.getKey(), header.getValue());
             }
+        }
+
+        try (OutputStream out = conn.getOutputStream()) {
+            out.write(query.getBytes(StandardCharsets.UTF_8));
         }
 
         return conn;

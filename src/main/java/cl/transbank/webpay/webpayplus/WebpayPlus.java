@@ -107,67 +107,67 @@ public class WebpayPlus {
         return WebpayPlus.getOptions().buildOptions(options);
     }
 
-    public static class Transaction extends WebpayApiResource {
+    public static class Transaction {
         public static CreateWebpayPlusTransactionResponse create(
-                String buyOrder, String sessionId, double amount, String returnUrl) throws TransactionCreateException {
+                String buyOrder, String sessionId, double amount, String returnUrl) throws CreateTransactionException {
             return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, null);
         }
 
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, Options options)
-                throws TransactionCreateException {
+                throws CreateTransactionException {
             try {
                 options = WebpayPlus.buildNormalOptions(options);
 
                 final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
 
-                final TransactionCreateResponse out = WebpayApiResource.getHttpUtil().request(
+                final CreateTransactionResponse out = WebpayApiResource.getHttpUtil().request(
                         endpoint,
                         HttpUtil.RequestMethod.POST,
                         new TransactionCreateRequest(buyOrder, sessionId, amount, returnUrl),
                         WebpayApiResource.buildHeaders(options),
-                        TransactionCreateResponse.class);
+                        CreateTransactionResponse.class);
 
                 if (null == out)
-                    throw new TransactionCreateException("Could not obtain a response from transbank webservice");
+                    throw new CreateTransactionException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
-                    throw new TransactionCreateException(out.getErrorMessage());
+                    throw new CreateTransactionException(out.getErrorMessage());
 
                 return new CreateWebpayPlusTransactionResponse(
                         out.getToken(),
                         out.getUrl());
-            } catch (TransactionCreateException txe) {
+            } catch (CreateTransactionException txe) {
                 throw txe;
             } catch (Exception e) {
-                throw new TransactionCreateException(e);
+                throw new CreateTransactionException(e);
             }
         }
 
-        public static CommitWebpayPlusTransactionResponse commit(String token) throws TransactionCommitException {
+        public static CommitWebpayPlusTransactionResponse commit(String token) throws CommitTransactionException {
             return WebpayPlus.Transaction.commit(token, null);
         }
 
         public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
-                throws TransactionCommitException {
+                throws CommitTransactionException {
             try {
                 options = WebpayPlus.buildNormalOptions(options);
 
                 final URL endpoint = new URL(
                         String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
 
-                final TransactionCommitResponse out = WebpayApiResource.getHttpUtil().request(
+                final CommitTransactionResponse out = WebpayApiResource.getHttpUtil().request(
                         endpoint,
                         HttpUtil.RequestMethod.PUT,
                         null,
                         WebpayApiResource.buildHeaders(options),
-                        TransactionCommitResponse.class);
+                        CommitTransactionResponse.class);
 
                 if (null == out)
-                    throw new TransactionCommitException("Could not obtain a response from transbank webservice");
+                    throw new CommitTransactionException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
-                    throw new TransactionCreateException(out.getErrorMessage());
+                    throw new CreateTransactionException(out.getErrorMessage());
 
                 return new CommitWebpayPlusTransactionResponse(
                         out.getVci(),
@@ -184,38 +184,38 @@ public class WebpayPlus {
                         out.getInstallmentsAmount(),
                         out.getInstallmentsNumber(),
                         out.getBalance());
-            } catch (TransactionCommitException txe) {
+            } catch (CommitTransactionException txe) {
                 throw txe;
             } catch (Exception e) {
-                throw new TransactionCommitException(e);
+                throw new CommitTransactionException(e);
             }
         }
 
         public static RefundWebpayPlusTransactionResponse refund(String token, double amount)
-                throws TransactionRefundException {
+                throws RefundTransactionException {
             return WebpayPlus.Transaction.refund(token, amount, null);
         }
 
         public static RefundWebpayPlusTransactionResponse refund(String token, double amount, Options options)
-                throws TransactionRefundException {
+                throws RefundTransactionException {
             try {
                 options = WebpayPlus.buildNormalOptions(options);
 
                 final URL endpoint = new URL(
                         String.format("%s/%s/refunds", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
 
-                final TransactionRefundResponse out = WebpayApiResource.getHttpUtil().request(
+                final RefundTransactionResponse out = WebpayApiResource.getHttpUtil().request(
                         endpoint,
                         HttpUtil.RequestMethod.POST,
                         new TransactionRefundRequest(amount),
                         WebpayApiResource.buildHeaders(options),
-                        TransactionRefundResponse.class);
+                        RefundTransactionResponse.class);
 
                 if (null == out)
-                    throw new TransactionRefundException("Could not obtain a response from transbank webservice");
+                    throw new RefundTransactionException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
-                    throw new TransactionRefundException(out.getErrorMessage());
+                    throw new RefundTransactionException(out.getErrorMessage());
 
                 return new RefundWebpayPlusTransactionResponse(
                         out.getType(),
@@ -224,37 +224,37 @@ public class WebpayPlus {
                         out.getResponseCode(),
                         out.getAuthorizationDate(),
                         out.getNullifiedAmount());
-            } catch (TransactionRefundException txr) {
+            } catch (RefundTransactionException txr) {
                 throw txr;
             } catch (Exception e) {
-                throw new TransactionRefundException(e);
+                throw new RefundTransactionException(e);
             }
         }
 
-        public static StatusWebpayPlusTransactionResponse status(String token) throws TransactionStatusException {
+        public static StatusWebpayPlusTransactionResponse status(String token) throws StatusTransactionException {
             return WebpayPlus.Transaction.status(token, null);
         }
 
         public static StatusWebpayPlusTransactionResponse status(String token, Options options)
-                throws TransactionStatusException {
+                throws StatusTransactionException {
             try {
                 options = WebpayPlus.buildNormalOptions(options);
 
                 final URL endpoint = new URL(
                         String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
 
-                final TransactionStatusResponse out = WebpayApiResource.getHttpUtil().request(
+                final StatusTransactionResponse out = WebpayApiResource.getHttpUtil().request(
                         endpoint,
                         HttpUtil.RequestMethod.GET,
                         null,
                         WebpayApiResource.buildHeaders(options),
-                        TransactionStatusResponse.class);
+                        StatusTransactionResponse.class);
 
                 if (null == out)
-                    throw new TransactionStatusException("Could not obtain a response from transbank webservice");
+                    throw new StatusTransactionException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
-                    throw new TransactionStatusException(out.getErrorMessage());
+                    throw new StatusTransactionException(out.getErrorMessage());
 
                 return new StatusWebpayPlusTransactionResponse(
                         out.getVci(),
@@ -271,10 +271,10 @@ public class WebpayPlus {
                         out.getInstallmentsAmount(),
                         out.getInstallmentsNumber(),
                         out.getBalance());
-            } catch (TransactionStatusException txs) {
+            } catch (StatusTransactionException txs) {
                 throw txs;
             } catch (Exception e) {
-                throw new TransactionStatusException(e);
+                throw new StatusTransactionException(e);
             }
         }
 
@@ -282,7 +282,7 @@ public class WebpayPlus {
          * Webpay Plus Deferred Capture
          */
         public static CaptureWebpayPlusTransactionResponse capture(
-                String token, String buyOrder, String authorizationCode, double amount) throws TransactionCaptureException {
+                String token, String buyOrder, String authorizationCode, double amount) throws CaptureTransactionException {
             return capture(token, buyOrder, authorizationCode, amount, null);
         }
 
@@ -291,7 +291,7 @@ public class WebpayPlus {
          */
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String buyOrder, String authorizationCode, double amount, Options options)
-                throws TransactionCaptureException {
+                throws CaptureTransactionException {
             return _capture(token, null, buyOrder, authorizationCode, amount, options);
         }
 
@@ -299,7 +299,7 @@ public class WebpayPlus {
          * Webpay Plus Mall Deferred Capture
          */
         public static CaptureWebpayPlusTransactionResponse capture(
-                String token, String commerceCode, String buyOrder, String authorizationCode, double amount) throws TransactionCaptureException {
+                String token, String commerceCode, String buyOrder, String authorizationCode, double amount) throws CaptureTransactionException {
             return capture(token, commerceCode, buyOrder, authorizationCode, amount, null);
         }
 
@@ -308,13 +308,13 @@ public class WebpayPlus {
          */
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
-                throws TransactionCaptureException {
+                throws CaptureTransactionException {
             return _capture(token, commerceCode, buyOrder, authorizationCode, amount, options);
         }
 
         private static CaptureWebpayPlusTransactionResponse _capture(
                 String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
-                throws TransactionCaptureException {
+                throws CaptureTransactionException {
             try {
                 options = WebpayPlus.buildDeferredOptions(options);
 
@@ -323,33 +323,37 @@ public class WebpayPlus {
 
                 final Map<String, String> headers = WebpayApiResource.buildHeaders(options);
 
-                final TransactionCaptureResponse out = WebpayApiResource.getHttpUtil().request(
+                final CaptureTransactionResponse out = WebpayApiResource.getHttpUtil().request(
                         endpoint,
                         HttpUtil.RequestMethod.PUT,
                         new TransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, amount),
                         headers,
-                        TransactionCaptureResponse.class);
+                        CaptureTransactionResponse.class);
 
                 if (null == out)
-                    throw new TransactionCaptureException("Could not obtain a response from transbank webservice");
+                    throw new CaptureTransactionException("Could not obtain a response from transbank webservice");
 
                 if (null != out.getErrorMessage())
-                    throw new TransactionCaptureException(out.getErrorMessage());
+                    throw new CaptureTransactionException(out.getErrorMessage());
 
                 return new CaptureWebpayPlusTransactionResponse(
                         out.getAuthorizationCode(),
                         out.getAuthorizationDate(),
                         out.getCapturedAmount(),
                         out.getResponseCode());
-            } catch (TransactionCaptureException txc) {
+            } catch (CaptureTransactionException txc) {
                 throw txc;
             } catch (Exception e) {
-                throw new TransactionCaptureException(e);
+                throw new CaptureTransactionException(e);
             }
+        }
+
+        public static class MallTransaction {
+
         }
     }
 
-    public static void main(String[] args) throws TransactionCreateException, TransactionCommitException, TransactionRefundException, TransactionStatusException, TransactionCaptureException {
+    public static void main(String[] args) throws CreateTransactionException, CommitTransactionException, RefundTransactionException, StatusTransactionException, CaptureTransactionException {
         //Options options = new Options(null, null, IntegrationType.LIVE);
         Options options = null;
         System.out.println("---------------------------- Webpay Plus [Transaction.create] ----------------------------");

@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @ToString
-class TransactionCommitResponse {
+class CommitTransactionResponse {
     @SerializedName("vci") private String vci;
     @SerializedName("amount") private double amount;
     @SerializedName("status") private String status;

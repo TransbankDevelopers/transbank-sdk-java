@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @ToString
-class TransactionCaptureResponse {
+class CaptureTransactionResponse {
     @SerializedName("authorization_code") private String authorizationCode;
     @SerializedName("authorization_date") private String authorizationDate;
     @SerializedName("captured_amount") private double capturedAmount;

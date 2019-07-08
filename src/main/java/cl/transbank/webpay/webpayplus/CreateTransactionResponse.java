@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @ToString
-class TransactionCreateResponse {
+class CreateTransactionResponse {
     @SerializedName("token") private String token;
     @SerializedName("url") private String url;
     @SerializedName("error_message") private String errorMessage;

@@ -6,7 +6,7 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @ToString
-class TransactionRefundResponse {
+class RefundTransactionResponse {
     @SerializedName("type") private String type;
     @SerializedName("balance") private double balance;
     @SerializedName("authorization_code") private String authorizationCode;

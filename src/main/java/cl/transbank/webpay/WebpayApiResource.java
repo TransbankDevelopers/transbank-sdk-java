@@ -11,7 +11,7 @@ import java.util.Map;
 public abstract class WebpayApiResource {
     @Getter @Setter private static HttpUtil httpUtil = HttpUtilImpl.getInstance();
 
-    protected static Map<String, String> buildHeaders(Options options) {
+    public static Map<String, String> buildHeaders(Options options) {
         if (null == options)
             return null;
 

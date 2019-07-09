@@ -12,8 +12,11 @@ import lombok.Getter;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.logging.*;
 
 public class WebpayPlus {
+    private static Logger logger = Logger.getLogger(WebpayPlus.class.getName());
+
     @Getter(AccessLevel.PRIVATE)
     private static Options options = new Options();
 
@@ -347,53 +350,126 @@ public class WebpayPlus {
                 throw new CaptureTransactionException(e);
             }
         }
+    }
 
-        public static class MallTransaction {
+    public static class MallTransaction {
+        public static CreateWebpayPlusMallTransactionResponse create (
+                String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details) throws CreateTransactionException {
+            return MallTransaction.create (buyOrder, sessionId, returnUrl, details, null);
+        }
 
+        public static CreateWebpayPlusMallTransactionResponse create (
+                String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details, Options options) throws CreateTransactionException {
+            try {
+                options = WebpayPlus.buildMallOptions(options);
+
+                final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
+
+                final CreateTransactionResponse out = WebpayApiResource.getHttpUtil().request(
+                        endpoint,
+                        HttpUtil.RequestMethod.POST,
+                        new CreateMallTransactionRequest(buyOrder, sessionId, returnUrl, details.getDetails()),
+                        WebpayApiResource.buildHeaders(options),
+                        CreateTransactionResponse.class);
+
+                if (null == out)
+                    throw new CreateTransactionException("Could not obtain a response from transbank webservice");
+
+                if (null != out.getErrorMessage())
+                    throw new CreateTransactionException(out.getErrorMessage());
+
+                return new CreateWebpayPlusMallTransactionResponse(
+                        out.getToken(),
+                        out.getUrl());
+            } catch (Exception e) {
+                throw new CreateTransactionException(e);
+            }
         }
     }
 
     public static void main(String[] args) throws CreateTransactionException, CommitTransactionException, RefundTransactionException, StatusTransactionException, CaptureTransactionException {
         //Options options = new Options(null, null, IntegrationType.LIVE);
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
+        Logger globalLog = Logger.getLogger("cl.transbank");
+        globalLog.setUseParentHandlers(false);
+        globalLog.addHandler(new ConsoleHandler() {
+            {/*setOutputStream(System.out);*/setLevel(Level.ALL);}
+        });
+        globalLog.setLevel(Level.ALL);
+
         Options options = null;
-        System.out.println("---------------------------- Webpay Plus [Transaction.create] ----------------------------");
-        final CreateWebpayPlusTransactionResponse create = Transaction.create("afdgef346456",
-                "432453sdfgdfgh", 1000, "http://localhost:8080", options);
-        System.out.println(create);
-        System.out.println("");
-
-        System.out.println("---------------------------- Webpay Plus [Transaction.commit] ----------------------------");
-        String token = "ee5f1ad82bc04b889f7326b9ec60ab8f3f1e71c70586d7ad7c0f15af77c7beef";
-        final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
-        System.out.println(commit);
-        System.out.println("");
-
-        System.out.println("---------------------------- Webpay Plus [Transaction.refund] ----------------------------");
-        final RefundWebpayPlusTransactionResponse refund = Transaction.refund(token, 10);
-        System.out.println(refund);
-        System.out.println("");
-
-        System.out.println("---------------------------- Webpay Plus [Transaction.status] ----------------------------");
-        final StatusWebpayPlusTransactionResponse status = Transaction.status(token);
-        System.out.println(status);
-        System.out.println("");
-
-        System.out.println("------------------- Webpay Plus Captura Diferida [Transaction.create] -------------------");
-        String buyOrder = "afdgef346456";
-        final CreateWebpayPlusTransactionResponse deferredCapture = Transaction.create(buyOrder,
-                "432453sdfgdfgh", 1000, "http://localhost:8080", buildDeferredOptions(null));
-        System.out.println(deferredCapture);
-        System.out.println("");
-
-        System.out.println("------------------- Webpay Plus Captura Diferida [Transaction.capture] -------------------");
+        logger.info("---------------------------- Webpay Plus [Transaction.create] ----------------------------");
         try {
-            String deferredToken = deferredCapture.getToken();
-            String deferredBuyOrder = buyOrder;
-            String deferredAuthorizationCode = "1213";
-            final CaptureWebpayPlusTransactionResponse capture = Transaction.capture(deferredToken, deferredBuyOrder, deferredAuthorizationCode, 10);
-            System.out.println(capture);
+            final CreateWebpayPlusTransactionResponse create = Transaction.create("afdgef346456",
+                    "432453sdfgdfgh", 1000, "http://localhost:8080", options);
+            logger.info(create.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        logger.info("");
+
+        logger.info("---------------------------- Webpay Plus [Transaction.commit] ----------------------------");
+        String token = "e8943e6fcc623f1336ca195a7e99c8c6a8869c1367f9205a2f5d1c329615aa51";
+
+        try {
+            final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
+            logger.info(commit.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
+
+        logger.info("---------------------------- Webpay Plus [Transaction.refund] ----------------------------");
+        try {
+            final RefundWebpayPlusTransactionResponse refund = Transaction.refund(token, 10);
+            logger.info(refund.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
+
+        logger.info("---------------------------- Webpay Plus [Transaction.status] ----------------------------");
+        try {
+            final StatusWebpayPlusTransactionResponse status = Transaction.status(token);
+            logger.info(status.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
+
+        logger.info("------------------- Webpay Plus Captura Diferida [Transaction.create] -------------------");
+        try {
+            String buyOrder = "afdgef346456";
+            final CreateWebpayPlusTransactionResponse deferredCapture = Transaction.create(buyOrder,
+                    "432453sdfgdfgh", 1000, "http://localhost:8080", buildDeferredOptions(null));
+            logger.info(deferredCapture.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
+
+        logger.info("------------------- Webpay Plus Captura Diferida [Transaction.capture] -------------------");
+        try {
+            String deferredToken = "e4273b557e87d2fbb6df820dce7698d9667cb2bf08595a381f379243776d5389";
+            String deferredBuyOrder = "92506929";
+            String deferredAuthorizationCode = "1213";
+            final CaptureWebpayPlusTransactionResponse capture = Transaction.capture(deferredToken, deferredBuyOrder, deferredAuthorizationCode, 10);
+            logger.info(capture.toString());
+            System.out.println("EL PICO");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
+
+        logger.info("-------------------------- Webpay Plus Mall [Transaction.create] --------------------------");
+        try {
+            final CreateWebpayPlusMallTransactionResponse create = MallTransaction.create("afdgef346456",
+                    "432453sdfgdfgh", "http://localhost:8080", CreateMallTransactionDetails.build(
+                            1000, "597055555536", "r234n347"));
+            logger.info(create.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        logger.info("");
     }
 }

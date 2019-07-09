@@ -9,7 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter @Setter @ToString
 public class WebpayDetails {
-    @SerializedName("amount") private String amount;
+    @SerializedName("amount") private double amount;
     @SerializedName("status") private String status;
     @SerializedName("authorization_code") private String authorizationCode;
     @SerializedName("payment_type_code") private String paymentTypeCode;

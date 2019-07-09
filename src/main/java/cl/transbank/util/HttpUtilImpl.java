@@ -11,10 +11,14 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static cl.transbank.util.HttpUtil.RequestMethod.*;
 
 public class HttpUtilImpl implements HttpUtil {
+    private static Logger logger = Logger.getLogger(HttpUtilImpl.class.getName());
+
     private static volatile HttpUtilImpl instance;
 
     @Setter @Getter(AccessLevel.PRIVATE) private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
@@ -52,6 +56,24 @@ public class HttpUtilImpl implements HttpUtil {
         HttpURLConnection conn = null;
 
         try {
+            logger.log(Level.FINE, String.format("HTTP URL : %s", url));
+            logger.log(Level.FINE, String.format("HTTP Method : %s", method));
+
+            if (null != headers) {
+                for (String key : headers.keySet()) {
+                    if (!StringUtils.isEmpty(key)) {
+                        String value = headers.get(key);
+
+                        if (key.equalsIgnoreCase("Tbk-Api-Key-Secret")) {
+                            value = "NOT DISPLAYED BY SECURITY REASON";
+                        }
+
+                        logger.log(Level.FINE, String.format("HTTP Header [%s] : %s", key, value));
+                    }
+                }
+            }
+
+            logger.log(Level.FINE, String.format("HTTP Request Query : %s", query));
             switch (method) {
                 case POST:
                     conn = createPOSTConnection(url, query, contentType, headers);
@@ -69,6 +91,7 @@ public class HttpUtilImpl implements HttpUtil {
 
             int responseCode = conn.getResponseCode();
 
+            logger.log(Level.FINE, String.format("HTTP Response Code : %s", responseCode));
             InputStream input = (responseCode >= 200 && responseCode < 300) ?
                     conn.getInputStream() :
                     conn.getErrorStream();
@@ -147,6 +170,8 @@ public class HttpUtilImpl implements HttpUtil {
         try (final Scanner scanner = new Scanner(responseStream, StandardCharsets.UTF_8.name())) {
             final String responseBody = scanner.useDelimiter("\\A").next();
             responseStream.close();
+
+            logger.log(Level.FINE, String.format("HTTP Response Body : %s", responseBody));
             return responseBody;
         }
     }

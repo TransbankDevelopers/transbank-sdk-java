@@ -19,7 +19,7 @@ public class CommitWebpayPlusMallTransactionResponse {
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter @ToString
     public class Detail {
-        private String amount;
+        private double amount;
         private String status;
         private String authorizationCode;
         private String paymentTypeCode;

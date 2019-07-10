@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
  *         &lt;element name="token" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- *         &lt;element name="url" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ *         &lt;element name="endpoint" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -61,7 +61,7 @@ public class WsInitTransactionOutput {
     }
 
     /**
-     * Gets the value of the url property.
+     * Gets the value of the endpoint property.
      * 
      * @return
      *     possible object is
@@ -73,7 +73,7 @@ public class WsInitTransactionOutput {
     }
 
     /**
-     * Sets the value of the url property.
+     * Sets the value of the endpoint property.
      * 
      * @param value
      *     allowed object is

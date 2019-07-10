@@ -1,20 +1,17 @@
 package cl.transbank.webpay.webpayplus;
 
-import cl.transbank.webpay.webpayplus.model.CommitWebpayPlusMallTransactionResponse;
-import cl.transbank.webpay.webpayplus.model.CreateWebpayPlusMallTransactionResponse;
-import cl.transbank.webpay.webpayplus.model.CreateWebpayPlusTransactionResponse;
 import com.google.gson.annotations.SerializedName;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.ArrayList;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter @Setter @ToString
-class WebpayApiResponseManager {
+public class WebpayApiResponseManager {
     @SerializedName("error_message") private String errorMessage;
 
     @SerializedName("token") private String token;
@@ -29,52 +26,46 @@ class WebpayApiResponseManager {
 
     @SerializedName("details") private List<WebpayDetails> details;
 
-    CommitWebpayPlusMallTransactionResponse buildCommitWebpayPlusMallTransactionResponse() {
-        cl.transbank.webpay.model.CardDetail cardDetail = new cl.transbank.webpay.model.CardDetail(getCardDetail().getCardNumber());
+    @SerializedName("amount") private double amount;
+    @SerializedName("status") private String status;
+    @SerializedName("authorization_code") private String authorizationCode;
+    @SerializedName("payment_type_code") private String paymentTypeCode;
+    @SerializedName("response_code") private byte responseCode;
+    @SerializedName("installments_amount") private double installmentsAmount;
+    @SerializedName("installments_number") private byte installmentsNumber;
+    @SerializedName("balance") private double balance;
 
-        CommitWebpayPlusMallTransactionResponse response = new CommitWebpayPlusMallTransactionResponse();
-        response.setVci(getVci());
-        response.setAccountingDate(getAccountingDate());
-        response.setBuyOrder(getBuyOrder());
-        response.setCardDetail(cardDetail);
-        response.setSessionId(getSessionId());
-        response.setTransactionDate(getTransactionDate());
+    @SerializedName("type") private String type;
+    @SerializedName("authorization_date") private String authorizationDate;
+    @SerializedName("nullified_amount") private double nullifiedAmount;
 
-        final List<WebpayDetails> details = getDetails();
-        if (null != details) {
-            List<CommitWebpayPlusMallTransactionResponse.Detail> detailList = new ArrayList<>();
-            for (WebpayDetails detail : details) {
-                CommitWebpayPlusMallTransactionResponse.Detail d = response.new Detail();
-                d.setAmount(detail.getAmount());
-                d.setAuthorizationCode(detail.getAuthorizationCode());
-                d.setBuyOrder(detail.getBuyOrder());
-                d.setCommerceCode(detail.getCommerceCode());
-                d.setInstallmentsNumber(detail.getInstallmentsNumber());
-                d.setPaymentTypeCode(detail.getPaymentTypeCode());
-                d.setResponseCode(detail.getResponseCode());
-                d.setStatus(detail.getStatus());
-                detailList.add(d);
+    @SerializedName("captured_amount") private double capturedAmount;
+
+    public <T> T buildResponse(T dest) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return buildResponse(dest, null);
+    }
+
+    public <T> T buildResponse(T dest, Object source) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+        if (null == source)
+            source = this;
+
+        final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(dest.getClass()).getPropertyDescriptors();
+        for (PropertyDescriptor pd : propertyDescriptors) {
+            if (null != pd.getReadMethod() && null != pd.getWriteMethod()) {
+                PropertyDescriptor origin = null;
+                try {origin = new PropertyDescriptor(pd.getName(), source.getClass());} catch (Exception e) {}
+                if (null != origin) {
+                    final Object originValue = origin.getReadMethod().invoke(source);
+                    if (pd.getPropertyType() == origin.getPropertyType()) {
+                        pd.getWriteMethod().invoke(dest, originValue);
+                    } else {
+                        final Object destValue = pd.getPropertyType().newInstance();
+                        pd.getWriteMethod().invoke(dest, buildResponse(destValue, originValue));
+                    }
+                }
             }
-
-            response.setDetails(detailList);
         }
 
-        return response;
-    }
-
-    CreateWebpayPlusTransactionResponse buildCreateWebpayPlusTransactionResponse() {
-        CreateWebpayPlusTransactionResponse response = new CreateWebpayPlusTransactionResponse();
-        response.setToken(getToken());
-        response.setUrl(getUrl());
-
-        return response;
-    }
-
-    CreateWebpayPlusMallTransactionResponse buildCreateWebpayPlusMallTransactionResponse() {
-        CreateWebpayPlusMallTransactionResponse response = new CreateWebpayPlusMallTransactionResponse();
-        response.setToken(getToken());
-        response.setUrl(getUrl());
-
-        return response;
+        return dest;
     }
 }

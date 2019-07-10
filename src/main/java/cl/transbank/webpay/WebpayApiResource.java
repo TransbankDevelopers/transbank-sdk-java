@@ -2,9 +2,16 @@ package cl.transbank.webpay;
 
 import cl.transbank.util.HttpUtil;
 import cl.transbank.util.HttpUtilImpl;
+import cl.transbank.webpay.exception.WebpayException;
+import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.webpay.webpayplus.WebpayApiResponseManager;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.beans.IntrospectionException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,5 +27,24 @@ public abstract class WebpayApiResource {
         headers.put("Tbk-Api-Key-Secret", options.getApiKey());
 
         return headers;
+    }
+
+    public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final Options options, Class<T> clazz)
+            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
+        return execute(endpoint, method, null, options, clazz);
+    }
+
+    public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options, Class<T> clazz)
+            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
+        final WebpayApiResponseManager out = WebpayApiResource.getHttpUtil().request(endpoint, method,
+                request, WebpayApiResource.buildHeaders(options), WebpayApiResponseManager.class);
+
+        if (null == out)
+            throw new WebpayException("Could not obtain a response from transbank webservice");
+
+        if (null != out.getErrorMessage())
+            throw new WebpayException(out.getErrorMessage());
+
+        return out.buildResponse(clazz.newInstance());
     }
 }

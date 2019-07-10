@@ -12,7 +12,7 @@ before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi
 script:
-  - mvn --settings .travis/settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.endpoint=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
+  - mvn --settings .travis/settings.xml clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_LOGIN
 deploy:
   -
     provider: script

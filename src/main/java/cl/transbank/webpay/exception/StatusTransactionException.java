@@ -1,6 +1,6 @@
 package cl.transbank.webpay.exception;
 
-public class StatusTransactionException extends Exception {
+public class StatusTransactionException extends WebpayException {
     public StatusTransactionException() {
         super();
     }

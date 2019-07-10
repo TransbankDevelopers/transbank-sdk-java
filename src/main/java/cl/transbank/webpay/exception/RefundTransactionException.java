@@ -1,6 +1,6 @@
 package cl.transbank.webpay.exception;
 
-public class RefundTransactionException extends Exception {
+public class RefundTransactionException extends WebpayException {
     public RefundTransactionException() {
         super();
     }

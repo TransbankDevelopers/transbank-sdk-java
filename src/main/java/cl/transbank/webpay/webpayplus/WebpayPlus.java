@@ -109,6 +109,18 @@ public class WebpayPlus {
         return WebpayPlus.getOptions().buildOptions(options);
     }
 
+    private static CaptureWebpayPlusTransactionResponse capture(
+            String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
+            throws CaptureTransactionException {
+        try {
+            final URL endpoint = new URL(String.format("%s/%s/capture", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+            final WebpayApiRequest request = new TransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, amount);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, CaptureWebpayPlusTransactionResponse.class);
+        } catch (Exception e) {
+            throw new CaptureTransactionException(e);
+        }
+    }
+
     public static class Transaction {
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl) throws CreateTransactionException {
@@ -188,7 +200,7 @@ public class WebpayPlus {
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
-            return _capture(token, null, buyOrder, authorizationCode, amount, options);
+            return WebpayPlus.capture(token, null, buyOrder, authorizationCode, amount, options);
         }
 
         /*
@@ -205,20 +217,63 @@ public class WebpayPlus {
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
-            return _capture(token, commerceCode, buyOrder, authorizationCode, amount, options);
+            return WebpayPlus.capture(token, commerceCode, buyOrder, authorizationCode, amount, options);
+        }
+    }
+
+    public static class DeferredTransaction {
+        public static CreateWebpayPlusTransactionResponse create(
+                String buyOrder, String sessionId, double amount, String returnUrl) throws CreateTransactionException {
+            return WebpayPlus.DeferredTransaction.create(buyOrder, sessionId, amount, returnUrl, null);
         }
 
-        private static CaptureWebpayPlusTransactionResponse _capture(
-                String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
+        public static CreateWebpayPlusTransactionResponse create(
+                String buyOrder, String sessionId, double amount, String returnUrl, Options options) throws CreateTransactionException {
+            options = WebpayPlus.buildDeferredOptions(options);
+            return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, options);
+        }
+
+        public static CommitWebpayPlusTransactionResponse commit(String token) throws CommitTransactionException {
+            return WebpayPlus.DeferredTransaction.commit(token, null);
+        }
+
+        public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
+                throws CommitTransactionException {
+            options = WebpayPlus.buildDeferredOptions(options);
+            return WebpayPlus.Transaction.commit(token, options);
+        }
+
+        public static RefundWebpayPlusTransactionResponse refund(String token, double amount)
+                throws RefundTransactionException {
+            return WebpayPlus.DeferredTransaction.refund(token, amount, null);
+        }
+
+        public static RefundWebpayPlusTransactionResponse refund(String token, double amount, Options options)
+                throws RefundTransactionException {
+            options = WebpayPlus.buildDeferredOptions(options);
+            return WebpayPlus.Transaction.refund(token, amount, options);
+        }
+
+        public static StatusWebpayPlusTransactionResponse status(String token) throws StatusTransactionException {
+            return WebpayPlus.DeferredTransaction.status(token, null);
+        }
+
+        public static StatusWebpayPlusTransactionResponse status(String token, Options options)
+                throws StatusTransactionException {
+            options = WebpayPlus.buildDeferredOptions(options);
+            return WebpayPlus.Transaction.status(token, options);
+        }
+
+        public static CaptureWebpayPlusTransactionResponse capture(
+                String token, String buyOrder, String authorizationCode, double amount) throws CaptureTransactionException {
+            return WebpayPlus.DeferredTransaction.capture(token, buyOrder, authorizationCode, amount, null);
+        }
+
+        public static CaptureWebpayPlusTransactionResponse capture(
+                String token, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
-            try {
-                options = WebpayPlus.buildDeferredOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s/capture", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
-                final WebpayApiRequest request = new TransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, amount);
-                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, CaptureWebpayPlusTransactionResponse.class);
-            } catch (Exception e) {
-                throw new CaptureTransactionException(e);
-            }
+            options = WebpayPlus.buildDeferredOptions(options);
+            return WebpayPlus.capture(token, null, buyOrder, authorizationCode, amount, options);
         }
     }
 
@@ -295,60 +350,83 @@ public class WebpayPlus {
         logger.info("");
 
         logger.info("---------------------------- Webpay Plus [Transaction.commit] ----------------------------");
-        String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
+        {
+            String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
 
-        try {
-            final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
-            logger.info(commit.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                final CommitWebpayPlusTransactionResponse commit = Transaction.commit(token);
+                logger.info(commit.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
         }
-        logger.info("");
 
         logger.info("---------------------------- Webpay Plus [Transaction.refund] ----------------------------");
-        try {
-            final RefundWebpayPlusTransactionResponse refund = Transaction.refund(token, 10);
-            logger.info(refund.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+        {
+            String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
+
+            try {
+                final RefundWebpayPlusTransactionResponse refund = Transaction.refund(token, 10);
+                logger.info(refund.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
         }
-        logger.info("");
 
         logger.info("---------------------------- Webpay Plus [Transaction.status] ----------------------------");
-        try {
-            String statusToken = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
-            final StatusWebpayPlusTransactionResponse status = Transaction.status(statusToken);
-            logger.info(status.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        logger.info("");
+        {
+            String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
 
-        logger.info("------------------- Webpay Plus Captura Diferida [Transaction.create] -------------------");
+            try {
+                final StatusWebpayPlusTransactionResponse status = Transaction.status(token);
+                logger.info(status.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("------------------- Webpay Plus Captura Diferida [DeferredTransaction.create] -------------------");
         try {
             String buyOrder = "afdgef346456";
-            final CreateWebpayPlusTransactionResponse deferredCapture = Transaction.create(buyOrder,
-                    "432453sdfgdfgh", 1000, "http://localhost:8080", buildDeferredOptions(null));
+            final CreateWebpayPlusTransactionResponse deferredCapture = DeferredTransaction.create(buyOrder,
+                    "432453sdfgdfgh", 1000, "http://localhost:8080");
             logger.info(deferredCapture.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
         logger.info("");
 
-        logger.info("------------------- Webpay Plus Captura Diferida [Transaction.capture] -------------------");
-        try {
-            String deferredToken = "e4273b557e87d2fbb6df820dce7698d9667cb2bf08595a381f379243776d5389";
-            String deferredBuyOrder = "92506929";
-            String deferredAuthorizationCode = "1213";
-            final CaptureWebpayPlusTransactionResponse capture = Transaction.capture(deferredToken, deferredBuyOrder, deferredAuthorizationCode, 10);
-            logger.info(capture.toString());
-            System.out.println("EL PICO");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        logger.info("");
+        logger.info("------------------- Webpay Plus Captura Diferida [DeferredTransaction.commit] -------------------");
+        {
+            String token = "e4a2ba3e6cac3e8c6b2fe4bb5556c6245f6e19888f2879d885dc460377657a0b";
 
-        logger.info("-------------------------- Webpay Plus Mall [Transaction.create] --------------------------");
+            try {
+                final CommitWebpayPlusTransactionResponse commit = DeferredTransaction.commit(token);
+                logger.info(commit.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("------------------- Webpay Plus Captura Diferida [DeferredTransaction.capture] -------------------");
+        {
+            try {
+                String token = "e4a2ba3e6cac3e8c6b2fe4bb5556c6245f6e19888f2879d885dc460377657a0b";
+                String buyOrder = "523699722";
+                String authorizationCode = "1213";
+                final CaptureWebpayPlusTransactionResponse capture = DeferredTransaction.capture(token, buyOrder, authorizationCode, 10);
+                logger.info(capture.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("-------------------------- Webpay Plus Mall [MallTransaction.create] --------------------------");
         try {
             final CreateWebpayPlusMallTransactionResponse create = MallTransaction.create("afdgef346456",
                     "432453sdfgdfgh", "http://localhost:8080", CreateMallTransactionDetails.build(

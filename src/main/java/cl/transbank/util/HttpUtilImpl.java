@@ -1,5 +1,6 @@
 package cl.transbank.util;
 
+import cl.transbank.webpay.exception.WebpayHttpRuntimeException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -26,7 +28,7 @@ public class HttpUtilImpl implements HttpUtil {
     public <T> T request(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
                          Class<T> clazz) throws IOException {
         final String jsonIn = getJsonUtil().jsonEncode(request);
-        final String jsonOut = request(url, method, jsonIn, headers);
+        final String jsonOut = request(url, method, jsonIn, headers, true);
         return getJsonUtil().jsonDecode(jsonOut, clazz);
     }
 
@@ -45,8 +47,18 @@ public class HttpUtilImpl implements HttpUtil {
         return request(url, method, query, null, headers);
     }
 
+    public String request(@NonNull URL url, RequestMethod method, String query, Map<String, String> headers, boolean useException)
+            throws IOException {
+        return request(url, method, query, null, headers, useException);
+    }
+
     public String request(@NonNull URL url, RequestMethod method, String query,
                           ContentType contentType, Map<String, String> headers) throws IOException {
+        return request(url, method, query, contentType, headers, false);
+    }
+
+    public String request(@NonNull URL url, RequestMethod method, String query,
+                          ContentType contentType, Map<String, String> headers, boolean useException) throws IOException {
         if (null == method)
             method = GET;
 
@@ -92,9 +104,19 @@ public class HttpUtilImpl implements HttpUtil {
             int responseCode = conn.getResponseCode();
 
             logger.log(Level.FINE, String.format("HTTP Response Code : %s", responseCode));
-            InputStream input = (responseCode >= 200 && responseCode < 300) ?
+            final boolean isHttpErrorCode = !(responseCode >= 200 && responseCode < 300);
+            InputStream input = !isHttpErrorCode ?
                     conn.getInputStream() :
                     conn.getErrorStream();
+
+            if (isHttpErrorCode && useException) {
+                final Map errorMap = getJsonUtil().jsonDecode(getResponseBody(input), HashMap.class);
+                Object errorMessage = errorMap.get("error_message");
+                if (null == errorMessage)
+                    errorMessage = "Unspecified message by Webpay API";
+                throw new WebpayHttpRuntimeException(errorMessage.toString(), responseCode);
+            }
+
             return getResponseBody(input);
         } finally {
             if (null != conn)

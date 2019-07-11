@@ -7,6 +7,10 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor
@@ -41,11 +45,11 @@ public class WebpayApiResponseManager {
 
     @SerializedName("captured_amount") private double capturedAmount;
 
-    public <T> T buildResponse(T dest) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public <T> T buildResponse(T dest) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         return buildResponse(dest, null);
     }
 
-    public <T> T buildResponse(T dest, Object source) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException {
+    public <T> T buildResponse(T dest, Object source) throws IntrospectionException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException {
         if (null == source)
             source = this;
 
@@ -57,7 +61,27 @@ public class WebpayApiResponseManager {
                 if (null != origin) {
                     final Object originValue = origin.getReadMethod().invoke(source);
                     if (pd.getPropertyType() == origin.getPropertyType()) {
-                        pd.getWriteMethod().invoke(dest, originValue);
+                        if (originValue instanceof Collection) {
+                            final Type type = pd.getReadMethod().getGenericReturnType();
+                            Class destType = null;
+                            if (type instanceof ParameterizedType) {
+                                ParameterizedType pType = (ParameterizedType) type;
+                                final Type[] typeArguments = pType.getActualTypeArguments();
+                                if (null != typeArguments && typeArguments.length > 0 && typeArguments[0] instanceof Class)
+                                    destType = (Class) typeArguments[0];
+                            }
+
+                            if (null != destType) {
+                                Collection c = (Collection) originValue;
+                                Collection listDest = new ArrayList();
+                                for (Object o : c) {
+                                    listDest.add(buildResponse(destType.getDeclaredConstructor(dest.getClass()).newInstance(dest), o));
+                                }
+                                pd.getWriteMethod().invoke(dest, listDest);
+                            }
+                        } else {
+                            pd.getWriteMethod().invoke(dest, originValue);
+                        }
                     } else {
                         final Object destValue = pd.getPropertyType().newInstance();
                         pd.getWriteMethod().invoke(dest, buildResponse(destValue, originValue));

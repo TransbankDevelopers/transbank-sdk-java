@@ -30,12 +30,12 @@ public abstract class WebpayApiResource {
     }
 
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final Options options, Class<T> clazz)
-            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
+            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException {
         return execute(endpoint, method, null, options, clazz);
     }
 
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options, Class<T> clazz)
-            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
+            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException {
         final WebpayApiResponseManager out = WebpayApiResource.getHttpUtil().request(endpoint, method,
                 request, WebpayApiResource.buildHeaders(options), WebpayApiResponseManager.class);
 

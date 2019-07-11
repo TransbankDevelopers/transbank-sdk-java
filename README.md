@@ -6,7 +6,7 @@
 SDK oficial de Transbank
 
 ## Requisitos
-- Java 1.7+
+- Java 1.7 o 1.8
 
 ## Instalación
 

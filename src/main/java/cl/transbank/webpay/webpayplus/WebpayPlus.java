@@ -360,5 +360,16 @@ public class WebpayPlus {
             options = WebpayPlus.buildMallDeferredOptions(options);
             return WebpayPlus.MallTransaction.commit(token, options);
         }
+
+        public static RefundWebpayPlusMallTransactionResponse refund(String token, String buyOrder, String commerceCode, double amount)
+                throws RefundTransactionException {
+            return WebpayPlus.MallDeferredTransaction.refund(token, buyOrder, commerceCode, amount, null);
+        }
+
+        public static RefundWebpayPlusMallTransactionResponse refund(String token, String buyOrder, String commerceCode, double amount, Options options)
+                throws RefundTransactionException {
+            options = WebpayPlus.buildMallDeferredOptions(options);
+            return WebpayPlus.MallTransaction.refund(token, buyOrder, commerceCode, amount, options);
+        }
     }
 }

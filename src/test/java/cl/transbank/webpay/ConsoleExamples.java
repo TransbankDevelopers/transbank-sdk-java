@@ -188,9 +188,9 @@ public class ConsoleExamples {
         logger.info("------------------ Webpay Plus Mall Deferred [MallDeferredTransaction.create] ------------------");
         {
             try {
-                final CreateMallTransactionDetails details = CreateMallTransactionDetails
-                        .build(1000, "597055555546", "12352346435");
-                        //.add(1000, "597055555543", "26264256");
+                final CreateMallTransactionDetails details = CreateMallTransactionDetails.build()
+                        .add(1000, "597055555546", "12352346435")
+                        .add(1000, "597055555545", "098765432");
                 final CreateWebpayPlusMallTransactionResponse create = WebpayPlus.MallDeferredTransaction.create("234645645645",
                         "432453sdfgdfgh", "http://localhost:8080", details);
                 logger.info(create.toString());
@@ -202,11 +202,26 @@ public class ConsoleExamples {
 
         logger.info("-------------------------- Webpay Plus Mall Deferred [MallDeferredTransaction.commit] --------------------------");
         {
-            String token = "e75569ed6df65076c69e3718035a58c455df9a25f5472f642c3b55b65455ce1f";
+            String token = "e5c6b2fda0ff0dd8fded9c811d97afb5927aff8d446be56bac6c0e14fa6ca0ba";
 
             try {
                 final CommitWebpayPlusMallTransactionResponse commit = WebpayPlus.MallDeferredTransaction.commit(token);
                 logger.info(commit.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("---------------------------- Webpay Plus Mall Deferred [MallDeferredTransaction.refund] ----------------------------");
+        {
+            String token = "e5c6b2fda0ff0dd8fded9c811d97afb5927aff8d446be56bac6c0e14fa6ca0ba";
+
+            try {
+                String buyOrder = "12352346435";
+                String commerceCode = "597055555546";
+                final RefundWebpayPlusTransactionResponse refund = WebpayPlus.MallDeferredTransaction.refund(token, buyOrder, commerceCode, 1000);
+                logger.info(refund.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

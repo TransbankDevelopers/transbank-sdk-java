@@ -202,11 +202,26 @@ public class ConsoleExamples {
 
         logger.info("-------------------------- Webpay Plus Mall Deferred [MallDeferredTransaction.commit] --------------------------");
         {
-            String token = "e5c6b2fda0ff0dd8fded9c811d97afb5927aff8d446be56bac6c0e14fa6ca0ba";
+            String token = "e002a8b38b8350e0fd68fa016ed5e430018547c71707acd12b222fa747e302cc";
 
             try {
                 final CommitWebpayPlusMallTransactionResponse commit = WebpayPlus.MallDeferredTransaction.commit(token);
                 logger.info(commit.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("------------------- Webpay Plus Mall Deferred [MallDeferredTransaction.capture] -------------------");
+        {
+            try {
+                String token = "e002a8b38b8350e0fd68fa016ed5e430018547c71707acd12b222fa747e302cc";
+                String commerceCode = "597055555546";
+                String buyOrder = "12352346435";
+                String authorizationCode = "1213";
+                final CaptureWebpayPlusMallTransactionResponse capture = WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, 900);
+                logger.info(capture.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -222,6 +237,19 @@ public class ConsoleExamples {
                 String commerceCode = "597055555546";
                 final RefundWebpayPlusTransactionResponse refund = WebpayPlus.MallDeferredTransaction.refund(token, buyOrder, commerceCode, 1000);
                 logger.info(refund.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("-------------------- Webpay Plus Mall Deferred [MallDeferredTransaction.status] --------------------");
+        {
+            String token = "e002a8b38b8350e0fd68fa016ed5e430018547c71707acd12b222fa747e302cc";
+
+            try {
+                final StatusWebpayPlusMallTransactionResponse status = WebpayPlus.MallDeferredTransaction.status(token);
+                logger.info(status.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

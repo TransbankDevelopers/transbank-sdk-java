@@ -122,13 +122,13 @@ public class WebpayPlus {
         return WebpayPlus.getOptions().buildOptions(options);
     }
 
-    private static CaptureWebpayPlusTransactionResponse capture(
-            String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
+    private static <T> T capture(
+            String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Class<T> returnType, Options options)
             throws CaptureTransactionException {
         try {
             final URL endpoint = new URL(String.format("%s/%s/capture", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
             final WebpayApiRequest request = new TransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, amount);
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, CaptureWebpayPlusTransactionResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, returnType);
         } catch (Exception e) {
             throw new CaptureTransactionException(e);
         }
@@ -198,23 +198,6 @@ public class WebpayPlus {
                 throw new StatusTransactionException(e);
             }
         }
-
-        /*
-         * Webpay Plus Mall Deferred Capture
-         */
-        public static CaptureWebpayPlusTransactionResponse capture(
-                String token, String commerceCode, String buyOrder, String authorizationCode, double amount) throws CaptureTransactionException {
-            return capture(token, commerceCode, buyOrder, authorizationCode, amount, null);
-        }
-
-        /*
-         * Webpay Plus Mall Deferred Capture
-         */
-        public static CaptureWebpayPlusTransactionResponse capture(
-                String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
-                throws CaptureTransactionException {
-            return WebpayPlus.capture(token, commerceCode, buyOrder, authorizationCode, amount, options);
-        }
     }
 
     public static class DeferredTransaction {
@@ -269,7 +252,7 @@ public class WebpayPlus {
                 String token, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
             options = WebpayPlus.buildDeferredOptions(options);
-            return WebpayPlus.capture(token, null, buyOrder, authorizationCode, amount, options);
+            return WebpayPlus.capture(token, null, buyOrder, authorizationCode, amount, CaptureWebpayPlusTransactionResponse.class, options);
         }
     }
 
@@ -370,6 +353,28 @@ public class WebpayPlus {
                 throws RefundTransactionException {
             options = WebpayPlus.buildMallDeferredOptions(options);
             return WebpayPlus.MallTransaction.refund(token, buyOrder, commerceCode, amount, options);
+        }
+
+        public static StatusWebpayPlusMallTransactionResponse status(String token) throws StatusTransactionException {
+            return WebpayPlus.MallDeferredTransaction.status(token, null);
+        }
+
+        public static StatusWebpayPlusMallTransactionResponse status(String token, Options options)
+                throws StatusTransactionException {
+            options = WebpayPlus.buildMallDeferredOptions(options);
+            return WebpayPlus.MallTransaction.status(token, options);
+        }
+
+        public static CaptureWebpayPlusMallTransactionResponse capture(
+                String token, String commerceCode, String buyOrder, String authorizationCode, double amount) throws CaptureTransactionException {
+            return WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, amount, null);
+        }
+
+        public static CaptureWebpayPlusMallTransactionResponse capture(
+                String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
+                throws CaptureTransactionException {
+            options = WebpayPlus.buildMallDeferredOptions(options);
+            return WebpayPlus.capture(token, commerceCode, buyOrder, authorizationCode, amount, CaptureWebpayPlusMallTransactionResponse.class, options);
         }
     }
 }

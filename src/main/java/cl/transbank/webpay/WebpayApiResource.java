@@ -4,7 +4,6 @@ import cl.transbank.util.HttpUtil;
 import cl.transbank.util.HttpUtilImpl;
 import cl.transbank.webpay.exception.WebpayException;
 import cl.transbank.webpay.model.WebpayApiRequest;
-import cl.transbank.webpay.webpayplus.WebpayApiResponseManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,16 +33,22 @@ public abstract class WebpayApiResource {
         return execute(endpoint, method, null, options, clazz);
     }
 
+    public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options)
+            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException{
+        return execute(endpoint, method, request, options, null);
+    }
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options, Class<T> clazz)
             throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException {
-        final WebpayApiResponseManager out = WebpayApiResource.getHttpUtil().request(endpoint, method,
-                request, WebpayApiResource.buildHeaders(options), WebpayApiResponseManager.class);
+        final WebpayApiResponseManager out = WebpayApiResource.getHttpUtil().request(endpoint, method, request, WebpayApiResource.buildHeaders(options), WebpayApiResponseManager.class);
 
         if (null == out)
-            throw new WebpayException("Could not obtain a response from transbank webservice");
+            return null;
 
         if (null != out.getErrorMessage())
             throw new WebpayException(out.getErrorMessage());
+
+        if (null == clazz)
+            return null;
 
         return out.buildResponse(clazz.newInstance());
     }

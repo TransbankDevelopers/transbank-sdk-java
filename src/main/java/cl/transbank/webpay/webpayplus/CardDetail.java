@@ -6,6 +6,6 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @ToString
-class CardDetail {
+public class CardDetail {
     @SerializedName("card_number") private String cardNumber;
 }

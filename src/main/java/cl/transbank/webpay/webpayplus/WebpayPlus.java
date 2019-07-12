@@ -16,14 +16,6 @@ import java.util.logging.*;
 public class WebpayPlus {
     private static Logger logger = Logger.getLogger(WebpayPlus.class.getName());
 
-    @Getter(AccessLevel.PRIVATE)
-    private static Options options = new Options();
-
-    private static Options setOptions(Options options) {
-        WebpayPlus.options = options;
-        return  options;
-    }
-
     public static String getCurrentIntegrationTypeUrl(IntegrationType integrationType) {
         if (null == integrationType)
             integrationType = IntegrationType.TEST;
@@ -32,94 +24,6 @@ public class WebpayPlus {
                 "%s/rswebpaytransaction/api/webpay/v1.0/transactions",
                 integrationType.getApiBase());
 
-    }
-
-    public static void setCommerceCode(String commerceCode) {
-        WebpayPlus.getOptions().setCommerceCode(commerceCode);
-    }
-
-    public static String getCommerceCode() {
-        return WebpayPlus.getOptions().getCommerceCode();
-    }
-
-    public static void setApiKey(String apiKey) {
-        WebpayPlus.getOptions().setApiKey(apiKey);
-    }
-
-    public static String getApiKey() {
-        return WebpayPlus.getOptions().getApiKey();
-    }
-
-    public static void setIntegrationType(IntegrationType integrationType) {
-        WebpayPlus.getOptions().setIntegrationType(integrationType);
-    }
-
-    public static IntegrationType getIntegrationType() {
-        return WebpayPlus.getOptions().getIntegrationType();
-    }
-
-    public static Options buildOptionsForTestingWebpayPlusNormal() {
-        return new Options(
-                "597055555532", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
-    }
-
-    public static Options buildOptionsForTestingWebpayPlusMall() {
-        return new Options(
-                "597055555535", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
-    }
-
-    public static Options buildOptionsForTestingWebpayPlusMallDeferred() {
-        return new Options(
-                "597055555544", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
-    }
-
-    public static Options buildOptionsForTestingWebpayPlusDeferredCapture() {
-        return new Options(
-                "597055555540", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
-    }
-
-    public static Options configureNormalForTesting() {
-        return WebpayPlus.setOptions(buildOptionsForTestingWebpayPlusNormal());
-    }
-
-    public static Options configureMallForTesting() {
-        return WebpayPlus.setOptions(buildOptionsForTestingWebpayPlusMall());
-    }
-
-    public static Options configureDeferredForTesting() {
-        return WebpayPlus.setOptions(buildOptionsForTestingWebpayPlusDeferredCapture());
-    }
-
-    private static Options buildNormalOptions(Options options) {
-        // set default options for Webpay Plus Normal if options are not configured yet
-        if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.getOptions()))
-            return buildOptionsForTestingWebpayPlusNormal();
-
-        return WebpayPlus.getOptions().buildOptions(options);
-    }
-
-    private static Options buildMallOptions(Options options) {
-        // set default options for Webpay Plus Mall if options are not configured yet
-        if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.getOptions()))
-            return buildOptionsForTestingWebpayPlusMall();
-
-        return WebpayPlus.getOptions().buildOptions(options);
-    }
-
-    private static Options buildDeferredOptions(Options options) {
-        // set default options for Webpay Plus Deferred Capture if options are not configured yet
-        if (WebpayPlus.getOptions().isEmpty() && Options.isEmpty(options))
-            return buildOptionsForTestingWebpayPlusDeferredCapture();
-
-        return WebpayPlus.getOptions().buildOptions(options);
-    }
-
-    private static Options buildMallDeferredOptions(Options options) {
-        // set default options for Webpay Plus Mall Deferred if options are not configured yet
-        if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.getOptions()))
-            return buildOptionsForTestingWebpayPlusMallDeferred();
-
-        return WebpayPlus.getOptions().buildOptions(options);
     }
 
     private static <T> T capture(
@@ -135,6 +39,45 @@ public class WebpayPlus {
     }
 
     public static class Transaction {
+        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+
+        public static void setCommerceCode(String commerceCode) {
+            WebpayPlus.Transaction.getOptions().setCommerceCode(commerceCode);
+        }
+
+        public static String getCommerceCode() {
+            return WebpayPlus.Transaction.getOptions().getCommerceCode();
+        }
+
+        public static void setApiKey(String apiKey) {
+            WebpayPlus.Transaction.getOptions().setApiKey(apiKey);
+        }
+
+        public static String getApiKey() {
+            return WebpayPlus.Transaction.getOptions().getApiKey();
+        }
+
+        public static void setIntegrationType(IntegrationType integrationType) {
+            WebpayPlus.Transaction.getOptions().setIntegrationType(integrationType);
+        }
+
+        public static IntegrationType getIntegrationType() {
+            return WebpayPlus.Transaction.getOptions().getIntegrationType();
+        }
+
+        public static Options buildOptionsForTesting() {
+            return new Options(
+                    "597055555532", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
+        }
+
+        private static Options builOptions(Options options) {
+            // set default options for Webpay Plus Normal if options are not configured yet
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.Transaction.getOptions()))
+                return WebpayPlus.Transaction.buildOptionsForTesting();
+
+            return WebpayPlus.Transaction.getOptions().buildOptions(options);
+        }
+
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl) throws CreateTransactionException {
             return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, null);
@@ -143,7 +86,7 @@ public class WebpayPlus {
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, Options options) throws CreateTransactionException {
             try {
-                options = WebpayPlus.buildNormalOptions(options);
+                options = WebpayPlus.Transaction.builOptions(options);
                 final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
                 final WebpayApiRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, returnUrl);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, CreateWebpayPlusTransactionResponse.class);
@@ -159,7 +102,7 @@ public class WebpayPlus {
         public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
                 throws CommitTransactionException {
             try {
-                options = WebpayPlus.buildNormalOptions(options);
+                options = WebpayPlus.Transaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, CommitWebpayPlusTransactionResponse.class);
             } catch (Exception e) {
@@ -175,7 +118,7 @@ public class WebpayPlus {
         public static RefundWebpayPlusTransactionResponse refund(String token, double amount, Options options)
                 throws RefundTransactionException {
             try {
-                options = WebpayPlus.buildNormalOptions(options);
+                options = WebpayPlus.Transaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s/refunds", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 final WebpayApiRequest request = new TransactionRefundRequest(amount);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, RefundWebpayPlusTransactionResponse.class);
@@ -191,7 +134,7 @@ public class WebpayPlus {
         public static StatusWebpayPlusTransactionResponse status(String token, Options options)
                 throws StatusTransactionException {
             try {
-                options = WebpayPlus.buildNormalOptions(options);
+                options = WebpayPlus.Transaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, StatusWebpayPlusTransactionResponse.class);
             } catch (Exception e) {
@@ -201,6 +144,45 @@ public class WebpayPlus {
     }
 
     public static class DeferredTransaction {
+        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+
+        public static void setCommerceCode(String commerceCode) {
+            WebpayPlus.DeferredTransaction.getOptions().setCommerceCode(commerceCode);
+        }
+
+        public static String getCommerceCode() {
+            return WebpayPlus.DeferredTransaction.getOptions().getCommerceCode();
+        }
+
+        public static void setApiKey(String apiKey) {
+            WebpayPlus.DeferredTransaction.getOptions().setApiKey(apiKey);
+        }
+
+        public static String getApiKey() {
+            return WebpayPlus.DeferredTransaction.getOptions().getApiKey();
+        }
+
+        public static void setIntegrationType(IntegrationType integrationType) {
+            WebpayPlus.DeferredTransaction.getOptions().setIntegrationType(integrationType);
+        }
+
+        public static IntegrationType getIntegrationType() {
+            return WebpayPlus.DeferredTransaction.getOptions().getIntegrationType();
+        }
+
+        public static Options buildOptionsForTesting() {
+            return new Options(
+                    "597055555540", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
+        }
+
+        private static Options builOptions(Options options) {
+            // set default options for Webpay Plus Normal if options are not configured yet
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.DeferredTransaction.getOptions()))
+                return WebpayPlus.DeferredTransaction.buildOptionsForTesting();
+
+            return WebpayPlus.DeferredTransaction.getOptions().buildOptions(options);
+        }
+
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl) throws CreateTransactionException {
             return WebpayPlus.DeferredTransaction.create(buyOrder, sessionId, amount, returnUrl, null);
@@ -208,7 +190,7 @@ public class WebpayPlus {
 
         public static CreateWebpayPlusTransactionResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, Options options) throws CreateTransactionException {
-            options = WebpayPlus.buildDeferredOptions(options);
+            options = WebpayPlus.DeferredTransaction.builOptions(options);
             return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, options);
         }
 
@@ -218,7 +200,7 @@ public class WebpayPlus {
 
         public static CommitWebpayPlusTransactionResponse commit(String token, Options options)
                 throws CommitTransactionException {
-            options = WebpayPlus.buildDeferredOptions(options);
+            options = WebpayPlus.DeferredTransaction.builOptions(options);
             return WebpayPlus.Transaction.commit(token, options);
         }
 
@@ -229,7 +211,7 @@ public class WebpayPlus {
 
         public static RefundWebpayPlusTransactionResponse refund(String token, double amount, Options options)
                 throws RefundTransactionException {
-            options = WebpayPlus.buildDeferredOptions(options);
+            options = WebpayPlus.DeferredTransaction.builOptions(options);
             return WebpayPlus.Transaction.refund(token, amount, options);
         }
 
@@ -239,7 +221,7 @@ public class WebpayPlus {
 
         public static StatusWebpayPlusTransactionResponse status(String token, Options options)
                 throws StatusTransactionException {
-            options = WebpayPlus.buildDeferredOptions(options);
+            options = WebpayPlus.DeferredTransaction.builOptions(options);
             return WebpayPlus.Transaction.status(token, options);
         }
 
@@ -251,12 +233,51 @@ public class WebpayPlus {
         public static CaptureWebpayPlusTransactionResponse capture(
                 String token, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
-            options = WebpayPlus.buildDeferredOptions(options);
+            options = WebpayPlus.DeferredTransaction.builOptions(options);
             return WebpayPlus.capture(token, null, buyOrder, authorizationCode, amount, CaptureWebpayPlusTransactionResponse.class, options);
         }
     }
 
     public static class MallTransaction {
+        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+
+        public static void setCommerceCode(String commerceCode) {
+            WebpayPlus.MallTransaction.getOptions().setCommerceCode(commerceCode);
+        }
+
+        public static String getCommerceCode() {
+            return WebpayPlus.MallTransaction.getOptions().getCommerceCode();
+        }
+
+        public static void setApiKey(String apiKey) {
+            WebpayPlus.MallTransaction.getOptions().setApiKey(apiKey);
+        }
+
+        public static String getApiKey() {
+            return WebpayPlus.MallTransaction.getOptions().getApiKey();
+        }
+
+        public static void setIntegrationType(IntegrationType integrationType) {
+            WebpayPlus.MallTransaction.getOptions().setIntegrationType(integrationType);
+        }
+
+        public static IntegrationType getIntegrationType() {
+            return WebpayPlus.MallTransaction.getOptions().getIntegrationType();
+        }
+
+        public static Options buildOptionsForTesting() {
+            return new Options(
+                    "597055555535", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
+        }
+
+        private static Options builOptions(Options options) {
+            // set default options for Webpay Plus Normal if options are not configured yet
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.MallTransaction.getOptions()))
+                return WebpayPlus.MallTransaction.buildOptionsForTesting();
+
+            return WebpayPlus.MallTransaction.getOptions().buildOptions(options);
+        }
+
         public static CreateWebpayPlusMallTransactionResponse create (
                 String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details) throws CreateTransactionException {
             return MallTransaction.create (buyOrder, sessionId, returnUrl, details, null);
@@ -265,7 +286,7 @@ public class WebpayPlus {
         public static CreateWebpayPlusMallTransactionResponse create (
                 String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details, Options options) throws CreateTransactionException {
             try {
-                options = WebpayPlus.buildMallOptions(options);
+                options = WebpayPlus.MallTransaction.builOptions(options);
                 final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
                 WebpayApiRequest request = new CreateMallTransactionRequest(buyOrder, sessionId, returnUrl, details.getDetails());
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, CreateWebpayPlusMallTransactionResponse.class);
@@ -281,7 +302,7 @@ public class WebpayPlus {
         public static CommitWebpayPlusMallTransactionResponse commit(String token, Options options)
                 throws CommitTransactionException {
             try {
-                options = WebpayPlus.buildMallOptions(options);
+                options = WebpayPlus.MallTransaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, CommitWebpayPlusMallTransactionResponse.class);
             } catch (Exception e) {
@@ -297,7 +318,7 @@ public class WebpayPlus {
         public static RefundWebpayPlusMallTransactionResponse refund(String token, String buyOrder, String commerceCode, double amount, Options options)
                 throws RefundTransactionException {
             try {
-                options = WebpayPlus.buildMallOptions(options);
+                options = WebpayPlus.MallTransaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s/refunds", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 final WebpayApiRequest request = new TransactionRefundRequest(buyOrder, commerceCode, amount);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, RefundWebpayPlusMallTransactionResponse.class);
@@ -313,7 +334,7 @@ public class WebpayPlus {
         public static StatusWebpayPlusMallTransactionResponse status(String token, Options options)
                 throws StatusTransactionException {
             try {
-                options = WebpayPlus.buildMallOptions(options);
+                options = WebpayPlus.MallTransaction.builOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, StatusWebpayPlusMallTransactionResponse.class);
             } catch (Exception e) {
@@ -323,6 +344,45 @@ public class WebpayPlus {
     }
 
     public static class MallDeferredTransaction {
+        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+
+        public static void setCommerceCode(String commerceCode) {
+            WebpayPlus.MallDeferredTransaction.getOptions().setCommerceCode(commerceCode);
+        }
+
+        public static String getCommerceCode() {
+            return WebpayPlus.MallDeferredTransaction.getOptions().getCommerceCode();
+        }
+
+        public static void setApiKey(String apiKey) {
+            WebpayPlus.MallDeferredTransaction.getOptions().setApiKey(apiKey);
+        }
+
+        public static String getApiKey() {
+            return WebpayPlus.MallDeferredTransaction.getOptions().getApiKey();
+        }
+
+        public static void setIntegrationType(IntegrationType integrationType) {
+            WebpayPlus.MallDeferredTransaction.getOptions().setIntegrationType(integrationType);
+        }
+
+        public static IntegrationType getIntegrationType() {
+            return WebpayPlus.MallDeferredTransaction.getOptions().getIntegrationType();
+        }
+
+        public static Options buildOptionsForTesting() {
+            return new Options(
+                    "597055555544", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
+        }
+
+        private static Options builOptions(Options options) {
+            // set default options for Webpay Plus Normal if options are not configured yet
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.MallDeferredTransaction.getOptions()))
+                return WebpayPlus.MallDeferredTransaction.buildOptionsForTesting();
+
+            return WebpayPlus.MallDeferredTransaction.getOptions().buildOptions(options);
+        }
+
         public static CreateWebpayPlusMallTransactionResponse create (
                 String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details) throws CreateTransactionException {
             return MallDeferredTransaction.create (buyOrder, sessionId, returnUrl, details, null);
@@ -330,7 +390,7 @@ public class WebpayPlus {
 
         public static CreateWebpayPlusMallTransactionResponse create (
                 String buyOrder, String sessionId, String returnUrl, CreateMallTransactionDetails details, Options options) throws CreateTransactionException {
-            options = WebpayPlus.buildMallDeferredOptions(options);
+            options = WebpayPlus.MallDeferredTransaction.builOptions(options);
             return WebpayPlus.MallTransaction.create (buyOrder, sessionId, returnUrl, details, options);
         }
 
@@ -340,7 +400,7 @@ public class WebpayPlus {
 
         public static CommitWebpayPlusMallTransactionResponse commit(String token, Options options)
                 throws CommitTransactionException {
-            options = WebpayPlus.buildMallDeferredOptions(options);
+            options = WebpayPlus.MallDeferredTransaction.builOptions(options);
             return WebpayPlus.MallTransaction.commit(token, options);
         }
 
@@ -351,7 +411,7 @@ public class WebpayPlus {
 
         public static RefundWebpayPlusMallTransactionResponse refund(String token, String buyOrder, String commerceCode, double amount, Options options)
                 throws RefundTransactionException {
-            options = WebpayPlus.buildMallDeferredOptions(options);
+            options = WebpayPlus.MallDeferredTransaction.builOptions(options);
             return WebpayPlus.MallTransaction.refund(token, buyOrder, commerceCode, amount, options);
         }
 
@@ -361,7 +421,7 @@ public class WebpayPlus {
 
         public static StatusWebpayPlusMallTransactionResponse status(String token, Options options)
                 throws StatusTransactionException {
-            options = WebpayPlus.buildMallDeferredOptions(options);
+            options = WebpayPlus.MallDeferredTransaction.builOptions(options);
             return WebpayPlus.MallTransaction.status(token, options);
         }
 
@@ -373,7 +433,7 @@ public class WebpayPlus {
         public static CaptureWebpayPlusMallTransactionResponse capture(
                 String token, String commerceCode, String buyOrder, String authorizationCode, double amount, Options options)
                 throws CaptureTransactionException {
-            options = WebpayPlus.buildMallDeferredOptions(options);
+            options = WebpayPlus.MallDeferredTransaction.builOptions(options);
             return WebpayPlus.capture(token, commerceCode, buyOrder, authorizationCode, amount, CaptureWebpayPlusMallTransactionResponse.class, options);
         }
     }

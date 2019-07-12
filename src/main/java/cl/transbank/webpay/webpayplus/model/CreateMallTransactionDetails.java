@@ -9,6 +9,8 @@ import java.util.List;
 public class CreateMallTransactionDetails {
     private List<Detail> detailList = new ArrayList<>();
 
+    private CreateMallTransactionDetails() {}
+
     public static CreateMallTransactionDetails build() {
         return new CreateMallTransactionDetails();
     }

@@ -5,10 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 @NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
-@ToString
-public class InscriptionStartRequest extends WebpayApiRequest {
+@Getter @Setter @ToString
+public class DeleteInscriptionRequest extends WebpayApiRequest {
     @SerializedName("username") private String username;
-    @SerializedName("email") private String email;
-    @SerializedName("response_url") private String responseUrl;
+    @SerializedName("tbk_user") private String tbkUser;
 }

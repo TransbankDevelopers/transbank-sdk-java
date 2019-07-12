@@ -1,8 +1,13 @@
 package cl.transbank.webpay;
 
+import cl.transbank.webpay.oneclick.OneclickMall;
+import cl.transbank.webpay.oneclick.OneclickMallDeferred;
+import cl.transbank.webpay.oneclick.model.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.model.*;
+import cl.transbank.webpay.webpayplus.model.CreateMallTransactionDetails;
 
+import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,11 +24,10 @@ public class ConsoleExamples {
         });
         globalLog.setLevel(Level.ALL);
 
-        Options options = null;
         logger.info("---------------------------- Webpay Plus [Transaction.create] ----------------------------");
         try {
             final CreateWebpayPlusTransactionResponse create = WebpayPlus.Transaction.create("afdgef346456",
-                    "432453sdfgdfgh", 1000, "http://localhost:8080", options);
+                    "432453sdfgdfgh", 1000, "http://localhost:8080");
             logger.info(create.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,7 +137,7 @@ public class ConsoleExamples {
             logger.info("");
         }
 
-        logger.info("-------------------------- Webpay Plus Mall [MallTransaction.create] --------------------------");
+        logger.info("-------------------------- Webpay Plus Mall [Transaction.create] --------------------------");
         try {
             final CreateWebpayPlusMallTransactionResponse create = WebpayPlus.MallTransaction.create("afdgef346456",
                     "432453sdfgdfgh", "http://localhost:8080", CreateMallTransactionDetails.build(
@@ -144,7 +148,7 @@ public class ConsoleExamples {
         }
         logger.info("");
 
-        logger.info("-------------------------- Webpay Plus Mall Mall [MallTransaction.commit] --------------------------");
+        logger.info("-------------------------- Webpay Plus Mall Mall [Transaction.commit] --------------------------");
         {
             String token = "e3f039e2edd7554e8f7e82fe0e510d325e2e39c7d144cf6c329718430270b7bf";
 
@@ -157,7 +161,7 @@ public class ConsoleExamples {
             logger.info("");
         }
 
-        logger.info("---------------------------- Webpay Plus Mall [MallTransaction.refund] ----------------------------");
+        logger.info("---------------------------- Webpay Plus Mall [Transaction.refund] ----------------------------");
         {
             String token = "e057e96c3653d24cc8224535a9609e890ce4f55a25140a86f0438a4bf1b57d04";
 
@@ -172,7 +176,7 @@ public class ConsoleExamples {
             logger.info("");
         }
 
-        logger.info("-------------------- Webpay Plus Mall [MallTransaction.status] --------------------");
+        logger.info("-------------------- Webpay Plus Mall [Transaction.status] --------------------");
         {
             String token = "e057e96c3653d24cc8224535a9609e890ce4f55a25140a86f0438a4bf1b57d04";
 
@@ -220,7 +224,7 @@ public class ConsoleExamples {
                 String commerceCode = "597055555546";
                 String buyOrder = "12352346435";
                 String authorizationCode = "1213";
-                final CaptureWebpayPlusMallTransactionResponse capture = WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, 900);
+                final CaptureWebpayPlusMallTransactionResponse capture = WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, 1000);
                 logger.info(capture.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -254,6 +258,173 @@ public class ConsoleExamples {
                 e.printStackTrace();
             }
             logger.info("");
+        }
+
+        logger.info("---------------------------- OneclickMall Mall [Inscription.start] ----------------------------");
+        {
+            try {
+                final StartOneclickMallInscriptionResponse inscriptionStart =
+                        OneclickMall.Inscription.start("Nombreusuario", "correo@casdasd.cl", "http://some.url/return");
+                logger.info(inscriptionStart.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        logger.info("---------------------------- OneclickMall Mall [Inscription.finish] ----------------------------");
+        {
+            String token = "ea98d8c01c74723015834cd801ec9b6d1226f745ff292daa52ec38198b40e23f";
+
+            try {
+                final FinishOneclickMallInscriptionResponse finish = OneclickMall.Inscription.finish(token);
+                logger.info(finish.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
+
+        {
+            String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrderOne = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrderTwo = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String username = "goncafa";
+            String tbkUser = "f1e9252c-b9c4-4e39-9c45-182d3b157818";
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.autorize] ----------------------------");
+            {
+                try {
+                    String mallOne = "597055555542";
+                    String mallTwo = "597055555543";
+                    cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails details = cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails.build()
+                            .add(1000, mallOne, buyOrderOne, (byte) 1)
+                            .add(1000, mallTwo, buyOrderTwo, (byte) 1);
+                    final AuthorizeOneclickMallTransactionResponse authorize = OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details);
+                    logger.info(authorize.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.refund] ----------------------------");
+            {
+                try {
+                    double amount = 1000;
+                    String childCommerceCode = "597055555542";
+
+                    final RefundOneclickMallTransactionResponse refund = OneclickMall.Transaction.refund(buyOrder, childCommerceCode, buyOrderOne, amount);
+                    logger.info(refund.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.status] ----------------------------");
+            {
+                try {
+                    final StatusOneclickMallTransactionResponse status = OneclickMall.Transaction.status(buyOrder);
+                    logger.info(status.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Inscription.delete] ----------------------------");
+            {
+                try {
+                    OneclickMall.Inscription.delete(username, tbkUser);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+        }
+
+        {
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Inscription.start] ----------------------------");
+            {
+                try {
+                    final StartOneclickMallInscriptionResponse inscriptionStart =
+                            OneclickMallDeferred.Inscription.start("Nombreusuario", "correo@casdasd.cl", "http://some.url/return");
+                    logger.info(inscriptionStart.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Inscription.finish] ----------------------------");
+            {
+                String token = "e95492790d1199edd91804eba46f94e92647b2afe76a98c99f7121ad5758f630";
+
+                try {
+                    final FinishOneclickMallInscriptionResponse finish = OneclickMallDeferred.Inscription.finish(token);
+                    logger.info(finish.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrderOne = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrderTwo = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String username = "goncafadeferred";
+            String tbkUser = "7bd7fde2-e1ad-40e0-ab72-476930efd979";
+            String mallOne = "597055555548";
+            String mallTwo = "597055555549";
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.autorize] ----------------------------");
+            {
+                try {
+                    cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails details = cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails.build()
+                            .add(1000, mallOne, buyOrderOne, (byte) 1)
+                            .add(1000, mallTwo, buyOrderTwo, (byte) 1);
+                    final AuthorizeOneclickMallTransactionResponse authorize = OneclickMallDeferred.Transaction.authorize(username, tbkUser, buyOrder, details);
+                    logger.info(authorize.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.refund] ----------------------------");
+            {
+                try {
+                    double amount = 1000;
+
+                    final RefundOneclickMallTransactionResponse refund = OneclickMallDeferred.Transaction.refund(buyOrder, mallOne, buyOrderOne, amount);
+                    logger.info(refund.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Transaction.status] ----------------------------");
+            {
+                try {
+                    final StatusOneclickMallTransactionResponse status = OneclickMallDeferred.Transaction.status(buyOrder);
+                    logger.info(status.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
+
+            logger.info("---------------------------- OneclickMall Mall [Inscription.delete] ----------------------------");
+            {
+                try {
+                    OneclickMallDeferred.Inscription.delete(username, tbkUser);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                logger.info("");
+            }
         }
     }
 }

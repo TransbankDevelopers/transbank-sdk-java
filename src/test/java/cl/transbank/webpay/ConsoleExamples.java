@@ -378,7 +378,7 @@ public class ConsoleExamples {
             String mallOne = "597055555548";
             String mallTwo = "597055555549";
 
-            logger.info("---------------------------- OneclickMall Mall [Transaction.autorize] ----------------------------");
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Transaction.autorize] ----------------------------");
             {
                 try {
                     cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails details = cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails.build()
@@ -392,7 +392,7 @@ public class ConsoleExamples {
                 logger.info("");
             }
 
-            logger.info("---------------------------- OneclickMall Mall [Transaction.refund] ----------------------------");
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Transaction.refund] ----------------------------");
             {
                 try {
                     double amount = 1000;
@@ -405,7 +405,7 @@ public class ConsoleExamples {
                 logger.info("");
             }
 
-            logger.info("---------------------------- OneclickMall Mall [Transaction.status] ----------------------------");
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Transaction.status] ----------------------------");
             {
                 try {
                     final StatusOneclickMallTransactionResponse status = OneclickMallDeferred.Transaction.status(buyOrder);
@@ -416,7 +416,7 @@ public class ConsoleExamples {
                 logger.info("");
             }
 
-            logger.info("---------------------------- OneclickMall Mall [Inscription.delete] ----------------------------");
+            logger.info("---------------------------- OneclickMall Mall Deferred Capture [Inscription.delete] ----------------------------");
             {
                 try {
                     OneclickMallDeferred.Inscription.delete(username, tbkUser);

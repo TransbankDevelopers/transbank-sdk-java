@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
+import java.util.Random;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OneclickMallDeferred {
@@ -123,14 +126,14 @@ public class OneclickMallDeferred {
             return OneclickMall.Transaction.status(buyOrder, options);
         }
 
-        public CaptureOneclickMallTransactionResponse capture(String token) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
-            return OneclickMallDeferred.Transaction.capture(token, null);
+        public static CaptureOneclickMallTransactionResponse capture(String buyOrder) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+            return OneclickMallDeferred.Transaction.capture(buyOrder, null);
         }
 
-        public static CaptureOneclickMallTransactionResponse capture(String token, Options options) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+        public static CaptureOneclickMallTransactionResponse capture(String buyOrder, Options options) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
             try {
                 options = OneclickMallDeferred.buildMallDeferredOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s/capture", OneclickMallDeferred.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token)); // TODO VALIDATE THIS URL WHEN WE HAVE DOC ABOUT IT
+                final URL endpoint = new URL(String.format("%s/transactions/%s/capture", OneclickMallDeferred.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder)); // TODO VALIDATE THIS URL WHEN WE HAVE DOC ABOUT IT
                 WebpayApiRequest request = new CaptureTransactionRequest();
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, CaptureOneclickMallTransactionResponse.class);
             } catch (Exception e) {

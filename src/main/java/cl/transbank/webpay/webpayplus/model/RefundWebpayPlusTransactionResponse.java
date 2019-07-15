@@ -1,15 +1,6 @@
 package cl.transbank.webpay.webpayplus.model;
 
-import lombok.*;
+import cl.transbank.webpay.model.BaseRefundResponse;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
-@ToString
-public class RefundWebpayPlusTransactionResponse {
-    private String type;
-    private double balance;
-    private String authorizationCode;
-    private byte responseCode;
-    private String authorizationDate;
-    private double nullifiedAmount;
+public class RefundWebpayPlusTransactionResponse extends BaseRefundResponse {
 }

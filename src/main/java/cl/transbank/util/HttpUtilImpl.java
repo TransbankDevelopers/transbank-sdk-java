@@ -91,7 +91,7 @@ public class HttpUtilImpl implements HttpUtil {
                     conn = createPOSTConnection(url, query, contentType, headers);
                     break;
                 case DELETE:
-                    conn = createDeleteConnection(url, query);
+                    conn = createDeleteConnection(url, query, contentType, headers);
                     break;
                 case PUT:
                     conn = createPUTConnection(url, query, contentType, headers);
@@ -109,15 +109,20 @@ public class HttpUtilImpl implements HttpUtil {
                     conn.getInputStream() :
                     conn.getErrorStream();
 
+            final String responseBody = getResponseBody(input);
             if (isHttpErrorCode && useException) {
-                final Map errorMap = getJsonUtil().jsonDecode(getResponseBody(input), HashMap.class);
-                Object errorMessage = errorMap.get("error_message");
+                Object errorMessage = "Could not obtain a response message from Webpay API";
+                if (null != responseBody) {
+                    final Map errorMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
+                    errorMessage = errorMap.get("error_message");
+                }
+
                 if (null == errorMessage)
                     errorMessage = "Unspecified message by Webpay API";
                 throw new WebpayHttpRuntimeException(errorMessage.toString(), responseCode);
             }
 
-            return getResponseBody(input);
+            return responseBody;
         } finally {
             if (null != conn)
                 conn.disconnect();
@@ -143,12 +148,8 @@ public class HttpUtilImpl implements HttpUtil {
         return conn;
     }
 
-    private HttpURLConnection createDeleteConnection(URL url, String query) throws IOException {
-        String deleteUrl = formatUrl(url.toString(), query);
-        HttpURLConnection conn = (HttpURLConnection) new URL(deleteUrl).openConnection();
-        conn.setRequestMethod(DELETE.toString());
-
-        return conn;
+    private HttpURLConnection createDeleteConnection(URL url, String query, ContentType contentType, Map<String, String> headers) throws IOException {
+        return createSendingDataConnection(DELETE, url, query, contentType, headers);
     }
 
     private HttpURLConnection createPUTConnection(
@@ -188,13 +189,15 @@ public class HttpUtilImpl implements HttpUtil {
         return String.format("%s%s%s", url, separator, query);
     }
 
-    private static String getResponseBody(InputStream responseStream) throws IOException {
+    private static String getResponseBody(InputStream responseStream) {
         try (final Scanner scanner = new Scanner(responseStream, StandardCharsets.UTF_8.name())) {
             final String responseBody = scanner.useDelimiter("\\A").next();
             responseStream.close();
 
             logger.log(Level.FINE, String.format("HTTP Response Body : %s", responseBody));
             return responseBody;
+        } catch (Exception e) {
+            return null;
         }
     }
 

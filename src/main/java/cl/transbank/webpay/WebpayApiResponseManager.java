@@ -1,5 +1,6 @@
-package cl.transbank.webpay.webpayplus;
+package cl.transbank.webpay;
 
+import cl.transbank.webpay.webpayplus.WebpayDetails;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
@@ -44,6 +45,12 @@ public class WebpayApiResponseManager {
     @SerializedName("nullified_amount") private double nullifiedAmount;
 
     @SerializedName("captured_amount") private double capturedAmount;
+
+    @SerializedName("url_webpay") private String urlWebpay;
+
+    @SerializedName("tbk_user") private String tbkUser;
+    @SerializedName("credit_card_type") private String creditCardType;
+    @SerializedName("last_four_card_digits") private String lastFourCardDigits;
 
     public <T> T buildResponse(T dest) throws IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         return buildResponse(dest, null);

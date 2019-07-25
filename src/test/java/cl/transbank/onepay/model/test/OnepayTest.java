@@ -14,6 +14,7 @@ public class OnepayTest {
     public void testSetIntegrationApiKeyAndSharedSecret() throws Exception {
         Onepay.setIntegrationType(Onepay.IntegrationType.TEST);
         Onepay.setIntegrationApiKeyAndSharedSecret();
+        Onepay.setAppScheme("schemetest");
         Assert.assertNotNull(Onepay.getApiKey());
         Assert.assertNotNull(Onepay.getSharedSecret());
         // We will actually hit the TEST endpoint. It's the best way to test that

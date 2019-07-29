@@ -1,4 +1,4 @@
-package cl.transbank.webpay.model;
+package cl.transbank.model;
 
 import lombok.*;
 

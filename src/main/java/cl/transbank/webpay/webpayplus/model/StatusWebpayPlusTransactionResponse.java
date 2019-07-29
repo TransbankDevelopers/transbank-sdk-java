@@ -1,6 +1,6 @@
 package cl.transbank.webpay.webpayplus.model;
 
-import cl.transbank.webpay.model.CardDetail;
+import cl.transbank.model.CardDetail;
 import lombok.*;
 
 @NoArgsConstructor @AllArgsConstructor

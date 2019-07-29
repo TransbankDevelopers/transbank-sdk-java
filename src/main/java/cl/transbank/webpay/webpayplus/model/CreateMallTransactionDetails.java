@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class CreateMallTransactionDetails {
@@ -20,7 +21,7 @@ public class CreateMallTransactionDetails {
     }
 
     public CreateMallTransactionDetails add(double amount, String commerceCode, String buyOrder) {
-        getDetails().add(new Detail(amount, commerceCode, buyOrder));
+        detailList.add(new Detail(amount, commerceCode, buyOrder));
         return this;
     }
 
@@ -29,7 +30,7 @@ public class CreateMallTransactionDetails {
     }
 
     public List<Detail> getDetails() {
-        return detailList;
+        return Collections.unmodifiableList(detailList);
     }
 
     @NoArgsConstructor @AllArgsConstructor

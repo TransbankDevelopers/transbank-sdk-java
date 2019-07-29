@@ -1,6 +1,6 @@
 package cl.transbank.webpay.oneclick;
 
-import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.model.WebpayApiRequest;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 

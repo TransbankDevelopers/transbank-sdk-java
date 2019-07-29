@@ -5,16 +5,13 @@ import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
-import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.oneclick.model.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URL;
-import java.util.Random;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class OneclickMallDeferred {

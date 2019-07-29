@@ -1,9 +1,11 @@
 package cl.transbank.webpay;
 
+import cl.transbank.WebpayApiResponseManager;
+import cl.transbank.util.BeanUtils;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.util.HttpUtilImpl;
 import cl.transbank.webpay.exception.WebpayException;
-import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.model.WebpayApiRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,6 +52,6 @@ public abstract class WebpayApiResource {
         if (null == clazz)
             return null;
 
-        return out.buildResponse(clazz.newInstance());
+        return BeanUtils.getInstance().copyBeanData(clazz.newInstance(), out);
     }
 }

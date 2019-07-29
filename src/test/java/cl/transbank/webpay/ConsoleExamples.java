@@ -1,5 +1,13 @@
 package cl.transbank.webpay;
 
+import cl.transbank.patpass.PatpassByWebpay;
+import cl.transbank.patpass.model.CommitPatpassByWebpayTransactionResponse;
+import cl.transbank.patpass.model.CreatePatpassByWebpayTransactionResponse;
+import cl.transbank.patpass.model.RefundPatpassByWebpayTransactionResponse;
+import cl.transbank.patpass.model.StatusPatpassByWebpayTransactionResponse;
+import cl.transbank.webpay.exception.CreateTransactionException;
+import cl.transbank.webpay.exception.RefundTransactionException;
+import cl.transbank.webpay.exception.StatusTransactionException;
 import cl.transbank.webpay.oneclick.OneclickMall;
 import cl.transbank.webpay.oneclick.OneclickMallDeferred;
 import cl.transbank.webpay.oneclick.model.*;
@@ -426,5 +434,71 @@ public class ConsoleExamples {
                 logger.info("");
             }
         }
+
+        logger.info("---------------------------- Pattpass By Webpay Create [PatpassByWebpay.Transaction.create] ----------------------------");
+        {
+            try {
+                String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+                String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+                String returnUrl = "https://vuelta.com";
+                String serviceId = nextString(20);
+                String cardHolderId = nextString(20);
+                String cardHolderName = nextString(20);
+                String cardHolderLastName1 = nextString(20);
+                String cardHolderLastName2 = nextString(20);
+                String cardHolderMail = String.format("%s@%s.COM", nextString(10), nextString(7));
+                String cellphoneNumber = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+                String expirationDate = "2222-11-11";
+                String commerceMail = String.format("%s@%s.COM", nextString(10), nextString(7));
+                final CreatePatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.create(buyOrder, sessionId, 1000, returnUrl, serviceId, cardHolderId, cardHolderName,
+                        cardHolderLastName1, cardHolderLastName2, cardHolderMail, cellphoneNumber, expirationDate, commerceMail, false, null);
+                logger.info(response.toString());
+            } catch (CreateTransactionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- Pattpass By Webpay Commit [PatpassByWebpay.Transaction.commit] ----------------------------");
+        {
+            try {
+                String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
+                final CommitPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.commit(token);
+                logger.info(response.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- Pattpass By Webpay Refund [PatpassByWebpay.Transaction.refund] ----------------------------");
+        {
+
+            try {
+                String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
+                final RefundPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.refund(token, 10);
+                logger.info(response.toString());
+            } catch (RefundTransactionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- Pattpass By Webpay Status [PatpassByWebpay.Transaction.status] ----------------------------");
+        {
+            try {
+                String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
+                final StatusPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.status(token);
+                logger.info(response.toString());
+            } catch (StatusTransactionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    static String nextString(int length) {
+        char[] buf = new char[length];
+        Random random = new Random();
+        final char[] symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        for (int idx = 0; idx < buf.length; ++idx)
+            buf[idx] = symbols[random.nextInt(symbols.length)];
+        return new String(buf);
     }
 }

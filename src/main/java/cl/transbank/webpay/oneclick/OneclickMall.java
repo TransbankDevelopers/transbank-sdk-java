@@ -5,7 +5,7 @@ import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
-import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.oneclick.model.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,11 +1,11 @@
-package cl.transbank.webpay.webpayplus.model;
+package cl.transbank.patpass.model;
 
 import cl.transbank.model.CardDetail;
 import lombok.*;
 
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter @ToString
-public class CommitWebpayPlusTransactionResponse {
+public class CommitPatpassByWebpayTransactionResponse {
     private String vci;
     private double amount;
     private String status;
@@ -17,7 +17,5 @@ public class CommitWebpayPlusTransactionResponse {
     private String authorizationCode;
     private String paymentTypeCode;
     private byte responseCode;
-    private double installmentsAmount;
     private byte installmentsNumber;
-    private double balance;
 }

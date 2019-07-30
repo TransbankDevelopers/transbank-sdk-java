@@ -1,6 +1,6 @@
 package cl.transbank.webpay.webpayplus;
 
-import cl.transbank.webpay.model.WebpayApiRequest;
+import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.webpayplus.model.CreateMallTransactionDetails;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;

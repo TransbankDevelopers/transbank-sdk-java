@@ -67,74 +67,74 @@ public class OneclickMallDeferred {
     }
 
     public static class Inscription {
-        public static StartOneclickMallInscriptionResponse start(String username, String email, String responseUrl) throws StartInscriptionException {
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws InscriptionStartException {
             return OneclickMallDeferred.Inscription.start(username, email, responseUrl, null);
         }
 
-        public static StartOneclickMallInscriptionResponse start(String username, String email, String responseUrl, Options options) throws StartInscriptionException {
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl, Options options) throws InscriptionStartException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Inscription.start(username, email, responseUrl, options);
         }
 
-        public static FinishOneclickMallInscriptionResponse finish(String token) throws FinishInscriptionException {
+        public static OneclickMallInscriptionFinishResponse finish(String token) throws InscriptionFinishException {
             return OneclickMallDeferred.Inscription.finish(token, null);
         }
 
-        public static FinishOneclickMallInscriptionResponse finish(String token, Options options) throws FinishInscriptionException {
+        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws InscriptionFinishException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Inscription.finish(token, options);
         }
 
-        public static void delete(String username, String tbkUser) throws DeleteInscriptionException {
+        public static void delete(String username, String tbkUser) throws InscriptionDeleteException {
             OneclickMallDeferred.Inscription.delete(username, tbkUser, null);
         }
 
-        public static void delete(String username, String tbkUser, Options options) throws DeleteInscriptionException {
+        public static void delete(String username, String tbkUser, Options options) throws InscriptionDeleteException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             OneclickMall.Inscription.delete(username, tbkUser, options);
         }
     }
 
     public static class Transaction {
-        public static AuthorizeOneclickMallTransactionResponse authorize(String username, String tbkUser, String buyOrder, CreateMallTransactionDetails details) throws AuthorizeTransactionException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws TransactionAuthorizeException {
             return OneclickMallDeferred.Transaction.authorize(username, tbkUser, buyOrder, details,null);
         }
 
-        public static AuthorizeOneclickMallTransactionResponse authorize(String username, String tbkUser, String buyOrder, CreateMallTransactionDetails details, Options options) throws AuthorizeTransactionException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws TransactionAuthorizeException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details,options);
         }
 
-        public static RefundOneclickMallTransactionResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws RefundTransactionException {
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws TransactionRefundException {
             return OneclickMallDeferred.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
         }
 
-        public static RefundOneclickMallTransactionResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws RefundTransactionException {
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws TransactionRefundException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, options);
         }
 
-        public static StatusOneclickMallTransactionResponse status(String buyOrder) throws StatusTransactionException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws TransactionStatusException {
             return OneclickMallDeferred.Transaction.status(buyOrder, null);
         }
 
-        public static StatusOneclickMallTransactionResponse status(String buyOrder, Options options) throws StatusTransactionException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws TransactionStatusException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.status(buyOrder, options);
         }
 
-        public static CaptureOneclickMallTransactionResponse capture(String buyOrder) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+        public static OneclickMallTransactionCaptureResponse capture(String buyOrder) throws TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
             return OneclickMallDeferred.Transaction.capture(buyOrder, null);
         }
 
-        public static CaptureOneclickMallTransactionResponse capture(String buyOrder, Options options) throws CaptureTransactionException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+        public static OneclickMallTransactionCaptureResponse capture(String buyOrder, Options options) throws TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
             try {
                 options = OneclickMallDeferred.buildMallDeferredOptions(options);
                 final URL endpoint = new URL(String.format("%s/transactions/%s/capture", OneclickMallDeferred.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder)); // TODO VALIDATE THIS URL WHEN WE HAVE DOC ABOUT IT
-                WebpayApiRequest request = new CaptureTransactionRequest();
-                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, CaptureOneclickMallTransactionResponse.class);
+                WebpayApiRequest request = new TransactionCaptureRequest();
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, OneclickMallTransactionCaptureResponse.class);
             } catch (Exception e) {
-                throw new CaptureTransactionException(e);
+                throw new TransactionCaptureException(e);
             }
         }
     }

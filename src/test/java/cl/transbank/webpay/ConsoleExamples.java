@@ -1,19 +1,19 @@
 package cl.transbank.webpay;
 
 import cl.transbank.patpass.PatpassByWebpay;
-import cl.transbank.patpass.model.CommitPatpassByWebpayTransactionResponse;
-import cl.transbank.patpass.model.CreatePatpassByWebpayTransactionResponse;
-import cl.transbank.patpass.model.RefundPatpassByWebpayTransactionResponse;
-import cl.transbank.patpass.model.StatusPatpassByWebpayTransactionResponse;
-import cl.transbank.webpay.exception.CreateTransactionException;
-import cl.transbank.webpay.exception.RefundTransactionException;
-import cl.transbank.webpay.exception.StatusTransactionException;
+import cl.transbank.patpass.model.PatpassByWebpayTransactionCommitResponse;
+import cl.transbank.patpass.model.PatpassByWebpayTransactionCreateResponse;
+import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
+import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
+import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.exception.TransactionRefundException;
+import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.oneclick.OneclickMall;
 import cl.transbank.webpay.oneclick.OneclickMallDeferred;
 import cl.transbank.webpay.oneclick.model.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.model.*;
-import cl.transbank.webpay.webpayplus.model.CreateMallTransactionDetails;
+import cl.transbank.webpay.webpayplus.model.MallTransactionCreateDetails;
 
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
@@ -34,7 +34,7 @@ public class ConsoleExamples {
 
         logger.info("---------------------------- Webpay Plus [Transaction.create] ----------------------------");
         try {
-            final CreateWebpayPlusTransactionResponse create = WebpayPlus.Transaction.create("afdgef346456",
+            final WebpayPlusTransactionCreateResponse create = WebpayPlus.Transaction.create("afdgef346456",
                     "432453sdfgdfgh", 1000, "http://localhost:8080");
             logger.info(create.toString());
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class ConsoleExamples {
             String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
 
             try {
-                final CommitWebpayPlusTransactionResponse commit = WebpayPlus.Transaction.commit(token);
+                final WebpayPlusTransactionCommitResponse commit = WebpayPlus.Transaction.commit(token);
                 logger.info(commit.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -60,7 +60,7 @@ public class ConsoleExamples {
             String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
 
             try {
-                final RefundWebpayPlusTransactionResponse refund = WebpayPlus.Transaction.refund(token, 10);
+                final WebpayPlusTransactionRefundResponse refund = WebpayPlus.Transaction.refund(token, 10);
                 logger.info(refund.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -73,7 +73,7 @@ public class ConsoleExamples {
             String token = "e3308a204a12095590b8f853360dcab92501bf1416f0662186bb31863dec3934";
 
             try {
-                final StatusWebpayPlusTransactionResponse status = WebpayPlus.Transaction.status(token);
+                final WebpayPlusTransactionStatusResponse status = WebpayPlus.Transaction.status(token);
                 logger.info(status.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -84,7 +84,7 @@ public class ConsoleExamples {
         logger.info("------------------- Webpay Plus Captura Diferida [DeferredTransaction.create] -------------------");
         try {
             String buyOrder = "afdgef346456";
-            final CreateWebpayPlusTransactionResponse deferredCapture = WebpayPlus.DeferredTransaction.create(buyOrder,
+            final WebpayPlusTransactionCreateResponse deferredCapture = WebpayPlus.DeferredTransaction.create(buyOrder,
                     "432453sdfgdfgh", 1000, "http://localhost:8080");
             logger.info(deferredCapture.toString());
         } catch (Exception e) {
@@ -97,7 +97,7 @@ public class ConsoleExamples {
             String token = "e4a2ba3e6cac3e8c6b2fe4bb5556c6245f6e19888f2879d885dc460377657a0b";
 
             try {
-                final CommitWebpayPlusTransactionResponse commit = WebpayPlus.DeferredTransaction.commit(token);
+                final WebpayPlusTransactionCommitResponse commit = WebpayPlus.DeferredTransaction.commit(token);
                 logger.info(commit.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,7 +111,7 @@ public class ConsoleExamples {
                 String token = "ec113a08b4042a04f76c9055017807833cccf8b710c66f584ae6c6ee687135c9";
                 String buyOrder = "121225613";
                 String authorizationCode = "1213";
-                final CaptureWebpayPlusTransactionResponse capture = WebpayPlus.DeferredTransaction.capture(token, buyOrder, authorizationCode, 1000);
+                final WebpayPlusTransactionCaptureResponse capture = WebpayPlus.DeferredTransaction.capture(token, buyOrder, authorizationCode, 1000);
                 logger.info(capture.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -124,7 +124,7 @@ public class ConsoleExamples {
             String token = "e57a9aacde782fee299e3cb3ba2c93ec8d1aa4a388ea85647e1ec5ebddb4bc7a";
 
             try {
-                final RefundWebpayPlusTransactionResponse refund = WebpayPlus.DeferredTransaction.refund(token, 10);
+                final WebpayPlusTransactionRefundResponse refund = WebpayPlus.DeferredTransaction.refund(token, 10);
                 logger.info(refund.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,7 +137,7 @@ public class ConsoleExamples {
             String token = "e57a9aacde782fee299e3cb3ba2c93ec8d1aa4a388ea85647e1ec5ebddb4bc7a";
 
             try {
-                final StatusWebpayPlusTransactionResponse status = WebpayPlus.DeferredTransaction.status(token);
+                final WebpayPlusTransactionStatusResponse status = WebpayPlus.DeferredTransaction.status(token);
                 logger.info(status.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -147,8 +147,8 @@ public class ConsoleExamples {
 
         logger.info("-------------------------- Webpay Plus Mall [Transaction.create] --------------------------");
         try {
-            final CreateWebpayPlusMallTransactionResponse create = WebpayPlus.MallTransaction.create("afdgef346456",
-                    "432453sdfgdfgh", "http://localhost:8080", CreateMallTransactionDetails.build(
+            final WebpayPlusMallTransactionCreateResponse create = WebpayPlus.MallTransaction.create("afdgef346456",
+                    "432453sdfgdfgh", "http://localhost:8080", MallTransactionCreateDetails.build(
                             1000, "597055555536", "r234n347"));
             logger.info(create.toString());
         } catch (Exception e) {
@@ -161,7 +161,7 @@ public class ConsoleExamples {
             String token = "e3f039e2edd7554e8f7e82fe0e510d325e2e39c7d144cf6c329718430270b7bf";
 
             try {
-                final CommitWebpayPlusMallTransactionResponse commit = WebpayPlus.MallTransaction.commit(token);
+                final WebpayPlusMallTransactionCommitResponse commit = WebpayPlus.MallTransaction.commit(token);
                 logger.info(commit.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -176,7 +176,7 @@ public class ConsoleExamples {
             try {
                 String buyOrder = "494887257";
                 String commerceCode = "597055555536";
-                final RefundWebpayPlusTransactionResponse refund = WebpayPlus.MallTransaction.refund(token, buyOrder, commerceCode, 1000);
+                final WebpayPlusTransactionRefundResponse refund = WebpayPlus.MallTransaction.refund(token, buyOrder, commerceCode, 1000);
                 logger.info(refund.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -189,7 +189,7 @@ public class ConsoleExamples {
             String token = "e057e96c3653d24cc8224535a9609e890ce4f55a25140a86f0438a4bf1b57d04";
 
             try {
-                final StatusWebpayPlusMallTransactionResponse status = WebpayPlus.MallTransaction.status(token);
+                final WebpayPlusMallTransactionStatusResponse status = WebpayPlus.MallTransaction.status(token);
                 logger.info(status.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -200,10 +200,10 @@ public class ConsoleExamples {
         logger.info("------------------ Webpay Plus Mall Deferred [MallDeferredTransaction.create] ------------------");
         {
             try {
-                final CreateMallTransactionDetails details = CreateMallTransactionDetails.build()
+                final MallTransactionCreateDetails details = MallTransactionCreateDetails.build()
                         .add(1000, "597055555546", "12352346435")
                         .add(1000, "597055555545", "098765432");
-                final CreateWebpayPlusMallTransactionResponse create = WebpayPlus.MallDeferredTransaction.create("234645645645",
+                final WebpayPlusMallTransactionCreateResponse create = WebpayPlus.MallDeferredTransaction.create("234645645645",
                         "432453sdfgdfgh", "http://localhost:8080", details);
                 logger.info(create.toString());
             } catch (Exception e) {
@@ -217,7 +217,7 @@ public class ConsoleExamples {
             String token = "e002a8b38b8350e0fd68fa016ed5e430018547c71707acd12b222fa747e302cc";
 
             try {
-                final CommitWebpayPlusMallTransactionResponse commit = WebpayPlus.MallDeferredTransaction.commit(token);
+                final WebpayPlusMallTransactionCommitResponse commit = WebpayPlus.MallDeferredTransaction.commit(token);
                 logger.info(commit.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -232,7 +232,7 @@ public class ConsoleExamples {
                 String commerceCode = "597055555546";
                 String buyOrder = "12352346435";
                 String authorizationCode = "1213";
-                final CaptureWebpayPlusMallTransactionResponse capture = WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, 1000);
+                final WebpayPlusMallTransactionCaptureResponse capture = WebpayPlus.MallDeferredTransaction.capture(token, commerceCode, buyOrder, authorizationCode, 1000);
                 logger.info(capture.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -247,7 +247,7 @@ public class ConsoleExamples {
             try {
                 String buyOrder = "12352346435";
                 String commerceCode = "597055555546";
-                final RefundWebpayPlusTransactionResponse refund = WebpayPlus.MallDeferredTransaction.refund(token, buyOrder, commerceCode, 1000);
+                final WebpayPlusTransactionRefundResponse refund = WebpayPlus.MallDeferredTransaction.refund(token, buyOrder, commerceCode, 1000);
                 logger.info(refund.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -260,7 +260,7 @@ public class ConsoleExamples {
             String token = "e002a8b38b8350e0fd68fa016ed5e430018547c71707acd12b222fa747e302cc";
 
             try {
-                final StatusWebpayPlusMallTransactionResponse status = WebpayPlus.MallDeferredTransaction.status(token);
+                final WebpayPlusMallTransactionStatusResponse status = WebpayPlus.MallDeferredTransaction.status(token);
                 logger.info(status.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -271,7 +271,7 @@ public class ConsoleExamples {
         logger.info("---------------------------- OneclickMall Mall [Inscription.start] ----------------------------");
         {
             try {
-                final StartOneclickMallInscriptionResponse inscriptionStart =
+                final OneclickMallInscriptionStartResponse inscriptionStart =
                         OneclickMall.Inscription.start("Nombreusuario", "correo@casdasd.cl", "http://some.url/return");
                 logger.info(inscriptionStart.toString());
             } catch (Exception e) {
@@ -285,7 +285,7 @@ public class ConsoleExamples {
             String token = "ea98d8c01c74723015834cd801ec9b6d1226f745ff292daa52ec38198b40e23f";
 
             try {
-                final FinishOneclickMallInscriptionResponse finish = OneclickMall.Inscription.finish(token);
+                final OneclickMallInscriptionFinishResponse finish = OneclickMall.Inscription.finish(token);
                 logger.info(finish.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -305,10 +305,10 @@ public class ConsoleExamples {
                 try {
                     String mallOne = "597055555542";
                     String mallTwo = "597055555543";
-                    cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails details = cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails.build()
+                    cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails details = cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails.build()
                             .add(1000, mallOne, buyOrderOne, (byte) 1)
                             .add(1000, mallTwo, buyOrderTwo, (byte) 1);
-                    final AuthorizeOneclickMallTransactionResponse authorize = OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details);
+                    final OneclickMallTransactionAuthorizeResponse authorize = OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details);
                     logger.info(authorize.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -322,7 +322,7 @@ public class ConsoleExamples {
                     double amount = 1000;
                     String childCommerceCode = "597055555542";
 
-                    final RefundOneclickMallTransactionResponse refund = OneclickMall.Transaction.refund(buyOrder, childCommerceCode, buyOrderOne, amount);
+                    final OneclickMallTransactionRefundResponse refund = OneclickMall.Transaction.refund(buyOrder, childCommerceCode, buyOrderOne, amount);
                     logger.info(refund.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -333,7 +333,7 @@ public class ConsoleExamples {
             logger.info("---------------------------- OneclickMall Mall [Transaction.status] ----------------------------");
             {
                 try {
-                    final StatusOneclickMallTransactionResponse status = OneclickMall.Transaction.status(buyOrder);
+                    final OneclickMallTransactionStatusResponse status = OneclickMall.Transaction.status(buyOrder);
                     logger.info(status.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -356,7 +356,7 @@ public class ConsoleExamples {
             logger.info("---------------------------- OneclickMall Mall Deferred Capture [Inscription.start] ----------------------------");
             {
                 try {
-                    final StartOneclickMallInscriptionResponse inscriptionStart =
+                    final OneclickMallInscriptionStartResponse inscriptionStart =
                             OneclickMallDeferred.Inscription.start("Nombreusuario", "correo@casdasd.cl", "http://some.url/return");
                     logger.info(inscriptionStart.toString());
                 } catch (Exception e) {
@@ -370,7 +370,7 @@ public class ConsoleExamples {
                 String token = "e95492790d1199edd91804eba46f94e92647b2afe76a98c99f7121ad5758f630";
 
                 try {
-                    final FinishOneclickMallInscriptionResponse finish = OneclickMallDeferred.Inscription.finish(token);
+                    final OneclickMallInscriptionFinishResponse finish = OneclickMallDeferred.Inscription.finish(token);
                     logger.info(finish.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -389,10 +389,10 @@ public class ConsoleExamples {
             logger.info("---------------------------- OneclickMall Mall Deferred Capture [Transaction.autorize] ----------------------------");
             {
                 try {
-                    cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails details = cl.transbank.webpay.oneclick.model.CreateMallTransactionDetails.build()
+                    cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails details = cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails.build()
                             .add(1000, mallOne, buyOrderOne, (byte) 1)
                             .add(1000, mallTwo, buyOrderTwo, (byte) 1);
-                    final AuthorizeOneclickMallTransactionResponse authorize = OneclickMallDeferred.Transaction.authorize(username, tbkUser, buyOrder, details);
+                    final OneclickMallTransactionAuthorizeResponse authorize = OneclickMallDeferred.Transaction.authorize(username, tbkUser, buyOrder, details);
                     logger.info(authorize.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -405,7 +405,7 @@ public class ConsoleExamples {
                 try {
                     double amount = 1000;
 
-                    final RefundOneclickMallTransactionResponse refund = OneclickMallDeferred.Transaction.refund(buyOrder, mallOne, buyOrderOne, amount);
+                    final OneclickMallTransactionRefundResponse refund = OneclickMallDeferred.Transaction.refund(buyOrder, mallOne, buyOrderOne, amount);
                     logger.info(refund.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -416,7 +416,7 @@ public class ConsoleExamples {
             logger.info("---------------------------- OneclickMall Mall Deferred Capture [Transaction.status] ----------------------------");
             {
                 try {
-                    final StatusOneclickMallTransactionResponse status = OneclickMallDeferred.Transaction.status(buyOrder);
+                    final OneclickMallTransactionStatusResponse status = OneclickMallDeferred.Transaction.status(buyOrder);
                     logger.info(status.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -450,10 +450,10 @@ public class ConsoleExamples {
                 String cellphoneNumber = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
                 String expirationDate = "2222-11-11";
                 String commerceMail = String.format("%s@%s.COM", nextString(10), nextString(7));
-                final CreatePatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.create(buyOrder, sessionId, 1000, returnUrl, serviceId, cardHolderId, cardHolderName,
+                final PatpassByWebpayTransactionCreateResponse response = PatpassByWebpay.Transaction.create(buyOrder, sessionId, 1000, returnUrl, serviceId, cardHolderId, cardHolderName,
                         cardHolderLastName1, cardHolderLastName2, cardHolderMail, cellphoneNumber, expirationDate, commerceMail, false, null);
                 logger.info(response.toString());
-            } catch (CreateTransactionException e) {
+            } catch (TransactionCreateException e) {
                 e.printStackTrace();
             }
         }
@@ -462,7 +462,7 @@ public class ConsoleExamples {
         {
             try {
                 String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
-                final CommitPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.commit(token);
+                final PatpassByWebpayTransactionCommitResponse response = PatpassByWebpay.Transaction.commit(token);
                 logger.info(response.toString());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -474,9 +474,9 @@ public class ConsoleExamples {
 
             try {
                 String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
-                final RefundPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.refund(token, 10);
+                final PatpassByWebpayTransactionRefundResponse response = PatpassByWebpay.Transaction.refund(token, 10);
                 logger.info(response.toString());
-            } catch (RefundTransactionException e) {
+            } catch (TransactionRefundException e) {
                 e.printStackTrace();
             }
         }
@@ -485,9 +485,9 @@ public class ConsoleExamples {
         {
             try {
                 String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
-                final StatusPatpassByWebpayTransactionResponse response = PatpassByWebpay.Transaction.status(token);
+                final PatpassByWebpayTransactionStatusResponse response = PatpassByWebpay.Transaction.status(token);
                 logger.info(response.toString());
-            } catch (StatusTransactionException e) {
+            } catch (TransactionStatusException e) {
                 e.printStackTrace();
             }
         }

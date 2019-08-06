@@ -1,27 +1,26 @@
 package cl.transbank.webpay.exception;
 
-import lombok.Getter;
+import cl.transbank.exception.TransbankException;
 
-public class WebpayException extends Exception {
-    @Getter private int code;
-
+public class WebpayException extends TransbankException {
     public WebpayException() {
         super();
     }
 
     public WebpayException(Exception e) {
         super(e);
-
-        if (e instanceof WebpayHttpRuntimeException)
-            this.code = ((WebpayHttpRuntimeException) e).getCode();
     }
 
     public WebpayException(String message) {
         super(message);
     }
 
+    public WebpayException(int code, String message) {
+        super(code, message);
+    }
+
     @Override
     public String toString() {
-        return super.toString().concat(String.format(" | code : %s", code));
+        return super.toString().concat(String.format(" | code : %s", getCode()));
     }
 }

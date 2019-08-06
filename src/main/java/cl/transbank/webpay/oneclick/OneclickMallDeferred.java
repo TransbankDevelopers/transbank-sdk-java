@@ -1,5 +1,6 @@
 package cl.transbank.webpay.oneclick;
 
+import cl.transbank.exception.TransbankException;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
@@ -11,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -67,73 +69,79 @@ public class OneclickMallDeferred {
     }
 
     public static class Inscription {
-        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws InscriptionStartException {
+        public static OneclickMallInscriptionStartResponse start(
+                String username, String email, String responseUrl) throws IOException, InscriptionStartException {
             return OneclickMallDeferred.Inscription.start(username, email, responseUrl, null);
         }
 
-        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl, Options options) throws InscriptionStartException {
+        public static OneclickMallInscriptionStartResponse start(
+                String username, String email, String responseUrl, Options options) throws IOException, InscriptionStartException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Inscription.start(username, email, responseUrl, options);
         }
 
-        public static OneclickMallInscriptionFinishResponse finish(String token) throws InscriptionFinishException {
+        public static OneclickMallInscriptionFinishResponse finish(String token) throws IOException, InscriptionFinishException {
             return OneclickMallDeferred.Inscription.finish(token, null);
         }
 
-        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws InscriptionFinishException {
+        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws IOException, InscriptionFinishException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Inscription.finish(token, options);
         }
 
-        public static void delete(String username, String tbkUser) throws InscriptionDeleteException {
+        public static void delete(String username, String tbkUser) throws IOException, InscriptionDeleteException {
             OneclickMallDeferred.Inscription.delete(username, tbkUser, null);
         }
 
-        public static void delete(String username, String tbkUser, Options options) throws InscriptionDeleteException {
+        public static void delete(String username, String tbkUser, Options options) throws IOException, InscriptionDeleteException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             OneclickMall.Inscription.delete(username, tbkUser, options);
         }
     }
 
     public static class Transaction {
-        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws TransactionAuthorizeException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(
+                String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
             return OneclickMallDeferred.Transaction.authorize(username, tbkUser, buyOrder, details,null);
         }
 
-        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws TransactionAuthorizeException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(
+                String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws IOException, TransactionAuthorizeException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details,options);
         }
 
-        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws TransactionRefundException {
+        public static OneclickMallTransactionRefundResponse refund(
+                String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws IOException, TransactionRefundException {
             return OneclickMallDeferred.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
         }
 
-        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws TransactionRefundException {
+        public static OneclickMallTransactionRefundResponse refund(
+                String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws IOException, TransactionRefundException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, options);
         }
 
-        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws TransactionStatusException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws IOException, TransactionStatusException {
             return OneclickMallDeferred.Transaction.status(buyOrder, null);
         }
 
-        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws TransactionStatusException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws IOException, TransactionStatusException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
             return OneclickMall.Transaction.status(buyOrder, options);
         }
 
-        public static OneclickMallTransactionCaptureResponse capture(String buyOrder) throws TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+        public static OneclickMallTransactionCaptureResponse capture(String buyOrder) throws IOException, TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
             return OneclickMallDeferred.Transaction.capture(buyOrder, null);
         }
 
-        public static OneclickMallTransactionCaptureResponse capture(String buyOrder, Options options) throws TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+        public static OneclickMallTransactionCaptureResponse capture(String buyOrder, Options options) throws IOException, TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS
+            options = OneclickMallDeferred.buildMallDeferredOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/%s/capture", OneclickMallDeferred.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder)); // TODO VALIDATE THIS URL WHEN WE HAVE DOC ABOUT IT
+            WebpayApiRequest request = new TransactionCaptureRequest();
             try {
-                options = OneclickMallDeferred.buildMallDeferredOptions(options);
-                final URL endpoint = new URL(String.format("%s/transactions/%s/capture", OneclickMallDeferred.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder)); // TODO VALIDATE THIS URL WHEN WE HAVE DOC ABOUT IT
-                WebpayApiRequest request = new TransactionCaptureRequest();
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, OneclickMallTransactionCaptureResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionCaptureException(e);
             }
         }

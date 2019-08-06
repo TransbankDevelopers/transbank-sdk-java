@@ -1,5 +1,6 @@
 package cl.transbank.patpass;
 
+import cl.transbank.exception.TransbankException;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionCommitResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
@@ -18,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -77,7 +79,7 @@ public class PatpassByWebpay {
         public static PatpassByWebpayTransactionCreateResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, String serviceId, String cardHolderId,
                 String cardHolderName, String cardHolderLastName1, String cardHolderLastName2, String cardHolderMail, String cellphoneNumber,
-                String expirationDate, String commerceMail, boolean ufFlag) throws TransactionCreateException {
+                String expirationDate, String commerceMail, boolean ufFlag) throws IOException, TransactionCreateException {
             return Transaction.create(buyOrder, sessionId, amount, returnUrl, serviceId, cardHolderId, cardHolderName,
                     cardHolderLastName1, cardHolderLastName2, cardHolderMail, cellphoneNumber, expirationDate, commerceMail, ufFlag, null);
         }
@@ -85,54 +87,54 @@ public class PatpassByWebpay {
         public static PatpassByWebpayTransactionCreateResponse create(
                 String buyOrder, String sessionId, double amount, String returnUrl, String serviceId, String cardHolderId,
                 String cardHolderName, String cardHolderLastName1, String cardHolderLastName2, String cardHolderMail, String cellphoneNumber,
-                String expirationDate, String commerceMail, boolean ufFlag, Options options) throws TransactionCreateException {
-            try {
+                String expirationDate, String commerceMail, boolean ufFlag, Options options) throws IOException, TransactionCreateException {
                 options = PatpassByWebpay.buildOptions(options);
                 final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
                 final TransactionCreateRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, returnUrl);
                 request.setDetails(serviceId, cardHolderId, cardHolderName, cardHolderLastName1, cardHolderLastName2,
                         cardHolderMail, cellphoneNumber, expirationDate, commerceMail, ufFlag);
+            try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, PatpassByWebpayTransactionCreateResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionCreateException(e);
             }
         }
 
-        public static PatpassByWebpayTransactionCommitResponse commit(String token) throws TransactionCommitException {
+        public static PatpassByWebpayTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
             return Transaction.commit(token, null);
         }
 
-        public static PatpassByWebpayTransactionCommitResponse commit(String token, Options options) throws TransactionCommitException {
+        public static PatpassByWebpayTransactionCommitResponse commit(String token, Options options) throws IOException, TransactionCommitException {
+            options = PatpassByWebpay.buildOptions(options);
             try {
-                options = PatpassByWebpay.buildOptions(options);
                 return BeanUtils.getInstance().copyBeanData(new PatpassByWebpayTransactionCommitResponse(), WebpayPlus.Transaction.commit(token, options));
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
             }
         }
 
-        public static PatpassByWebpayTransactionRefundResponse refund(String token, double amount) throws TransactionRefundException {
+        public static PatpassByWebpayTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
             return Transaction.refund(token, amount, null);
         }
 
-        public static PatpassByWebpayTransactionRefundResponse refund(String token, double amount, Options options) throws TransactionRefundException {
+        public static PatpassByWebpayTransactionRefundResponse refund(String token, double amount, Options options) throws IOException, TransactionRefundException {
+            options = PatpassByWebpay.buildOptions(options);
             try {
-                options = PatpassByWebpay.buildOptions(options);
                 return BeanUtils.getInstance().copyBeanData(new PatpassByWebpayTransactionRefundResponse(), WebpayPlus.Transaction.refund(token, amount, options));
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionRefundException(e);
             }
         }
 
-        public static PatpassByWebpayTransactionStatusResponse status(String token) throws TransactionStatusException {
+        public static PatpassByWebpayTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
             return Transaction.status(token, null);
         }
 
-        public static PatpassByWebpayTransactionStatusResponse status(String token, Options options) throws TransactionStatusException {
+        public static PatpassByWebpayTransactionStatusResponse status(String token, Options options) throws IOException, TransactionStatusException {
+            options = PatpassByWebpay.buildOptions(options);
             try {
-                options = PatpassByWebpay.buildOptions(options);
                 return BeanUtils.getInstance().copyBeanData(new PatpassByWebpayTransactionStatusResponse(), WebpayPlus.Transaction.status(token, options));
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
             }
         }

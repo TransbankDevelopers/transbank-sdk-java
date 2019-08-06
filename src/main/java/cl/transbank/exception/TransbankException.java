@@ -1,7 +1,9 @@
 package cl.transbank.exception;
 
+import lombok.Getter;
+
 public class TransbankException extends Exception {
-    private int code;
+    @Getter private int code;
 
     public TransbankException() {
         super();

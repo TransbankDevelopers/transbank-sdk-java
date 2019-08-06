@@ -5,6 +5,7 @@ import cl.transbank.util.HttpUtil;
 import cl.transbank.util.HttpUtilImpl;
 import cl.transbank.util.JsonUtil;
 import cl.transbank.util.JsonUtilImpl;
+import cl.transbank.webpay.exception.TransbankHttpApiException;
 import lombok.NonNull;
 
 import java.io.IOException;
@@ -49,12 +50,12 @@ public abstract class ApiBaseResource {
     }
 
     protected static String request(@NonNull URL url, HttpUtilImpl.RequestMethod method, @NonNull String query)
-            throws IOException {
+            throws IOException, TransbankHttpApiException {
         return getHttpUtil().request(url, method, query);
     }
 
     public String request(@NonNull URL url, HttpUtilImpl.RequestMethod method, @NonNull String query,
-                          HttpUtil.ContentType contentType) throws IOException {
+                          HttpUtil.ContentType contentType) throws IOException, TransbankHttpApiException {
         return getHttpUtil().request(url, method, query, contentType);
     }
 }

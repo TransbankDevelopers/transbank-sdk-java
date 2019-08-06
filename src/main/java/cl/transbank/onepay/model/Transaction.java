@@ -7,6 +7,7 @@ import cl.transbank.onepay.exception.TransactionCommitException;
 import cl.transbank.onepay.exception.TransactionCreateException;
 import cl.transbank.onepay.net.*;
 import cl.transbank.util.HttpUtil;
+import cl.transbank.webpay.exception.TransbankHttpApiException;
 import lombok.NonNull;
 
 import java.io.IOException;
@@ -77,9 +78,16 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         SendTransactionRequest request = getRequestBuilder().buildSendTransactionRequest(cart, channel, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        String jsonOut = request(
-                new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), SEND_TRANSACTION)),
-                HttpUtil.RequestMethod.POST, jsonIn);
+
+        String jsonOut = null;
+        try {
+            jsonOut = request(
+                    new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), SEND_TRANSACTION)),
+                    HttpUtil.RequestMethod.POST, jsonIn);
+        } catch (TransbankHttpApiException e) {
+            throw new TransactionCreateException(e);
+        }
+
         SendTransactionResponse response = getJsonUtil().jsonDecode(jsonOut, SendTransactionResponse.class);
 
         if (null == response) {
@@ -104,9 +112,16 @@ public class Transaction extends ApiBaseResource {
         options = Options.build(options);
         GetTransactionNumberRequest request = getRequestBuilder().buildGetTransactionNumberRequest(occ, externalUniqueNumber, options);
         String jsonIn = getJsonUtil().jsonEncode(request);
-        String jsonOut = request(
-                new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), COMMIT_TRANSACTION)),
-                HttpUtil.RequestMethod.POST, jsonIn);
+
+        String jsonOut = null;
+        try {
+            jsonOut = request(
+                    new URL(String.format("%s/%s", Onepay.getCurrentIntegrationTypeUrl(), COMMIT_TRANSACTION)),
+                    HttpUtil.RequestMethod.POST, jsonIn);
+        } catch (TransbankHttpApiException e) {
+            throw new TransactionCommitException(e);
+        }
+
         GetTransactionNumberResponse response = getJsonUtil().jsonDecode(jsonOut, GetTransactionNumberResponse.class);
 
         if (null == response) {

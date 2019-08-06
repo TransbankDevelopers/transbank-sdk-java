@@ -453,7 +453,7 @@ public class ConsoleExamples {
                 final PatpassByWebpayTransactionCreateResponse response = PatpassByWebpay.Transaction.create(buyOrder, sessionId, 1000, returnUrl, serviceId, cardHolderId, cardHolderName,
                         cardHolderLastName1, cardHolderLastName2, cardHolderMail, cellphoneNumber, expirationDate, commerceMail, false, null);
                 logger.info(response.toString());
-            } catch (TransactionCreateException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -476,7 +476,7 @@ public class ConsoleExamples {
                 String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
                 final PatpassByWebpayTransactionRefundResponse response = PatpassByWebpay.Transaction.refund(token, 10);
                 logger.info(response.toString());
-            } catch (TransactionRefundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -487,7 +487,7 @@ public class ConsoleExamples {
                 String token = "e82f8d3efef39449c10c66bc2f121f5af0041e57dff3cec5660e0b2be4251740";
                 final PatpassByWebpayTransactionStatusResponse response = PatpassByWebpay.Transaction.status(token);
                 logger.info(response.toString());
-            } catch (TransactionStatusException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

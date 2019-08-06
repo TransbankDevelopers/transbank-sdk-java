@@ -1,5 +1,6 @@
 package cl.transbank.webpay.oneclick;
 
+import cl.transbank.exception.TransbankException;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
@@ -11,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -67,92 +69,97 @@ public class OneclickMall {
     }
 
     public static class Inscription {
-        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws InscriptionStartException {
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws IOException, InscriptionStartException {
             return OneclickMall.Inscription.start(username, email, responseUrl, null);
         }
 
-        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl, Options options) throws InscriptionStartException {
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl, Options options) throws IOException, InscriptionStartException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/inscriptions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            final WebpayApiRequest request = new InscriptionStartRequest(username, email, responseUrl);
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/inscriptions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
-                final WebpayApiRequest request = new InscriptionStartRequest(username, email, responseUrl);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, OneclickMallInscriptionStartResponse.class);
-            } catch (Exception e){
+            } catch (TransbankException e) {
                 throw new InscriptionStartException(e);
             }
         }
 
-        public static OneclickMallInscriptionFinishResponse finish(String token) throws InscriptionFinishException {
+        public static OneclickMallInscriptionFinishResponse finish(String token) throws IOException, InscriptionFinishException {
            return OneclickMall.Inscription.finish(token, null);
         }
 
-        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws InscriptionFinishException {
+        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws IOException, InscriptionFinishException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/inscriptions/%s", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/inscriptions/%s", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, OneclickMallInscriptionFinishResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new InscriptionFinishException(e);
             }
         }
 
-        public static void delete(String username, String tbkUser) throws InscriptionDeleteException {
+        public static void delete(String username, String tbkUser) throws IOException, InscriptionDeleteException {
             OneclickMall.Inscription.delete(username, tbkUser, null);
         }
 
-        public static void delete(String username, String tbkUser, Options options) throws InscriptionDeleteException {
+        public static void delete(String username, String tbkUser, Options options) throws IOException, InscriptionDeleteException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/inscriptions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            WebpayApiRequest request = new InscriptionDeleteRequest(username, tbkUser);
+
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/inscriptions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
-                WebpayApiRequest request = new InscriptionDeleteRequest(username, tbkUser);
                 WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.DELETE, request, options);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new InscriptionDeleteException(e);
             }
         }
     }
 
     public static class Transaction {
-        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws TransactionAuthorizeException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
             return OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details,null);
         }
 
-        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws TransactionAuthorizeException {
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws IOException, TransactionAuthorizeException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            WebpayApiRequest request = new TransactionAuthorizeRequest(username, tbkUser, buyOrder, details.getDetails());
+
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/transactions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
-                WebpayApiRequest request = new TransactionAuthorizeRequest(username, tbkUser, buyOrder, details.getDetails());
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, OneclickMallTransactionAuthorizeResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionAuthorizeException(e);
             }
         }
 
-        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws TransactionRefundException {
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws IOException, TransactionRefundException {
             return OneclickMall.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
         }
 
-        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws TransactionRefundException {
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws IOException, TransactionRefundException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/%s/refunds", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
+            WebpayApiRequest request = new MallTransactionRefundRequest(childCommerceCode, childBuyOrder, amount);
+
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/transactions/%s/refunds", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
-                WebpayApiRequest request = new MallTransactionRefundRequest(childCommerceCode, childBuyOrder, amount);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, OneclickMallTransactionRefundResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionRefundException(e);
             }
         }
 
-        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws TransactionStatusException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws IOException, TransactionStatusException {
             return OneclickMall.Transaction.status(buyOrder, null);
         }
 
-        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws TransactionStatusException {
+        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws IOException, TransactionStatusException {
+            options = OneclickMall.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/%s", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
+
             try {
-                options = OneclickMall.buildMallOptions(options);
-                final URL endpoint = new URL(String.format("%s/transactions/%s", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, OneclickMallTransactionStatusResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
             }
         }

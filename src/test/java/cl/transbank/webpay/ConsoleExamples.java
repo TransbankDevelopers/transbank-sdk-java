@@ -5,6 +5,8 @@ import cl.transbank.patpass.model.PatpassByWebpayTransactionCommitResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionCreateResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
+import cl.transbank.transaccioncompleta.FullTransaction;
+import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.exception.TransactionRefundException;
 import cl.transbank.webpay.exception.TransactionStatusException;
@@ -488,6 +490,21 @@ public class ConsoleExamples {
                 final PatpassByWebpayTransactionStatusResponse response = PatpassByWebpay.Transaction.status(token);
                 logger.info(response.toString());
             } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.create] ----------------------------");
+        {
+            String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            double amount = 10000;
+            String cardNumber= "4051885600446623";
+            String cardExpirationDate= "23/03";
+            short cvv = 123;
+            try {
+                FullTransactionCreateResponse response = FullTransaction.Transaction.create(buyOrder, sessionId, amount, cardNumber, cardExpirationDate, cvv);
+                System.out.println(response.toString());
+            } catch (TransactionCreateException e) {
                 e.printStackTrace();
             }
         }

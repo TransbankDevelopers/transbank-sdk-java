@@ -1,5 +1,6 @@
 package cl.transbank.transaccioncompleta;
 
+import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.util.HttpUtil;
@@ -10,6 +11,7 @@ import cl.transbank.webpay.exception.TransactionCreateException;
 import lombok.AccessLevel;
 import lombok.Getter;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
@@ -70,18 +72,19 @@ public class FullTransaction {
         }
 
         public static FullTransactionCreateResponse create(
-                String buyOrder, String sessionId, double amount, String cardNumber, String cardExpirationDate, short cvv) throws TransactionCreateException {
+                String buyOrder, String sessionId, double amount, String cardNumber, String cardExpirationDate, short cvv) throws IOException, TransactionCreateException {
             return FullTransaction.Transaction.create(buyOrder, sessionId, amount, cardNumber, cvv, cardExpirationDate,  null);
         }
 
         public static FullTransactionCreateResponse create(
-                        String buyOrder, String sessionId, double amount, String cardNumber, short cvv, String cardExpirationDate, Options options) throws TransactionCreateException {
+                        String buyOrder, String sessionId, double amount, String cardNumber, short cvv, String cardExpirationDate, Options options) throws IOException, TransactionCreateException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
+            final WebpayApiRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, cardNumber, cvv, cardExpirationDate);
+            
             try {
-                options = FullTransaction.Transaction.buildOptions(options);
-                final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
-                final WebpayApiRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, cardNumber, cvv, cardExpirationDate);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionCreateResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionCreateException(e);
             }
         }

@@ -1,6 +1,7 @@
 package cl.transbank.webpay;
 
 import cl.transbank.WebpayApiResponseManager;
+import cl.transbank.exception.TransbankException;
 import cl.transbank.util.BeanUtils;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.util.HttpUtilImpl;
@@ -31,16 +32,16 @@ public abstract class WebpayApiResource {
     }
 
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final Options options, Class<T> clazz)
-            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException {
+            throws TransbankException, IOException {
         return execute(endpoint, method, null, options, clazz);
     }
 
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options)
-            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException{
+            throws TransbankException, IOException {
         return execute(endpoint, method, request, options, null);
     }
     public static <T> T execute(final URL endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options, Class<T> clazz)
-            throws WebpayException, IOException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException, NoSuchMethodException {
+            throws TransbankException, IOException {
         final WebpayApiResponseManager out = WebpayApiResource.getHttpUtil().request(endpoint, method, request, WebpayApiResource.buildHeaders(options), WebpayApiResponseManager.class);
 
         if (null == out)
@@ -52,6 +53,10 @@ public abstract class WebpayApiResource {
         if (null == clazz)
             return null;
 
-        return BeanUtils.getInstance().copyBeanData(clazz.newInstance(), out);
+        try {
+            return BeanUtils.getInstance().copyBeanData(clazz.newInstance(), out);
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new TransbankException(e);
+        }
     }
 }

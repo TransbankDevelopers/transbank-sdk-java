@@ -3,11 +3,14 @@ package cl.transbank.transaccioncompleta;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
+import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.exception.TransactionInstallmentException;
+import cl.transbank.webpay.webpayplus.WebpayPlus;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -33,6 +36,7 @@ public class FullTransaction {
 
     public static class Transaction {
         @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        private static final String installmentURL = "/installments";
 
         public static void setCommerceCode(String commerceCode) {
             FullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -77,15 +81,30 @@ public class FullTransaction {
         }
 
         public static FullTransactionCreateResponse create(
-                        String buyOrder, String sessionId, double amount, String cardNumber, short cvv, String cardExpirationDate, Options options) throws IOException, TransactionCreateException {
+                String buyOrder, String sessionId, double amount, String cardNumber, short cvv, String cardExpirationDate, Options options) throws IOException, TransactionCreateException {
             options = FullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
             final WebpayApiRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, cardNumber, cvv, cardExpirationDate);
-            
+
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionCreateResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCreateException(e);
+            }
+        }
+
+        public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber) throws IOException, TransactionInstallmentException {
+            return FullTransaction.Transaction.installment(token, installmentsNumber, null);
+        }
+
+        public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber, Options options) throws IOException, TransactionInstallmentException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
+            final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionInstallmentException(e);
             }
         }
     }

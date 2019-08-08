@@ -7,7 +7,9 @@ import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
 import cl.transbank.transaccioncompleta.FullTransaction;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
+import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
 import cl.transbank.webpay.exception.TransactionCreateException;
+import cl.transbank.webpay.exception.TransactionInstallmentException;
 import cl.transbank.webpay.exception.TransactionRefundException;
 import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.oneclick.OneclickMall;
@@ -17,6 +19,7 @@ import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.model.*;
 import cl.transbank.webpay.webpayplus.model.MallTransactionCreateDetails;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -504,7 +507,20 @@ public class ConsoleExamples {
             try {
                 FullTransactionCreateResponse response = FullTransaction.Transaction.create(buyOrder, sessionId, amount, cardNumber, cardExpirationDate, cvv);
                 System.out.println(response.toString());
-            } catch (TransactionCreateException e) {
+            } catch (TransactionCreateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.installment] ----------------------------");
+        {
+            String token = "e966c9b10a4e6c7c7ac79512baf18173ecfaf44c9aeb8ebb05173077b6ad8a85";
+            byte installmentsNumber = 12;
+            try {
+                FullTransactionInstallmentResponse response = FullTransaction.Transaction.installment(token, installmentsNumber);
+                System.out.println(response.toString());
+            } catch (TransactionInstallmentException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

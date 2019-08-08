@@ -2,12 +2,14 @@ package cl.transbank.transaccioncompleta;
 
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
+import cl.transbank.transaccioncompleta.model.FullTransactionCommitResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
+import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.exception.TransactionInstallmentException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
@@ -93,6 +95,7 @@ public class FullTransaction {
             }
         }
 
+
         public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber) throws IOException, TransactionInstallmentException {
             return FullTransaction.Transaction.installment(token, installmentsNumber, null);
         }
@@ -105,6 +108,21 @@ public class FullTransaction {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionInstallmentException(e);
+            }
+        }
+
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod) throws IOException, TransactionCommitException {
+            return FullTransaction.Transaction.commit(token, idQueryInstallments, deferredPeriodIndex, gracePeriod, null);
+        }
+
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            try {
+                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+                final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionCommitException(e);
             }
         }
     }

@@ -1,5 +1,6 @@
 package cl.transbank;
 
+import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
 import cl.transbank.webpay.webpayplus.WebpayDetails;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
@@ -51,4 +52,11 @@ public class WebpayApiResponseManager {
     @SerializedName("tbk_user") private String tbkUser;
     @SerializedName("credit_card_type") private String creditCardType;
     @SerializedName("last_four_card_digits") private String lastFourCardDigits;
+
+    @SerializedName("id_query_installments") private Long idQueryInstallments;
+    @SerializedName("deferred_periods") private List<FullTransactionInstallmentResponse.DeferredPeriod> deferredPeriods;
+
+
+
+
 }

@@ -108,4 +108,37 @@ public class FullTransaction {
             }
         }
     }
+    public static void main(String[] args){
+        System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
+        Logger globalLog = Logger.getLogger("cl.transbank");
+        globalLog.setUseParentHandlers(false);
+        globalLog.addHandler(new ConsoleHandler() {
+            {/*setOutputStream(System.out);*/setLevel(Level.ALL);}
+        });
+        globalLog.setLevel(Level.ALL);
+        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        double amount = 10000;
+        String cardNumber= "4051885600446623";
+        String cardExpirationDate= "23/03";
+        short cvv = 123;
+        String token = "";
+        try {
+            FullTransactionCreateResponse response = FullTransaction.Transaction.create(buyOrder, sessionId, amount, cardNumber, cardExpirationDate, cvv);
+            System.out.println(response.toString());
+            token = response.getToken();
+        } catch (TransactionCreateException | IOException e) {
+            e.printStackTrace();
+        }
+
+        byte installmentsNumber = 12;
+        try {
+            FullTransactionInstallmentResponse response = FullTransaction.Transaction.installment("e966c9b10a4e6c7c7ac79512baf18173ecfaf44c9aeb8ebb05173077b6ad8a85", installmentsNumber);
+            System.out.println(response.toString());
+        } catch (TransactionInstallmentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

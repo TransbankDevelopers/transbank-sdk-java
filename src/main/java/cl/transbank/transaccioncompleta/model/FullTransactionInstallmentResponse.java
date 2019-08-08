@@ -10,8 +10,8 @@ import java.util.List;
 @Setter
 @ToString
 public class FullTransactionInstallmentResponse {
-    private String installmentsAmount;
-    private byte idQueryInstallments;
+    private double installmentsAmount;
+    private Long idQueryInstallments;
     private List<DeferredPeriod> deferredPeriods;
 
     @NoArgsConstructor @AllArgsConstructor

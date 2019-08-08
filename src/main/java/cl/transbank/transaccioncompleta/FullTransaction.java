@@ -111,54 +111,18 @@ public class FullTransaction {
             }
         }
 
-        public static FullTransactionCommitResponse commit(String token, byte idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod) throws IOException, TransactionCommitException {
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod) throws IOException, TransactionCommitException {
             return FullTransaction.Transaction.commit(token, idQueryInstallments, deferredPeriodIndex, gracePeriod, null);
         }
 
-        public static FullTransactionCommitResponse commit(String token, byte idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
             options = FullTransaction.Transaction.buildOptions(options);
             try {
                 final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
-                final WebpayApiRequest request = new TransactionCommitRequest(token,idQueryInstallments, deferredPeriodIndex, gracePeriod);
+                final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
-            }
-        }
-
-        public static void main(String[] arg){
-            System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
-            Logger globalLog = Logger.getLogger("cl.transbank");
-            globalLog.setUseParentHandlers(false);
-            globalLog.addHandler(new ConsoleHandler() {
-                {/*setOutputStream(System.out);*/setLevel(Level.ALL);}
-            });
-            globalLog.setLevel(Level.ALL);
-            String token = "";
-            byte idQueryInstallments = 1;
-            byte deferredPeriodIndex= 1;
-            Boolean gracePeriod = false;
-
-            String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-            String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-            double amount = 10000;
-            String cardNumber= "4051885600446623";
-            String cardExpirationDate= "23/03";
-            short cvv = 123;
-
-            try {
-                FullTransactionCreateResponse response = FullTransaction.Transaction.create(buyOrder, sessionId, amount, cardNumber, cardExpirationDate, cvv);
-                System.out.println(response.toString());
-                token = response.getToken();
-            } catch (TransactionCreateException | IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                FullTransactionCommitResponse response = FullTransaction.Transaction.commit(token,idQueryInstallments,deferredPeriodIndex,gracePeriod);
-                System.out.println(response.toString());
-            } catch (IOException | TransactionCommitException e) {
-                e.printStackTrace();
             }
         }
     }

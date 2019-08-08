@@ -6,12 +6,10 @@ import cl.transbank.patpass.model.PatpassByWebpayTransactionCreateResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
 import cl.transbank.transaccioncompleta.FullTransaction;
+import cl.transbank.transaccioncompleta.model.FullTransactionCommitResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
-import cl.transbank.webpay.exception.TransactionCreateException;
-import cl.transbank.webpay.exception.TransactionInstallmentException;
-import cl.transbank.webpay.exception.TransactionRefundException;
-import cl.transbank.webpay.exception.TransactionStatusException;
+import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.OneclickMall;
 import cl.transbank.webpay.oneclick.OneclickMallDeferred;
 import cl.transbank.webpay.oneclick.model.*;
@@ -519,6 +517,22 @@ public class ConsoleExamples {
                 FullTransactionInstallmentResponse response = FullTransaction.Transaction.installment(token, installmentsNumber);
                 System.out.println(response.toString());
             } catch (TransactionInstallmentException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.commit] ----------------------------");
+        {
+            String token = "e966c9b10a4e6c7c7ac79512baf18173ecfaf44c9aeb8ebb05173077b6ad8a85";
+            Long idQueryInstallments = 17325868L;
+            byte deferredPeriodIndex= 1;
+            Boolean gracePeriod = false;
+            try {
+                FullTransactionCommitResponse response = FullTransaction.Transaction.commit(token,idQueryInstallments,deferredPeriodIndex,gracePeriod);
+                System.out.println(response.toString());
+            } catch (TransactionCommitException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();

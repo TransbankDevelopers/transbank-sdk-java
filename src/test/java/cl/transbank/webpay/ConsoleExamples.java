@@ -9,6 +9,7 @@ import cl.transbank.transaccioncompleta.FullTransaction;
 import cl.transbank.transaccioncompleta.model.FullTransactionCommitResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
+import cl.transbank.transaccioncompleta.model.FullTransactionStatusResponse;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.OneclickMall;
 import cl.transbank.webpay.oneclick.OneclickMallDeferred;
@@ -538,6 +539,18 @@ public class ConsoleExamples {
                 e.printStackTrace();
             }
         }
+        logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.status] ----------------------------");
+        {
+            String token = "e966c9b10a4e6c7c7ac79512baf18173ecfaf44c9aeb8ebb05173077b6ad8a85";
+            try {
+                FullTransactionStatusResponse response = FullTransaction.Transaction.status(token);
+                System.out.println(response.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransactionStatusException e) {
+                e.printStackTrace();
+            }
+       }
     }
 
     static String nextString(int length) {

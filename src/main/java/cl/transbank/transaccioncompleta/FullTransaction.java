@@ -5,6 +5,7 @@ import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.transaccioncompleta.model.FullTransactionCommitResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
 import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
+import cl.transbank.transaccioncompleta.model.FullTransactionStatusResponse;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
@@ -12,7 +13,9 @@ import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.exception.TransactionInstallmentException;
+import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
+import cl.transbank.webpay.webpayplus.model.WebpayPlusTransactionStatusResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -123,6 +126,21 @@ public class FullTransaction {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
+            }
+        }
+
+        public static FullTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
+            return FullTransaction.Transaction.status(token, null);
+        }
+
+        public static FullTransactionStatusResponse status(String token, Options options)
+                throws IOException, TransactionStatusException {
+            try {
+                options = FullTransaction.Transaction.buildOptions(options);
+                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, FullTransactionStatusResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionStatusException(e);
             }
         }
     }

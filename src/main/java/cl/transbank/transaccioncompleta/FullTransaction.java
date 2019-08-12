@@ -14,8 +14,6 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FullTransaction {
@@ -33,8 +31,8 @@ public class FullTransaction {
 
     public static class Transaction {
         @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
-        private static final String installmentURL = "/installments";
-        private static final String refundURL = "/refunds";
+        private static final String installmentURL = "installments";
+        private static final String refundURL = "refunds";
 
         public static void setCommerceCode(String commerceCode) {
             FullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -100,7 +98,7 @@ public class FullTransaction {
             options = FullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
-            
+
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);
             } catch (TransbankException e) {

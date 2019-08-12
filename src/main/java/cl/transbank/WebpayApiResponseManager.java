@@ -56,7 +56,4 @@ public class WebpayApiResponseManager {
     @SerializedName("id_query_installments") private Long idQueryInstallments;
     @SerializedName("deferred_periods") private List<FullTransactionInstallmentResponse.DeferredPeriod> deferredPeriods;
 
-
-
-
 }

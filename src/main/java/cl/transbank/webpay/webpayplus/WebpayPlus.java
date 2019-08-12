@@ -200,12 +200,12 @@ public class WebpayPlus {
             return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, options);
         }
 
-        public static WebpayPlusTransactionCommitResponse commit(String token) throws TransactionCommitException {
+        public static WebpayPlusTransactionCommitResponse commit(String token) throws TransactionCommitException, IOException {
             return WebpayPlus.DeferredTransaction.commit(token, null);
         }
 
         public static WebpayPlusTransactionCommitResponse commit(String token, Options options)
-                throws TransactionCommitException {
+                throws TransactionCommitException, IOException {
             options = WebpayPlus.DeferredTransaction.buildOptions(options);
             return WebpayPlus.Transaction.commit(token, options);
         }

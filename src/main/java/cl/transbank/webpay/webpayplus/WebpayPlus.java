@@ -101,17 +101,17 @@ public class WebpayPlus {
             }
         }
 
-        public static WebpayPlusTransactionCommitResponse commit(String token) throws TransactionCommitException {
+        public static WebpayPlusTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
             return WebpayPlus.Transaction.commit(token, null);
         }
 
         public static WebpayPlusTransactionCommitResponse commit(String token, Options options)
-                throws TransactionCommitException {
+                throws IOException, TransactionCommitException {
             try {
                 options = WebpayPlus.Transaction.buildOptions(options);
                 final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, WebpayPlusTransactionCommitResponse.class);
-            } catch (Exception e) {
+            } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
             }
         }

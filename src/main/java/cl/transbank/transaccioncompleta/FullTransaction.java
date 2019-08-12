@@ -2,28 +2,18 @@ package cl.transbank.transaccioncompleta;
 
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
-import cl.transbank.transaccioncompleta.model.FullTransactionCommitResponse;
-import cl.transbank.transaccioncompleta.model.FullTransactionCreateResponse;
-import cl.transbank.transaccioncompleta.model.FullTransactionInstallmentResponse;
-import cl.transbank.transaccioncompleta.model.FullTransactionStatusResponse;
+import cl.transbank.transaccioncompleta.model.*;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
-import cl.transbank.webpay.exception.TransactionCommitException;
-import cl.transbank.webpay.exception.TransactionCreateException;
-import cl.transbank.webpay.exception.TransactionInstallmentException;
-import cl.transbank.webpay.exception.TransactionStatusException;
+import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
-import cl.transbank.webpay.webpayplus.model.WebpayPlusTransactionStatusResponse;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FullTransaction {
@@ -41,7 +31,8 @@ public class FullTransaction {
 
     public static class Transaction {
         @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
-        private static final String installmentURL = "/installments";
+        private static final String installmentURL = "installments";
+        private static final String refundURL = "refunds";
 
         public static void setCommerceCode(String commerceCode) {
             FullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -107,6 +98,7 @@ public class FullTransaction {
             options = FullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
+
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);
             } catch (TransbankException e) {
@@ -120,9 +112,10 @@ public class FullTransaction {
 
         public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
             options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+            final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
+
             try {
-                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
-                final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
@@ -135,12 +128,31 @@ public class FullTransaction {
 
         public static FullTransactionStatusResponse status(String token, Options options)
                 throws IOException, TransactionStatusException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
             try {
-                options = FullTransaction.Transaction.buildOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, FullTransactionStatusResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
+            }
+        }
+
+        public static FullTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
+            return FullTransaction.Transaction.refund(token, amount,null);
+        }
+
+        public static FullTransactionRefundResponse refund(String token, double amount, Options options)
+                throws IOException, TransactionRefundException {
+
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
+            final WebpayApiRequest request = new TransactionRefundRequest(amount);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionRefundResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionRefundException(e);
             }
         }
     }

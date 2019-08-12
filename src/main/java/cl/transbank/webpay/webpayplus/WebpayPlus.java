@@ -11,9 +11,7 @@ import cl.transbank.webpay.webpayplus.model.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.*;
@@ -107,9 +105,10 @@ public class WebpayPlus {
 
         public static WebpayPlusTransactionCommitResponse commit(String token, Options options)
                 throws IOException, TransactionCommitException {
+            options = WebpayPlus.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
             try {
-                options = WebpayPlus.Transaction.buildOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, WebpayPlusTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
@@ -200,12 +199,12 @@ public class WebpayPlus {
             return WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl, options);
         }
 
-        public static WebpayPlusTransactionCommitResponse commit(String token) throws TransactionCommitException, IOException {
+        public static WebpayPlusTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
             return WebpayPlus.DeferredTransaction.commit(token, null);
         }
 
         public static WebpayPlusTransactionCommitResponse commit(String token, Options options)
-                throws TransactionCommitException, IOException {
+                throws IOException, TransactionCommitException {
             options = WebpayPlus.DeferredTransaction.buildOptions(options);
             return WebpayPlus.Transaction.commit(token, options);
         }
@@ -444,4 +443,3 @@ public class WebpayPlus {
         }
     }
 }
-

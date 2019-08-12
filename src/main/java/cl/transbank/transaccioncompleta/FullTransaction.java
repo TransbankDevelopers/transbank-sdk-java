@@ -100,6 +100,7 @@ public class FullTransaction {
             options = FullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
+            
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);
             } catch (TransbankException e) {
@@ -113,9 +114,10 @@ public class FullTransaction {
 
         public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
             options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+            final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
+
             try {
-                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
-                final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
@@ -128,9 +130,10 @@ public class FullTransaction {
 
         public static FullTransactionStatusResponse status(String token, Options options)
                 throws IOException, TransactionStatusException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
             try {
-                options = FullTransaction.Transaction.buildOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, FullTransactionStatusResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
@@ -144,10 +147,11 @@ public class FullTransaction {
         public static FullTransactionRefundResponse refund(String token, double amount, Options options)
                 throws IOException, TransactionRefundException {
 
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
+            final WebpayApiRequest request = new TransactionRefundRequest(amount);
+
             try {
-                options = FullTransaction.Transaction.buildOptions(options);
-                final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
-                final WebpayApiRequest request = new TransactionRefundRequest(amount);
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionRefundResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionRefundException(e);

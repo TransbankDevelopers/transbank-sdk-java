@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus.model;
+package cl.transbank.model;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MallTransactionCreateDetails {
-    private List<Detail> detailList = new ArrayList<>();
+    private List<MallTransactionCreateDetails.Detail> detailList = new ArrayList<>();
 
     private MallTransactionCreateDetails() {}
 
@@ -21,15 +21,15 @@ public class MallTransactionCreateDetails {
     }
 
     public MallTransactionCreateDetails add(double amount, String commerceCode, String buyOrder) {
-        detailList.add(new Detail(amount, commerceCode, buyOrder));
+        detailList.add(new MallTransactionCreateDetails.Detail(amount, commerceCode, buyOrder));
         return this;
     }
 
     public boolean remove(double amount, String commerceCode, String buyOrder) {
-        return getDetails().remove(new Detail(amount, commerceCode, buyOrder));
+        return getDetails().remove(new MallTransactionCreateDetails.Detail(amount, commerceCode, buyOrder));
     }
 
-    public List<Detail> getDetails() {
+    public List<MallTransactionCreateDetails.Detail> getDetails() {
         return Collections.unmodifiableList(detailList);
     }
 
@@ -42,12 +42,13 @@ public class MallTransactionCreateDetails {
 
         @Override
         public boolean equals(Object obj) {
-            if (!(obj instanceof Detail))
+            if (!(obj instanceof MallTransactionCreateDetails.Detail))
                 return false;
 
-            Detail another = (Detail) obj;
+            MallTransactionCreateDetails.Detail another = (MallTransactionCreateDetails.Detail) obj;
             return getAmount() == another.getAmount() && getCommerceCode().equals(another.getBuyOrder()) &&
                     getBuyOrder().equals(another.getBuyOrder());
         }
     }
 }
+

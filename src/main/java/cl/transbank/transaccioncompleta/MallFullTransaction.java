@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class FullTransactionMall {
-    private static Logger logger = Logger.getLogger(FullTransactionMall.class.getName());
+public class MallFullTransaction {
+    private static Logger logger = Logger.getLogger(MallFullTransaction.class.getName());
 
     public static String getCurrentIntegrationTypeUrl(IntegrationType integrationType) {
         if (null == integrationType)
@@ -34,27 +34,27 @@ public class FullTransactionMall {
         private static Options options = new Options();
 
         public static void setCommerceCode(String commerceCode) {
-            FullTransactionMall.Transaction.getOptions().setCommerceCode(commerceCode);
+            MallFullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
         }
 
         public static String getCommerceCode() {
-            return FullTransactionMall.Transaction.getOptions().getCommerceCode();
+            return MallFullTransaction.Transaction.getOptions().getCommerceCode();
         }
 
         public static void setApiKey(String apiKey) {
-            FullTransactionMall.Transaction.getOptions().setApiKey(apiKey);
+            MallFullTransaction.Transaction.getOptions().setApiKey(apiKey);
         }
 
         public static String getApiKey() {
-            return FullTransactionMall.Transaction.getOptions().getApiKey();
+            return MallFullTransaction.Transaction.getOptions().getApiKey();
         }
 
         public static void setIntegrationType(IntegrationType integrationType) {
-            FullTransactionMall.Transaction.getOptions().setIntegrationType(integrationType);
+            MallFullTransaction.Transaction.getOptions().setIntegrationType(integrationType);
         }
 
         public static IntegrationType getIntegrationType() {
-            return FullTransactionMall.Transaction.getOptions().getIntegrationType();
+            return MallFullTransaction.Transaction.getOptions().getIntegrationType();
         }
 
         public static Options buildOptionsForTesting() {
@@ -64,20 +64,20 @@ public class FullTransactionMall {
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (Options.isEmpty(options) && Options.isEmpty(FullTransactionMall.Transaction.getOptions()))
-                return FullTransactionMall.Transaction.buildOptionsForTesting();
+            if (Options.isEmpty(options) && Options.isEmpty(MallFullTransaction.Transaction.getOptions()))
+                return MallFullTransaction.Transaction.buildOptionsForTesting();
 
-            return FullTransactionMall.Transaction.getOptions().buildOptions(options);
+            return MallFullTransaction.Transaction.getOptions().buildOptions(options);
         }
 
         public static FullTransactionMallCreateResponse create(
                 String buyOrder, String sessionId, double amount, String cardNumber, String cardExpirationDate, MallTransactionCreateDetails details) throws IOException, TransactionCreateException {
-            return FullTransactionMall.Transaction.create(buyOrder, sessionId, cardNumber, cardExpirationDate, details, null);
+            return MallFullTransaction.Transaction.create(buyOrder, sessionId, cardNumber, cardExpirationDate, details, null);
         }
 
         public static FullTransactionMallCreateResponse create(
                 String buyOrder, String sessionId, String cardNumber, String cardExpirationDate, MallTransactionCreateDetails details, Options options) throws IOException, TransactionCreateException {
-            options = FullTransactionMall.Transaction.buildOptions(options);
+            options = MallFullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(getCurrentIntegrationTypeUrl(options.getIntegrationType()));
             final WebpayApiRequest request = new MallTransactionCreateRequest(buyOrder, sessionId, cardNumber, cardExpirationDate, details.getDetails());
 

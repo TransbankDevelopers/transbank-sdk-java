@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus;
+package cl.transbank.transaccioncompleta;
 
 import cl.transbank.model.MallTransactionCreateDetails;
 import cl.transbank.model.WebpayApiRequest;
@@ -7,12 +7,15 @@ import lombok.*;
 
 import java.util.List;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @ToString
-class MallTransactionCreateRequest extends WebpayApiRequest {
+public class MallTransactionCreateRequest extends WebpayApiRequest {
     @SerializedName("buy_order") private String buyOrder;
     @SerializedName("session_id") private String sessionId;
-    @SerializedName("return_url") private String returnUrl;
+    @SerializedName("card_number") private String cardNumber;
+    @SerializedName("card_expiration_date") private String cardExpirationDate;
     @SerializedName("details") private List<MallTransactionCreateDetails.Detail> details;
 }

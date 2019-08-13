@@ -1,6 +1,7 @@
 package cl.transbank.webpay.webpayplus;
 
 import cl.transbank.exception.TransbankException;
+import cl.transbank.model.MallTransactionCreateDetails;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
@@ -8,13 +9,9 @@ import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.webpayplus.model.*;
-import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.*;
 

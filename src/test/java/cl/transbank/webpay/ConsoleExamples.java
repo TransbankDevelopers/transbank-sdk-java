@@ -13,7 +13,6 @@ import cl.transbank.webpay.oneclick.OneclickMallDeferred;
 import cl.transbank.webpay.oneclick.model.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.model.*;
-import cl.transbank.webpay.webpayplus.model.MallTransactionCreateDetails;
 
 import java.io.IOException;
 import java.util.Random;
@@ -149,8 +148,8 @@ public class ConsoleExamples {
         logger.info("-------------------------- Webpay Plus Mall [Transaction.create] --------------------------");
         try {
             final WebpayPlusMallTransactionCreateResponse create = WebpayPlus.MallTransaction.create("afdgef346456",
-                    "432453sdfgdfgh", "http://localhost:8080", MallTransactionCreateDetails.build(
-                            1000, "597055555536", "r234n347"));
+                    "432453sdfgdfgh", "http://localhost:8080", cl.transbank.model.MallTransactionCreateDetails.build()
+                            .add(1000, "597055555536", "r234n347"));
             logger.info(create.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -201,7 +200,7 @@ public class ConsoleExamples {
         logger.info("------------------ Webpay Plus Mall Deferred [MallDeferredTransaction.create] ------------------");
         {
             try {
-                final MallTransactionCreateDetails details = MallTransactionCreateDetails.build()
+                final cl.transbank.model.MallTransactionCreateDetails details = cl.transbank.model.MallTransactionCreateDetails.build()
                         .add(1000, "597055555546", "12352346435")
                         .add(1000, "597055555545", "098765432");
                 final WebpayPlusMallTransactionCreateResponse create = WebpayPlus.MallDeferredTransaction.create("234645645645",

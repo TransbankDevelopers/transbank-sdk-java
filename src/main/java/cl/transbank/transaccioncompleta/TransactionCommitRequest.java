@@ -4,13 +4,11 @@ import cl.transbank.model.WebpayApiRequest;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@NoArgsConstructor
 public class TransactionCommitRequest extends WebpayApiRequest {
-    @SerializedName("id_query_installments") private Long idQueryInstallments;
+    @SerializedName("id_query_installments")  private long idQueryInstallments;
     @SerializedName("deferred_period_index") private byte deferredPeriodIndex;
-    @SerializedName("grace_period") private Boolean gracePeriod;
+    @SerializedName("grace_period") private boolean gracePeriod;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class MallTransactionCreateRequest extends WebpayApiRequest {
+public class MallFullTransactionCreateRequest extends WebpayApiRequest {
     @SerializedName("buy_order") private String buyOrder;
     @SerializedName("session_id") private String sessionId;
     @SerializedName("card_number") private String cardNumber;

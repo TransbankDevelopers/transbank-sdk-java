@@ -6,6 +6,7 @@ import cl.transbank.patpass.model.PatpassByWebpayTransactionCreateResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
 import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
 import cl.transbank.transaccioncompleta.FullTransaction;
+import cl.transbank.transaccioncompleta.MallFullTransaction;
 import cl.transbank.transaccioncompleta.model.*;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.OneclickMall;
@@ -558,6 +559,65 @@ public class ConsoleExamples {
             } catch (IOException e) {
                 e.printStackTrace();
             }  catch (TransactionRefundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.create] ----------------------------");
+        {
+            String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            double amount = 10000;
+            String cardNumber= "4051885600446623";
+            String cardExpirationDate= "23/03";
+            short cvv = 123;
+            String commerceCode ="597055555552";
+            String commerceCode2 ="597055555553";
+            String buyOrder1 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrder2 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+
+            cl.transbank.model.MallTransactionCreateDetails details = cl.transbank.model.MallTransactionCreateDetails.build().add(amount,commerceCode,buyOrder1).add(amount,commerceCode2,buyOrder2);
+            try {
+                MallFullTransactionCreateResponse response = MallFullTransaction.Transaction.create(buyOrder, sessionId, cardNumber, cardExpirationDate, details);
+                System.out.println(response.toString());
+            } catch (TransactionCreateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.installment] ----------------------------");
+        {
+            String token="eb501f2f1000c11ed105492c8bc702688f7679c95148bf556a66da627bb0a761";
+            byte installmentsNumber = 12;
+            String commerceCode = "597055555552";
+            String buyOrder="94589433";
+            double amount = 1000;
+            long idQueryInstallments = 17444420L;
+            try {
+                FullTransactionInstallmentResponse response = MallFullTransaction.Transaction.installment(token, commerceCode, buyOrder, installmentsNumber, null);
+                System.out.println(response.toString());
+                idQueryInstallments = response.getIdQueryInstallments();
+            } catch (TransactionInstallmentException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.installment] ----------------------------");
+        {
+            byte deferredPeriodIndex= 1;
+            Boolean gracePeriod = false;
+            String commerceCode = "597055555552";
+            String buyOrder="94589433";
+            long idQueryInstallments = 17444420L;
+            String token="eb501f2f1000c11ed105492c8bc702688f7679c95148bf556a66da627bb0a761";
+            try {
+                MallTransactionCommitDetails details2 = MallTransactionCommitDetails.build().add(commerceCode,buyOrder,idQueryInstallments,deferredPeriodIndex,gracePeriod);
+                MallFullTransactionCommitResponse response = MallFullTransaction.Transaction.commit(token,details2);
+                System.out.println(response.toString());
+            } catch (TransactionCommitException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

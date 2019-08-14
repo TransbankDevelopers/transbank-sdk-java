@@ -13,5 +13,4 @@ public class MallFullTransactionInstallmentRequest extends WebpayApiRequest {
     @SerializedName("commerce_code")private String commerceCode;
     @SerializedName("buy_order")private String buyOrder;
     @SerializedName("installments_number") private byte installmentsNumber;
-    //@SerializedName("details") private List<MallTransactionInstallmentsDetails.Detail> details;
 }

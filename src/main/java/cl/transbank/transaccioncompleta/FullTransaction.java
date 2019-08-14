@@ -139,7 +139,7 @@ public class FullTransaction {
             }
         }
 
-        public static FullTransactionRefundResponse refund(@NonNull String token, double amount) throws IOException, TransactionRefundException {
+        public static FullTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
             return FullTransaction.Transaction.refund(token, amount,null);
         }
 

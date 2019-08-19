@@ -547,7 +547,7 @@ public class ConsoleExamples {
             } catch (TransactionStatusException e) {
                 e.printStackTrace();
             }
-       }
+        }
 
         logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.refund] ----------------------------");
         {
@@ -563,7 +563,7 @@ public class ConsoleExamples {
             }
         }
 
-        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.create] ----------------------------");
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.create] ----------------------------");
         {
             String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
             String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -584,7 +584,7 @@ public class ConsoleExamples {
                 e.printStackTrace();
             }
         }
-        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.installment] ----------------------------");
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.installment] ----------------------------");
         {
             String token="eb501f2f1000c11ed105492c8bc702688f7679c95148bf556a66da627bb0a761";
             byte installmentsNumber = 12;
@@ -603,7 +603,7 @@ public class ConsoleExamples {
             }
         }
 
-        logger.info("---------------------------- FullTransaction Mall  [FullTransaction.Transaction.installment] ----------------------------");
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.commit] ----------------------------");
         {
             byte deferredPeriodIndex= 1;
             Boolean gracePeriod = false;
@@ -620,6 +620,20 @@ public class ConsoleExamples {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.status] ----------------------------");
+        {
+            String token = "e1c942d119cfe3f7ca94c677ef267e9ab87165d50a41178f12232bd67245146a";
+
+                try {
+                    MallFullTransactionStatusResponse response = MallFullTransaction.Transaction.status(token);
+                    System.out.println(response.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TransactionStatusException e) {
+                    e.printStackTrace();
+                }
         }
     }
 

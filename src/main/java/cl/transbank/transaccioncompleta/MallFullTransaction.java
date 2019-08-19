@@ -11,6 +11,7 @@ import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.TransactionCommitException;
 import cl.transbank.webpay.exception.TransactionCreateException;
 import cl.transbank.webpay.exception.TransactionInstallmentException;
+import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -121,6 +122,22 @@ public class MallFullTransaction {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, MallFullTransactionCommitResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionCommitException(e);
+            }
+        }
+
+        public static MallFullTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
+            return MallFullTransaction.Transaction.status(token, null);
+        }
+
+        public static MallFullTransactionStatusResponse status(String token, Options options)
+                throws IOException, TransactionStatusException {
+            options = MallFullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, MallFullTransactionStatusResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionStatusException(e);
             }
         }
     }

@@ -8,10 +8,7 @@ import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.IntegrationType;
 import cl.transbank.webpay.Options;
 import cl.transbank.webpay.WebpayApiResource;
-import cl.transbank.webpay.exception.TransactionCommitException;
-import cl.transbank.webpay.exception.TransactionCreateException;
-import cl.transbank.webpay.exception.TransactionInstallmentException;
-import cl.transbank.webpay.exception.TransactionStatusException;
+import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,6 +34,7 @@ public class MallFullTransaction {
         @Getter(AccessLevel.PRIVATE)
         private static Options options = new Options();
         private static final String installmentURL = "installments";
+        private static final String refundURL = "refunds";
 
         public static void setCommerceCode(String commerceCode) {
             MallFullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -138,6 +136,24 @@ public class MallFullTransaction {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, MallFullTransactionStatusResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
+            }
+        }
+
+        public static MallFullTransactionRefundResponse refund(String token, double amount,String commerceCode, String buyOrder) throws IOException, TransactionRefundException {
+            return MallFullTransaction.Transaction.refund(token, amount,commerceCode,buyOrder,null);
+        }
+
+        public static MallFullTransactionRefundResponse refund(String token, double amount, String commerceCode, String buyOrder, Options options)
+                throws IOException, TransactionRefundException {
+
+            options = MallFullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
+            final WebpayApiRequest request = new MallFullTransactionRefundRequest(amount,commerceCode,buyOrder);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionRefundResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionRefundException(e);
             }
         }
     }

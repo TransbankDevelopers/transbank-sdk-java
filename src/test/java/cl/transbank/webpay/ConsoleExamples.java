@@ -635,6 +635,21 @@ public class ConsoleExamples {
                     e.printStackTrace();
                 }
         }
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.refund] ----------------------------");
+        {
+            String token = "e26ae6e0d76b729747b2ca7d758cb0ffddc03b1a4e5b6f6e3deebb3ab35cfa3e";
+            double amount = 1000;
+            String commerceCode = "597055555552";
+            String buyOrder = "r234n347";
+            try {
+                MallFullTransactionRefundResponse response = MallFullTransaction.Transaction.refund(token, amount, commerceCode, buyOrder);
+                System.out.println(response.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransactionRefundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     static String nextString(int length) {

@@ -15,6 +15,9 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MallFullTransaction {

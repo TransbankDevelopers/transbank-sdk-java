@@ -1,13 +1,14 @@
-package cl.transbank.webpay;
+package cl.transbank.patpass;
 
 import cl.transbank.common.Option;
+import com.google.gson.annotations.SerializedName;
 import lombok.*;
 import lombok.experimental.Accessors;
 
 @ToString @NoArgsConstructor @AllArgsConstructor
-public class Options extends Option implements Cloneable {
-    @Getter  final String headerCommerceCodeName = "Tbk-Api-Key-Id";
-    @Getter  final String headerApiKeyName = "Tbk-Api-Key-Secret";
+public class Options extends Option implements Cloneable  {
+    @Getter  final String headerCommerceCodeName = "commercecode";
+    @Getter  final String headerApiKeyName = "Authorization";
     @Setter @Getter @Accessors(chain = true) private String commerceCode;
     @Setter @Getter @Accessors(chain = true) private String apiKey;
     @Setter @Getter @Accessors(chain = true) private IntegrationType integrationType;
@@ -51,3 +52,4 @@ public class Options extends Option implements Cloneable {
                 (null == options.getIntegrationType() || options.getIntegrationType().toString().isEmpty()));
     }
 }
+

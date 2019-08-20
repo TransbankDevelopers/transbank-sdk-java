@@ -1,10 +1,8 @@
 package cl.transbank.webpay;
 
 import cl.transbank.patpass.PatpassByWebpay;
-import cl.transbank.patpass.model.PatpassByWebpayTransactionCommitResponse;
-import cl.transbank.patpass.model.PatpassByWebpayTransactionCreateResponse;
-import cl.transbank.patpass.model.PatpassByWebpayTransactionRefundResponse;
-import cl.transbank.patpass.model.PatpassByWebpayTransactionStatusResponse;
+import cl.transbank.patpass.PatpassComercio;
+import cl.transbank.patpass.model.*;
 import cl.transbank.transaccioncompleta.FullTransaction;
 import cl.transbank.transaccioncompleta.MallFullTransaction;
 import cl.transbank.transaccioncompleta.model.*;
@@ -647,6 +645,31 @@ public class ConsoleExamples {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (TransactionRefundException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("---------------------------- Patpass Comercio   [PatpassComercio.Inscription.start] ----------------------------");
+        {
+            try {
+                final PatpassComercioInscriptionStartResponse inscriptionStart =
+                        PatpassComercio.Inscription.start("https://www.comercio.com/urlretorno",
+                                "nombre",
+                                "apellido",
+                                "sapellido",
+                                "14959787-6",
+                                "76",
+                                "https://www.comercio.com/urlrfinal",
+                                "28299257",
+                                1500,
+                                "012356545",
+                                "99999999",
+                                "nombre del patpass",
+                                "persona@persona.cl",
+                                "comercio@comercio.cl",
+                                "huerfanos 101",
+                                "Santiago");
+                logger.info(inscriptionStart.toString());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -1,10 +1,12 @@
 package cl.transbank.webpay.webpayplus;
 
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.MallTransactionCreateDetails;
 import cl.transbank.util.HttpUtil;
-import cl.transbank.webpay.IntegrationType;
-import cl.transbank.webpay.Options;
+import cl.transbank.webpay.WebpayOptions;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.model.WebpayApiRequest;
@@ -24,7 +26,7 @@ public class WebpayPlus {
 
         return String.format(
                 "%s/rswebpaytransaction/api/webpay/v1.0/transactions",
-                integrationType.getApiBase());
+                IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }
 
@@ -41,7 +43,7 @@ public class WebpayPlus {
     }
 
     public static class Transaction {
-        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -68,7 +70,7 @@ public class WebpayPlus {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555532", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
@@ -150,7 +152,7 @@ public class WebpayPlus {
     }
 
     public static class DeferredTransaction {
-        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.DeferredTransaction.getOptions().setCommerceCode(commerceCode);
@@ -177,7 +179,7 @@ public class WebpayPlus {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555540", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
@@ -245,7 +247,7 @@ public class WebpayPlus {
     }
 
     public static class MallTransaction {
-        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.MallTransaction.getOptions().setCommerceCode(commerceCode);
@@ -272,7 +274,7 @@ public class WebpayPlus {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555535", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
@@ -354,7 +356,7 @@ public class WebpayPlus {
     }
 
     public static class MallDeferredTransaction {
-        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.MallDeferredTransaction.getOptions().setCommerceCode(commerceCode);
@@ -381,7 +383,7 @@ public class WebpayPlus {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555544", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 

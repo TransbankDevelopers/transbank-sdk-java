@@ -1,15 +1,16 @@
 package cl.transbank.transaccioncompleta;
 
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.MallTransactionCreateDetails;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.transaccioncompleta.model.*;
 import cl.transbank.util.HttpUtil;
-import cl.transbank.webpay.IntegrationType;
-import cl.transbank.webpay.Options;
+import cl.transbank.webpay.WebpayOptions;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
 import lombok.AccessLevel;
 import lombok.Getter;
 
@@ -26,13 +27,13 @@ public class MallFullTransaction {
 
         return String.format(
                 "%s/rswebpaytransaction/api/webpay/v1.0/transactions",
-                integrationType.getApiBase());
+                IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }
 
     public static class Transaction {
         @Getter(AccessLevel.PRIVATE)
-        private static Options options = new Options();
+        private static Options options = new WebpayOptions();
         private static final String installmentURL = "installments";
         private static final String refundURL = "refunds";
 
@@ -61,7 +62,7 @@ public class MallFullTransaction {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555551", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
@@ -97,7 +98,7 @@ public class MallFullTransaction {
 
         public static MallFullTransactionInstallmentResponse installment(String token, String commerceCode, String buyOrder,byte installmentsNumber, Options options) throws IOException, TransactionInstallmentException {
             options = MallFullTransaction.Transaction.buildOptions(options);
-            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
+            final URL endpoint = new URL(String.format("%s/%s/%s", MallFullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             final WebpayApiRequest request = new MallFullTransactionInstallmentRequest(commerceCode, buyOrder, installmentsNumber);
 
             try {
@@ -147,7 +148,7 @@ public class MallFullTransaction {
                 throws IOException, TransactionRefundException {
 
             options = MallFullTransaction.Transaction.buildOptions(options);
-            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
+            final URL endpoint = new URL(String.format("%s/%s/%s", MallFullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
             final WebpayApiRequest request = new MallFullTransactionRefundRequest(amount,commerceCode,buyOrder);
 
             try {

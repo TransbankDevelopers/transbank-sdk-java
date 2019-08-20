@@ -1,6 +1,7 @@
 package cl.transbank.webpay;
 
 import cl.transbank.WebpayApiResponseManager;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.util.BeanUtils;
 import cl.transbank.util.HttpUtil;
@@ -10,9 +11,7 @@ import cl.transbank.model.WebpayApiRequest;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.beans.IntrospectionException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,8 +24,8 @@ public abstract class WebpayApiResource {
             return null;
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Tbk-Api-Key-Id", options.getCommerceCode());
-        headers.put("Tbk-Api-Key-Secret", options.getApiKey());
+        headers.put(options.getHeaderCommerceCodeName(), options.getCommerceCode());
+        headers.put(options.getHeaderApiKeyName(), options.getApiKey());
 
         return headers;
     }

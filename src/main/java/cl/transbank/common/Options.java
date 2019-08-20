@@ -1,15 +1,23 @@
-package cl.transbank.webpay;
+package cl.transbank.common;
 
 import lombok.*;
 import lombok.experimental.Accessors;
 
-@ToString @NoArgsConstructor @AllArgsConstructor
-public class Options implements Cloneable {
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public abstract class Options implements Cloneable{
     @Setter @Getter @Accessors(chain = true) private String commerceCode;
     @Setter @Getter @Accessors(chain = true) private String apiKey;
     @Setter @Getter @Accessors(chain = true) private IntegrationType integrationType;
+    public  String getCommerceCode(){return commerceCode;}
+    public  String getApiKey(){return apiKey;}
+    public abstract String getHeaderCommerceCodeName();
+    public abstract String getHeaderApiKeyName();
+    public  void setIntegrationType(IntegrationType integrationType){this.integrationType = integrationType;}
+    public  IntegrationType getIntegrationType(){ return integrationType;}
 
-    public Options buildOptions(Options options) {
+    public  Options buildOptions(Options options){
         Options alt = clone();
 
         // If the method receives an options object then rewrite each property, this is mandatory
@@ -37,9 +45,9 @@ public class Options implements Cloneable {
     }
 
     public boolean isEmpty() {
-        return (null == commerceCode || commerceCode.trim().isEmpty()) &&
-                (null == apiKey || apiKey.trim().isEmpty()) &&
-                (null == integrationType || integrationType.toString().isEmpty());
+        return (null == this.getCommerceCode() || this.getCommerceCode().trim().isEmpty()) &&
+                (null == this.getApiKey() || this.getApiKey().trim().isEmpty()) &&
+                (null == this.getIntegrationType() || this.getIntegrationType().toString().isEmpty());
     }
 
     public static boolean isEmpty(Options options) {

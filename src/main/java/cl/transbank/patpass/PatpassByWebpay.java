@@ -71,7 +71,7 @@ public class PatpassByWebpay {
 
     public static Options buildOptions(Options options) {
         // set default options for Pattpass by Webpay if options are not configured yet
-        if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(PatpassByWebpay.getOptions()))
+        if (Options.isEmpty(options) && Options.isEmpty(PatpassByWebpay.getOptions()))
             return buildOptionsForTestingPatpassByWebpay();
 
         return PatpassByWebpay.getOptions().buildOptions(options);

@@ -43,7 +43,7 @@ public class WebpayPlus {
     }
 
     public static class Transaction {
-        @Getter(AccessLevel.PRIVATE) private static WebpayOptions options = new WebpayOptions();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -76,7 +76,7 @@ public class WebpayPlus {
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(WebpayPlus.Transaction.getOptions()))
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.Transaction.getOptions()))
                 return WebpayPlus.Transaction.buildOptionsForTesting();
 
             return WebpayPlus.Transaction.getOptions().buildOptions(options);
@@ -185,7 +185,7 @@ public class WebpayPlus {
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(WebpayPlus.DeferredTransaction.getOptions()))
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.DeferredTransaction.getOptions()))
                 return WebpayPlus.DeferredTransaction.buildOptionsForTesting();
 
             return WebpayPlus.DeferredTransaction.getOptions().buildOptions(options);
@@ -280,7 +280,7 @@ public class WebpayPlus {
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(WebpayPlus.MallTransaction.getOptions()))
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.MallTransaction.getOptions()))
                 return WebpayPlus.MallTransaction.buildOptionsForTesting();
 
             return WebpayPlus.MallTransaction.getOptions().buildOptions(options);
@@ -356,7 +356,7 @@ public class WebpayPlus {
     }
 
     public static class MallDeferredTransaction {
-        @Getter(AccessLevel.PRIVATE) private static WebpayOptions options = new WebpayOptions();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
         public static void setCommerceCode(String commerceCode) {
             WebpayPlus.MallDeferredTransaction.getOptions().setCommerceCode(commerceCode);
@@ -382,14 +382,14 @@ public class WebpayPlus {
             return WebpayPlus.MallDeferredTransaction.getOptions().getIntegrationType();
         }
 
-        public static WebpayOptions buildOptionsForTesting() {
+        public static Options buildOptionsForTesting() {
             return new WebpayOptions(
                     "597055555544", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(WebpayPlus.MallDeferredTransaction.getOptions()))
+            if (Options.isEmpty(options) && Options.isEmpty(WebpayPlus.MallDeferredTransaction.getOptions()))
                 return WebpayPlus.MallDeferredTransaction.buildOptionsForTesting();
 
             return WebpayPlus.MallDeferredTransaction.getOptions().buildOptions(options);

@@ -65,7 +65,7 @@ public class PatpassComercio {
 
     public static Options buildMallOptions(Options patpassOptions) {
         // set default options for PatpassComercio  if options are not configured yet
-        if (PatpassOptions.isEmpty(patpassOptions) && PatpassOptions.isEmpty(PatpassComercio.getPatpassOptions()))
+        if (Options.isEmpty(patpassOptions) && Options.isEmpty(PatpassComercio.getPatpassOptions()))
             return buildOptionsForTestingPatpassComercio();
 
         return PatpassComercio.getPatpassOptions().buildOptions(patpassOptions);

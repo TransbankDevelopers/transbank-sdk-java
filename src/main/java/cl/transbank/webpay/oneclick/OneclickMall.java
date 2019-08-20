@@ -64,7 +64,7 @@ public class OneclickMall {
 
     public static Options buildMallOptions(Options options) {
         // set default options for OneclickMall mall if options are not configured yet
-        if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(OneclickMall.getOptions()))
+        if (Options.isEmpty(options) && Options.isEmpty(OneclickMall.getOptions()))
             return buildOptionsForTestingOneclickMall();
 
         return OneclickMall.getOptions().buildOptions(options);

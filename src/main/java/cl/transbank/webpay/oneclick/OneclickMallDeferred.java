@@ -57,14 +57,14 @@ public class OneclickMallDeferred {
         return OneclickMallDeferred.getOptions().getIntegrationType();
     }
 
-    public static WebpayOptions buildOptionsForTestingOneclickMallDeferred(){
-        return new WebpayOptions("597055555547", // TODO WE NEED A COMMERCE CODE HERE!!!
+    public static Options buildOptionsForTestingOneclickMallDeferred(){
+        return new WebpayOptions("597055555547",
                 "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
     }
 
     public static Options buildMallDeferredOptions(Options options) {
         // set default options for OneclickMall mall if options are not configured yet
-        if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(OneclickMallDeferred.getOptions()))
+        if (Options.isEmpty(options) && Options.isEmpty(OneclickMallDeferred.getOptions()))
             return buildOptionsForTestingOneclickMallDeferred();
 
         return OneclickMallDeferred.getOptions().buildOptions(options);

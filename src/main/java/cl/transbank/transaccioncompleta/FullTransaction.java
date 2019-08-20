@@ -66,7 +66,7 @@ public class FullTransaction {
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(FullTransaction.Transaction.getOptions()))
+            if (Options.isEmpty(options) && Options.isEmpty(FullTransaction.Transaction.getOptions()))
                 return FullTransaction.Transaction.buildOptionsForTesting();
 
             return FullTransaction.Transaction.getOptions().buildOptions(options);

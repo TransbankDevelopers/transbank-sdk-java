@@ -120,38 +120,4 @@ public class PatpassComercio {
             }
         }
     }
-
-    public static void main(String[] args) {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
-        Logger globalLog = Logger.getLogger("cl.transbank");
-        globalLog.setUseParentHandlers(false);
-        globalLog.addHandler(new ConsoleHandler() {
-            {/*setOutputStream(System.out);*/setLevel(Level.ALL);}
-        });
-        globalLog.setLevel(Level.ALL);
-
-        try {
-            final PatpassComercioInscriptionStartResponse inscriptionStart =
-                    PatpassComercio.Inscription.start("https://www.comercio.com/urlretorno",
-                            "nombre",
-                            "apellido",
-                            "sapellido",
-                            "14959787-6",
-                            "76",
-                            "https://www.comercio.com/urlrfinal",
-                            "28299257",
-                            1500,
-                            "012356545",
-                            "99999999",
-                            "nombre del patpass",
-                            "persona@persona.cl",
-                            "comercio@comercio.cl",
-                            "huerfanos 101",
-                            "Santiago");
-            logger.info(inscriptionStart.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 }

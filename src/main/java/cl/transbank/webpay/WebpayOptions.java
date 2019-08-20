@@ -1,19 +1,16 @@
 package cl.transbank.webpay;
 
-import cl.transbank.common.Option;
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.Options;
 import lombok.*;
-import lombok.experimental.Accessors;
 
-@ToString @NoArgsConstructor @AllArgsConstructor
-public class Options extends Option implements Cloneable {
+@ToString  @AllArgsConstructor
+public class WebpayOptions extends Options implements Cloneable {
     @Getter  final String headerCommerceCodeName = "Tbk-Api-Key-Id";
     @Getter  final String headerApiKeyName = "Tbk-Api-Key-Secret";
-    @Setter @Getter @Accessors(chain = true) private String commerceCode;
-    @Setter @Getter @Accessors(chain = true) private String apiKey;
-    @Setter @Getter @Accessors(chain = true) private IntegrationType integrationType;
 
     public Options buildOptions(Options options) {
-        Options alt = clone();
+        WebpayOptions alt = clone();
 
         // If the method receives an options object then rewrite each property, this is mandatory
         if (null != options) {
@@ -30,19 +27,24 @@ public class Options extends Option implements Cloneable {
         return alt;
     }
 
+    public WebpayOptions(String commerceCode, String apiKey,IntegrationType integrationType ){
+        super(commerceCode,apiKey,integrationType);
+
+    }
+
     @Override
-    public Options clone() {
+    public WebpayOptions clone() {
         try {
-            return (Options) super.clone();
+            return (WebpayOptions) super.clone();
         } catch (CloneNotSupportedException e) {
             return null;
         }
     }
 
     public boolean isEmpty() {
-        return (null == commerceCode || commerceCode.trim().isEmpty()) &&
-                (null == apiKey || apiKey.trim().isEmpty()) &&
-                (null == integrationType || integrationType.toString().isEmpty());
+        return (null == this.getCommerceCode() || this.getCommerceCode().trim().isEmpty()) &&
+                (null == this.getApiKey() || this.getApiKey().trim().isEmpty()) &&
+                (null == this.getIntegrationType() || this.getIntegrationType().toString().isEmpty());
     }
 
     public static boolean isEmpty(Options options) {

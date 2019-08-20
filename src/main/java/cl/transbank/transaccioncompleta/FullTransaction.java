@@ -1,20 +1,20 @@
 package cl.transbank.transaccioncompleta;
 
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.transaccioncompleta.model.*;
 import cl.transbank.util.HttpUtil;
-import cl.transbank.webpay.IntegrationType;
-import cl.transbank.webpay.Options;
+import cl.transbank.webpay.WebpayOptions;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
 import lombok.AccessLevel;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Random;
 import java.util.logging.Logger;
 
 public class FullTransaction {
@@ -26,12 +26,12 @@ public class FullTransaction {
 
         return String.format(
                 "%s/rswebpaytransaction/api/webpay/v1.0/transactions",
-                integrationType.getApiBase());
+                IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }
 
     public static class Transaction {
-        @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+        @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
         private static final String installmentURL = "installments";
         private static final String refundURL = "refunds";
 
@@ -60,13 +60,13 @@ public class FullTransaction {
         }
 
         public static Options buildOptionsForTesting() {
-            return new Options(
+            return new WebpayOptions(
                     "597055555530", "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
         }
 
         private static Options buildOptions(Options options) {
             // set default options for Webpay Plus Normal if options are not configured yet
-            if (Options.isEmpty(options) && Options.isEmpty(FullTransaction.Transaction.getOptions()))
+            if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(FullTransaction.Transaction.getOptions()))
                 return FullTransaction.Transaction.buildOptionsForTesting();
 
             return FullTransaction.Transaction.getOptions().buildOptions(options);
@@ -97,7 +97,7 @@ public class FullTransaction {
 
         public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber, Options options) throws IOException, TransactionInstallmentException {
             options = FullTransaction.Transaction.buildOptions(options);
-            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
+            final URL endpoint = new URL(String.format("%s/%s/%s", FullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
 
             try {
@@ -147,7 +147,7 @@ public class FullTransaction {
                 throws IOException, TransactionRefundException {
 
             options = FullTransaction.Transaction.buildOptions(options);
-            final URL endpoint = new URL(String.format("%s/%s/%s", WebpayPlus.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
+            final URL endpoint = new URL(String.format("%s/%s/%s", FullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, refundURL));
             final WebpayApiRequest request = new TransactionRefundRequest(amount);
 
             try {

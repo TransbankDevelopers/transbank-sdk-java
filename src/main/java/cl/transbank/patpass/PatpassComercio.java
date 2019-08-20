@@ -1,5 +1,8 @@
 package cl.transbank.patpass;
 
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.patpass.model.PatpassComercioInscriptionStartResponse;
@@ -19,7 +22,7 @@ import java.util.logging.Logger;
 public class PatpassComercio {
     private static Logger logger = Logger.getLogger(PatpassComercio.class.getName());
 
-    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options patpassOptions = new PatpassOptions();
 
     public static String getCurrentIntegrationTypeUrl(IntegrationType integrationType) {
         if (null == integrationType)
@@ -27,45 +30,45 @@ public class PatpassComercio {
 
         return String.format(
                 "%s/restpatpass/v1/services",
-                integrationType.getApiBase());
+                IntegrationTypeHelper.getPatpassIntegrationType(integrationType));
 
     }
 
     public static void setCommerceCode(String commerceCode) {
-        PatpassComercio.getOptions().setCommerceCode(commerceCode);
+        PatpassComercio.getPatpassOptions().setCommerceCode(commerceCode);
     }
 
     public static String getCommerceCode() {
-        return PatpassComercio.getOptions().getCommerceCode();
+        return PatpassComercio.getPatpassOptions().getCommerceCode();
     }
 
     public static void setApiKey(String apiKey) {
-        PatpassComercio.getOptions().setApiKey(apiKey);
+        PatpassComercio.getPatpassOptions().setApiKey(apiKey);
     }
 
     public static String getApiKey() {
-        return PatpassComercio.getOptions().getApiKey();
+        return PatpassComercio.getPatpassOptions().getApiKey();
     }
 
     public static void setIntegrationType(IntegrationType integrationType) {
-        PatpassComercio.getOptions().setIntegrationType(integrationType);
+        PatpassComercio.getPatpassOptions().setIntegrationType(integrationType);
     }
 
     public static IntegrationType getIntegrationType() {
-        return PatpassComercio.getOptions().getIntegrationType();
+        return PatpassComercio.getPatpassOptions().getIntegrationType();
     }
 
     public static Options buildOptionsForTestingPatpassComercio(){
-        return new Options ("28299257",
+        return new PatpassOptions("28299257",
                 "cxxXQgGD9vrVe4M41FIt", IntegrationType.LIVE);
     }
 
-    public static Options buildMallOptions(Options options) {
+    public static Options buildMallOptions(Options patpassOptions) {
         // set default options for PatpassComercio  if options are not configured yet
-        if (Options.isEmpty(options) && Options.isEmpty(PatpassComercio.getOptions()))
+        if (PatpassOptions.isEmpty(patpassOptions) && PatpassOptions.isEmpty(PatpassComercio.getPatpassOptions()))
             return buildOptionsForTestingPatpassComercio();
 
-        return PatpassComercio.getOptions().buildOptions(options);
+        return PatpassComercio.getPatpassOptions().buildOptions(patpassOptions);
     }
 
     public static class Inscription {
@@ -105,13 +108,13 @@ public class PatpassComercio {
                                                                     String commerceEmail,
                                                                     String address,
                                                                     String city,
-                                                                    Options options) throws IOException, InscriptionStartException {
-            options = PatpassComercio.buildMallOptions(options);
-            final URL endpoint = new URL(String.format("%s/patInscription", PatpassComercio.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+                                                                    Options patpassOptions) throws IOException, InscriptionStartException {
+            patpassOptions = PatpassComercio.buildMallOptions(patpassOptions);
+            final URL endpoint = new URL(String.format("%s/patInscription", PatpassComercio.getCurrentIntegrationTypeUrl(patpassOptions.getIntegrationType())));
             final WebpayApiRequest request = new PatpassComercioInscriptionStartRequest(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, commerceCode, maxAmount,
                     phoneNumber, mobileNumber, patpassName, personEmail, commerceEmail, address, city);
             try {
-                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, PatpassComercioInscriptionStartResponse.class);
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, patpassOptions, PatpassComercioInscriptionStartResponse.class);
             } catch (TransbankException e) {
                 throw new InscriptionStartException(e);
             }
@@ -126,6 +129,29 @@ public class PatpassComercio {
             {/*setOutputStream(System.out);*/setLevel(Level.ALL);}
         });
         globalLog.setLevel(Level.ALL);
+
+        try {
+            final PatpassComercioInscriptionStartResponse inscriptionStart =
+                    PatpassComercio.Inscription.start("https://www.comercio.com/urlretorno",
+                            "nombre",
+                            "apellido",
+                            "sapellido",
+                            "14959787-6",
+                            "76",
+                            "https://www.comercio.com/urlrfinal",
+                            "28299257",
+                            1500,
+                            "012356545",
+                            "99999999",
+                            "nombre del patpass",
+                            "persona@persona.cl",
+                            "comercio@comercio.cl",
+                            "huerfanos 101",
+                            "Santiago");
+            logger.info(inscriptionStart.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

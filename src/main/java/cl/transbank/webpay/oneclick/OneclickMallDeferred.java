@@ -1,9 +1,11 @@
 package cl.transbank.webpay.oneclick;
 
+import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
+import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.util.HttpUtil;
-import cl.transbank.webpay.IntegrationType;
-import cl.transbank.webpay.Options;
+import cl.transbank.webpay.WebpayOptions;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.model.WebpayApiRequest;
@@ -19,7 +21,7 @@ import java.util.logging.Logger;
 public class OneclickMallDeferred {
     private static Logger logger = Logger.getLogger(OneclickMallDeferred.class.getName());
 
-    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options options = new Options();
+    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
     public static String getCurrentIntegrationTypeUrl(IntegrationType integrationType) {
         if (null == integrationType)
@@ -27,7 +29,7 @@ public class OneclickMallDeferred {
 
         return String.format(
                 "%s/rswebpaytransaction/api/oneclick/v1.0",
-                integrationType.getApiBase());
+                IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }
 
@@ -55,14 +57,14 @@ public class OneclickMallDeferred {
         return OneclickMallDeferred.getOptions().getIntegrationType();
     }
 
-    public static Options buildOptionsForTestingOneclickMallDeferred(){
-        return new Options ("597055555547", // TODO WE NEED A COMMERCE CODE HERE!!!
+    public static WebpayOptions buildOptionsForTestingOneclickMallDeferred(){
+        return new WebpayOptions("597055555547", // TODO WE NEED A COMMERCE CODE HERE!!!
                 "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
     }
 
     public static Options buildMallDeferredOptions(Options options) {
         // set default options for OneclickMall mall if options are not configured yet
-        if (Options.isEmpty(options) && Options.isEmpty(OneclickMallDeferred.getOptions()))
+        if (WebpayOptions.isEmpty(options) && WebpayOptions.isEmpty(OneclickMallDeferred.getOptions()))
             return buildOptionsForTestingOneclickMallDeferred();
 
         return OneclickMallDeferred.getOptions().buildOptions(options);

@@ -673,6 +673,18 @@ public class ConsoleExamples {
                 e.printStackTrace();
             }
         }
+
+        logger.info("---------------------------- Patpass Comercio [Transaction.status] ----------------------------");
+        {
+            String token = "beef96ac5f026ff0545b26fb4b137f601c201c36d7cb4deddcd0c5579f412b21";
+            try {
+                final PatpassComercioTransactionStatusResponse status = PatpassComercio.Transaction.status(token);
+                logger.info(status.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            logger.info("");
+        }
     }
 
     static String nextString(int length) {

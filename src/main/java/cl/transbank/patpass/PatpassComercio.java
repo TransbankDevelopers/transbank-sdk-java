@@ -6,6 +6,7 @@ import cl.transbank.common.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.patpass.model.PatpassComercioInscriptionStartResponse;
+import cl.transbank.patpass.model.PatpassComercioTransactionStatusResponse;
 import cl.transbank.util.HttpUtil;
 import cl.transbank.webpay.WebpayApiResource;
 import cl.transbank.webpay.exception.*;
@@ -15,14 +16,14 @@ import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PatpassComercio {
     private static Logger logger = Logger.getLogger(PatpassComercio.class.getName());
 
-    @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options patpassOptions = new PatpassOptions();
+    @Setter(AccessLevel.PRIVATE)
+    @Getter(AccessLevel.PRIVATE)
+    private static Options patpassOptions = new PatpassOptions();
 
     public static String getCurrentIntegrationTypeUrl(IntegrationType integrationType) {
         if (null == integrationType)
@@ -58,7 +59,7 @@ public class PatpassComercio {
         return PatpassComercio.getPatpassOptions().getIntegrationType();
     }
 
-    public static Options buildOptionsForTestingPatpassComercio(){
+    public static Options buildOptionsForTestingPatpassComercio() {
         return new PatpassOptions("28299257",
                 "cxxXQgGD9vrVe4M41FIt", IntegrationType.LIVE);
     }
@@ -117,6 +118,24 @@ public class PatpassComercio {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, patpassOptions, PatpassComercioInscriptionStartResponse.class);
             } catch (TransbankException e) {
                 throw new InscriptionStartException(e);
+            }
+        }
+    }
+
+    public static class Transaction {
+
+        public static PatpassComercioTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
+            return PatpassComercio.Transaction.status(token, null);
+        }
+
+        public static PatpassComercioTransactionStatusResponse status(String token, Options options) throws IOException, TransactionStatusException {
+            options = PatpassComercio.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/status", PatpassComercio.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, PatpassComercioTransactionStatusResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionStatusException(e);
             }
         }
     }

@@ -92,20 +92,25 @@ public class MallFullTransaction {
             }
         }
 
-        public static MallFullTransactionInstallmentResponse installment(String token, String commerceCode, String buyOrder,byte installmentsNumber) throws IOException, TransactionInstallmentException {
-            return MallFullTransaction.Transaction.installment(token, commerceCode, buyOrder, installmentsNumber, null);
+        public static MallFullTransactionInstallmentsResponse installment(String token, MallFullTransactionInstallmentsDetails details) throws IOException, TransactionInstallmentException {
+            return MallFullTransaction.Transaction.installment(token, details, null);
         }
 
-        public static MallFullTransactionInstallmentResponse installment(String token, String commerceCode, String buyOrder,byte installmentsNumber, Options options) throws IOException, TransactionInstallmentException {
+        public static MallFullTransactionInstallmentsResponse installment(String token, MallFullTransactionInstallmentsDetails details, Options options) throws IOException, TransactionInstallmentException {
             options = MallFullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", MallFullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
-            final WebpayApiRequest request = new MallFullTransactionInstallmentRequest(commerceCode, buyOrder, installmentsNumber);
+            MallFullTransactionInstallmentsResponse response =  MallFullTransactionInstallmentsResponse.build();
 
-            try {
-                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionInstallmentResponse.class);
-            } catch (TransbankException e) {
-                throw new TransactionInstallmentException(e);
+            for(MallFullTransactionInstallmentsDetails.Detail detail: details.getDetails()) {
+                final WebpayApiRequest request = new MallFullTransactionInstallmentRequest(detail.getCommerceCode(), detail.getBuyOrder(), detail.getInstallmentsNumber());
+
+                try {
+                    response.add(WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionInstallmentResponse.class));
+                } catch (TransbankException e) {
+                    throw new TransactionInstallmentException(e);
+                }
             }
+            return response;
         }
 
         public static MallFullTransactionCommitResponse commit(String token, MallTransactionCommitDetails details) throws IOException, TransactionCommitException {

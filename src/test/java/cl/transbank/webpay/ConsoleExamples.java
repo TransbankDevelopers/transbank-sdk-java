@@ -584,16 +584,20 @@ public class ConsoleExamples {
         }
         logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.installment] ----------------------------");
         {
-            String token="eb501f2f1000c11ed105492c8bc702688f7679c95148bf556a66da627bb0a761";
-            byte installmentsNumber = 12;
-            String commerceCode = "597055555552";
-            String buyOrder="94589433";
-            double amount = 1000;
-            long idQueryInstallments = 17444420L;
+            String commerceCode ="597055555552";
+            String commerceCode2 ="597055555553";
+            String buyOrder1 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            String buyOrder2 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+            byte installmentsNumber = 2;
+            String token ="ebf86efb64a1f02afcf019628ed9f5209a0c11966009ef61f8e57a5b3246c226";
+            MallFullTransactionInstallmentsDetails installmentsDetails = MallFullTransactionInstallmentsDetails.build().add(commerceCode, buyOrder1, installmentsNumber).add(commerceCode2, buyOrder2, installmentsNumber);
+
             try {
-                FullTransactionInstallmentResponse response = MallFullTransaction.Transaction.installment(token, commerceCode, buyOrder, installmentsNumber, null);
-                System.out.println(response.toString());
-                idQueryInstallments = response.getIdQueryInstallments();
+                MallFullTransactionInstallmentsResponse responseI = MallFullTransaction.Transaction.installment(token,installmentsDetails);
+                for (MallFullTransactionInstallmentResponse mftr : responseI.getResponseList()){
+                    System.out.println(mftr.toString());
+                }
+
             } catch (TransactionInstallmentException e) {
                 e.printStackTrace();
             } catch (IOException e) {

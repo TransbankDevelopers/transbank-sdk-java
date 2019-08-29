@@ -61,7 +61,7 @@ public class PatpassComercio {
 
     public static Options buildOptionsForTestingPatpassComercio() {
         return new PatpassOptions("28299257",
-                "cxxXQgGD9vrVe4M41FIt", IntegrationType.LIVE);
+                "cxxXQgGD9vrVe4M41FIt", IntegrationType.TEST);
     }
 
     public static Options buildMallOptions(Options patpassOptions) {

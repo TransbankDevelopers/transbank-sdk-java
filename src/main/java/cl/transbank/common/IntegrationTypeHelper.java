@@ -20,7 +20,7 @@ public class IntegrationTypeHelper {
             case MOCK:
                 return "";
             case TEST:
-                return "";
+                return "https://pagoautomaticocontarjetasint.transbank.cl";
         }
         return "";
     }

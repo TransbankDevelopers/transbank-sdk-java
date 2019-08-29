@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class PatpassComercioTransactionStatusResponse {
-    private String status;
-    private String urlVoucher;
+    private boolean authorized;
+    private String voucherUrl;
 }

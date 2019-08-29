@@ -61,7 +61,7 @@ public class PatpassComercio {
 
     public static Options buildOptionsForTestingPatpassComercio() {
         return new PatpassOptions("28299257",
-                "cxxXQgGD9vrVe4M41FIt", IntegrationType.LIVE);
+                "cxxXQgGD9vrVe4M41FIt", IntegrationType.TEST);
     }
 
     public static Options buildMallOptions(Options patpassOptions) {
@@ -81,7 +81,7 @@ public class PatpassComercio {
                                                                     String serviceId,
                                                                     String finalUrl,
                                                                     String commerceCode,
-                                                                    int maxAmount,
+                                                                    double maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,
@@ -101,7 +101,7 @@ public class PatpassComercio {
                                                                     String serviceId,
                                                                     String finalUrl,
                                                                     String commerceCode,
-                                                                    int maxAmount,
+                                                                    double maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,
@@ -131,9 +131,10 @@ public class PatpassComercio {
         public static PatpassComercioTransactionStatusResponse status(String token, Options options) throws IOException, TransactionStatusException {
             options = PatpassComercio.buildMallOptions(options);
             final URL endpoint = new URL(String.format("%s/status", PatpassComercio.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            final WebpayApiRequest request = new PatpassComercioTransactionStatusRequest(token);
 
             try {
-                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, PatpassComercioTransactionStatusResponse.class);
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, PatpassComercioTransactionStatusResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
             }

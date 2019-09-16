@@ -80,8 +80,7 @@ public class PatpassComercio {
                                                                     String rut,
                                                                     String serviceId,
                                                                     String finalUrl,
-                                                                    String commerceCode,
-                                                                    double maxAmount,
+                                                                    String maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,
@@ -89,7 +88,7 @@ public class PatpassComercio {
                                                                     String commerceEmail,
                                                                     String address,
                                                                     String city) throws IOException, InscriptionStartException {
-            return PatpassComercio.Inscription.start(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, commerceCode, maxAmount,
+            return PatpassComercio.Inscription.start(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, maxAmount,
                     phoneNumber, mobileNumber, patpassName, personEmail, commerceEmail, address, city, null);
         }
 
@@ -100,8 +99,7 @@ public class PatpassComercio {
                                                                     String rut,
                                                                     String serviceId,
                                                                     String finalUrl,
-                                                                    String commerceCode,
-                                                                    double maxAmount,
+                                                                    String maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,
@@ -112,7 +110,7 @@ public class PatpassComercio {
                                                                     Options patpassOptions) throws IOException, InscriptionStartException {
             patpassOptions = PatpassComercio.buildMallOptions(patpassOptions);
             final URL endpoint = new URL(String.format("%s/patInscription", PatpassComercio.getCurrentIntegrationTypeUrl(patpassOptions.getIntegrationType())));
-            final WebpayApiRequest request = new PatpassComercioInscriptionStartRequest(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, commerceCode, maxAmount,
+            final WebpayApiRequest request = new PatpassComercioInscriptionStartRequest(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, patpassOptions.getCommerceCode(), maxAmount,
                     phoneNumber, mobileNumber, patpassName, personEmail, commerceEmail, address, city);
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, patpassOptions, PatpassComercioInscriptionStartResponse.class);

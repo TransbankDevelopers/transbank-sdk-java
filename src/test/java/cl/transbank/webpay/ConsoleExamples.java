@@ -663,7 +663,7 @@ public class ConsoleExamples {
                                 "14959787-6",
                                 "76",
                                 "https://www.comercio.com/urlrfinal",
-                                "1500",
+                                0,
                                 "012356545",
                                 "99999999",
                                 "nombre del patpass",

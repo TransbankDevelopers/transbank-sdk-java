@@ -73,6 +73,7 @@ public class PatpassComercio {
     }
 
     public static class Inscription {
+
         public static PatpassComercioInscriptionStartResponse start(String url,
                                                                     String name,
                                                                     String firstLastName,
@@ -80,7 +81,7 @@ public class PatpassComercio {
                                                                     String rut,
                                                                     String serviceId,
                                                                     String finalUrl,
-                                                                    String maxAmount,
+                                                                    double maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,
@@ -88,7 +89,9 @@ public class PatpassComercio {
                                                                     String commerceEmail,
                                                                     String address,
                                                                     String city) throws IOException, InscriptionStartException {
-            return PatpassComercio.Inscription.start(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, maxAmount,
+
+            Double mAmount = maxAmount <=0 ? null:maxAmount;
+            return PatpassComercio.Inscription.start(url, name, firstLastName, secondLastName, rut, serviceId, finalUrl, mAmount,
                     phoneNumber, mobileNumber, patpassName, personEmail, commerceEmail, address, city, null);
         }
 
@@ -99,7 +102,7 @@ public class PatpassComercio {
                                                                     String rut,
                                                                     String serviceId,
                                                                     String finalUrl,
-                                                                    String maxAmount,
+                                                                    Double maxAmount,
                                                                     String phoneNumber,
                                                                     String mobileNumber,
                                                                     String patpassName,

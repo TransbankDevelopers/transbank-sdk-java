@@ -18,7 +18,7 @@ public class PatpassComercioInscriptionStartRequest extends WebpayApiRequest {
     @SerializedName("serviceId") @NonNull private String serviceId;
     @SerializedName("finalUrl") @NonNull private String finalUrl;
     @SerializedName("commerceCode") @NonNull private String commerceCode;
-    @SerializedName("montoMaximo")  private double maxAmount;
+    @SerializedName("montoMaximo")  private Double maxAmount;
     @SerializedName("telefonoFijo")  private String phoneNumber;
     @SerializedName("telefonoCelular")  private String mobileNumber;
     @SerializedName("nombrePatPass")  private String patpassName;
@@ -26,4 +26,5 @@ public class PatpassComercioInscriptionStartRequest extends WebpayApiRequest {
     @SerializedName("correoComercio")  private String commerceEmail;
     @SerializedName("direccion")  private String address;
     @SerializedName("ciudad")  private String city;
+
 }

@@ -8,6 +8,6 @@ public class OneclickMallInscriptionFinishResponse {
     private byte responseCode;
     private String tbkUser;
     private String authorizationCode;
-    private String creditCardType;
-    private String lastFourCardDigits;
+    private String cardType;
+    private String cardNumber;
 }

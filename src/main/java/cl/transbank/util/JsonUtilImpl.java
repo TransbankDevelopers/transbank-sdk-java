@@ -1,12 +1,12 @@
-package cl.transbank.onepay.util;
+package cl.transbank.util;
 
 import com.google.gson.Gson;
 
-public final class OnepayJsonUtil implements JsonUtil {
-    private static volatile OnepayJsonUtil instance;
+public final class JsonUtilImpl implements JsonUtil {
+    private static volatile JsonUtilImpl instance;
     private Gson gson;
 
-    private OnepayJsonUtil() {
+    private JsonUtilImpl() {
         super();
         gson = new Gson();
     }
@@ -19,10 +19,10 @@ public final class OnepayJsonUtil implements JsonUtil {
         return gson.fromJson(json, clazz);
     }
 
-    public static OnepayJsonUtil getInstance() {
+    public static JsonUtilImpl getInstance() {
         if (null == instance) {
-            synchronized (OnepayJsonUtil.class) {
-                instance = new OnepayJsonUtil();
+            synchronized (JsonUtilImpl.class) {
+                instance = new JsonUtilImpl();
             }
         }
 

@@ -1,6 +1,8 @@
 
 package com.transbank.webpay.wswebpay.service;
 
+import cl.transbank.webpay.exception.InvalidAmountException;
+
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -64,7 +66,10 @@ public class WsCompleteTransactionDetail {
      *     {@link BigDecimal }
      *     
      */
-    public void setAmount(BigDecimal value) {
+    public void setAmount(BigDecimal value) throws InvalidAmountException {
+        if (value.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0) {
+            throw new InvalidAmountException(InvalidAmountException.HAS_DECIMALS_MESSAGE);
+        }
         this.amount = value;
     }
 

@@ -1,5 +1,6 @@
 package cl.transbank.webpay;
 
+import cl.transbank.webpay.exception.InvalidAmountException;
 import cl.transbank.webpay.security.SoapSignature;
 import cl.transbank.webpay.wrapper.WSCompleteWebpayServiceWrapper;
 import com.transbank.webpay.wswebpay.service.CompleteCardDetail;
@@ -24,7 +25,7 @@ public class WebpayComplete extends WSCompleteWebpayServiceWrapper {
         this.commerceCode = commerceCode;
     }
 
-    public WsCompleteInitTransactionOutput initCompleteTransaction(double amount, String buyOrder, String sessionId,  String cardExpirationDate, String cvv, String cardNumber){
+    public WsCompleteInitTransactionOutput initCompleteTransaction(double amount, String buyOrder, String sessionId,  String cardExpirationDate, String cvv, String cardNumber) throws InvalidAmountException {
         
         WsCompleteInitTransactionInput in = new WsCompleteInitTransactionInput();
         

@@ -1,6 +1,7 @@
 package cl.transbank.webpay;
 
 import cl.transbank.webpay.Webpay.Environment;
+import cl.transbank.webpay.exception.InvalidAmountException;
 import cl.transbank.webpay.security.SoapSignature;
 import cl.transbank.webpay.wrapper.OneClickPaymentServiceWrapper;
 import com.transbank.webpayserver.webservices.OneClickFinishInscriptionInput;
@@ -36,7 +37,7 @@ public class WebpayOneClick extends OneClickPaymentServiceWrapper {
         return this.finishInscription(input);
     }    
 
-    public OneClickPayOutput authorize(Long buyOrder, String tbkUser, String username, BigDecimal amount){
+    public OneClickPayOutput authorize(Long buyOrder, String tbkUser, String username, BigDecimal amount) throws InvalidAmountException {
         OneClickPayInput input = new OneClickPayInput();
         input.setAmount(amount);
         input.setBuyOrder(buyOrder);

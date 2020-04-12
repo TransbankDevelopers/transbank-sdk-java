@@ -1,6 +1,7 @@
 package cl.transbank.patpass;
 
 import cl.transbank.webpay.configuration.Configuration;
+import cl.transbank.webpay.exception.InvalidAmountException;
 import cl.transbank.webpay.security.SoapSignature;
 import cl.transbank.webpay.wrapper.WSWebpayServiceWrapper;
 import com.transbank.webpay.wswebpay.service.*;
@@ -25,7 +26,7 @@ public class PatPassByWebpayNormal extends WSWebpayServiceWrapper {
         this.config = config;
     }
 
-    public WsInitTransactionOutput initTransaction(double amount, String buyOrder, String sessionId, String returnUrl, String finalUrl, PatPassInfo info) {
+    public WsInitTransactionOutput initTransaction(double amount, String buyOrder, String sessionId, String returnUrl, String finalUrl, PatPassInfo info) throws InvalidAmountException {
         WsInitTransactionInput in = new WsInitTransactionInput();
         in.setWSTransactionType(WsTransactionType.TR_NORMAL_WS_WPM);        
         in.setBuyOrder(buyOrder);

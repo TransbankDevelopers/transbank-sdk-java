@@ -84,6 +84,33 @@ mvn clean compile
 mvn test
 ```
 
+### Generar un jar local
+
+````bash
+mvn package
+````
+
+#### Instalar jar local
+
+````bash
+mvn clean install
+````
+
+Si te encuentras con un error como
+
+````bash
+[INFO] --- maven-gpg-plugin:1.6:sign (sign-artifacts) @ transbank-sdk-java ---
+gpg: signing failed: Timeout
+````
+
+tienes que exportar la siguiente variable de entorno:
+
+````bash
+export GPG_TTY=$(tty)
+````
+
+Luego, se te pedira una frase para desbloquear la firma (puedes encontrar más informacion en 1Password)
+
 ### Generar una nueva versión (con deploy automático a maven)
 
 Para generar una nueva versión, se debe crear un PR (con un título "Prepare release X.Y.Z" con los valores que correspondan para `X`, `Y` y `Z`). Se debe seguir el estándar semver para determinar si se incrementa el valor de `X` (si hay cambios no retrocompatibles), `Y` (para mejoras retrocompatibles) o `Z` (si sólo hubo correcciones a bugs).

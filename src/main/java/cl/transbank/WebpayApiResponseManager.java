@@ -5,14 +5,6 @@ import cl.transbank.webpay.webpayplus.WebpayDetails;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @NoArgsConstructor

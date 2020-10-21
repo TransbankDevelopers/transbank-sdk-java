@@ -50,8 +50,8 @@ public class WebpayApiResponseManager {
     @SerializedName("url_webpay") private String urlWebpay;
 
     @SerializedName("tbk_user") private String tbkUser;
-    @SerializedName("credit_card_type") private String creditCardType;
-    @SerializedName("last_four_card_digits") private String lastFourCardDigits;
+    @SerializedName("card_type") private String cardType;
+    @SerializedName("card_number") private String cardNumber;
 
     @SerializedName("id_query_installments") private Long idQueryInstallments;
     @SerializedName("deferred_periods") private List<FullTransactionInstallmentResponse.DeferredPeriod> deferredPeriods;

@@ -16,7 +16,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.6.1</version>
+    <version>1.7.1</version>
 </dependency>
 ```
 
@@ -84,15 +84,42 @@ mvn clean compile
 mvn test
 ```
 
+### Generar un jar local
+
+````bash
+mvn package
+````
+
+#### Instalar jar local
+
+````bash
+mvn clean install
+````
+
+Si te encuentras con un error como
+
+````bash
+[INFO] --- maven-gpg-plugin:1.6:sign (sign-artifacts) @ transbank-sdk-java ---
+gpg: signing failed: Timeout
+````
+
+tienes que exportar la siguiente variable de entorno:
+
+````bash
+export GPG_TTY=$(tty)
+````
+
+Luego, se te pedira una frase para desbloquear la firma (puedes encontrar más informacion en 1Password)
+
 ### Generar una nueva versión (con deploy automático a maven)
 
 Para generar una nueva versión, se debe crear un PR (con un título "Prepare release X.Y.Z" con los valores que correspondan para `X`, `Y` y `Z`). Se debe seguir el estándar semver para determinar si se incrementa el valor de `X` (si hay cambios no retrocompatibles), `Y` (para mejoras retrocompatibles) o `Z` (si sólo hubo correcciones a bugs).
 
 En ese PR deben incluirse los siguientes cambios:
 
-1. Modificar el archivo CHANGELOG.md para incluir una nueva entrada (al comienzo) para `X.Y.Z` que explique en español los cambios **de cara al usuario del SDK**.
-2. Modificar este README.md para que los ejemplos usen la nueva versión `X.Y.Z`
-3. Modificar el archivo pom.xml para que la versión snapshot sea `X.Y.{Z+1}` (de manera que los snapshots que se generen después del release sean de la siguiente versión).
+1. Modificar el archivo `CHANGELOG.md` para incluir una nueva entrada (al comienzo) para `X.Y.Z` que explique en español los cambios **de cara al usuario del SDK**.
+2. Modificar este `README.md` para que los ejemplos usen la nueva versión `X.Y.Z`
+3. Modificar el archivo `pom.xml` para que la versión snapshot sea `X.Y.{Z+1}` (de manera que los snapshots que se generen después del release sean de la siguiente versión).
 
 Luego de obtener aprobación del pull request, debe mezclarse a master e inmediatamente generar un release en GitHub con el tag `vX.Y.Z`. En la descripción del release debes poner lo mismo que agregaste al changelog.
 

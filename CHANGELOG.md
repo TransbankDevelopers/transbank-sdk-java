@@ -4,6 +4,15 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2020-08-10
+### Added
+- La respuesta de autorizazión de Oneclick Mall rest no estaba entregando el `responseCode`
+
+## [1.7.0] - 2019-12-26
+### Changed
+- Se agrega soporte para Oneclick Mall y Transacción Completa en sus versiones REST.
+
+
 ## [1.6.1] - 2019-02-12
 ### Changed
 - Las credenciales de PatPass by Webpay para ambiente de Integración han sido actualizadas

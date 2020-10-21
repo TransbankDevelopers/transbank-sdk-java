@@ -120,12 +120,12 @@ public class Oneclick{
 
     public static class MallTransaction {
         public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
-            return OneclickMall.MallTransaction.authorize(username, tbkUser, buyOrder, details,null);
+            return Oneclick.MallTransaction.authorize(username, tbkUser, buyOrder, details,null);
         }
 
         public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws IOException, TransactionAuthorizeException {
-            options = OneclickMall.buildMallOptions(options);
-            final URL endpoint = new URL(String.format("%s/transactions", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            options = Oneclick.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions", Oneclick.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
             WebpayApiRequest request = new TransactionAuthorizeRequest(username, tbkUser, buyOrder, details.getDetails());
 
             try {
@@ -136,12 +136,12 @@ public class Oneclick{
         }
 
         public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws IOException, TransactionRefundException {
-            return OneclickMall.MallTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
+            return Oneclick.MallTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
         }
 
         public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws IOException, TransactionRefundException {
-            options = OneclickMall.buildMallOptions(options);
-            final URL endpoint = new URL(String.format("%s/transactions/%s/refunds", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
+            options = Oneclick.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/%s/refunds", Oneclick.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
             WebpayApiRequest request = new MallTransactionRefundRequest(childCommerceCode, childBuyOrder, amount);
 
             try {
@@ -152,12 +152,12 @@ public class Oneclick{
         }
 
         public static OneclickMallTransactionStatusResponse status(String buyOrder) throws IOException, TransactionStatusException {
-            return OneclickMall.MallTransaction.status(buyOrder, null);
+            return Oneclick.MallTransaction.status(buyOrder, null);
         }
 
         public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws IOException, TransactionStatusException {
-            options = OneclickMall.buildMallOptions(options);
-            final URL endpoint = new URL(String.format("%s/transactions/%s", OneclickMall.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
+            options = Oneclick.buildMallOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/%s", Oneclick.getCurrentIntegrationTypeUrl(options.getIntegrationType()), buyOrder));
 
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, OneclickMallTransactionStatusResponse.class);

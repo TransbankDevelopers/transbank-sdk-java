@@ -1,6 +1,6 @@
 package cl.transbank.transaccioncompleta.model;
 
-import cl.transbank.transaccioncompleta.MallFullTransactionInstallmentRequest;
+import cl.transbank.transaccioncompleta.MallFullTransactionInstallmentsRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class MallFullTransactionInstallmentsDetails {
     }
 
 
-    public class Detail extends MallFullTransactionInstallmentRequest {
+    public class Detail extends MallFullTransactionInstallmentsRequest {
         Detail(String commerceCode, String buyOrder,byte installmentsNumber){
             super(commerceCode, buyOrder, installmentsNumber);
         }

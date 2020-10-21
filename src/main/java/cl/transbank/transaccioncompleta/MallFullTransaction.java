@@ -92,17 +92,27 @@ public class MallFullTransaction {
             }
         }
 
+        @Deprecated
         public static MallFullTransactionInstallmentsResponse installment(String token, MallFullTransactionInstallmentsDetails details) throws IOException, TransactionInstallmentException {
-            return MallFullTransaction.Transaction.installment(token, details, null);
+            return installments(token, details);
         }
 
+        @Deprecated
         public static MallFullTransactionInstallmentsResponse installment(String token, MallFullTransactionInstallmentsDetails details, Options options) throws IOException, TransactionInstallmentException {
+            return installments(token, details, options);
+        }
+
+        public static MallFullTransactionInstallmentsResponse installments(String token, MallFullTransactionInstallmentsDetails details) throws IOException, TransactionInstallmentException {
+            return MallFullTransaction.Transaction.installments(token, details, null);
+        }
+
+        public static MallFullTransactionInstallmentsResponse installments(String token, MallFullTransactionInstallmentsDetails details, Options options) throws IOException, TransactionInstallmentException {
             options = MallFullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", MallFullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
             MallFullTransactionInstallmentsResponse response =  MallFullTransactionInstallmentsResponse.build();
 
             for(MallFullTransactionInstallmentsDetails.Detail detail: details.getDetails()) {
-                final WebpayApiRequest request = new MallFullTransactionInstallmentRequest(detail.getCommerceCode(), detail.getBuyOrder(), detail.getInstallmentsNumber());
+                final WebpayApiRequest request = new MallFullTransactionInstallmentsRequest(detail.getCommerceCode(), detail.getBuyOrder(), detail.getInstallmentsNumber());
 
                 try {
                     response.add(WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionInstallmentResponse.class));

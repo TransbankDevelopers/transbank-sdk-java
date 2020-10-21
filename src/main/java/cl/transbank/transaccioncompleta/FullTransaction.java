@@ -90,15 +90,24 @@ public class FullTransaction {
             }
         }
 
-
+        @Deprecated
         public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber) throws IOException, TransactionInstallmentException {
-            return FullTransaction.Transaction.installment(token, installmentsNumber, null);
+            return installments(token,installmentsNumber);
         }
 
+        @Deprecated
         public static FullTransactionInstallmentResponse installment(String token, byte installmentsNumber, Options options) throws IOException, TransactionInstallmentException {
+           return installments(token, installmentsNumber, options);
+        }
+
+        public static FullTransactionInstallmentResponse installments(String token, byte installmentsNumber) throws IOException, TransactionInstallmentException {
+            return FullTransaction.Transaction.installments(token, installmentsNumber, null);
+        }
+
+        public static FullTransactionInstallmentResponse installments(String token, byte installmentsNumber, Options options) throws  IOException, TransactionInstallmentException {
             options = FullTransaction.Transaction.buildOptions(options);
             final URL endpoint = new URL(String.format("%s/%s/%s", FullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, installmentURL));
-            final WebpayApiRequest request = new TransactionInstallmentRequest(installmentsNumber);
+            final WebpayApiRequest request = new TransactionInstallmentsRequest(installmentsNumber);
 
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, FullTransactionInstallmentResponse.class);

@@ -79,7 +79,7 @@ public class OneclickMallDeferred {
         public static OneclickMallInscriptionStartResponse start(
                 String username, String email, String responseUrl, Options options) throws IOException, InscriptionStartException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            return OneclickMall.Inscription.start(username, email, responseUrl, options);
+            return Oneclick.MallInscription.start(username, email, responseUrl, options);
         }
 
         public static OneclickMallInscriptionFinishResponse finish(String token) throws IOException, InscriptionFinishException {
@@ -88,7 +88,7 @@ public class OneclickMallDeferred {
 
         public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws IOException, InscriptionFinishException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            return OneclickMall.Inscription.finish(token, options);
+            return Oneclick.MallInscription.finish(token, options);
         }
 
         public static void delete(String username, String tbkUser) throws IOException, InscriptionDeleteException {
@@ -97,7 +97,7 @@ public class OneclickMallDeferred {
 
         public static void delete(String username, String tbkUser, Options options) throws IOException, InscriptionDeleteException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            OneclickMall.Inscription.delete(username, tbkUser, options);
+            Oneclick.MallInscription.delete(username, tbkUser, options);
         }
     }
 
@@ -110,7 +110,7 @@ public class OneclickMallDeferred {
         public static OneclickMallTransactionAuthorizeResponse authorize(
                 String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws IOException, TransactionAuthorizeException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            return OneclickMall.Transaction.authorize(username, tbkUser, buyOrder, details,options);
+            return Oneclick.MallTransaction.authorize(username, tbkUser, buyOrder, details,options);
         }
 
         public static OneclickMallTransactionRefundResponse refund(
@@ -121,7 +121,7 @@ public class OneclickMallDeferred {
         public static OneclickMallTransactionRefundResponse refund(
                 String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws IOException, TransactionRefundException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            return OneclickMall.Transaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, options);
+            return Oneclick.MallTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, options);
         }
 
         public static OneclickMallTransactionStatusResponse status(String buyOrder) throws IOException, TransactionStatusException {
@@ -130,7 +130,7 @@ public class OneclickMallDeferred {
 
         public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws IOException, TransactionStatusException {
             options = OneclickMallDeferred.buildMallDeferredOptions(options);
-            return OneclickMall.Transaction.status(buyOrder, options);
+            return Oneclick.MallTransaction.status(buyOrder, options);
         }
 
         public static OneclickMallTransactionCaptureResponse capture(String buyOrder) throws IOException, TransactionCaptureException { //TODO PARAMS SHOULD BE EDITED WHEN WE KNOW PARAMS FOR THIS

@@ -4,12 +4,11 @@ import cl.transbank.model.WebpayApiRequest;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
-@Deprecated
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-public class TransactionInstallmentRequest extends TransactionInstallmentsRequest {
+public class TransactionInstallmentsRequest extends WebpayApiRequest {
     @SerializedName("installments_number") private byte installmentsNumber;
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionCommitRequest extends WebpayApiRequest {
-    @SerializedName("id_query_installments")  private long idQueryInstallments;
-    @SerializedName("deferred_period_index") private byte deferredPeriodIndex;
-    @SerializedName("grace_period") private boolean gracePeriod;
+    @SerializedName("id_query_installments")  private Long idQueryInstallments;
+    @SerializedName("deferred_period_index") private Byte deferredPeriodIndex;
+    @SerializedName("grace_period") private Boolean gracePeriod;
 }

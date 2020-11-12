@@ -116,6 +116,21 @@ public class FullTransaction {
             }
         }
 
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, Byte deferredPeriodIndex, Boolean gracePeriod) throws IOException, TransactionCommitException {
+            return FullTransaction.Transaction.commit(token, idQueryInstallments, deferredPeriodIndex, gracePeriod, null);
+        }
+
+        public static FullTransactionCommitResponse commit(String token, Long idQueryInstallments, Byte deferredPeriodIndex, Boolean gracePeriod, Options options) throws IOException, TransactionCommitException {
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s", getCurrentIntegrationTypeUrl(options.getIntegrationType()), token));
+            final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCommitResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionCommitException(e);
+            }
+        }
 
         /**
          * This method didn't accept null values on fields that were optional

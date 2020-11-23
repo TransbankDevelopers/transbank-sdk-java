@@ -5,6 +5,14 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2020-11-23
+
+### Added
+- Se agrega soporte para Oneclick Mall con Captura diferida a través de la clase Oneclick.MallDeferredInscription y Oneclick.MallDeferredTransaction
+
+### Changed
+- Se depreca la clase OneclickMallDeferred en favor de Oneclick.MallDeferredInscription y Oneclick.MallDeferredTransaction
+
 ## [1.8.1] - 2020-11-12
 
 ### Changed

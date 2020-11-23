@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 public class Oneclick{
     private static Logger logger = Logger.getLogger(Oneclick.class.getName());
+    private static String defaultApiKey = "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C";
 
     @Setter(AccessLevel.PRIVATE) @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
 
@@ -58,14 +59,25 @@ public class Oneclick{
     }
 
     public static Options buildOptionsForTestingOneclickMall(){
-        return new WebpayOptions("597055555541",
-                "579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C", IntegrationType.TEST);
+        return new WebpayOptions("597055555541", defaultApiKey, IntegrationType.TEST);
     }
 
     public static Options buildMallOptions(Options options) {
         // set default options for OneclickMall mall if options are not configured yet
         if (Options.isEmpty(options) && Options.isEmpty(Oneclick.getOptions()))
             return buildOptionsForTestingOneclickMall();
+
+        return Oneclick.getOptions().buildOptions(options);
+    }
+
+    public static Options buildOptionsForTestingOneclickMallDeferred(){
+        return new WebpayOptions("597055555547", defaultApiKey, IntegrationType.TEST);
+    }
+
+    public static Options buildMallDeferredOptions(Options options) {
+        // set default options for Oneclick Mall Deferred mall if options are not configured yet
+        if (Options.isEmpty(options) && Options.isEmpty(Oneclick.getOptions()))
+            return buildOptionsForTestingOneclickMallDeferred();
 
         return Oneclick.getOptions().buildOptions(options);
     }
@@ -163,6 +175,82 @@ public class Oneclick{
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, OneclickMallTransactionStatusResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionStatusException(e);
+            }
+        }
+    }
+
+    public static class MallDeferredInscription {
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws IOException, InscriptionStartException {
+            return Oneclick.MallDeferredInscription.start(username, email, responseUrl, null);
+        }
+
+        public static OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl, Options options) throws IOException, InscriptionStartException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            return Oneclick.MallInscription.start(username, email, responseUrl, options);
+        }
+        
+        public static OneclickMallInscriptionFinishResponse finish(String token) throws IOException, InscriptionFinishException {
+            return Oneclick.MallDeferredInscription.finish(token, null);
+        }
+
+        public static OneclickMallInscriptionFinishResponse finish(String token, Options options) throws IOException, InscriptionFinishException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            return Oneclick.MallInscription.finish(token, options);
+        }
+
+        public static void delete(String username, String tbkUser) throws IOException, InscriptionDeleteException {
+            Oneclick.MallDeferredInscription.delete(username, tbkUser, null);
+        }
+
+        public static void delete(String username, String tbkUser, Options options) throws IOException, InscriptionDeleteException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            Oneclick.MallInscription.delete(username, tbkUser, options);
+        }
+
+    }
+
+    public static class MallDeferredTransaction {
+
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
+            return Oneclick.MallDeferredTransaction.authorize(username, tbkUser, buyOrder, details, null);
+        }
+        
+        public static OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details, Options options) throws IOException, TransactionAuthorizeException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            return Oneclick.MallTransaction.authorize(username, tbkUser, buyOrder, details, options);
+        }
+
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount) throws IOException, TransactionRefundException {
+            return Oneclick.MallDeferredTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, null);
+        }
+
+        public static OneclickMallTransactionRefundResponse refund(String buyOrder, String childCommerceCode, String childBuyOrder, double amount, Options options) throws IOException, TransactionRefundException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            return Oneclick.MallTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount, options);
+        }
+
+        public static OneclickMallTransactionStatusResponse status(String buyOrder) throws IOException, TransactionStatusException {
+            return Oneclick.MallDeferredTransaction.status(buyOrder, null);
+        }
+
+        public static OneclickMallTransactionStatusResponse status(String buyOrder, Options options) throws IOException, TransactionStatusException {
+            options = Oneclick.buildMallDeferredOptions(options);
+            return Oneclick.MallTransaction.status(buyOrder, options);
+        }
+
+        public static OneclickMallTransactionCaptureResponse capture(String childCommerceCode, String childBuyOrder, String authorizationCode, double amount) throws IOException, TransactionCaptureException { 
+            return Oneclick.MallDeferredTransaction.capture(childCommerceCode, childBuyOrder, authorizationCode, amount, null);
+        }
+
+        public static OneclickMallTransactionCaptureResponse capture(String childCommerceCode, String childBuyOrder, String authorizationCode, double amount, Options options) throws IOException, TransactionCaptureException { 
+            options = Oneclick.buildMallDeferredOptions(options);
+            final URL endpoint = new URL(String.format("%s/transactions/capture", Oneclick.getCurrentIntegrationTypeUrl(options.getIntegrationType())));
+            WebpayApiRequest request = new TransactionCaptureRequest(childCommerceCode, childBuyOrder, authorizationCode, amount);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, OneclickMallTransactionCaptureResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionCaptureException(e);
             }
         }
     }

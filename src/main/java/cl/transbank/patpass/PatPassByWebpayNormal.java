@@ -14,7 +14,7 @@ public class PatPassByWebpayNormal extends WSWebpayServiceWrapper {
     private Configuration config;
 
     public enum Currency {
-        DEFAULT, // pesos o UF
+        DEFAULT, // CLP o USD
         UF;
     }
 

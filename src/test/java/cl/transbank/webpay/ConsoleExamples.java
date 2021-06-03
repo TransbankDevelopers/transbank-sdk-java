@@ -512,9 +512,7 @@ public class ConsoleExamples {
             try {
                 FullTransactionInstallmentResponse response = FullTransaction.Transaction.installment(token, installmentsNumber);
                 System.out.println(response.toString());
-            } catch (TransactionInstallmentException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (TransactionInstallmentException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -557,6 +555,22 @@ public class ConsoleExamples {
             } catch (IOException e) {
                 e.printStackTrace();
             }  catch (TransactionRefundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        logger.info("---------------------------- FullTransaction  [FullTransaction.Transaction.capture] ----------------------------");
+        {
+            String token = "e966c9b10a4e6c7c7ac79512baf18173ecfaf44c9aeb8ebb05173077b6ad8a85";
+            String buyOrder = "123456dfdg";
+            String authorizationCode = "1213";
+            double amount = 1000;
+            try {
+                FullTransactionCaptureResponse response = FullTransaction.Transaction.capture(token,buyOrder,authorizationCode, amount);
+                System.out.println(response.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }  catch (TransactionCaptureException e) {
                 e.printStackTrace();
             }
         }
@@ -649,6 +663,22 @@ public class ConsoleExamples {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (TransactionRefundException e) {
+                e.printStackTrace();
+            }
+        }
+        logger.info("---------------------------- FullTransaction Mall  [MallFullTransaction.Transaction.capture] ----------------------------");
+        {
+            String token = "e26ae6e0d76b729747b2ca7d758cb0ffddc03b1a4e5b6f6e3deebb3ab35cfa3e";
+            double amount = 1000;
+            String commerceCode = "597055555552";
+            String authorizationCode = "8929832sdkl";
+            String buyOrder = "r234n347";
+            try {
+                MallFullTransactionCaptureResponse response = MallFullTransaction.Transaction.capture(token, commerceCode, buyOrder, authorizationCode, amount);
+                System.out.println(response.toString());
+            } catch (IOException e){
+                e.printStackTrace();
+            } catch (TransactionCaptureException e) {
                 e.printStackTrace();
             }
         }

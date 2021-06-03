@@ -36,6 +36,7 @@ public class MallFullTransaction {
         private static Options options = new WebpayOptions();
         private static final String installmentURL = "installments";
         private static final String refundURL = "refunds";
+        private static final String captureURL = "capture";
 
         public static void setCommerceCode(String commerceCode) {
             MallFullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -168,6 +169,24 @@ public class MallFullTransaction {
 
             try {
                 return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionRefundResponse.class);
+            } catch (TransbankException e) {
+                throw new TransactionRefundException(e);
+            }
+        }
+
+        public static MallFullTransactionCaptureResponse capture(String token, String commerceCode, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionRefundException {
+            return MallFullTransaction.Transaction.capture(token, commerceCode, buyOrder, authorizationCode, captureAmount, null);
+        }
+
+        public static MallFullTransactionCaptureResponse capture(String token, String commerceCode, String buyOrder, String authorizationCode, double captureAmount, Options options)
+                throws IOException, TransactionRefundException {
+
+            options = MallFullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", MallFullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, captureURL));
+            final WebpayApiRequest request = new MallFullTransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, captureAmount);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, MallFullTransactionCaptureResponse.class);
             } catch (TransbankException e) {
                 throw new TransactionRefundException(e);
             }

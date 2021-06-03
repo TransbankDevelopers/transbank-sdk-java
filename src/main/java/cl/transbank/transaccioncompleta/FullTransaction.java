@@ -34,6 +34,7 @@ public class FullTransaction {
         @Getter(AccessLevel.PRIVATE) private static Options options = new WebpayOptions();
         private static final String installmentURL = "installments";
         private static final String refundURL = "refunds";
+        private static final String captureURL = "capture";
 
         public static void setCommerceCode(String commerceCode) {
             FullTransaction.Transaction.getOptions().setCommerceCode(commerceCode);
@@ -192,6 +193,26 @@ public class FullTransaction {
             } catch (TransbankException e) {
                 throw new TransactionRefundException(e);
             }
+        }
+
+        public static FullTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
+            return FullTransaction.Transaction.capture(token, buyOrder, authorizationCode, captureAmount, null);
+
+        }
+
+        public static FullTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double captureAmount, Options options)
+                throws IOException, TransactionCaptureException {
+
+            options = FullTransaction.Transaction.buildOptions(options);
+            final URL endpoint = new URL(String.format("%s/%s/%s", FullTransaction.getCurrentIntegrationTypeUrl(options.getIntegrationType()), token, captureURL));
+            final  WebpayApiRequest request = new TransactionCaptureRequest(buyOrder, authorizationCode, captureAmount);
+
+            try {
+                return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, FullTransactionCaptureResponse.class);
+            } catch (TransbankException e){
+                throw  new TransactionCaptureException(e);
+            }
+
         }
     }
 }

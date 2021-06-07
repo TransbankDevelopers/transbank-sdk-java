@@ -1,6 +1,6 @@
 language: java
 dist: trusty
-jdk: oraclejdk8
+jdk: oraclejdk11
 sudo: required
 addons:
   sonarcloud:
@@ -20,4 +20,4 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      jdk: oraclejdk8
+      jdk: oraclejdk11

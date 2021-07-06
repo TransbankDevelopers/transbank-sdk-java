@@ -5,6 +5,12 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.9.1] - 2021-06-07
+
+### Added
+- Se agregan los tributos `responseCode` y `installmentsAmount` a la clase `WebpayPlusMallTransactionStatusResponse`
+- Se agregan los tributos `installmentsAmount` a la clase `WebpayPlusMallTransactionCommitResponse`
+
 ## [1.9.0] - 2020-11-23
 
 ### Added

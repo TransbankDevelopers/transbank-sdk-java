@@ -10,6 +10,7 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 ### Added
 - Se agregan los tributos `responseCode` y `installmentsAmount` a la clase `WebpayPlusMallTransactionStatusResponse`
 - Se agregan los tributos `installmentsAmount` a la clase `WebpayPlusMallTransactionCommitResponse`
+- Se agrega el soporte a la captura diferida
 
 ## [1.9.0] - 2020-11-23
 

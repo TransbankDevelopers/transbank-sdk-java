@@ -24,6 +24,7 @@ public class WebpayPlusMallTransactionCommitResponse {
         private String authorizationCode;
         private String paymentTypeCode;
         private byte responseCode;
+        private double installmentsAmount;
         private byte installmentsNumber;
         private String commerceCode;
         private String buyOrder;

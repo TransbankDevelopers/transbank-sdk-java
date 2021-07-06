@@ -23,6 +23,8 @@ public class WebpayPlusMallTransactionStatusResponse {
         private String status;
         private String authorizationCode;
         private String paymentTypeCode;
+        private byte responseCode;
+        private double installmentsAmount;
         private byte installmentsNumber;
         private String commerceCode;
         private String buyOrder;

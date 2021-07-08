@@ -29,7 +29,7 @@
 
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>1.9.2</version>
+    <version>1.9.4-SNAPSHOT</version>
     <name>Transbank Java SDK</name>
 
     <inceptionYear>2018</inceptionYear>
@@ -330,7 +330,7 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.9</minimum>
+                                            <minimum>0.0</minimum>
                                         </limit>
                                     </limits>
                                 </rule>

@@ -9,7 +9,8 @@ public class IntegrationTypeHelper {
                 return "";
             case TEST:
                 return "https://webpay3gint.transbank.cl";
-
+            case SERVER_MOCK:
+                return "http://localhost:8888";
         }
         return "https://webpay3gint.transbank.cl";
     }
@@ -21,6 +22,8 @@ public class IntegrationTypeHelper {
                 return "";
             case TEST:
                 return "https://pagoautomaticocontarjetasint.transbank.cl";
+            case SERVER_MOCK:
+                return "http://localhost:8888";
         }
         return "";
     }

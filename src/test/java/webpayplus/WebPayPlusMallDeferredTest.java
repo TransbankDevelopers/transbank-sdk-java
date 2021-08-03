@@ -8,6 +8,7 @@ import cl.transbank.webpay.webpayplus.model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
+import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerSettings;
 import org.mockserver.model.HttpRequest;
@@ -25,6 +26,7 @@ public class WebPayPlusMallDeferredTest {
     private final ClientAndServer client;
     public WebPayPlusMallDeferredTest(ClientAndServer client) {
         this.client = client;
+        ConfigurationProperties.logLevel("ERROR");
     }
 
     private static String vci = "TSY";

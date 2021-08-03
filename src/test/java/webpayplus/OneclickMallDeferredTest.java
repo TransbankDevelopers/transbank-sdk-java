@@ -8,22 +8,17 @@ import cl.transbank.webpay.webpayplus.WebpayPlus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerSettings;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
-import org.mockserver.model.HttpStatusCode;
-
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@MockServerSettings(ports = {8787, 8888})
-public class OneclickMallDeferredTest {
+@MockServerSettings(ports = {8888})
+public class OneclickMallDeferredTest extends TestBase {
 
-    private final ClientAndServer client;
+
     public OneclickMallDeferredTest(ClientAndServer client) {
         this.client = client;
     }
@@ -55,20 +50,7 @@ public class OneclickMallDeferredTest {
     private static String buyOrder2 = "353345213";
     private static byte responseCode2 = 0;
 
-    private void setResponse(String url, String jsonResponse){
-        client.when(new HttpRequest().withMethod("POST").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("GET").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("PUT").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("DELETE").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-    }
+
 
     @Test
     public void start() throws IOException, InscriptionStartException {
@@ -83,7 +65,7 @@ public class OneclickMallDeferredTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String returnUrl = "http://localhost:8081/oneclick-mall/finish";
 
@@ -113,7 +95,7 @@ public class OneclickMallDeferredTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePut(url, jsonResponse);
 
         final OneclickMallInscriptionFinishResponse response = Oneclick.MallDeferredInscription.finish(token);
         assertEquals(response.getResponseCode(), responseCode);
@@ -173,7 +155,7 @@ public class OneclickMallDeferredTest {
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponsePost(url, gson.toJson(mapResponse));
 
         String tbkUserReq = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
         String buyOrderReq = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -227,7 +209,7 @@ public class OneclickMallDeferredTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
@@ -245,7 +227,7 @@ public class OneclickMallDeferredTest {
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponseGet(url, gson.toJson(mapResponse));
 
         final OneclickMallTransactionStatusResponse response = Oneclick.MallDeferredTransaction.status(buyOrder);
 
@@ -291,7 +273,7 @@ public class OneclickMallDeferredTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePut(url, jsonResponse);
 
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";

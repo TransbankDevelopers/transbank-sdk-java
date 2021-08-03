@@ -9,13 +9,8 @@ import cl.transbank.webpay.exception.TransactionStatusException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerSettings;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
-import org.mockserver.model.HttpStatusCode;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,27 +18,11 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@MockServerSettings(ports = {8787, 8888})
-public class PatpassComercioTest {
+@MockServerSettings(ports = {8888})
+public class PatpassComercioTest extends TestBase {
 
-    private final ClientAndServer client;
     public PatpassComercioTest(ClientAndServer client) {
         this.client = client;
-    }
-
-    private void setResponse(String url, String jsonResponse){
-        client.when(new HttpRequest().withMethod("POST").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("GET").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("PUT").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("DELETE").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
     }
 
     @Test
@@ -59,7 +38,7 @@ public class PatpassComercioTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String urlRequest = "http://localhost:8081/patpass-comercio/commit";
         String name = "nombre";
@@ -112,7 +91,7 @@ public class PatpassComercioTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String commerceCode = "28299257";
         PatpassComercio.setCommerceCode(commerceCode);

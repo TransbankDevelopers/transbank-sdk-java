@@ -14,22 +14,16 @@ import cl.transbank.webpay.webpayplus.model.WebpayPlusMallTransactionStatusRespo
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerSettings;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
-import org.mockserver.model.HttpStatusCode;
-
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@MockServerSettings(ports = {8787, 8888})
-public class WebPayPlusMallTest {
+@MockServerSettings(ports = {8888})
+public class WebPayPlusMallTest  extends TestBase {
 
-    private final ClientAndServer client;
     public WebPayPlusMallTest(ClientAndServer client) {
         this.client = client;
     }
@@ -63,17 +57,6 @@ public class WebPayPlusMallTest {
     private static String buyOrder2 = "1936357040";
 
 
-    private void setResponse(String url, String jsonResponse){
-        client.when(new HttpRequest().withMethod("POST").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("GET").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("PUT").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-    }
 
     @Test
     public void create() throws IOException, TransactionCreateException {
@@ -88,7 +71,7 @@ public class WebPayPlusMallTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
         String returnUrl = "http://wwww.google.com";
 
         String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -160,7 +143,7 @@ public class WebPayPlusMallTest {
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponsePut(url, gson.toJson(mapResponse));
 
         final WebpayPlusMallTransactionCommitResponse response = WebpayPlus.MallTransaction.commit(token);
 
@@ -204,7 +187,7 @@ public class WebPayPlusMallTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String childBuyOrder = "500894028";
         String childCommerceCode = "597055555536";
@@ -223,7 +206,7 @@ public class WebPayPlusMallTest {
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponseGet(url, gson.toJson(mapResponse));
 
         final WebpayPlusMallTransactionStatusResponse response = WebpayPlus.MallTransaction.status(token);
 

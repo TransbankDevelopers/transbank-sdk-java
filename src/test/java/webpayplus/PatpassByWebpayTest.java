@@ -14,13 +14,8 @@ import cl.transbank.webpay.webpayplus.WebpayPlus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockserver.configuration.ConfigurationProperties;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerSettings;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
-import org.mockserver.model.HttpStatusCode;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +23,8 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@MockServerSettings(ports = {8787, 8888})
-public class PatpassByWebpayTest {
-
-    private final ClientAndServer client;
+@MockServerSettings(ports = {8888})
+public class PatpassByWebpayTest  extends TestBase {
 
     private static String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
     private static String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -62,20 +55,6 @@ public class PatpassByWebpayTest {
         this.client = client;
     }
 
-    private void setResponse(String url, String jsonResponse){
-        client.when(new HttpRequest().withMethod("POST").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("GET").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("PUT").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-        client.when(new HttpRequest().withMethod("DELETE").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
-    }
 
     @Test
     public void start() throws IOException, TransactionCreateException {
@@ -90,7 +69,7 @@ public class PatpassByWebpayTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         String returnUrl = "http://localhost:8081/patpass-webpay/commit";
 
@@ -132,7 +111,7 @@ public class PatpassByWebpayTest {
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponsePut(url, gson.toJson(mapResponse));
 
         final PatpassByWebpayTransactionCommitResponse response = PatpassByWebpay.Transaction.commit(token);
 
@@ -160,7 +139,7 @@ public class PatpassByWebpayTest {
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
+        setResponseGet(url, gson.toJson(mapResponse));
 
         final PatpassByWebpayTransactionStatusResponse response = PatpassByWebpay.Transaction.status(token);
 
@@ -192,7 +171,7 @@ public class PatpassByWebpayTest {
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
-        setResponse(url, jsonResponse);
+        setResponsePost(url, jsonResponse);
 
         final PatpassByWebpayTransactionRefundResponse response = PatpassByWebpay.Transaction.refund(token, amount);
         assertEquals(response.getType(), type);

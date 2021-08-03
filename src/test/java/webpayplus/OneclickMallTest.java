@@ -68,8 +68,6 @@ public class OneclickMallTest {
                         .withBody(jsonResponse));
     }
 
-    //{"username":"goncafa","email":"gonzalo.castillo@continuum.cl","response_url":"http://localhost:8081/oneclick-mall/finish"}
-    //{"token":"01ab5362d9b0eb7ebec6e822518eb6453cb4e6280ca2295370c703dd0fe71e3d","url_webpay":"https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi"}
     @Test
     public void start() throws IOException, InscriptionStartException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
@@ -92,7 +90,6 @@ public class OneclickMallTest {
         assertEquals(response.getUrlWebpay(), urlResponse);
     }
 
-    //{"response_code":0,"tbk_user":"12350bde-00dd-4ad8-9cc6-ae918022adc3","authorization_code":"1213","card_type":"Visa","card_number":"XXXXXXXXXXXX6623"}
     @Test
     public void finish() throws IOException, InscriptionFinishException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
@@ -124,11 +121,6 @@ public class OneclickMallTest {
 
     }
 
-
-    //{"details":[
-    // {"amount":1000,"status":"AUTHORIZED","authorization_code":"1213","payment_type_code":"VN","response_code":0,"installments_number":0,"commerce_code":"597055555542","buy_order":"2019439134"},
-    // {"amount":1000,"status":"AUTHORIZED","authorization_code":"1213","payment_type_code":"VN","response_code":0,"installments_number":0,"commerce_code":"597055555543","buy_order":"353345213"}],
-    // "buy_order":"724900565","card_detail":{"card_number":"6623"},"accounting_date":"0801","transaction_date":"2021-08-01T05:30:06.557Z"}
     private Map<String, Object> generateAutorizeJsonResponse(){
 
         Map<String, String> mapResponseCardDetail = new HashMap<String, String>();
@@ -169,8 +161,6 @@ public class OneclickMallTest {
         return mapResponse;
     }
 
-    //{"username":"goncafa","tbk_user":"12350bde-00dd-4ad8-9cc6-ae918022adc3","buy_order":"724900565","details":[{"amount":1000.0,"commerce_code":"597055555542","buy_order":"2019439134","installments_number":1},
-    // {"amount":1000.0,"commerce_code":"597055555543","buy_order":"353345213","installments_number":1}]}
     @Test
     public void authorize() throws IOException, TransactionAuthorizeException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
@@ -220,9 +210,6 @@ public class OneclickMallTest {
         assertEquals(response.getDetails().get(1).getBuyOrder(), buyOrder2);
     }
 
-
-    //{"commerce_code":"597055555542","detail_buy_order":"2019439134","amount":1000.0}
-    //{"type":"REVERSED"}
     @Test
     public void refund() throws IOException, TransactionRefundException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
@@ -246,10 +233,6 @@ public class OneclickMallTest {
         assertEquals(response.getType(), type);
     }
 
-
-    //{"details":[{"amount":1000,"status":"AUTHORIZED","authorization_code":"1213","payment_type_code":"VN","response_code":0,"installments_number":0,"commerce_code":"597055555542","buy_order":"690579255"},
-    // {"amount":1000,"status":"AUTHORIZED","authorization_code":"1213","payment_type_code":"VN","response_code":0,"installments_number":0,"commerce_code":"597055555543","buy_order":"1084865277"}],
-    // "buy_order":"1041815933","card_detail":{"card_number":"6623"},"accounting_date":"0801","transaction_date":"2021-08-01T06:45:22.649Z"}
     @Test
     public void status() throws IOException, TransactionStatusException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);

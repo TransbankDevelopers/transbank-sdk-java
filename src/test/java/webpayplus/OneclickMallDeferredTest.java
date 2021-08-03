@@ -26,7 +26,6 @@ public class OneclickMallDeferredTest {
     private final ClientAndServer client;
     public OneclickMallDeferredTest(ClientAndServer client) {
         this.client = client;
-        ConfigurationProperties.logLevel("ERROR");
     }
 
     private static String username = "goncafa";

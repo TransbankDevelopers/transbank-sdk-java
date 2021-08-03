@@ -29,7 +29,6 @@ public class PatpassComercioTest {
     private final ClientAndServer client;
     public PatpassComercioTest(ClientAndServer client) {
         this.client = client;
-        ConfigurationProperties.logLevel("ERROR");
     }
 
     private void setResponse(String url, String jsonResponse){

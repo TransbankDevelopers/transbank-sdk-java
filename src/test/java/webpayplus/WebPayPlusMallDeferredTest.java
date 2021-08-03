@@ -26,7 +26,6 @@ public class WebPayPlusMallDeferredTest {
     private final ClientAndServer client;
     public WebPayPlusMallDeferredTest(ClientAndServer client) {
         this.client = client;
-        ConfigurationProperties.logLevel("ERROR");
     }
 
     private static String vci = "TSY";

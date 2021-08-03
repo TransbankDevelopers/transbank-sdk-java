@@ -32,7 +32,6 @@ public class WebPayPlusMallTest {
     private final ClientAndServer client;
     public WebPayPlusMallTest(ClientAndServer client) {
         this.client = client;
-        ConfigurationProperties.logLevel("ERROR");
     }
 
     private static String vci = "TSY";

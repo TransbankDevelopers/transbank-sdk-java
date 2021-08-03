@@ -25,7 +25,6 @@ public class OneclickMallTest {
     private final ClientAndServer client;
     public OneclickMallTest(ClientAndServer client) {
         this.client = client;
-        ConfigurationProperties.logLevel("ERROR");
     }
 
     private static String username = "goncafa";

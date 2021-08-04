@@ -13,24 +13,17 @@ import cl.transbank.webpay.webpayplus.model.WebpayPlusMallTransactionRefundRespo
 import cl.transbank.webpay.webpayplus.model.WebpayPlusMallTransactionStatusResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockserver.client.MockServerClient;
-import org.mockserver.integration.ClientAndServer;
-import org.mockserver.junit.jupiter.MockServerExtension;
-import org.mockserver.junit.jupiter.MockServerSettings;
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-@ExtendWith(MockServerExtension.class)
-@MockServerSettings(ports = {8888})
 public class WebPayPlusMallTest  extends TestBase {
-
-    public WebPayPlusMallTest(MockServerClient client) {
-        this.client = client;
-    }
 
     private static String vci = "TSY";
     private static String buyOrder = "1759488117";
@@ -60,7 +53,15 @@ public class WebPayPlusMallTest  extends TestBase {
     private static String commerceCode2 = "597055555537";
     private static String buyOrder2 = "1936357040";
 
+    @BeforeAll
+    public static void startProxy() {
+        client = startClientAndServer(8888);
+    }
 
+    @AfterAll
+    public static void stopProxy() {
+        client.stop();
+    }
 
     @Test
     public void create() throws IOException, TransactionCreateException {

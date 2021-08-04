@@ -13,21 +13,20 @@ import cl.transbank.webpay.exception.TransactionStatusException;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
-import org.mockserver.junit.jupiter.MockServerExtension;
-import org.mockserver.junit.jupiter.MockServerSettings;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-@ExtendWith(MockServerExtension.class)
-@MockServerSettings(ports = {8888})
+
 public class PatpassByWebpayTest  extends TestBase {
 
     private static String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -55,10 +54,15 @@ public class PatpassByWebpayTest  extends TestBase {
     private static byte responseCode = 0;
     private static byte installmentsNumber = 0;
 
-    public PatpassByWebpayTest(MockServerClient client) {
-        this.client = client;
+    @BeforeAll
+    public static void startProxy() {
+        client = startClientAndServer(8888);
     }
 
+    @AfterAll
+    public static void stopProxy() {
+        client.stop();
+    }
 
     @Test
     public void start() throws IOException, TransactionCreateException {

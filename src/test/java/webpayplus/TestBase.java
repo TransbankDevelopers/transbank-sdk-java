@@ -1,13 +1,13 @@
 package webpayplus;
 
-import org.mockserver.client.MockServerClient;
+import org.mockserver.client.server.MockServerClient;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.mockserver.model.HttpStatusCode;
 
 public abstract class TestBase {
 
-    protected MockServerClient client;
+    protected static MockServerClient client;
 
     protected void setResponse(String url, String jsonResponse){
         client.when(new HttpRequest().withMethod("POST").withPath(url))

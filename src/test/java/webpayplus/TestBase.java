@@ -9,7 +9,6 @@ public abstract class TestBase {
 
     protected MockServerClient client;
 
-
     protected void setResponse(String url, String jsonResponse){
         client.when(new HttpRequest().withMethod("POST").withPath(url))
                 .respond(new HttpResponse().withStatusCode(HttpStatusCode.ACCEPTED_202.code())

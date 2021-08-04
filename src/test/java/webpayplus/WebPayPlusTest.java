@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.junit.jupiter.MockServerSettings;
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @MockServerSettings(ports = {8888})
 public class WebPayPlusTest  extends TestBase {
 
-    public WebPayPlusTest(ClientAndServer client) {
+    public WebPayPlusTest(MockServerClient client) {
         this.client = client;
     }
 

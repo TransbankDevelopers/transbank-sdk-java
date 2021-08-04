@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockserver.client.MockServerClient;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.junit.jupiter.MockServerSettings;
@@ -54,7 +55,7 @@ public class PatpassByWebpayTest  extends TestBase {
     private static byte responseCode = 0;
     private static byte installmentsNumber = 0;
 
-    public PatpassByWebpayTest(ClientAndServer client) {
+    public PatpassByWebpayTest(MockServerClient client) {
         this.client = client;
     }
 

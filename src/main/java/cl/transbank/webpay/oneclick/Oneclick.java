@@ -29,7 +29,7 @@ public class Oneclick{
             integrationType = IntegrationType.TEST;
 
         return String.format(
-                "%s/rswebpaytransaction/api/oneclick/v1.0",
+                "%s/rswebpaytransaction/api/oneclick/v1.2",
                 IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }

@@ -9,8 +9,6 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -19,6 +17,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 
 public class OneclickMallTest  extends TestBase {
+
+    private static String apiUrl = "/rswebpaytransaction/api/oneclick/v1.2";
 
     private static String username = "goncafa";
     private static String email = "gonzalo.castillo@continuum.cl";
@@ -61,7 +61,7 @@ public class OneclickMallTest  extends TestBase {
     public void start() throws IOException, InscriptionStartException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = "/rswebpaytransaction/api/oneclick/v1.0/inscriptions";
+        String url = String.format("%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -83,7 +83,7 @@ public class OneclickMallTest  extends TestBase {
     public void finish() throws IOException, InscriptionFinishException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("/rswebpaytransaction/api/oneclick/v1.0/inscriptions/%s", token);
+        String url = String.format("%s/inscriptions/%s", apiUrl, token);
 
         byte responseCode = 0;
         String authorizationCode = "1213";
@@ -154,7 +154,7 @@ public class OneclickMallTest  extends TestBase {
     public void authorize() throws IOException, TransactionAuthorizeException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = "/rswebpaytransaction/api/oneclick/v1.0/transactions";
+        String url = String.format("%s/transactions",apiUrl);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -203,7 +203,7 @@ public class OneclickMallTest  extends TestBase {
     public void refund() throws IOException, TransactionRefundException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("/rswebpaytransaction/api/oneclick/v1.0/transactions/%s/refunds", buyOrder);
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, buyOrder);
 
         String type = "REVERSED";
 
@@ -226,7 +226,7 @@ public class OneclickMallTest  extends TestBase {
     public void status() throws IOException, TransactionStatusException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("/rswebpaytransaction/api/oneclick/v1.0/transactions/%s", buyOrder);
+        String url = String.format("%s/transactions/%s", apiUrl, buyOrder);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();

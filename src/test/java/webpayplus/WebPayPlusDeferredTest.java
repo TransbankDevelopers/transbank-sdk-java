@@ -21,6 +21,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class WebPayPlusDeferredTest extends TestBase {
 
+    private static String apiUrl = "/rswebpaytransaction/api/webpay/v1.2";
+
     private static String vci = "TSY";
     private static double amount = 1000d;
     private static String status = "AUTHORIZED";
@@ -50,7 +52,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     public void create() throws IOException, TransactionCreateException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = "/rswebpaytransaction/api/webpay/v1.0/transactions";
+        String url = String.format("%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -97,7 +99,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     public void commit() throws IOException, TransactionCommitException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s",token);
+        String url = String.format("%s/transactions/%s", apiUrl, token);
 
         String vci = "TSY";
         double amount = 1000d;
@@ -143,7 +145,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     public void refund() throws IOException, TransactionRefundException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s/refunds",token);
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, token);
 
         double amount = 1000d;
         String type = "REVERSED";
@@ -164,7 +166,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     public void status() throws IOException, TransactionStatusException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s",token);
+        String url = String.format("%s/transactions/%s", apiUrl, token);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -191,7 +193,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     public void capture() throws IOException, TransactionCaptureException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s/capture",token);
+        String url = String.format("%s/transactions/%s/capture", apiUrl, token);
 
         String authorizationCode = "138248";
         String authorizationDate = "2021-08-01T03:17:42.785Z";

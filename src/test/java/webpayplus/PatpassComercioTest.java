@@ -21,6 +21,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class PatpassComercioTest extends TestBase {
 
+    private static String apiUrl = "/restpatpass/v1";
+
     @BeforeAll
     public static void startProxy() {
         client = startClientAndServer(8888);
@@ -35,7 +37,7 @@ public class PatpassComercioTest extends TestBase {
     public void start() throws IOException, InscriptionStartException {
         PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "7a0fb90db0119c8d5d976f38f80c21b45804ba8f3daa30678b2934b05f612a1d";
-        String url = "/restpatpass/v1/services/patInscription";
+        String url = String.format("%s/services/patInscription", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenComercioLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -88,7 +90,7 @@ public class PatpassComercioTest extends TestBase {
     public void status() throws IOException, TransactionStatusException {
         PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "7a0fb90db0119c8d5d976f38f80c21b45804ba8f3daa30678b2934b05f612a1d";
-        String url = "/restpatpass/v1/services/status";
+        String url = String.format("%s/services/status", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenVoucherLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();

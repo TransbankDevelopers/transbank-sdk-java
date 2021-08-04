@@ -16,8 +16,6 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockserver.integration.ClientAndServer;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +26,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 
 public class PatpassByWebpayTest  extends TestBase {
+
+    private static String apiUrl = "/rswebpaytransaction/api/webpay/v1.2";
 
     private static String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
     private static String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -68,7 +68,7 @@ public class PatpassByWebpayTest  extends TestBase {
     public void start() throws IOException, TransactionCreateException {
         PatpassByWebpay.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab1cfcdd0787257c340944b2aa50339c400901c43a4e652caf769b80c303e9";
-        String url = "/rswebpaytransaction/api/webpay/v1.0/transactions";
+        String url = String.format("%s/transactions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -115,7 +115,7 @@ public class PatpassByWebpayTest  extends TestBase {
     public void commit() throws IOException, TransactionCommitException {
         PatpassByWebpay.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab1cfcdd0787257c340944b2aa50339c400901c43a4e652caf769b80c303e9";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s", token);
+        String url = String.format("%s/transactions/%s", apiUrl, token);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -143,7 +143,7 @@ public class PatpassByWebpayTest  extends TestBase {
     public void status() throws IOException, TransactionStatusException {
         PatpassByWebpay.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab1cfcdd0787257c340944b2aa50339c400901c43a4e652caf769b80c303e9";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s", token);
+        String url = String.format("%s/transactions/%s", apiUrl, token);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -169,7 +169,7 @@ public class PatpassByWebpayTest  extends TestBase {
     public void refund() throws IOException, TransactionRefundException {
         WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s/refunds",token);
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, token);
 
         double amount = 1000d;
         String type = "REVERSED";

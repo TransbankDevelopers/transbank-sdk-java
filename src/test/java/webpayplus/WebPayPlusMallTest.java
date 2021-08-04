@@ -25,6 +25,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class WebPayPlusMallTest  extends TestBase {
 
+    private static String apiUrl = "/rswebpaytransaction/api/webpay/v1.2";
+
     private static String vci = "TSY";
     private static String buyOrder = "1759488117";
     private static String sessionId = "777265108";
@@ -67,7 +69,7 @@ public class WebPayPlusMallTest  extends TestBase {
     public void create() throws IOException, TransactionCreateException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = "/rswebpaytransaction/api/webpay/v1.0/transactions";
+        String url = String.format("%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -144,7 +146,7 @@ public class WebPayPlusMallTest  extends TestBase {
     public void commit() throws IOException, TransactionCommitException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s",token);
+        String url = String.format("%s/transactions/%s", apiUrl, token);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -183,8 +185,7 @@ public class WebPayPlusMallTest  extends TestBase {
     public void refund() throws IOException, TransactionRefundException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s/refunds",token);
-
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, token);
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -207,7 +208,7 @@ public class WebPayPlusMallTest  extends TestBase {
     public void status() throws IOException, TransactionStatusException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
         String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("/rswebpaytransaction/api/webpay/v1.0/transactions/%s",token);
+        String url = String.format("%s/transactions/%s",apiUrl, token);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();

@@ -26,7 +26,7 @@ public class MallFullTransaction {
             integrationType = IntegrationType.TEST;
 
         return String.format(
-                "%s/rswebpaytransaction/api/webpay/v1.0/transactions",
+                "%s/rswebpaytransaction/api/webpay/v1.2/transactions",
                 IntegrationTypeHelper.getWebpayIntegrationType(integrationType));
 
     }

@@ -7,7 +7,8 @@ addons:
     organization: "transbankdevelopers"
     token:
       secure:"OBhuO7gYq7NS2fov84MmEKI0/dWPK59pyydyqJkig6h3aLWTfd9vzytgmAi88A52wxYxsqkgQBJnYROPadzRNNVusIw5+ThS6eQQ/H9sBzpXQCgRqpUW+p9G6TcXNigmoAXVtawA6zgsUFOu+VDvNIv6kUKMqq3b5gukpR7AQ3NbBntLHqw0zwZHom42xgY61ludiF0uBT+uizujDWb5h8UnA8KuZdwrN9er824AyOeq+D1ovJttx4RK1uULopWrbXceP0lV1zdXjwe+oyyIbt7THqJRqVyhxYW8hNvBzEtG1T8CJEnPmGFwj3qxfHSsVp82rVcOitaFN/SjPfoiKxsdyJJlD9D2TJNgROhrlL2FlFgusgANyYWbzouVMrF7nb626ZhsggZ+85b8CggYfUuRDvJD8Gj+l9Ce3STuCJhl7h3lNI3FzH9H4hZY2SoSY0SKNNEwW3bVRq7KPBUHUYrHQh0wBdowT/rLvFW1WS9NlRyqNBICLzyu8H8rxS4N9YYe/dQQWFZJgKBQjs4Owow9MNziUx88ZyVFMvjjWuaPgvTn2cKZIypvf2O/naWbsERK1GqPie/RLaFBL3IOOkJtzZAGDqfVRab7GgptQtuH71xpooGhmu5AAQZsxq9V29w7PVhNSCab2oHzNCAzeuIbU2HwnwpULt3TroQbA1M="
-install: mvn --settings .travis/settings.xml clean compile
+install:
+  - mvn --settings .travis/settings.xml clean compile
 before_install:
   - if [ ! -z "$GPG_SECRET_KEYS" ]; then echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import; fi
   - if [ ! -z "$GPG_OWNERTRUST" ]; then echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust; fi

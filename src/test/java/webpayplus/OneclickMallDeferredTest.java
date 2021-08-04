@@ -7,14 +7,18 @@ import cl.transbank.webpay.oneclick.model.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.junit.jupiter.MockServerExtension;
 import org.mockserver.junit.jupiter.MockServerSettings;
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockServerExtension.class)
 @MockServerSettings(ports = {8888})
 public class OneclickMallDeferredTest extends TestBase {
 
@@ -49,7 +53,6 @@ public class OneclickMallDeferredTest extends TestBase {
     private static String commerceCode2 = "597055555543";
     private static String buyOrder2 = "353345213";
     private static byte responseCode2 = 0;
-
 
 
     @Test

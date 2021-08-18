@@ -190,8 +190,7 @@ public class WebPayPlusDeferredTest extends TestBase {
     @Test
     public void capture() throws IOException, TransactionCaptureException {
         WebpayPlus.DeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("%s/transactions/%s/capture", apiUrl, token);
+        String url = String.format("%s/transactions/%s/capture", apiUrl, testToken);
 
         String authorizationCode = "138248";
         String authorizationDate = "2021-08-01T03:17:42.785Z";
@@ -211,7 +210,7 @@ public class WebPayPlusDeferredTest extends TestBase {
         String authorization = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         double amount = 1000;
 
-        final WebpayPlusTransactionCaptureResponse response = WebpayPlus.DeferredTransaction.capture(token, buyOrder, authorization, amount);
+        final WebpayPlusTransactionCaptureResponse response = WebpayPlus.DeferredTransaction.capture(testToken, buyOrder, authorization, amount);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getAuthorizationDate(), authorizationDate);
         assertEquals(response.getCapturedAmount(), capturedAmount);

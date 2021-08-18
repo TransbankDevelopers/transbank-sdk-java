@@ -23,7 +23,7 @@ public class OneclickMallDeferredTest extends TestBase {
 
     private static String username = "goncafa";
     private static String email = "gonzalo.castillo@continuum.cl";
-    private static String tbkUser = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+    private static String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
 
     private static String cardNumber = "6623";
     private static String transactionDate = "2021-08-01T05:30:06.557Z";
@@ -162,7 +162,7 @@ public class OneclickMallDeferredTest extends TestBase {
         Gson gson = new GsonBuilder().create();
         setResponsePost(url, gson.toJson(mapResponse));
 
-        String tbkUserReq = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+        String tbkUserReq = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
         String buyOrderReq = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         String buyOrderMallOne = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         String buyOrderMallTwo = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -287,14 +287,14 @@ public class OneclickMallDeferredTest extends TestBase {
         assertEquals(response.getResponseCode(), responseCode);
     }
 
-    //{"username":"goncafa","tbk_user":"01ab5362d9b0eb7ebec6e822518eb6453cb4e6280ca2295370c703dd0fe71e3d"}
+    //{"username":"goncafa","tbk_user":"aaaaaaaaaaaaa-bbbbbbbb-cccccc"}
     /*
     @Test
     public void delete() throws IOException, InscriptionDeleteException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
         String url = "/rswebpaytransaction/api/oneclick/v1.0/inscriptions";
 
-        //String tbkUser = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+        //String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
         Map<String, Object> mapResponse = new HashMap<>();
         Gson gson = new GsonBuilder().create();
         setResponse(url, gson.toJson(mapResponse));

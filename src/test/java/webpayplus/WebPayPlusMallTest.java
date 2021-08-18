@@ -16,7 +16,6 @@ import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 import java.util.*;
 
@@ -55,6 +54,8 @@ public class WebPayPlusMallTest  extends TestBase {
     private static String commerceCode2 = "597055555537";
     private static String buyOrder2 = "1936357040";
 
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
     @BeforeAll
     public static void startProxy() {
         client = startClientAndServer(8888);
@@ -68,12 +69,11 @@ public class WebPayPlusMallTest  extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", token);
+        mapResponse.put("token", testToken);
         mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();
@@ -97,7 +97,7 @@ public class WebPayPlusMallTest  extends TestBase {
                 .add(amountMallTwo, mallTwoCommerceCode, buyOrderMallTwo);
 
         final WebpayPlusMallTransactionCreateResponse response = WebpayPlus.MallTransaction.create(buyOrder, sessionId, returnUrl, mallDetails);
-        assertEquals(response.getToken(), token);
+        assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrl(), urlResponse);
     }
 
@@ -145,14 +145,13 @@ public class WebPayPlusMallTest  extends TestBase {
     @Test
     public void commit() throws IOException, TransactionCommitException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s", apiUrl, token);
+        String url = String.format("%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponsePut(url, gson.toJson(mapResponse));
 
-        final WebpayPlusMallTransactionCommitResponse response = WebpayPlus.MallTransaction.commit(token);
+        final WebpayPlusMallTransactionCommitResponse response = WebpayPlus.MallTransaction.commit(testToken);
 
         assertEquals(response.getVci(), vci);
         assertEquals(response.getBuyOrder(), buyOrder);
@@ -184,8 +183,7 @@ public class WebPayPlusMallTest  extends TestBase {
     @Test
     public void refund() throws IOException, TransactionRefundException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s/refunds", apiUrl, token);
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, testToken);
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -199,7 +197,7 @@ public class WebPayPlusMallTest  extends TestBase {
         String childCommerceCode = "597055555536";
         double amount = 1000d;
 
-        final WebpayPlusMallTransactionRefundResponse response = WebpayPlus.MallTransaction.refund(token, childBuyOrder, childCommerceCode, amount);
+        final WebpayPlusMallTransactionRefundResponse response = WebpayPlus.MallTransaction.refund(testToken, childBuyOrder, childCommerceCode, amount);
         assertEquals(response.getType(), type);
 
     }
@@ -207,14 +205,13 @@ public class WebPayPlusMallTest  extends TestBase {
     @Test
     public void status() throws IOException, TransactionStatusException {
         WebpayPlus.MallTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s",apiUrl, token);
+        String url = String.format("%s/transactions/%s",apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final WebpayPlusMallTransactionStatusResponse response = WebpayPlus.MallTransaction.status(token);
+        final WebpayPlusMallTransactionStatusResponse response = WebpayPlus.MallTransaction.status(testToken);
 
         assertEquals(response.getVci(), vci);
         assertEquals(response.getBuyOrder(), buyOrder);

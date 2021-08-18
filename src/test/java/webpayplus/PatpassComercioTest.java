@@ -22,6 +22,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 public class PatpassComercioTest extends TestBase {
 
     private static String apiUrl = "/restpatpass/v1";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {
@@ -36,12 +37,11 @@ public class PatpassComercioTest extends TestBase {
     @Test
     public void start() throws IOException, InscriptionStartException {
         PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "7a0fb90db0119c8d5d976f38f80c21b45804ba8f3daa30678b2934b05f612a1d";
         String url = String.format("%s/services/patInscription", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenComercioLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", token);
+        mapResponse.put("token", testToken);
         mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();
@@ -82,14 +82,13 @@ public class PatpassComercioTest extends TestBase {
                 address,
                 city);
 
-        assertEquals(response.getToken(), token);
+        assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrl(), urlResponse);
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
         PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "7a0fb90db0119c8d5d976f38f80c21b45804ba8f3daa30678b2934b05f612a1d";
         String url = String.format("%s/services/status", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenVoucherLogin";
@@ -103,7 +102,7 @@ public class PatpassComercioTest extends TestBase {
 
         String commerceCode = "28299257";
         PatpassComercio.setCommerceCode(commerceCode);
-        final PatpassComercioTransactionStatusResponse response = PatpassComercio.Transaction.status(token);
+        final PatpassComercioTransactionStatusResponse response = PatpassComercio.Transaction.status(testToken);
 
         assertEquals(response.isAuthorized(), true);
         assertEquals(response.getVoucherUrl(), urlResponse);

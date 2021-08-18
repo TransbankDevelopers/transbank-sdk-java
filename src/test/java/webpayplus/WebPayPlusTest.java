@@ -42,6 +42,8 @@ public class WebPayPlusTest  extends TestBase {
     private static byte installmentsNumber = 0;
     private static double balance;
 
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
     @BeforeAll
     public static void startProxy() {
         client = startClientAndServer(8888);
@@ -55,12 +57,11 @@ public class WebPayPlusTest  extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
         WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", token);
+        mapResponse.put("token", testToken);
         mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();
@@ -73,7 +74,7 @@ public class WebPayPlusTest  extends TestBase {
         String returnUrl = "http://wwww.google.com";
 
         final WebpayPlusTransactionCreateResponse response = WebpayPlus.Transaction.create(buyOrder, sessionId, amount, returnUrl);
-        assertEquals(response.getToken(), token);
+        assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrl(), urlResponse);
     }
 
@@ -102,8 +103,7 @@ public class WebPayPlusTest  extends TestBase {
     @Test
     public void commit() throws IOException, TransactionCommitException {
         WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s", apiUrl, token);
+        String url = String.format("%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -111,7 +111,7 @@ public class WebPayPlusTest  extends TestBase {
         //System.out.println("jsonResponse: " + jsonResponse);
         //System.out.println("url: " + url);
 
-        final WebpayPlusTransactionCommitResponse response = WebpayPlus.Transaction.commit(token);
+        final WebpayPlusTransactionCommitResponse response = WebpayPlus.Transaction.commit(testToken);
         assertEquals(response.getVci(), vci);
         assertEquals(response.getAmount(), amount);
         assertEquals(response.getStatus(), status);
@@ -132,8 +132,7 @@ public class WebPayPlusTest  extends TestBase {
     @Test
     public void refund() throws IOException, TransactionRefundException {
         WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s/refunds", apiUrl, token);
+        String url = String.format("%s/transactions/%s/refunds", apiUrl, testToken);
 
         double amount = 1000d;
         String type = "REVERSED";
@@ -145,7 +144,7 @@ public class WebPayPlusTest  extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final WebpayPlusTransactionRefundResponse response = WebpayPlus.Transaction.refund(token, amount);
+        final WebpayPlusTransactionRefundResponse response = WebpayPlus.Transaction.refund(testToken, amount);
         assertEquals(response.getType(), type);
 
     }
@@ -153,14 +152,13 @@ public class WebPayPlusTest  extends TestBase {
     @Test
     public void status() throws IOException, TransactionStatusException {
         WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01abfa9e931185df8171bb1f98c1ceb65d67ca699e47b900ab8eb13851ca99fb";
-        String url = String.format("%s/transactions/%s", apiUrl, token);
+        String url = String.format("%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final WebpayPlusTransactionStatusResponse response = WebpayPlus.Transaction.status(token);
+        final WebpayPlusTransactionStatusResponse response = WebpayPlus.Transaction.status(testToken);
         assertEquals(response.getVci(), vci);
         assertEquals(response.getAmount(), amount);
         assertEquals(response.getStatus(), status);

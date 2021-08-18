@@ -5,6 +5,16 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2021-08-18
+
+### Changed
+- Se elimina el soporte para SOAP
+- Se eliminan librerías relacionadas al soporte SOAP  
+- Se agregan los test
+- Se migra el api desde la versión 1.0 a la versión 1.2
+- Ahora el método de retorno al crear la transacción en WebPayPlus debe tener soporte GET (cuando es exitosa) y POST (cuando se retorna sin concluir el ingreso de la tarjeta)
+- Ahora el método de retorno al inscribirse en Oneclick debe tener soporte GET (cuando es exitosa) y POST (cuando se retorna sin concluir la inscripción) 
+
 ## [1.9.3] - 2021-07-07
 
 ### Added

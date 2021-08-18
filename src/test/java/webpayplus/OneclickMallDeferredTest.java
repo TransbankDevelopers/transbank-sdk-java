@@ -23,7 +23,7 @@ public class OneclickMallDeferredTest extends TestBase {
 
     private static String username = "goncafa";
     private static String email = "gonzalo.castillo@continuum.cl";
-    private static String tbkUser = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+    private static String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
 
     private static String cardNumber = "6623";
     private static String transactionDate = "2021-08-01T05:30:06.557Z";
@@ -48,6 +48,7 @@ public class OneclickMallDeferredTest extends TestBase {
     private static String buyOrder2 = "353345213";
     private static byte responseCode2 = 0;
 
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {
@@ -62,12 +63,11 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void start() throws IOException, InscriptionStartException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", token);
+        mapResponse.put("token", testToken);
         mapResponse.put("url_webpay", urlResponse);
 
         Gson gson = new GsonBuilder().create();
@@ -77,7 +77,7 @@ public class OneclickMallDeferredTest extends TestBase {
         String returnUrl = "http://localhost:8081/oneclick-mall/finish";
 
         final OneclickMallInscriptionStartResponse response = Oneclick.MallDeferredInscription.start(username, email, returnUrl);
-        assertEquals(response.getToken(), token);
+        assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrlWebpay(), urlResponse);
     }
 
@@ -85,8 +85,7 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void finish() throws IOException, InscriptionFinishException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
-        String url = String.format("%s/inscriptions/%s", apiUrl, token);
+        String url = String.format("%s/inscriptions/%s", apiUrl, testToken);
 
         byte responseCode = 0;
         String authorizationCode = "1213";
@@ -104,7 +103,7 @@ public class OneclickMallDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        final OneclickMallInscriptionFinishResponse response = Oneclick.MallDeferredInscription.finish(token);
+        final OneclickMallInscriptionFinishResponse response = Oneclick.MallDeferredInscription.finish(testToken);
         assertEquals(response.getResponseCode(), responseCode);
         assertEquals(response.getTbkUser(), tbkUser);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
@@ -157,14 +156,13 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void authorize() throws IOException, TransactionAuthorizeException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions",apiUrl);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponsePost(url, gson.toJson(mapResponse));
 
-        String tbkUserReq = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+        String tbkUserReq = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
         String buyOrderReq = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         String buyOrderMallOne = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         String buyOrderMallTwo = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -206,7 +204,6 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void refund() throws IOException, TransactionRefundException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions/%s/refunds", apiUrl, buyOrder);
 
         String type = "REVERSED";
@@ -229,7 +226,6 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void status() throws IOException, TransactionStatusException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions/%s", apiUrl, buyOrder);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
@@ -265,7 +261,6 @@ public class OneclickMallDeferredTest extends TestBase {
     @Test
     public void capture() throws IOException, TransactionCaptureException {
         WebpayPlus.MallDeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = String.format("%s/transactions/capture",apiUrl);
 
         String authorizationCode = "138248";
@@ -292,15 +287,14 @@ public class OneclickMallDeferredTest extends TestBase {
         assertEquals(response.getResponseCode(), responseCode);
     }
 
-    //{"username":"goncafa","tbk_user":"01ab5362d9b0eb7ebec6e822518eb6453cb4e6280ca2295370c703dd0fe71e3d"}
+    //{"username":"goncafa","tbk_user":"aaaaaaaaaaaaa-bbbbbbbb-cccccc"}
     /*
     @Test
     public void delete() throws IOException, InscriptionDeleteException {
         Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String token = "01ab33cb02f389be7e912ca33d459fab7ee76e8d34116a75d946076fc1ec1cd2";
         String url = "/rswebpaytransaction/api/oneclick/v1.0/inscriptions";
 
-        //String tbkUser = "12350bde-00dd-4ad8-9cc6-ae918022adc3";
+        //String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
         Map<String, Object> mapResponse = new HashMap<>();
         Gson gson = new GsonBuilder().create();
         setResponse(url, gson.toJson(mapResponse));

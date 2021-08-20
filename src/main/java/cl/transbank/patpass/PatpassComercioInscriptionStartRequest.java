@@ -8,6 +8,8 @@ import lombok.*;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 public class PatpassComercioInscriptionStartRequest extends WebpayApiRequest {
 
     @SerializedName("url") @NonNull private String url;

@@ -35,6 +35,8 @@ public class MallTransactionCommitDetails {
     }
 
     @Data
+    @EqualsAndHashCode(callSuper=true)
+    @ToString(callSuper=true)
     @AllArgsConstructor
     public class Detail extends TransactionCommitRequest {
         @SerializedName("commerce_code")private String commerceCode;

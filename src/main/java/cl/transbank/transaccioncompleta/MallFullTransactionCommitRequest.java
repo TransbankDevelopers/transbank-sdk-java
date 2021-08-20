@@ -10,6 +10,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@EqualsAndHashCode(callSuper=true)
+@ToString(callSuper=true)
 public class MallFullTransactionCommitRequest extends WebpayApiRequest {
     @SerializedName("details") private List<MallTransactionCommitDetails.Detail> details;
 

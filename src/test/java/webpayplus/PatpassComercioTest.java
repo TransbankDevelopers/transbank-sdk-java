@@ -1,9 +1,9 @@
 package webpayplus;
 
-import cl.transbank.common.IntegrationType;
+import cl.transbank.common.ApiConstants;
 import cl.transbank.patpass.PatpassComercio;
-import cl.transbank.patpass.model.PatpassComercioInscriptionStartResponse;
-import cl.transbank.patpass.model.PatpassComercioTransactionStatusResponse;
+import cl.transbank.patpass.responses.PatpassComercioInscriptionStartResponse;
+import cl.transbank.patpass.responses.PatpassComercioTransactionStatusResponse;
 import cl.transbank.webpay.exception.InscriptionStartException;
 import cl.transbank.webpay.exception.TransactionStatusException;
 import com.google.gson.Gson;
@@ -21,7 +21,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class PatpassComercioTest extends TestBase {
 
-    private static String apiUrl = "/restpatpass/v1";
+    private static String apiUrl = ApiConstants.PATPASS_COMERCIO_ENDPOINT;
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
@@ -36,8 +36,8 @@ public class PatpassComercioTest extends TestBase {
 
     @Test
     public void start() throws IOException, InscriptionStartException {
-        PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/services/patInscription", apiUrl);
+        PatpassComercio.configureForMock();
+        String url = String.format("/%s/patInscription", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenComercioLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -65,8 +65,8 @@ public class PatpassComercioTest extends TestBase {
         String address = "huerfanos 101";
         String city = "Santiago";
 
-        PatpassComercio.setCommerceCode(commerceCode);
-        final PatpassComercioInscriptionStartResponse response = PatpassComercio.Inscription.start(urlRequest,
+        //PatpassComercio.setCommerceCode(commerceCode);
+        final PatpassComercioInscriptionStartResponse response = (new PatpassComercio.Inscription()).start(urlRequest,
                 name,
                 firstLastName,
                 secondLastName,
@@ -88,8 +88,8 @@ public class PatpassComercioTest extends TestBase {
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        PatpassComercio.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/services/status", apiUrl);
+        PatpassComercio.configureForMock();
+        String url = String.format("/%s/status", apiUrl);
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenVoucherLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -101,8 +101,8 @@ public class PatpassComercioTest extends TestBase {
         setResponsePost(url, jsonResponse);
 
         String commerceCode = "28299257";
-        PatpassComercio.setCommerceCode(commerceCode);
-        final PatpassComercioTransactionStatusResponse response = PatpassComercio.Transaction.status(testToken);
+        //PatpassComercio.setCommerceCode(commerceCode);
+        final PatpassComercioTransactionStatusResponse response = (new PatpassComercio.Transaction()).status(testToken);
 
         assertEquals(response.isAuthorized(), true);
         assertEquals(response.getVoucherUrl(), urlResponse);

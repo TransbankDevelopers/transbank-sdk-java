@@ -8,7 +8,8 @@ import java.util.List;
 
 @ToString
 public class MallTransactionCreateDetails {
-    @Getter private List<Detail> details = new ArrayList<>();
+    @Getter
+    private List<Detail> details = new ArrayList<>();
 
     private MallTransactionCreateDetails() {}
 

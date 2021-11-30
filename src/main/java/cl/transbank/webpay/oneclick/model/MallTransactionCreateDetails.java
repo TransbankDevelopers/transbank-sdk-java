@@ -1,6 +1,5 @@
 package cl.transbank.webpay.oneclick.model;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -8,7 +7,8 @@ import java.util.List;
 
 @ToString
 public class MallTransactionCreateDetails {
-    @Getter private List<Detail> details = new ArrayList<>();
+    @Getter
+    private List<Detail> details = new ArrayList<>();
 
     private MallTransactionCreateDetails() {}
 
@@ -32,10 +32,10 @@ public class MallTransactionCreateDetails {
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter @ToString
     public class Detail {
-        @SerializedName("amount") private double amount;
-        @SerializedName("commerce_code")private String commerceCode;
-        @SerializedName("buy_order")private String buyOrder;
-        @SerializedName("installments_number")private byte installmentsNumber;
+        private double amount;
+        private String commerceCode;
+        private String buyOrder;
+        private byte installmentsNumber;
 
         @Override
         public boolean equals(Object obj) {

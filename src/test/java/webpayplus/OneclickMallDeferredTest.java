@@ -1,10 +1,10 @@
 package webpayplus;
 
-import cl.transbank.common.IntegrationType;
+import cl.transbank.common.ApiConstants;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.Oneclick;
 import cl.transbank.webpay.oneclick.model.*;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
+import cl.transbank.webpay.oneclick.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
@@ -19,7 +19,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class OneclickMallDeferredTest extends TestBase {
 
-    private static String apiUrl = "/rswebpaytransaction/api/oneclick/v1.2";
+    private static String apiUrl = ApiConstants.ONECLICK_ENDPOINT;
 
     private static String username = "goncafa";
     private static String email = "gonzalo.castillo@continuum.cl";
@@ -62,8 +62,8 @@ public class OneclickMallDeferredTest extends TestBase {
 
     @Test
     public void start() throws IOException, InscriptionStartException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/inscriptions",apiUrl);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -76,7 +76,7 @@ public class OneclickMallDeferredTest extends TestBase {
 
         String returnUrl = "http://localhost:8081/oneclick-mall/finish";
 
-        final OneclickMallInscriptionStartResponse response = Oneclick.MallDeferredInscription.start(username, email, returnUrl);
+        final OneclickMallInscriptionStartResponse response = (new Oneclick.MallInscription()).start(username, email, returnUrl);
         assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrlWebpay(), urlResponse);
     }
@@ -84,8 +84,8 @@ public class OneclickMallDeferredTest extends TestBase {
 
     @Test
     public void finish() throws IOException, InscriptionFinishException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/inscriptions/%s", apiUrl, testToken);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/inscriptions/%s", apiUrl, testToken);
 
         byte responseCode = 0;
         String authorizationCode = "1213";
@@ -103,7 +103,7 @@ public class OneclickMallDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        final OneclickMallInscriptionFinishResponse response = Oneclick.MallDeferredInscription.finish(testToken);
+        final OneclickMallInscriptionFinishResponse response = (new Oneclick.MallInscription()).finish(testToken);
         assertEquals(response.getResponseCode(), responseCode);
         assertEquals(response.getTbkUser(), tbkUser);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
@@ -155,8 +155,8 @@ public class OneclickMallDeferredTest extends TestBase {
 
     @Test
     public void authorize() throws IOException, TransactionAuthorizeException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/transactions",apiUrl);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/transactions",apiUrl);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -175,7 +175,7 @@ public class OneclickMallDeferredTest extends TestBase {
                 .add(amountMallOne, commerceCode1, buyOrderMallOne, installmentsNumberMallOne)
                 .add(amountMallTwo, commerceCode2, buyOrderMallTwo, installmentsNumberMallTwo);
 
-        final OneclickMallTransactionAuthorizeResponse response = Oneclick.MallDeferredTransaction.authorize(username, tbkUserReq, buyOrderReq, details);
+        final OneclickMallTransactionAuthorizeResponse response = (new Oneclick.MallTransaction()).authorize(username, tbkUserReq, buyOrderReq, details);
 
         assertEquals(response.getBuyOrder(), buyOrder);
         assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
@@ -203,8 +203,8 @@ public class OneclickMallDeferredTest extends TestBase {
 
     @Test
     public void refund() throws IOException, TransactionRefundException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/transactions/%s/refunds", apiUrl, buyOrder);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/transactions/%s/refunds", apiUrl, buyOrder);
 
         String type = "REVERSED";
 
@@ -218,21 +218,21 @@ public class OneclickMallDeferredTest extends TestBase {
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
         double amount = 1000d;
-        final OneclickMallTransactionRefundResponse response = Oneclick.MallTransaction.refund(buyOrder, childCommerceCode, childBuyOrder, amount);
+        final OneclickMallTransactionRefundResponse response = (new Oneclick.MallTransaction()).refund(buyOrder, childCommerceCode, childBuyOrder, amount);
 
         assertEquals(response.getType(), type);
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/transactions/%s", apiUrl, buyOrder);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/transactions/%s", apiUrl, buyOrder);
 
         Map<String, Object> mapResponse = generateAutorizeJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final OneclickMallTransactionStatusResponse response = Oneclick.MallDeferredTransaction.status(buyOrder);
+        final OneclickMallTransactionStatusResponse response = (new Oneclick.MallTransaction()).status(buyOrder);
 
         assertEquals(response.getBuyOrder(), buyOrder);
         assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
@@ -260,8 +260,8 @@ public class OneclickMallDeferredTest extends TestBase {
 
     @Test
     public void capture() throws IOException, TransactionCaptureException {
-        WebpayPlus.MallDeferredTransaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = String.format("%s/transactions/capture",apiUrl);
+        Oneclick.configureForMock();
+        String url = String.format("/%s/transactions/capture",apiUrl);
 
         String authorizationCode = "138248";
         String authorizationDate = "2021-08-01T03:17:42.785Z";
@@ -280,7 +280,7 @@ public class OneclickMallDeferredTest extends TestBase {
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
         double amount = 1000d;
-        final OneclickMallTransactionCaptureResponse response = Oneclick.MallDeferredTransaction.capture(childCommerceCode, childBuyOrder, authorizationCode, amount);
+        final OneclickMallTransactionCaptureResponse response = (new Oneclick.MallTransaction()).capture(childCommerceCode, childBuyOrder, authorizationCode, amount);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getAuthorizationDate(), authorizationDate);
         assertEquals(response.getCapturedAmount(), capturedAmount);

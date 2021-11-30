@@ -1,6 +1,5 @@
 package cl.transbank.model;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -36,9 +35,9 @@ public class MallTransactionCreateDetails {
     @NoArgsConstructor @AllArgsConstructor
     @Getter @Setter @ToString
     public class Detail {
-        @SerializedName("amount") private double amount;
-        @SerializedName("commerce_code")private String commerceCode;
-        @SerializedName("buy_order")private String buyOrder;
+        private double amount;
+        private String commerceCode;
+        private String buyOrder;
 
         @Override
         public boolean equals(Object obj) {

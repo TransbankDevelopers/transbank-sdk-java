@@ -1,6 +1,7 @@
 package cl.transbank.util;
 
 import cl.transbank.webpay.exception.TransbankHttpApiException;
+import cl.transbank.webpay.exception.WebpayException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -26,34 +27,34 @@ public class HttpUtilImpl implements HttpUtil {
     @Setter @Getter(AccessLevel.PRIVATE) private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
 
     public <T> T request(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
-                         Class<T> clazz) throws IOException, TransbankHttpApiException {
+                         Class<T> clazz) throws IOException, WebpayException {
         final String jsonIn = getJsonUtil().jsonEncode(request);
         final String jsonOut = request(url, method, jsonIn, headers, true);
         return getJsonUtil().jsonDecode(jsonOut, clazz);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query)
-            throws IOException, TransbankHttpApiException {
+            throws IOException, WebpayException {
         return request(url, method, query, (ContentType) null, (Map<String, String>) null);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query,
-                                 ContentType contentType) throws IOException, TransbankHttpApiException {
+                                 ContentType contentType) throws IOException, WebpayException {
         return request(url, method, query, contentType, null);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query, Map<String, String> headers)
-            throws IOException, TransbankHttpApiException {
+            throws IOException, WebpayException {
         return request(url, method, query, null, headers);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query, Map<String, String> headers, boolean useException)
-            throws IOException, TransbankHttpApiException {
+            throws IOException, WebpayException {
         return request(url, method, query, null, headers);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query,
-                          ContentType contentType, Map<String, String> headers) throws IOException, TransbankHttpApiException {
+                          ContentType contentType, Map<String, String> headers) throws IOException, WebpayException {
         if (null == method)
             method = GET;
 
@@ -107,7 +108,7 @@ public class HttpUtilImpl implements HttpUtil {
             final String responseBody = getResponseBody(input);
             if (isHttpErrorCode) {
                 Object errorMessage = "Could not obtain a response message from Webpay API";
-                if (null != responseBody) {
+                if (responseBody != null) {
                     final Map errorMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
                     errorMessage = errorMap.get("error_message");
                 }
@@ -115,6 +116,13 @@ public class HttpUtilImpl implements HttpUtil {
                 if (null == errorMessage)
                     errorMessage = "Unspecified message by Webpay API";
                 throw new TransbankHttpApiException(responseCode, errorMessage.toString());
+            }
+
+            if (responseBody != null) {
+                final Map tempMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
+                if (tempMap.containsKey("error_message") && tempMap.get("error_message")!=null){
+                    throw new WebpayException(tempMap.get("error_message").toString());
+                }
             }
 
             return responseBody;

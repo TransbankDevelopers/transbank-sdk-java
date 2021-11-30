@@ -1,6 +1,8 @@
 package cl.transbank.util;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public final class JsonUtilImpl implements JsonUtil {
     private static volatile JsonUtilImpl instance;
@@ -8,7 +10,9 @@ public final class JsonUtilImpl implements JsonUtil {
 
     private JsonUtilImpl() {
         super();
-        gson = new Gson();
+        gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
     }
 
     public String jsonEncode(Object o) {

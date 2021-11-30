@@ -72,9 +72,9 @@ public class MallFullTransaction extends BaseTransaction {
         }
     }
 
-    public MallFullTransactionRefundResponse refund(String token, String buyOrder, String commerceCode, double amount) throws IOException, TransactionRefundException {
+    public MallFullTransactionRefundResponse refund(String token, String buyOrder, String childCommerceCode, double amount) throws IOException, TransactionRefundException {
         String endpoint = String.format("%s/transactions/%s/refunds", ApiConstants.WEBPAY_ENDPOINT, token);
-        final WebpayApiRequest request = new MallTransactionRefundRequest(buyOrder, commerceCode, amount);
+        final WebpayApiRequest request = new MallTransactionRefundRequest(buyOrder, childCommerceCode, amount);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, MallFullTransactionRefundResponse.class);
         } catch (TransbankException e) {

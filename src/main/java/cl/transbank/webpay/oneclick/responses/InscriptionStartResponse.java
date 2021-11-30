@@ -7,7 +7,7 @@ import lombok.*;
 @Getter @Setter
 @ToString
 public class InscriptionStartResponse {
-    @SerializedName("token") private String token;
-    @SerializedName("url_webpay") private String urlWebpay;
-    @SerializedName("error_message") private String errorMessage;
+    private String token;
+    private String urlWebpay;
+    private String errorMessage;
 }

@@ -4,6 +4,7 @@ import cl.transbank.common.IntegrationTypeHelper;
 import cl.transbank.model.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
+import cl.transbank.webpay.common.WebpayOptions;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,7 +38,16 @@ public abstract class WebpayApiResource {
     }
     public static <T> T execute(final String endpoint, HttpUtil.RequestMethod method, final WebpayApiRequest request, final Options options, Class<T> clazz)
             throws TransbankException, IOException {
-        final URL url = new URL(String.format("%s/%s", IntegrationTypeHelper.getWebpayIntegrationType(options.getIntegrationType()), endpoint));
+
+        String urlBase = null;
+        if(options instanceof WebpayOptions){
+            urlBase = IntegrationTypeHelper.getWebpayIntegrationType(options.getIntegrationType());
+        }
+        else{
+            urlBase = IntegrationTypeHelper.getPatpassIntegrationType(options.getIntegrationType());
+        }
+        final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
+
         final T out = WebpayApiResource.getHttpUtil().request(url, method, request, WebpayApiResource.buildHeaders(options), clazz);
 
         if (null == out)

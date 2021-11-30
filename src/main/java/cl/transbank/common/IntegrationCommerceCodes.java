@@ -14,8 +14,8 @@ public class IntegrationCommerceCodes {
     public static String ONECLICK_MALL_CHILD1 = "597055555542";
     public static String ONECLICK_MALL_CHILD2 = "597055555543";
     public static String ONECLICK_MALL_DEFERRED = "597055555547";
-    public static String ONECLICK_MALL_CHILD1_DEFERRED = "597055555548";
-    public static String ONECLICK_MALL_CHILD2_DEFERRED = "597055555549";
+    public static String ONECLICK_MALL_DEFERRED_CHILD1 = "597055555548";
+    public static String ONECLICK_MALL_DEFERRED_CHILD2 = "597055555549";
     public static String TRANSACCION_COMPLETA = "597055555530";
     public static String TRANSACCION_COMPLETA_SIN_CVV = "597055555557";
     public static String TRANSACCION_COMPLETA_DEFERRED = "597055555531";

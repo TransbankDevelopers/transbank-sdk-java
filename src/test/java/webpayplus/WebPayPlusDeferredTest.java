@@ -70,8 +70,8 @@ public class WebPayPlusDeferredTest extends TestBase {
         String returnUrl = "http://wwww.google.com";
 
         final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction()).create(buyOrder, sessionId, amount, returnUrl);
-        assertEquals(response.getToken(), testToken);
-        assertEquals(response.getUrl(), urlResponse);
+        assertEquals(testToken, response.getToken());
+        assertEquals(urlResponse, response.getUrl());
     }
 
     private Map<String, Object> generateCommitJsonResponse(){
@@ -124,20 +124,19 @@ public class WebPayPlusDeferredTest extends TestBase {
         //System.out.println("url: " + url);
 
         final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction()).commit(testToken);
-        assertEquals(response.getVci(), vci);
-        assertEquals(response.getAmount(), amount);
-        assertEquals(response.getStatus(), status);
-        assertEquals(response.getBuyOrder(), buyOrder);
-        assertEquals(response.getSessionId(), sessionId);
-        assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
-        assertEquals(response.getAccountingDate(), accountingDate);
-        assertEquals(response.getTransactionDate(), transactionDate);
-        assertEquals(response.getAuthorizationCode(), authorizationCode);
-        assertEquals(response.getPaymentTypeCode(), paymentTypeCode);
-        assertEquals(response.getResponseCode(), responseCode);
+        assertEquals(vci, response.getVci());
+        assertEquals(amount, response.getAmount());
+        assertEquals(status, response.getStatus());
+        assertEquals(buyOrder, response.getBuyOrder());
+        assertEquals(sessionId, response.getSessionId());
+        assertEquals(cardNumber, response.getCardDetail().getCardNumber());
+        assertEquals(accountingDate, response.getAccountingDate());
+        assertEquals(transactionDate, response.getTransactionDate());
+        assertEquals(authorizationCode, response.getAuthorizationCode());
+        assertEquals(paymentTypeCode, response.getPaymentTypeCode());
+        assertEquals(responseCode, response.getResponseCode());
         //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
-        assertEquals(response.getInstallmentsNumber(), installmentsNumber);
-        //assertEquals(response.getBalance(), mapResponse.get("amount"));
+        assertEquals(installmentsNumber, response.getInstallmentsNumber());
     }
 
 
@@ -171,20 +170,19 @@ public class WebPayPlusDeferredTest extends TestBase {
         setResponseGet(url, gson.toJson(mapResponse));
 
         final WebpayPlusTransactionStatusResponse response = (new WebpayPlus.Transaction()).status(testToken);
-        assertEquals(response.getVci(), vci);
-        assertEquals(response.getAmount(), amount);
-        assertEquals(response.getStatus(), status);
-        assertEquals(response.getBuyOrder(), buyOrder);
-        assertEquals(response.getSessionId(), sessionId);
-        assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
-        assertEquals(response.getAccountingDate(), accountingDate);
-        assertEquals(response.getTransactionDate(), transactionDate);
-        assertEquals(response.getAuthorizationCode(), authorizationCode);
-        assertEquals(response.getPaymentTypeCode(), paymentTypeCode);
-        assertEquals(response.getResponseCode(), responseCode);
+        assertEquals(vci, response.getVci());
+        assertEquals(amount, response.getAmount());
+        assertEquals(status, response.getStatus());
+        assertEquals(buyOrder, response.getBuyOrder());
+        assertEquals(sessionId, response.getSessionId());
+        assertEquals(cardNumber, response.getCardDetail().getCardNumber());
+        assertEquals(accountingDate, response.getAccountingDate());
+        assertEquals(transactionDate, response.getTransactionDate());
+        assertEquals(authorizationCode, response.getAuthorizationCode());
+        assertEquals(paymentTypeCode, response.getPaymentTypeCode());
+        assertEquals(responseCode, response.getResponseCode());
         //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
-        assertEquals(response.getInstallmentsNumber(), installmentsNumber);
-
+        assertEquals(installmentsNumber, response.getInstallmentsNumber());
     }
 
     @Test
@@ -211,10 +209,10 @@ public class WebPayPlusDeferredTest extends TestBase {
         double amount = 1000;
 
         final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction()).capture(testToken, buyOrder, authorization, amount);
-        assertEquals(response.getAuthorizationCode(), authorizationCode);
-        assertEquals(response.getAuthorizationDate(), authorizationDate);
-        assertEquals(response.getCapturedAmount(), capturedAmount);
-        assertEquals(response.getResponseCode(), responseCode);
+        assertEquals(authorizationCode, response.getAuthorizationCode());
+        assertEquals(authorizationDate, response.getAuthorizationDate());
+        assertEquals(capturedAmount, response.getCapturedAmount());
+        assertEquals(responseCode, response.getResponseCode());
     }
 
 }

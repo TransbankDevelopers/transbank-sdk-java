@@ -18,16 +18,6 @@ public class PatpassComercio  {
 
     }
 
-    public static class Transaction extends PatpassComercioTransaction {
-        public Transaction() {
-            this.options = PatpassComercio.options!=null ? PatpassComercio.options : new PatpassOptions(IntegrationCommerceCodes.PATPASS_COMERCIO, IntegrationApiKeys.PATPASS_COMERCIO, IntegrationType.TEST);
-        }
-
-        public Transaction(Options options) {
-            this.options = options;
-        }
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Environment Configuration

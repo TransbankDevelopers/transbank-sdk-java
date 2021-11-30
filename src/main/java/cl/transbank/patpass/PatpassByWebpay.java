@@ -33,14 +33,14 @@ public class PatpassByWebpay {
     }
 
     public static void configureForTesting(){
-        configureForIntegration(IntegrationCommerceCodes.PATPASS_COMERCIO, IntegrationApiKeys.PATPASS_COMERCIO);
+        configureForIntegration(IntegrationCommerceCodes.PATPASS_BY_WEBPAY, IntegrationApiKeys.WEBPAY);
     }
 
     public static void configureForTestingDeferred(){
-        configureForIntegration(IntegrationCommerceCodes.PATPASS_COMERCIO, IntegrationApiKeys.PATPASS_COMERCIO);
+        configureForIntegration(IntegrationCommerceCodes.PATPASS_BY_WEBPAY, IntegrationApiKeys.WEBPAY);
     }
 
     public static void configureForMock(){
-        PatpassByWebpay.options = new PatpassOptions(IntegrationCommerceCodes.PATPASS_COMERCIO, IntegrationApiKeys.PATPASS_COMERCIO, IntegrationType.SERVER_MOCK);
+        PatpassByWebpay.options = new PatpassOptions(IntegrationCommerceCodes.PATPASS_BY_WEBPAY, IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
     }
 }

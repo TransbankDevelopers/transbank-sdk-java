@@ -17,8 +17,7 @@ import cl.transbank.webpay.oneclick.responses.OneclickMallInscriptionStartRespon
 
 import java.io.IOException;
 
-public class
-OneclickMallInscription extends BaseTransaction {
+abstract class OneclickMallInscription extends BaseTransaction {
     public OneclickMallInscription(Options options){
         this.options = options;
     }

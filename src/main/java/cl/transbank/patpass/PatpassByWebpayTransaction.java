@@ -18,7 +18,7 @@ import cl.transbank.webpay.common.TransactionRefundRequest;
 
 import java.io.IOException;
 
-public class PatpassByWebpayTransaction extends BaseTransaction {
+abstract class PatpassByWebpayTransaction extends BaseTransaction {
 
     public PatpassByWebpayTransactionCreateResponse create(
             String buyOrder, String sessionId, double amount, String returnUrl, String serviceId, String cardHolderId,

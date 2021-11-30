@@ -102,7 +102,7 @@ public class PatpassComercioTest extends TestBase {
 
         String commerceCode = "28299257";
         //PatpassComercio.setCommerceCode(commerceCode);
-        final PatpassComercioTransactionStatusResponse response = (new PatpassComercio.Transaction()).status(testToken);
+        final PatpassComercioTransactionStatusResponse response = (new PatpassComercio.Inscription()).status(testToken);
 
         assertEquals(response.isAuthorized(), true);
         assertEquals(response.getVoucherUrl(), urlResponse);

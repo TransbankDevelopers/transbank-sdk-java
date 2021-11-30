@@ -23,7 +23,7 @@ import cl.transbank.webpay.oneclick.responses.OneclickMallTransactionStatusRespo
 import java.io.IOException;
 
 
-public class OneclickMallTransaction extends BaseTransaction {
+abstract class OneclickMallTransaction extends BaseTransaction {
 
     public OneclickMallTransaction(Options options){
         this.options = options;

@@ -15,7 +15,7 @@ import cl.transbank.webpay.exception.TransactionStatusException;
 
 import java.io.IOException;
 
-public class PatpassComercioInscription extends BaseTransaction {
+abstract class PatpassComercioInscription extends BaseTransaction {
 
     public PatpassComercioInscriptionStartResponse start(String url,
                                                                 String name,

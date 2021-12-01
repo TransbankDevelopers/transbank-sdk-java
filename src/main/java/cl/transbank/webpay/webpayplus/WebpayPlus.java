@@ -52,10 +52,6 @@ public class WebpayPlus {
         configureForIntegration(IntegrationCommerceCodes.WEBPAY_PLUS_DEFERRED, IntegrationApiKeys.WEBPAY);
     }
 
-    public static void configureForTestingModal(){
-        configureForIntegration(IntegrationCommerceCodes.WEBPAY_PLUS_MODAL, IntegrationApiKeys.WEBPAY);
-    }
-
     public static void configureForTestingMall(){
         configureForIntegration(IntegrationCommerceCodes.WEBPAY_PLUS_MALL, IntegrationApiKeys.WEBPAY);
     }

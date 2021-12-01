@@ -58,9 +58,9 @@ abstract class WebpayTransaction extends BaseTransaction {
         }
     }
 
-    public WebpayPlusTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double amount) throws IOException, TransactionCaptureException {
+    public WebpayPlusTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
         String endpoint = String.format("%s/transactions/%s/capture", ApiConstants.WEBPAY_ENDPOINT, token);
-        final WebpayApiRequest request = new TransactionCaptureRequest(buyOrder, authorizationCode, amount);
+        final WebpayApiRequest request = new TransactionCaptureRequest(buyOrder, authorizationCode, captureAmount);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, WebpayPlusTransactionCaptureResponse.class);
         } catch (TransbankException e) {

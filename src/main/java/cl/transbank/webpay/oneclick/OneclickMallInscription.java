@@ -41,7 +41,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
         }
     }
 
-    public void delete(String username, String tbkUser) throws IOException, InscriptionDeleteException {
+    public void delete(String tbkUser, String username) throws IOException, InscriptionDeleteException {
         WebpayApiRequest request = new InscriptionDeleteRequest(username, tbkUser);
         String endpoint = String.format("%s/inscriptions", ApiConstants.ONECLICK_ENDPOINT);
         try {

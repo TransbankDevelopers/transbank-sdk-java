@@ -254,7 +254,7 @@ public class WebPayPlusMallDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        final WebpayPlusMallTransactionCaptureResponse response = (new WebpayPlus.MallTransaction()).capture(testToken, commerceCode1, buyOrder1, authorizationCode1, amount1);
+        final WebpayPlusMallTransactionCaptureResponse response = (new WebpayPlus.MallTransaction()).capture(commerceCode1, testToken, buyOrder1, authorizationCode1, amount1);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getAuthorizationDate(), authorizationDate);
         assertEquals(response.getCapturedAmount(), capturedAmount);

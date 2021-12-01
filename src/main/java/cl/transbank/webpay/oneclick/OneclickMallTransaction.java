@@ -28,9 +28,9 @@ abstract class OneclickMallTransaction extends BaseTransaction {
     public OneclickMallTransaction(Options options){
         this.options = options;
     }
-    public OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String buyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
+    public OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String parentBuyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
 
-        WebpayApiRequest request = new TransactionAuthorizeRequest(username, tbkUser, buyOrder, details.getDetails());
+        WebpayApiRequest request = new TransactionAuthorizeRequest(username, tbkUser, parentBuyOrder, details.getDetails());
         String endpoint = String.format("%s/transactions", ApiConstants.ONECLICK_ENDPOINT);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, OneclickMallTransactionAuthorizeResponse.class);

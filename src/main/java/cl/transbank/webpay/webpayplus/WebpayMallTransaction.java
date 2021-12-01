@@ -49,18 +49,18 @@ abstract class WebpayMallTransaction extends BaseTransaction {
         }
     }
 
-    public WebpayPlusMallTransactionRefundResponse refund(String token, String buyOrder, String commerceCode, double amount) throws IOException, TransactionRefundException {
+    public WebpayPlusMallTransactionRefundResponse refund(String token, String buyOrder, String childCommerceCode, double amount) throws IOException, TransactionRefundException {
         String endpoint = String.format("%s/transactions/%s/refunds", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, new MallTransactionRefundRequest(buyOrder, commerceCode, amount), options, WebpayPlusMallTransactionRefundResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, new MallTransactionRefundRequest(buyOrder, childCommerceCode, amount), options, WebpayPlusMallTransactionRefundResponse.class);
         } catch (TransbankException e) {
             throw new TransactionRefundException(e);
         }
     }
 
-    public WebpayPlusMallTransactionCaptureResponse capture(String token, String commerceCode, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
+    public WebpayPlusMallTransactionCaptureResponse capture(String childCommerceCode, String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
         String endpoint = String.format("%s/transactions/%s/capture", ApiConstants.WEBPAY_ENDPOINT, token);
-        final WebpayApiRequest request = new MallTransactionCaptureRequest(commerceCode, buyOrder, authorizationCode, captureAmount);
+        final WebpayApiRequest request = new MallTransactionCaptureRequest(childCommerceCode, buyOrder, authorizationCode, captureAmount);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, WebpayPlusMallTransactionCaptureResponse.class);
         } catch (TransbankException e) {

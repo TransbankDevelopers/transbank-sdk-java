@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus.requests;
+package cl.transbank.webpay.modal.requests;
 
 import cl.transbank.model.WebpayApiRequest;
 import lombok.*;

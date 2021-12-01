@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus;
+package cl.transbank.webpay.modal;
 
 import cl.transbank.common.IntegrationApiKeys;
 import cl.transbank.common.IntegrationCommerceCodes;

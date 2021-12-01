@@ -17,4 +17,5 @@ public class MallFullTransactionCreateRequest extends WebpayApiRequest {
     private String cardNumber;
     private String cardExpirationDate;
     private List<MallTransactionCreateDetails.Detail> details;
+    private Short cvv;
 }

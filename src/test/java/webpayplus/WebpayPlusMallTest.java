@@ -22,7 +22,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebPayPlusMallTest  extends TestBase {
+public class WebpayPlusMallTest extends TestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
 

@@ -17,7 +17,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebPayPlusMallDeferredTest extends TestBase {
+public class WebpayPlusMallDeferredTest extends TestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
 

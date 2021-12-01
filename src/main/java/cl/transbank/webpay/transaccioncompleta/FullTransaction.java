@@ -4,6 +4,7 @@ import cl.transbank.common.*;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.Options;
 import cl.transbank.model.WebpayApiRequest;
+import cl.transbank.util.ValidationUtil;
 import cl.transbank.webpay.common.TransactionCaptureRequest;
 import cl.transbank.webpay.common.TransactionRefundRequest;
 import cl.transbank.webpay.transaccioncompleta.requests.*;
@@ -28,6 +29,11 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionCreateResponse create(String buyOrder, String sessionId, double amount, short cvv, String cardNumber, String cardExpirationDate) throws IOException, TransactionCreateException {
+        ValidationUtil.hasTextWithMaxLength(buyOrder, ApiConstants.BUY_ORDER_LENGTH, "buyOrder");
+        ValidationUtil.hasTextWithMaxLength(sessionId, ApiConstants.SESSION_ID_LENGTH, "sessionId");
+        ValidationUtil.hasTextWithMaxLength(cardNumber, ApiConstants.CARD_NUMBER_LENGTH, "cardNumber");
+        ValidationUtil.hasTextWithMaxLength(cardExpirationDate, ApiConstants.CARD_EXPIRATION_DATE_LENGTH, "cardExpirationDate");
+
         String endpoint = String.format("%s/transactions", ApiConstants.WEBPAY_ENDPOINT);
         final WebpayApiRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, cardNumber, cvv, cardExpirationDate);
         try {
@@ -38,6 +44,7 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionInstallmentResponse installments(String token, byte installmentsNumber) throws  IOException, TransactionInstallmentException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         String endpoint = String.format("%s/transactions/%s/installments", ApiConstants.WEBPAY_ENDPOINT, token);
         final WebpayApiRequest request = new TransactionInstallmentsRequest(installmentsNumber);
         try {
@@ -48,6 +55,7 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionCommitResponse commit(String token, Long idQueryInstallments, Byte deferredPeriodIndex, Boolean gracePeriod) throws IOException, TransactionCommitException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT, token);
         final WebpayApiRequest request = new TransactionCommitRequest(idQueryInstallments, deferredPeriodIndex, gracePeriod);
         try {
@@ -58,6 +66,7 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT, token);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, FullTransactionStatusResponse.class);
@@ -67,6 +76,7 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         String endpoint = String.format("%s/transactions/%s/refunds", ApiConstants.WEBPAY_ENDPOINT, token);
         final WebpayApiRequest request = new TransactionRefundRequest(amount);
         try {
@@ -77,6 +87,10 @@ public class FullTransaction extends BaseTransaction {
     }
 
     public FullTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(buyOrder, ApiConstants.BUY_ORDER_LENGTH, "buyOrder");
+        ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
+
         String endpoint = String.format("%s/transactions/%s/capture", ApiConstants.WEBPAY_ENDPOINT, token);
         final  WebpayApiRequest request = new TransactionCaptureRequest(buyOrder, authorizationCode, captureAmount);
         try {

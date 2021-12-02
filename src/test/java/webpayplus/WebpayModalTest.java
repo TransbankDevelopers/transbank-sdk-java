@@ -1,22 +1,14 @@
 package webpayplus;
 
 import cl.transbank.common.ApiConstants;
-import cl.transbank.model.CardDetail;
-import cl.transbank.webpay.exception.TransactionCommitException;
-import cl.transbank.webpay.exception.TransactionCreateException;
-import cl.transbank.webpay.exception.TransactionRefundException;
-import cl.transbank.webpay.exception.TransactionStatusException;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
-import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCommitResponse;
-import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCreateResponse;
-import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionRefundResponse;
-import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionStatusResponse;
+import cl.transbank.webpay.exception.*;
+import cl.transbank.webpay.modal.WebpayPlusModal;
+import cl.transbank.webpay.modal.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,7 +18,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebPayPlusTest  extends TestBase {
+public class WebpayModalTest extends TestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
 
@@ -45,7 +37,7 @@ public class WebPayPlusTest  extends TestBase {
     private static byte installmentsNumber = 0;
     private static double balance;
 
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {
@@ -60,14 +52,12 @@ public class WebPayPlusTest  extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
 
-        WebpayPlus.configureForMock();
-        //WebpayPlus.configureForTesting();
+        WebpayPlusModal.configureForMock();
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         mapResponse.put("token", testToken);
-        mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
@@ -78,9 +68,8 @@ public class WebPayPlusTest  extends TestBase {
         double amount = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction()).create(buyOrder, sessionId, amount, returnUrl);
+        final ModalTransactionCreateResponse response = (new WebpayPlusModal.Transaction()).create(buyOrder, sessionId, amount);
         assertEquals(testToken, response.getToken());
-        assertEquals(urlResponse, response.getUrl());
     }
 
     private Map<String, Object> generateCommitJsonResponse(){
@@ -107,14 +96,14 @@ public class WebPayPlusTest  extends TestBase {
 
     @Test
     public void commit() throws IOException, TransactionCommitException {
-        WebpayPlus.configureForMock();
+        WebpayPlusModal.configureForMock();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponsePut(url, gson.toJson(mapResponse));
 
-        final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction()).commit(testToken);
+        final ModalTransactionCommitResponse response = (new WebpayPlusModal.Transaction()).commit(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());
@@ -133,7 +122,7 @@ public class WebPayPlusTest  extends TestBase {
 
     @Test
     public void refund() throws IOException, TransactionRefundException {
-        WebpayPlus.configureForMock();
+        WebpayPlusModal.configureForMock();
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
         double amount = 1000d;
@@ -146,21 +135,21 @@ public class WebPayPlusTest  extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction()).refund(testToken, amount);
+        final ModalTransactionRefundResponse response = (new WebpayPlusModal.Transaction()).refund(testToken, amount);
         assertEquals(type, response.getType());
 
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        WebpayPlus.configureForMock();
+        WebpayPlusModal.configureForMock();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final WebpayPlusTransactionStatusResponse response = (new WebpayPlus.Transaction()).status(testToken);
+        final ModalTransactionStatusResponse response = (new WebpayPlusModal.Transaction()).status(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());
@@ -177,31 +166,7 @@ public class WebPayPlusTest  extends TestBase {
 
     }
 
-    @Test
-    public void prueba1() throws IOException, TransactionStatusException {
 
-        WebpayPlusTransactionStatusResponse r = new WebpayPlusTransactionCommitResponse();
-        r.setVci(vci);
-        r.setAmount(amount);
-        r.setStatus(status);
-        r.setBuyOrder(buyOrder);
-        r.setSessionId(sessionId);
-        r.setCardDetail(new CardDetail());
-        r.getCardDetail().setCardNumber(cardNumber);
-
-
-        WebpayPlus.Transaction tx = Mockito.mock(WebpayPlus.Transaction.class);
-        Mockito.when(tx.status(testToken)).thenReturn(r);
-
-        final WebpayPlusTransactionStatusResponse response = tx.status(testToken);
-        assertEquals(vci, response.getVci());
-        assertEquals(amount, response.getAmount());
-        assertEquals(status, response.getStatus());
-        assertEquals(buyOrder, response.getBuyOrder());
-        assertEquals(sessionId, response.getSessionId());
-        assertEquals(cardNumber, response.getCardDetail().getCardNumber());
-
-    }
 
 
 

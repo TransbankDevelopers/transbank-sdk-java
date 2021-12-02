@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus;
+package cl.transbank.webpay.modal;
 
 import cl.transbank.common.ApiConstants;
 import cl.transbank.common.BaseTransaction;
@@ -9,8 +9,8 @@ import cl.transbank.util.HttpUtil;
 import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.common.TransactionRefundRequest;
 import cl.transbank.webpay.exception.*;
-import cl.transbank.webpay.webpayplus.requests.ModalTransactionCreateRequest;
-import cl.transbank.webpay.webpayplus.responses.*;
+import cl.transbank.webpay.modal.requests.*;
+import cl.transbank.webpay.modal.responses.*;
 
 import java.io.IOException;
 
@@ -20,38 +20,38 @@ abstract class WebpayModalTransaction extends BaseTransaction {
         this.options = options;
     }
 
-    public WebpayPlusTransactionCreateResponse create(String buyOrder, String sessionId, double amount) throws IOException, TransactionCreateException {
+    public ModalTransactionCreateResponse create(String buyOrder, String sessionId, double amount) throws IOException, TransactionCreateException {
         String endpoint = String.format("%s/transactions", ApiConstants.WEBPAY_ENDPOINT);
         final WebpayApiRequest request = new ModalTransactionCreateRequest(buyOrder, sessionId, amount);
         try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, WebpayPlusTransactionCreateResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, ModalTransactionCreateResponse.class);
         } catch (TransbankException e) {
             throw new TransactionCreateException(e);
         }
     }
 
-    public WebpayPlusTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
+    public ModalTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, WebpayPlusTransactionCommitResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, ModalTransactionCommitResponse.class);
         } catch (TransbankException e) {
             throw new TransactionCommitException(e);
         }
     }
 
-    public WebpayPlusTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
+    public ModalTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, WebpayPlusTransactionStatusResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, ModalTransactionStatusResponse.class);
         } catch (TransbankException e) {
             throw new TransactionStatusException(e);
         }
     }
 
-    public WebpayPlusTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
+    public ModalTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
         String endpoint = String.format("%s/transactions/%s/refunds", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, new TransactionRefundRequest(amount), options, WebpayPlusTransactionRefundResponse.class);
+            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, new TransactionRefundRequest(amount), options, ModalTransactionRefundResponse.class);
         } catch (TransbankException e) {
             throw new TransactionRefundException(e);
         }

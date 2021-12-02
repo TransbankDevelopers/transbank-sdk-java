@@ -1,4 +1,4 @@
-package cl.transbank.webpay.webpayplus.responses;
+package cl.transbank.webpay.modal.responses;
 
 import lombok.*;
 

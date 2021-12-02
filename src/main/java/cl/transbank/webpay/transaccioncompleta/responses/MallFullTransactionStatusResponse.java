@@ -17,6 +17,7 @@ public class MallFullTransactionStatusResponse {
     private String accountingDate;
     private String transactionDate;
     private List<Detail> details;
+    private Double prepaidBalance;
 
     @NoArgsConstructor @AllArgsConstructor
     @Data

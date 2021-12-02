@@ -28,6 +28,7 @@ public class WebpayPlusMallTransactionStatusResponse {
         private byte installmentsNumber;
         private String commerceCode;
         private String buyOrder;
-        private double prepaidBalance;
+        private Double prepaidBalance;
+        private Double balance;
     }
 }

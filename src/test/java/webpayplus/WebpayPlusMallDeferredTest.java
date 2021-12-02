@@ -49,7 +49,7 @@ public class WebpayPlusMallDeferredTest extends TestBase {
     private static String commerceCode2 = "597055555537";
     private static String buyOrder2 = "1936357040";
 
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {

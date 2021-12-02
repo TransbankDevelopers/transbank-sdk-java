@@ -37,7 +37,7 @@ public class WebpayPlusDeferredTest extends TestBase {
     private static byte installmentsNumber = 0;
     private static double balance;
 
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {
@@ -190,7 +190,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         WebpayPlus.configureForMock();
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
 
-        String authorizationCode = "138248";
+        String authorizationCode = "1213";
         String authorizationDate = "2021-08-01T03:17:42.785Z";
         double capturedAmount = 1000.0;
         byte responseCode = 0;
@@ -205,7 +205,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         setResponsePut(url, jsonResponse);
 
         String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String authorization = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String authorization = "1213";
         double amount = 1000;
 
         final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction()).capture(testToken, buyOrder, authorization, amount);

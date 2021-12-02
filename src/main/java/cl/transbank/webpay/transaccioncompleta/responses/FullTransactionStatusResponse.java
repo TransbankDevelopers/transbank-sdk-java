@@ -21,4 +21,5 @@ public class FullTransactionStatusResponse {
     private byte responseCode;
     private byte installmentsNumber;
     private String balance;
+    private Double prepaidBalance;
 }

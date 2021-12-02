@@ -48,7 +48,7 @@ public class OneclickMallTest  extends TestBase {
     private static String buyOrder2 = "353345213";
     private static byte responseCode2 = 0;
 
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {

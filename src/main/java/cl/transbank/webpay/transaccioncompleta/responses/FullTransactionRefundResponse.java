@@ -14,4 +14,5 @@ public class FullTransactionRefundResponse {
     private double nullifiedAmount;
     private double balance;
     private byte responseCode;
+    private Double prepaidBalance;
 }

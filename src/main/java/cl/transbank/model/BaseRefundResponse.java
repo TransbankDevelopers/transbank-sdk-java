@@ -11,5 +11,5 @@ public abstract class BaseRefundResponse {
     private byte responseCode;
     private String authorizationDate;
     private double nullifiedAmount;
-    private double prepaidBalance;
+    private Double prepaidBalance;
 }

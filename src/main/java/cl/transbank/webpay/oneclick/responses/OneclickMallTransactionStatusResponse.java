@@ -25,5 +25,6 @@ public class OneclickMallTransactionStatusResponse {
         private byte installmentsNumber;
         private String commerceCode;
         private String buyOrder;
+        private Double balance;
     }
 }

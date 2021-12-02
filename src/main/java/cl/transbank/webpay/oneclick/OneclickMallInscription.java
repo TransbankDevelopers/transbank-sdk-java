@@ -6,6 +6,7 @@ import cl.transbank.model.Options;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.util.HttpUtil;
+import cl.transbank.util.ValidationUtil;
 import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.exception.InscriptionDeleteException;
 import cl.transbank.webpay.exception.InscriptionFinishException;
@@ -23,6 +24,10 @@ abstract class OneclickMallInscription extends BaseTransaction {
     }
 
     public OneclickMallInscriptionStartResponse start(String username, String email, String responseUrl) throws IOException, InscriptionStartException {
+        ValidationUtil.hasTextTrimWithMaxLength(username, ApiConstants.USER_NAME_LENGTH, "username");
+        ValidationUtil.hasTextTrimWithMaxLength(email, ApiConstants.EMAIL_LENGTH, "email");
+        ValidationUtil.hasTextWithMaxLength(responseUrl, ApiConstants.RETURN_URL_LENGTH, "responseUrl");
+
         final WebpayApiRequest request = new InscriptionStartRequest(username, email, responseUrl);
         String endpoint = String.format("%s/inscriptions", ApiConstants.ONECLICK_ENDPOINT);
         try {
@@ -33,6 +38,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
     }
 
     public OneclickMallInscriptionFinishResponse finish(String token) throws IOException, InscriptionFinishException {
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         String endpoint = String.format("%s/inscriptions/%s", ApiConstants.ONECLICK_ENDPOINT, token);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, options, OneclickMallInscriptionFinishResponse.class);
@@ -42,6 +48,8 @@ abstract class OneclickMallInscription extends BaseTransaction {
     }
 
     public void delete(String tbkUser, String username) throws IOException, InscriptionDeleteException {
+        ValidationUtil.hasTextTrimWithMaxLength(username, ApiConstants.USER_NAME_LENGTH, "username");
+        ValidationUtil.hasTextWithMaxLength(tbkUser, ApiConstants.TBK_USER_LENGTH, "tbkUser");
         WebpayApiRequest request = new InscriptionDeleteRequest(username, tbkUser);
         String endpoint = String.format("%s/inscriptions", ApiConstants.ONECLICK_ENDPOINT);
         try {

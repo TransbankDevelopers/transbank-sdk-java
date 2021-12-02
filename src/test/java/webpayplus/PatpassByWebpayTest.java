@@ -53,7 +53,7 @@ public class PatpassByWebpayTest  extends TestBase {
     private static byte responseCode = 0;
     private static byte installmentsNumber = 0;
 
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {

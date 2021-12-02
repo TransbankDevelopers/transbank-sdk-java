@@ -22,7 +22,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 public class PatpassComercioTest extends TestBase {
 
     private static String apiUrl = ApiConstants.PATPASS_COMERCIO_ENDPOINT;
-    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
     public static void startProxy() {

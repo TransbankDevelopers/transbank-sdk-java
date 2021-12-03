@@ -5,6 +5,27 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2021-12-02
+
+### Changed
+- Se elimina Onepay
+- Se refactoriza y migra todos los productos desde clases estáticas a clases instanciables
+- Se unifica 'Transaction' y 'DeferredTransaction' en WebpayPlus
+- Se unifica 'MallTransaction' y 'MallDeferredTransaction' en WebpayPlus y Oneclick
+- Se mueven los responses de cada producto al paquete 'responses' 
+- Se reordenan los parámetros del método capture de WebpayPlus Mall a 'capture(String childCommerceCode, String token, String buyOrder, String authorizationCode, double captureAmount)'
+- Se reordenan los parámetros del método delete de Oneclick a 'delete(String tbkUser, String username)'
+- Se reordenan los parámetros del método create de Transacción Completa a 'create(String buyOrder, String sessionId, double amount, short cvv, String cardNumber, String cardExpirationDate)'
+- Se reordenan los parámetros del método create de Transacción Completa a 'refund(String token, String buyOrder, String childCommerceCode, double amount)'
+
+### Added
+- Se agrega soporte a Webpay Modal
+- Se agregan validaciones de obligatoriedad y tamaño de los parámetros a los métodos de WebpayPlus, Oneclick, Webpay Modal, Transacción Completa
+- Se agrega una clase de constantes con los códigos de comercio de integración: 'IntegrationCommerceCodes'
+- Se agrega una clase de constantes con las claves de comercio de integración: 'IntegrationApiKeys'
+- Se agrega el parámetro 'cvv' al método 'create' de Transacción Completa Mall
+- Se agrega el campo 'prepaidBalance' o saldo de tarjeta prepago a los métodos refund y status
+
 ## [2.0.0] - 2021-08-18
 
 ### Changed

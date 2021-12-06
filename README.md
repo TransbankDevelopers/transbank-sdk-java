@@ -16,7 +16,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
@@ -39,12 +39,11 @@ Puedes encontrar toda la documentación de cómo usar este SDK en el sitio https
 La documentación relevante para usar este SDK es:
 
 - Documentación general sobre los productos y sus diferencias:
-  [Webpay](https://www.transbankdevelopers.cl/producto/webpay) y
-  [Onepay](https://www.transbankdevelopers.cl/producto/onepay).
+  [Webpay](https://www.transbankdevelopers.cl/producto/webpay).
 - Documentación sobre [ambientes, deberes del comercio, puesta en producción,
   etc](https://www.transbankdevelopers.cl/documentacion/como_empezar#ambientes).
-- Primeros pasos con [Webpay](https://www.transbankdevelopers.cl/documentacion/webpay) y [Onepay](https://www.transbankdevelopers.cl/documentacion/onepay).
-- Referencia detallada sobre [Webpay](https://www.transbankdevelopers.cl/referencia/webpay) y [Onepay](https://www.transbankdevelopers.cl/referencia/onepay).
+- Primeros pasos con [Webpay](https://www.transbankdevelopers.cl/documentacion/webpay).
+- Referencia detallada sobre [Webpay](https://www.transbankdevelopers.cl/referencia/webpay).
 
 ## Información para contribuir y desarrollar este SDK
 

@@ -29,7 +29,7 @@
 
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.2-SNAPSHOT</version>
     <name>Transbank Java SDK</name>
 
     <inceptionYear>2018</inceptionYear>
@@ -63,6 +63,16 @@
             <name>Gonzalo Nicolas Castillo Fajardo</name>
             <id>goncafa</id>
             <email>gonzalo.castillo@continuum.cl</email>
+            <organization>Continuum SPA</organization>
+            <timezone>-4</timezone>
+            <roles>
+                <role>Full-stack developer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Miguel Angel Vargas Licuona</name>
+            <id>mvarlic</id>
+            <email>miguel.vargas@continuumhq.com</email>
             <organization>Continuum SPA</organization>
             <timezone>-4</timezone>
             <roles>

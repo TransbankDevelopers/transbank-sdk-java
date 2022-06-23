@@ -5,6 +5,11 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.1] - 2022-06-22
+
+### Changed
+- Se actualiza por seguridad la librería 'gson' a la versión 2.8.9
+
 ## [3.0.0] - 2021-12-02
 
 ### Changed

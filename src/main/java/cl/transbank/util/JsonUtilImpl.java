@@ -4,6 +4,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class JsonUtilImpl implements JsonUtil {
     private static volatile JsonUtilImpl instance;
     private Gson gson;
@@ -21,6 +24,10 @@ public final class JsonUtilImpl implements JsonUtil {
 
     public <T> T jsonDecode(String json, Class<T> clazz) {
         return gson.fromJson(json, clazz);
+    }
+
+    public <T> List<T> jsonDecodeToList(String json, Class<T[]> clazz) {
+        return Arrays.asList(gson.fromJson(json, clazz));
     }
 
     public static JsonUtilImpl getInstance() {

@@ -7,11 +7,14 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public interface HttpUtil {
     <T> T request(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
                   Class<T> clazz) throws IOException, WebpayException;
+    <T> List<T> requestList(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
+                        Class<T[]> clazz) throws IOException, WebpayException;
     String request(URL url, HttpUtilImpl.RequestMethod method, String query) throws IOException, WebpayException;
     String request(URL url, HttpUtilImpl.RequestMethod method, String query, HttpUtil.ContentType contentType)
             throws IOException, WebpayException;

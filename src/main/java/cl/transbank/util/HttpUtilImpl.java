@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -31,6 +32,13 @@ public class HttpUtilImpl implements HttpUtil {
         final String jsonIn = getJsonUtil().jsonEncode(request);
         final String jsonOut = request(url, method, jsonIn, headers, true);
         return getJsonUtil().jsonDecode(jsonOut, clazz);
+    }
+
+    public <T> List<T> requestList(@NonNull URL url, RequestMethod method, Object request, Map<String, String> headers,
+                                   Class<T[]> clazz) throws IOException, WebpayException {
+        final String jsonIn = getJsonUtil().jsonEncode(request);
+        final String jsonOut = request(url, method, jsonIn, headers, true);
+        return getJsonUtil().jsonDecodeToList(jsonOut, clazz);
     }
 
     public String request(@NonNull URL url, RequestMethod method, String query)

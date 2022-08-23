@@ -1,5 +1,6 @@
 package cl.transbank.webpay.transaccioncompleta.responses;
 
+import cl.transbank.model.CardDetail;
 import lombok.*;
 
 @NoArgsConstructor
@@ -20,6 +21,9 @@ public class FullTransactionStatusResponse {
     private String paymentTypeCode;
     private byte responseCode;
     private byte installmentsNumber;
+    private double installmentsAmount;
     private String balance;
     private Double prepaidBalance;
+    private String captureExpirationDate;
+    private CardDetail cardDetail;
 }

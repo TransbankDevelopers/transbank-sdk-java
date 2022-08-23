@@ -25,16 +25,7 @@ public class OneclickMallTransactionAuthorizeResponse {
         private String commerceCode;
         private String buyOrder;
         private byte responseCode;
-
-        public Detail (double amount, String status, String authorizationCode, String paymentTypeCode, byte
-                installmentsNumber, String commerceCode, String buyOrder){
-            this.amount = amount;
-            this.status = status;
-            this.authorizationCode = authorizationCode;
-            this.paymentTypeCode = paymentTypeCode;
-            this.installmentsNumber = installmentsNumber;
-            this.commerceCode = commerceCode;
-            this.buyOrder = buyOrder;
-        }
+        private double installmentsAmount;
+        private String captureExpirationDate;
     }
 }

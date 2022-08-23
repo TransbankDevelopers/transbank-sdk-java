@@ -1,5 +1,6 @@
 package cl.transbank.webpay.transaccioncompleta.responses;
 
+import cl.transbank.model.CardDetail;
 import lombok.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class MallFullTransactionStatusResponse {
     private String transactionDate;
     private List<Detail> details;
     private Double prepaidBalance;
+    private CardDetail cardDetail;
 
     @NoArgsConstructor @AllArgsConstructor
     @Data
@@ -32,5 +34,6 @@ public class MallFullTransactionStatusResponse {
         private String buyOrder;
         private String status;
         private double balance;
+        private String captureExpirationDate;
     }
 }

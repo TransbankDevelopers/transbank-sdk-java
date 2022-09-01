@@ -126,7 +126,7 @@ public class HttpUtilImpl implements HttpUtil {
                 throw new TransbankHttpApiException(responseCode, errorMessage.toString());
             }
 
-            if (responseBody != null) {
+            if (responseBody != null && !responseBody.trim().startsWith("[")) {
                 final Map tempMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
                 if (tempMap.containsKey("error_message") && tempMap.get("error_message")!=null){
                     throw new WebpayException(tempMap.get("error_message").toString());

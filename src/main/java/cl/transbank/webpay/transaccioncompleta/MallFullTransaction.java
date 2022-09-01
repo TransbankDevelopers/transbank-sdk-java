@@ -8,13 +8,8 @@ import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.util.ValidationUtil;
 import cl.transbank.webpay.common.MallTransactionCaptureRequest;
 import cl.transbank.webpay.common.MallTransactionRefundRequest;
-import cl.transbank.webpay.requests.IncreaseAmountRequest;
-import cl.transbank.webpay.requests.IncreaseAuthorizationDateRequest;
-import cl.transbank.webpay.requests.ReversePreAuthorizedAmountRequest;
-import cl.transbank.webpay.responses.DeferredCaptureHistoryResponse;
-import cl.transbank.webpay.responses.IncreaseAmountResponse;
-import cl.transbank.webpay.responses.IncreaseAuthorizationDateResponse;
-import cl.transbank.webpay.responses.ReversePreAuthorizedAmountResponse;
+import cl.transbank.webpay.requests.*;
+import cl.transbank.webpay.responses.*;
 import cl.transbank.webpay.transaccioncompleta.model.*;
 import cl.transbank.webpay.transaccioncompleta.requests.*;
 import cl.transbank.webpay.transaccioncompleta.responses.*;
@@ -178,7 +173,7 @@ public class MallFullTransaction extends BaseTransaction {
         ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
         ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
         ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
-        WebpayApiRequest request = new IncreaseAuthorizationDateRequest(childCommerceCode, childBuyOrder, null);
+        WebpayApiRequest request = new DeferredCaptureHistoryRequest(childCommerceCode, childBuyOrder, null);
         String endpoint = String.format("%s/transactions/%s/details", ApiConstants.WEBPAY_ENDPOINT, token);
         try {
             return WebpayApiResource.executeToList(endpoint, HttpUtil.RequestMethod.POST, request, options, DeferredCaptureHistoryResponse[].class);

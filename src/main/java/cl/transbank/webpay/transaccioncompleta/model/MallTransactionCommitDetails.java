@@ -16,16 +16,16 @@ public class MallTransactionCommitDetails {
         return new MallTransactionCommitDetails();
     }
 
-    public static MallTransactionCommitDetails build(String commerceCode, String buyOrder,long idQueryInstallments,byte deferredPeriodIndex, boolean gracePeriod) {
+    public static MallTransactionCommitDetails build(String commerceCode, String buyOrder,Long idQueryInstallments,Byte deferredPeriodIndex, boolean gracePeriod) {
         return MallTransactionCommitDetails.build().add(commerceCode, buyOrder, idQueryInstallments, deferredPeriodIndex, gracePeriod);
     }
 
-    public MallTransactionCommitDetails add(String commerceCode, String buyOrder,long idQueryInstallments,byte deferredPeriodIndex, boolean gracePeriod) {
+    public MallTransactionCommitDetails add(String commerceCode, String buyOrder, Long idQueryInstallments,Byte deferredPeriodIndex, boolean gracePeriod) {
         detailList.add(new MallTransactionCommitDetails.Detail(commerceCode, buyOrder, idQueryInstallments, deferredPeriodIndex, gracePeriod));
         return this;
     }
 
-    public boolean remove(String commerceCode, String buyOrder,long idQueryInstallments,byte deferredPeriodIndex, boolean gracePeriod) {
+    public boolean remove(String commerceCode, String buyOrder, Long idQueryInstallments,Byte deferredPeriodIndex, boolean gracePeriod) {
         return getDetails().remove(new MallTransactionCommitDetails.Detail(commerceCode, buyOrder, idQueryInstallments, deferredPeriodIndex, gracePeriod));
     }
 
@@ -41,7 +41,7 @@ public class MallTransactionCommitDetails {
         private String commerceCode;
         private String buyOrder;
 
-        Detail(String commerceCode, String buyOrder,long idQueryInstallments,byte deferredPeriodIndex,boolean gracePeriod){
+        Detail(String commerceCode, String buyOrder,Long idQueryInstallments,Byte deferredPeriodIndex,boolean gracePeriod){
             super(idQueryInstallments, deferredPeriodIndex, gracePeriod);
             this.commerceCode = commerceCode;
             this.buyOrder = buyOrder;

@@ -13,9 +13,7 @@ import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails;
 import cl.transbank.webpay.oneclick.requests.*;
 import cl.transbank.webpay.oneclick.responses.*;
-import cl.transbank.webpay.requests.IncreaseAmountRequest;
-import cl.transbank.webpay.requests.IncreaseAuthorizationDateRequest;
-import cl.transbank.webpay.requests.ReversePreAuthorizedAmountRequest;
+import cl.transbank.webpay.requests.*;
 import cl.transbank.webpay.responses.*;
 
 
@@ -130,7 +128,7 @@ abstract class OneclickMallTransaction extends BaseTransaction {
         ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
         ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
         ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
-        WebpayApiRequest request = new IncreaseAuthorizationDateRequest(childCommerceCode, childBuyOrder, authorizationCode);
+        WebpayApiRequest request = new DeferredCaptureHistoryRequest(childCommerceCode, childBuyOrder, authorizationCode);
         String endpoint = String.format("%s/transactions/details", ApiConstants.ONECLICK_ENDPOINT);
         try {
             return WebpayApiResource.executeToList(endpoint, HttpUtil.RequestMethod.POST, request, options, DeferredCaptureHistoryResponse[].class);

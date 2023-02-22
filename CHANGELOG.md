@@ -5,6 +5,11 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [3.0.2] - 2023-02-22
+
+### Fixed
+- Se corrige la respuesta al eliminar una inscripción de Oneclick.
+
 ## [3.0.1] - 2022-06-22
 
 ### Changed

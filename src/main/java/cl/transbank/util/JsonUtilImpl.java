@@ -20,7 +20,14 @@ public final class JsonUtilImpl implements JsonUtil {
     }
 
     public <T> T jsonDecode(String json, Class<T> clazz) {
-        return gson.fromJson(json, clazz);
+        try {
+            return gson.fromJson(json, clazz);
+        }
+        catch (Exception e){
+            if (clazz == null) return null;
+
+            throw e;
+        }
     }
 
     public static JsonUtilImpl getInstance() {

@@ -13,13 +13,7 @@ import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.model.MallTransactionCreateDetails;
 import cl.transbank.webpay.oneclick.requests.*;
 import cl.transbank.webpay.oneclick.responses.*;
-import cl.transbank.webpay.requests.*;
-import cl.transbank.webpay.responses.*;
-
-
 import java.io.IOException;
-import java.util.List;
-
 
 abstract class OneclickMallTransaction extends BaseTransaction {
 
@@ -85,55 +79,4 @@ abstract class OneclickMallTransaction extends BaseTransaction {
         }
     }
 
-    public IncreaseAmountResponse increaseAmount(String childCommerceCode, String childBuyOrder, String authorizationCode, double amount) throws IOException, IncreaseAmountException {
-        ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
-        ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
-        ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
-        WebpayApiRequest request = new IncreaseAmountRequest(childCommerceCode, childBuyOrder, authorizationCode, amount);
-        String endpoint = String.format("%s/transactions/amount", ApiConstants.ONECLICK_ENDPOINT);
-        try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, IncreaseAmountResponse.class);
-        } catch (TransbankException e) {
-            throw new IncreaseAmountException(e);
-        }
-    }
-
-    public IncreaseAuthorizationDateResponse increaseAuthorizationDate(String childCommerceCode, String childBuyOrder, String authorizationCode) throws IOException, IncreaseAuthorizationDateException {
-        ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
-        ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
-        ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
-        WebpayApiRequest request = new IncreaseAuthorizationDateRequest(childCommerceCode, childBuyOrder, authorizationCode);
-        String endpoint = String.format("%s/transactions/authorization_date", ApiConstants.ONECLICK_ENDPOINT);
-        try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, IncreaseAuthorizationDateResponse.class);
-        } catch (TransbankException e) {
-            throw new IncreaseAuthorizationDateException(e);
-        }
-    }
-
-    public ReversePreAuthorizedAmountResponse reversePreAuthorizedAmount(String childCommerceCode, String childBuyOrder, String authorizationCode, double amount) throws IOException, ReversePreAuthorizedAmountException {
-        ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
-        ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
-        ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
-        WebpayApiRequest request = new ReversePreAuthorizedAmountRequest(childCommerceCode, childBuyOrder, authorizationCode, amount);
-        String endpoint = String.format("%s/transactions/reverse/amount", ApiConstants.ONECLICK_ENDPOINT);
-        try {
-            return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.PUT, request, options, ReversePreAuthorizedAmountResponse.class);
-        } catch (TransbankException e) {
-            throw new ReversePreAuthorizedAmountException(e);
-        }
-    }
-
-    public List<DeferredCaptureHistoryResponse> deferredCaptureHistory(String childCommerceCode, String childBuyOrder, String authorizationCode) throws IOException, DeferredCaptureHistoryException {
-        ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
-        ValidationUtil.hasTextWithMaxLength(childBuyOrder, ApiConstants.BUY_ORDER_LENGTH, "childBuyOrder");
-        ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
-        WebpayApiRequest request = new DeferredCaptureHistoryRequest(childCommerceCode, childBuyOrder, authorizationCode);
-        String endpoint = String.format("%s/transactions/details", ApiConstants.ONECLICK_ENDPOINT);
-        try {
-            return WebpayApiResource.executeToList(endpoint, HttpUtil.RequestMethod.POST, request, options, DeferredCaptureHistoryResponse[].class);
-        } catch (TransbankException e) {
-            throw new DeferredCaptureHistoryException(e);
-        }
-    }
 }

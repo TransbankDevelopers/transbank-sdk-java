@@ -30,6 +30,5 @@ public class WebpayPlusMallTransactionStatusResponse {
         private String buyOrder;
         private Double prepaidBalance;
         private Double balance;
-        private String captureExpirationDate;
     }
 }

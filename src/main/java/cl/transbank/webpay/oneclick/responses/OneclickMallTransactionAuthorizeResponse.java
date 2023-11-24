@@ -26,6 +26,5 @@ public class OneclickMallTransactionAuthorizeResponse {
         private String buyOrder;
         private byte responseCode;
         private double installmentsAmount;
-        private String captureExpirationDate;
     }
 }

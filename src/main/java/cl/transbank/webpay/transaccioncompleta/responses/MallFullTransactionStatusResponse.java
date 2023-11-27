@@ -34,6 +34,5 @@ public class MallFullTransactionStatusResponse {
         private String buyOrder;
         private String status;
         private double balance;
-        private String captureExpirationDate;
     }
 }

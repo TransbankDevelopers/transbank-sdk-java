@@ -24,6 +24,5 @@ public class FullTransactionStatusResponse {
     private double installmentsAmount;
     private String balance;
     private Double prepaidBalance;
-    private String captureExpirationDate;
     private CardDetail cardDetail;
 }

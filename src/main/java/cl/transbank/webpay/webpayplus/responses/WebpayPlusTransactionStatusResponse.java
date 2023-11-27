@@ -22,5 +22,4 @@ public class WebpayPlusTransactionStatusResponse {
     private double installmentsAmount;
     private byte installmentsNumber;
     private double balance;
-    private String captureExpirationDate;
 }

@@ -19,11 +19,6 @@ jobs:
       - name: Download repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 14
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
-
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:

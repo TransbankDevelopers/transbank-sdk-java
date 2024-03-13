@@ -114,7 +114,8 @@ public class HttpUtilImpl implements HttpUtil {
     @NonNull URL url,
     RequestMethod method,
     String query,
-    Map<String, String> headers
+    Map<String, String> headers,
+    boolean useException
   ) throws IOException, WebpayException {
     return request(url, method, query, null, headers);
   }
@@ -313,8 +314,9 @@ public class HttpUtilImpl implements HttpUtil {
     Map<String, String> headers
   ) throws IOException {
     OutputStream out = null;
+    HttpURLConnection conn = null;
     try {
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn = (HttpURLConnection) url.openConnection();
       conn.setUseCaches(false);
       conn.setDoOutput(true);
       conn.setRequestMethod(method.toString());

@@ -2,5 +2,8 @@ package cl.transbank.patpass.responses;
 
 import cl.transbank.model.BaseRefundResponse;
 
-public class PatpassByWebpayTransactionRefundResponse extends BaseRefundResponse {
-}
+/**
+ * This class represents the response of a refund transaction in Patpass by Webpay.
+ */
+public class PatpassByWebpayTransactionRefundResponse
+  extends BaseRefundResponse {}

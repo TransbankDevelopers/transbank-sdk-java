@@ -4,6 +4,9 @@ import cl.transbank.model.WebpayApiRequest;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
+/**
+ * This class represents a request to start an inscription for a Patpass Comercio transaction.
+ */
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor

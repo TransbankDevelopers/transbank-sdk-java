@@ -2,9 +2,15 @@ package cl.transbank.model;
 
 import lombok.*;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+/**
+ * This class represents the details of a card.
+ */
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @ToString
 public class CardDetail {
-    private String cardNumber;
+
+  private String cardNumber;
 }

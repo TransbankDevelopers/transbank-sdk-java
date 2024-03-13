@@ -1,5 +1,8 @@
 package cl.transbank.common;
 
+/**
+ * This class contains the commerce codes for integration.
+ */
 public class IntegrationCommerceCodes {
     public static String WEBPAY_PLUS = "597055555532";
     public static String WEBPAY_PLUS_MODAL = "597055555584";

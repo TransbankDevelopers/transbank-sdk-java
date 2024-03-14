@@ -70,7 +70,7 @@ public abstract class Options implements Cloneable {
     try {
       return (Options) super.clone();
     } catch (CloneNotSupportedException e) {
-      return null;
+      return (Options) new Object();
     }
   }
 

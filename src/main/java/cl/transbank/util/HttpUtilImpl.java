@@ -144,10 +144,7 @@ public class HttpUtilImpl implements HttpUtil {
       conn = createConnection(url, method, query, contentType, headers);
       responseCode = conn.getResponseCode();
 
-      logger.log(
-        Level.FINE,
-        String.format("HTTP Response Code : %s", responseCode)
-      );
+      logger.log(Level.FINE, "HTTP Response Code : {0}", responseCode);
 
       final boolean isHttpErrorCode =
         !(responseCode >= 200 && responseCode < 300);

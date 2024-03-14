@@ -73,8 +73,6 @@ public class PatpassComercio {
 
   /**
    * Configures the environment for testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForTesting() {
     configureForIntegration(
@@ -85,8 +83,6 @@ public class PatpassComercio {
 
   /**
    * Configures the environment for testing deferred transactions.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForTestingDeferred() {
     configureForIntegration(
@@ -97,8 +93,6 @@ public class PatpassComercio {
 
   /**
    * Configures the environment for mock testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForMock() {
     PatpassComercio.options =

@@ -85,7 +85,6 @@ public class MallTransactionCreateDetails {
 
   /**
    * Gets the details of this MallTransactionCreateDetails.
-   * @return The details of this MallTransactionCreateDetails.
    */
   @NoArgsConstructor
   @AllArgsConstructor

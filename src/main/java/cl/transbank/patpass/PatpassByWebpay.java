@@ -67,8 +67,6 @@ public class PatpassByWebpay {
 
   /**
    * Configures the environment for testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForTesting() {
     configureForIntegration(
@@ -79,8 +77,6 @@ public class PatpassByWebpay {
 
   /**
    * Configures the environment for testing deferred transactions.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForTestingDeferred() {
     configureForIntegration(
@@ -91,8 +87,6 @@ public class PatpassByWebpay {
 
   /**
    * Configures the environment for mock testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static void configureForMock() {
     PatpassByWebpay.options =

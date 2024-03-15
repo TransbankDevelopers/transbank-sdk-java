@@ -16,8 +16,11 @@ import cl.transbank.webpay.transaccioncompleta.responses.*;
 import java.io.IOException;
 
 /**
- * Constructor with options. Uses provided options.
- * @param options The options to use for this transaction.
+ * The FullTransaction class extends the BaseTransaction class and provides methods for creating, committing,
+ * checking the status of, refunding, and capturing transactions. It also provides methods for creating installments
+ * for a transaction. This class also provides methods for configuring the transaction for different environments
+ * such as integration, production, testing, and testing deferred.
+ *
  */
 public class FullTransaction extends BaseTransaction {
 

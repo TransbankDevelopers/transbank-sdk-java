@@ -64,14 +64,13 @@ public abstract class Options implements Cloneable {
   /**
    * Creates and returns a copy of this object.
    * @return A clone of this instance.
-   * @throws CloneNotSupportedException If the object's class does not support the Cloneable interface.
    */
   @Override
   public Options clone() {
     try {
       return (Options) super.clone();
     } catch (CloneNotSupportedException e) {
-      return null;
+      return (Options) new Object();
     }
   }
 

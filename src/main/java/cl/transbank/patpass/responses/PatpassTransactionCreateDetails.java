@@ -7,8 +7,6 @@ import lombok.*;
 
 /**
  * Configures the environment for mock testing.
- * @param commerceCode The commerce code.
- * @param apiKey The API key.
  */
 public class PatpassTransactionCreateDetails {
 
@@ -16,15 +14,11 @@ public class PatpassTransactionCreateDetails {
 
   /**
    * Configures the environment for mock testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   private PatpassTransactionCreateDetails() {}
 
   /**
    * Configures the environment for mock testing.
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key.
    */
   public static PatpassTransactionCreateDetails build() {
     return new PatpassTransactionCreateDetails();

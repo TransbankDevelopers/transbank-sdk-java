@@ -3,6 +3,7 @@ package cl.transbank.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import lombok.*;
 
 /**
@@ -84,7 +85,6 @@ public class MallTransactionCreateDetails {
 
   /**
    * Gets the details of this MallTransactionCreateDetails.
-   * @return The details of this MallTransactionCreateDetails.
    */
   @NoArgsConstructor
   @AllArgsConstructor
@@ -112,6 +112,11 @@ public class MallTransactionCreateDetails {
         getCommerceCode().equals(another.getBuyOrder()) &&
         getBuyOrder().equals(another.getBuyOrder())
       );
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(commerceCode, buyOrder, amount);
     }
   }
 }

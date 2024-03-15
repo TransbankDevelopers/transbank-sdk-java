@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.SSLException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
@@ -132,92 +133,121 @@ public class HttpUtilImpl implements HttpUtil {
     Map<String, String> headers
   ) throws IOException, WebpayException {
     if (null == method) method = GET;
-
     if (null == contentType) contentType = ContentType.JSON;
 
+    logRequestDetails(url, method, headers, query);
+
     HttpURLConnection conn = null;
-
+    int responseCode = 0;
+    String responseBody = "";
     try {
-      logger.log(Level.FINE, String.format("HTTP URL : %s", url));
-      logger.log(Level.FINE, String.format("HTTP Method : %s", method));
+      conn = createConnection(url, method, query, contentType, headers);
+      responseCode = conn.getResponseCode();
 
-      if (null != headers) {
-        for (String key : headers.keySet()) {
-          if (!StringUtils.isEmpty(key)) {
-            String value = headers.get(key);
+      logger.log(Level.FINE, "HTTP Response Code : {0}", responseCode);
 
-            if (key.equalsIgnoreCase("Tbk-Api-Key-Secret")) {
-              value = "NOT DISPLAYED BY SECURITY REASON";
-            }
-
-            logger.log(
-              Level.FINE,
-              String.format("HTTP Header [%s] : %s", key, value)
-            );
-          }
-        }
-      }
-
-      logger.log(Level.FINE, String.format("HTTP Request Query : %s", query));
-      switch (method) {
-        case POST:
-          conn = createPOSTConnection(url, query, contentType, headers);
-          break;
-        case DELETE:
-          conn = createDeleteConnection(url, query, contentType, headers);
-          break;
-        case PUT:
-          conn = createPUTConnection(url, query, contentType, headers);
-          break;
-        case GET:
-        default:
-          conn = createGETConnection(url, query, headers);
-      }
-
-      int responseCode = conn.getResponseCode();
-
-      logger.log(
-        Level.FINE,
-        String.format("HTTP Response Code : %s", responseCode)
-      );
       final boolean isHttpErrorCode =
         !(responseCode >= 200 && responseCode < 300);
       InputStream input = !isHttpErrorCode
         ? conn.getInputStream()
         : conn.getErrorStream();
 
-      final String responseBody = getResponseBody(input);
-      if (isHttpErrorCode) {
-        Object errorMessage =
-          "Could not obtain a response message from Webpay API";
-        if (responseBody != null) {
-          final Map errorMap = getJsonUtil()
-            .jsonDecode(responseBody, HashMap.class);
-          errorMessage = errorMap.get("error_message");
+      responseBody = getResponseBody(input);
+      handleResponse(responseCode, responseBody, isHttpErrorCode);
+    } catch (SSLException e) {
+      throw new IOException("SSL error", e);
+    }
+
+    return responseBody;
+  }
+
+  private void logRequestDetails(
+    URL url,
+    RequestMethod method,
+    Map<String, String> headers,
+    String query
+  ) {
+    logger.log(Level.FINE, String.format("HTTP URL : %s", url));
+    logger.log(Level.FINE, String.format("HTTP Method : %s", method));
+
+    if (null != headers) {
+      for (String key : headers.keySet()) {
+        if (!StringUtils.isEmpty(key)) {
+          String value = headers.get(key);
+
+          if (key.equalsIgnoreCase("Tbk-Api-Key-Secret")) {
+            value = "NOT DISPLAYED BY SECURITY REASON";
+          }
+
+          logger.log(
+            Level.FINE,
+            String.format("HTTP Header [%s] : %s", key, value)
+          );
         }
-
-        if (null == errorMessage) errorMessage =
-          "Unspecified message by Webpay API";
-        throw new TransbankHttpApiException(
-          responseCode,
-          errorMessage.toString()
-        );
       }
+    }
 
-      if (responseBody != null && !responseBody.trim().startsWith("[")) {
-        final Map tempMap = getJsonUtil()
+    logger.log(Level.FINE, String.format("HTTP Request Query : %s", query));
+  }
+
+  private HttpURLConnection createConnection(
+    URL url,
+    RequestMethod method,
+    String query,
+    ContentType contentType,
+    Map<String, String> headers
+  ) throws IOException {
+    HttpURLConnection conn;
+    switch (method) {
+      case POST:
+        conn = createPOSTConnection(url, query, contentType, headers);
+        break;
+      case DELETE:
+        conn = createDeleteConnection(url, query, contentType, headers);
+        break;
+      case PUT:
+        conn = createPUTConnection(url, query, contentType, headers);
+        break;
+      case GET:
+        conn = createGETConnection(url, query, headers);
+        break;
+      default:
+        conn = createGETConnection(url, query, headers);
+        break;
+    }
+    return conn;
+  }
+
+  private void handleResponse(
+    int responseCode,
+    String responseBody,
+    boolean isHttpErrorCode
+  ) throws WebpayException {
+    if (isHttpErrorCode) {
+      Object errorMessage =
+        "Could not obtain a response message from Webpay API";
+      if (responseBody != null) {
+        final Map errorMap = getJsonUtil()
           .jsonDecode(responseBody, HashMap.class);
-        if (
-          tempMap.containsKey("error_message") &&
-          tempMap.get("error_message") != null
-        ) {
-          throw new WebpayException(tempMap.get("error_message").toString());
-        }
+        errorMessage = errorMap.get("error_message");
       }
 
-      return responseBody;
-    } finally {
-      if (null != conn) conn.disconnect();
+      if (null == errorMessage) errorMessage =
+        "Unspecified message by Webpay API";
+      throw new TransbankHttpApiException(
+        responseCode,
+        errorMessage.toString()
+      );
+    }
+
+    if (responseBody != null && !responseBody.trim().startsWith("[")) {
+      final Map tempMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
+      if (
+        tempMap.containsKey("error_message") &&
+        tempMap.get("error_message") != null
+      ) {
+        throw new WebpayException(tempMap.get("error_message").toString());
+      }
     }
   }
 
@@ -280,29 +310,34 @@ public class HttpUtilImpl implements HttpUtil {
     ContentType contentType,
     Map<String, String> headers
   ) throws IOException {
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-    conn.setUseCaches(false);
-    conn.setDoOutput(true);
-    conn.setRequestMethod(method.toString());
-    conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
-    conn.setRequestProperty("Accept", "application/json");
-    conn.setRequestProperty(
-      "Content-Type",
-      String.format(
-        "%s;charset=%s",
-        contentType.getContentType(),
-        StandardCharsets.UTF_8.name().toLowerCase()
-      )
-    );
+    OutputStream out = null;
+    HttpURLConnection conn = null;
+    try {
+      conn = (HttpURLConnection) url.openConnection();
+      conn.setUseCaches(false);
+      conn.setDoOutput(true);
+      conn.setRequestMethod(method.toString());
+      conn.setRequestProperty("Accept-Charset", StandardCharsets.UTF_8.name());
+      conn.setRequestProperty("Accept", "application/json");
+      conn.setRequestProperty(
+        "Content-Type",
+        String.format(
+          "%s;charset=%s",
+          contentType.getContentType(),
+          StandardCharsets.UTF_8.name().toLowerCase()
+        )
+      );
 
-    if (null != headers) {
-      for (Map.Entry<String, String> header : headers.entrySet()) {
-        conn.setRequestProperty(header.getKey(), header.getValue());
+      if (null != headers) {
+        for (Map.Entry<String, String> header : headers.entrySet()) {
+          conn.setRequestProperty(header.getKey(), header.getValue());
+        }
       }
-    }
 
-    try (OutputStream out = conn.getOutputStream()) {
+      out = conn.getOutputStream();
       out.write(query.getBytes(StandardCharsets.UTF_8));
+    } catch (SSLException e) {
+      throw new IOException("SSL error", e);
     }
 
     return conn;
@@ -325,10 +360,6 @@ public class HttpUtilImpl implements HttpUtil {
       final String responseBody = scanner.useDelimiter("\\A").next();
       responseStream.close();
 
-      logger.log(
-        Level.FINE,
-        String.format("HTTP Response Body : %s", responseBody)
-      );
       return responseBody;
     } catch (Exception e) {
       return null;

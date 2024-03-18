@@ -24,6 +24,7 @@ import java.io.IOException;
  */
 public class FullTransaction extends BaseTransaction {
 
+  static final String tokenText = "token";
   private static Options defaultOptions = null;
 
   /**
@@ -127,7 +128,7 @@ public class FullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      FullTransaction.tokenText
     );
     String endpoint = String.format(
       "%s/transactions/%s/installments",
@@ -164,7 +165,7 @@ public class FullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      FullTransaction.tokenText
     );
     String endpoint = String.format(
       "%s/transactions/%s",
@@ -199,7 +200,7 @@ public class FullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      FullTransaction.tokenText
     );
     String endpoint = String.format(
       "%s/transactions/%s",
@@ -229,7 +230,7 @@ public class FullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      FullTransaction.tokenText
     );
     String endpoint = String.format(
       "%s/transactions/%s/refunds",
@@ -267,7 +268,7 @@ public class FullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      FullTransaction.tokenText
     );
     ValidationUtil.hasTextWithMaxLength(
       buyOrder,

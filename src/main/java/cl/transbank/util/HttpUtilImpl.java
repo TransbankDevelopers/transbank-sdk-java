@@ -167,8 +167,8 @@ public class HttpUtilImpl implements HttpUtil {
     Map<String, String> headers,
     String query
   ) {
-    logger.log(Level.FINE, String.format("HTTP URL : %s", url));
-    logger.log(Level.FINE, String.format("HTTP Method : %s", method));
+    logger.log(Level.FINE, "HTTP URL : {0}", url);
+    logger.log(Level.FINE, "HTTP Method : {0}", method);
 
     if (null != headers) {
       for (String key : headers.keySet()) {
@@ -181,13 +181,14 @@ public class HttpUtilImpl implements HttpUtil {
 
           logger.log(
             Level.FINE,
-            String.format("HTTP Header [%s] : %s", key, value)
+            "HTTP Header [{0}] : {1}",
+            new Object[] { key, value }
           );
         }
       }
     }
 
-    logger.log(Level.FINE, String.format("HTTP Request Query : %s", query));
+    logger.log(Level.FINE, "HTTP Request Query : {0}", query);
   }
 
   private HttpURLConnection createConnection(

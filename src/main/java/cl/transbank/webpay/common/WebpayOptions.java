@@ -11,12 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 public class WebpayOptions extends Options {
 
-  @Getter
-  static final String headerCommerceCodeName = "Tbk-Api-Key-Id";
-
-  @Getter
-  static final String headerApiKeyName = "Tbk-Api-Key-Secret";
-
   /**
    * Constructs a new WebpayOptions with the specified commerce code, API key, and integration type.
    * @param commerceCode The commerce code.

@@ -11,12 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 public class PatpassOptions extends Options {
 
-  @Getter
-  final String headerCommerceCodeName = "commercecode";
-
-  @Getter
-  final String headerApiKeyName = "Authorization";
-
   /**
    * Constructs a new PatpassOptions with the specified commerce code, API key, and integration type.
    * @param commerceCode The commerce code.

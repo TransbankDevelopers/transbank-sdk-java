@@ -1,5 +1,6 @@
 package cl.transbank.util;
 
+import cl.transbank.common.ApiConstants;
 import cl.transbank.common.IntegrationTypeHelper;
 import cl.transbank.exception.TransbankException;
 import cl.transbank.model.Options;
@@ -32,8 +33,11 @@ public abstract class WebpayApiResource {
     if (null == options) return Collections.emptyMap();
 
     Map<String, String> headers = new HashMap<>();
-    headers.put(options.getHeaderCommerceCodeName(), options.getCommerceCode());
-    headers.put(options.getHeaderApiKeyName(), options.getApiKey());
+    headers.put(
+      ApiConstants.HEADER_COMMERCE_CODE_NAME,
+      options.getCommerceCode()
+    );
+    headers.put(ApiConstants.HEADER_API_KEY_NAME, options.getApiKey());
 
     return headers;
   }

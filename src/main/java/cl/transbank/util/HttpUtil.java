@@ -27,11 +27,11 @@ public interface HttpUtil {
     Map<String, String> headers,
     Class<T[]> clazz
   ) throws IOException, WebpayException;
-  String request(URL url, HttpUtilImpl.RequestMethod method, String query)
+  String request(URL url, HttpUtil.RequestMethod method, String query)
     throws IOException, WebpayException;
   String request(
     URL url,
-    HttpUtilImpl.RequestMethod method,
+    HttpUtil.RequestMethod method,
     String query,
     HttpUtil.ContentType contentType
   ) throws IOException, WebpayException;

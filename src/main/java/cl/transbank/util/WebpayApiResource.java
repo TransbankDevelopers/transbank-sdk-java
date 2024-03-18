@@ -7,6 +7,7 @@ import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.common.WebpayOptions;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public abstract class WebpayApiResource {
    * @return A map of headers for the request.
    */
   public static Map<String, String> buildHeaders(Options options) {
-    if (null == options) return null;
+    if (null == options) return Collections.emptyMap();
 
     Map<String, String> headers = new HashMap<>();
     headers.put(options.getHeaderCommerceCodeName(), options.getCommerceCode());
@@ -175,9 +176,9 @@ public abstract class WebpayApiResource {
         clazz
       );
 
-    if (null == out) return null;
+    if (null == out) return Collections.emptyList();
 
-    if (null == clazz) return null;
+    if (null == clazz) return Collections.emptyList();
 
     return out;
   }

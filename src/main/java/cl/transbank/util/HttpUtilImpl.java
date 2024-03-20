@@ -228,8 +228,10 @@ public class HttpUtilImpl implements HttpUtil {
       Object errorMessage =
         "Could not obtain a response message from Webpay API";
       if (responseBody != null) {
-        final Map errorMap = getJsonUtil()
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> errorMap = (Map<String, Object>) getJsonUtil()
           .jsonDecode(responseBody, HashMap.class);
+
         errorMessage = errorMap.get("error_message");
       }
 

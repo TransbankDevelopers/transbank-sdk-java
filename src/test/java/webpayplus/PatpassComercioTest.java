@@ -41,7 +41,7 @@ public class PatpassComercioTest extends TestBase {
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenComercioLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", testToken);
+        mapResponse.put(ApiConstants.TOKEN_TEXT, testToken);
         mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();

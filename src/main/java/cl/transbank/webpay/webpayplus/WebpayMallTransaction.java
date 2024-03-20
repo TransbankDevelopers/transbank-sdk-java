@@ -44,7 +44,7 @@ abstract class WebpayMallTransaction extends BaseTransaction {
     }
 
     public WebpayPlusMallTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
 
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
@@ -55,7 +55,7 @@ abstract class WebpayMallTransaction extends BaseTransaction {
     }
 
     public WebpayPlusMallTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, WebpayPlusMallTransactionStatusResponse.class);
@@ -65,7 +65,7 @@ abstract class WebpayMallTransaction extends BaseTransaction {
     }
 
     public WebpayPlusMallTransactionRefundResponse refund(String token, String buyOrder, String childCommerceCode, double amount) throws IOException, TransactionRefundException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
         ValidationUtil.hasTextWithMaxLength(buyOrder, ApiConstants.BUY_ORDER_LENGTH, "buyOrder");
 
@@ -78,7 +78,7 @@ abstract class WebpayMallTransaction extends BaseTransaction {
     }
 
     public WebpayPlusMallTransactionCaptureResponse capture(String childCommerceCode, String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         ValidationUtil.hasTextWithMaxLength(childCommerceCode, ApiConstants.COMMERCE_CODE_LENGTH, "childCommerceCode");
         ValidationUtil.hasTextWithMaxLength(buyOrder, ApiConstants.BUY_ORDER_LENGTH, "buyOrder");
         ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");

@@ -72,7 +72,7 @@ public class PatpassByWebpayTest  extends TestBase {
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", testToken);
+        mapResponse.put(ApiConstants.TOKEN_TEXT, testToken);
         mapResponse.put("url", urlResponse);
 
         Gson gson = new GsonBuilder().create();

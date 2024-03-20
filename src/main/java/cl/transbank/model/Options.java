@@ -23,18 +23,6 @@ public abstract class Options implements Cloneable {
   private IntegrationType integrationType;
 
   /**
-   * Returns the name of the commerce code header.
-   * @return The name of the commerce code header.
-   */
-  public abstract String getHeaderCommerceCodeName();
-
-  /**
-   * Returns the name of the API key header.
-   * @return The name of the API key header.
-   */
-  public abstract String getHeaderApiKeyName();
-
-  /**
    * Builds the options for a transaction.
    * @param options The options to set.
    * @return The built options.

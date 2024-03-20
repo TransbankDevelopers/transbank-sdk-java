@@ -67,7 +67,7 @@ public class ValidationUtil {
    * @throws IllegalArgumentException If the list is null or empty.
    */
   public static void hasElements(List value, String valueName) {
-    if (value == null || value.size() == 0) throw new IllegalArgumentException(
+    if (value == null || value.isEmpty()) throw new IllegalArgumentException(
       "list '" + valueName + "'" + " can't be null or empty"
     );
   }

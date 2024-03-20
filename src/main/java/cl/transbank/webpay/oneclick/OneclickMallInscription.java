@@ -86,7 +86,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      "token"
+      ApiConstants.TOKEN_TEXT
     );
     String endpoint = String.format(
       "%s/inscriptions/%s",

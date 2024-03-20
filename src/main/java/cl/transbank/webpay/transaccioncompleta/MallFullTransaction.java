@@ -22,9 +22,6 @@ import java.io.IOException;
  */
 public class MallFullTransaction extends BaseTransaction {
 
-  static final String BUY_ORDER_TEXT = "buyOrder";
-  static final String TOKEN_TEXT = "token";
-
   private static Options defaultOptions = null;
 
   /**
@@ -77,7 +74,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       buyOrder,
       ApiConstants.BUY_ORDER_LENGTH,
-      MallFullTransaction.BUY_ORDER_TEXT
+      ApiConstants.BUY_ORDER_TEXT
     );
     ValidationUtil.hasTextWithMaxLength(
       sessionId,
@@ -142,7 +139,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      MallFullTransaction.TOKEN_TEXT
+      ApiConstants.TOKEN_TEXT
     );
 
     String endpoint = String.format(
@@ -181,7 +178,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      MallFullTransaction.TOKEN_TEXT
+      ApiConstants.TOKEN_TEXT
     );
 
     String endpoint = String.format(
@@ -210,7 +207,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      MallFullTransaction.TOKEN_TEXT
+      ApiConstants.TOKEN_TEXT
     );
 
     String endpoint = String.format(
@@ -239,7 +236,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      MallFullTransaction.TOKEN_TEXT
+      ApiConstants.TOKEN_TEXT
     );
     ValidationUtil.hasTextWithMaxLength(
       childCommerceCode,
@@ -249,7 +246,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       buyOrder,
       ApiConstants.BUY_ORDER_LENGTH,
-      MallFullTransaction.BUY_ORDER_TEXT
+      ApiConstants.BUY_ORDER_TEXT
     );
 
     String endpoint = String.format(
@@ -285,7 +282,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       token,
       ApiConstants.TOKEN_LENGTH,
-      MallFullTransaction.TOKEN_TEXT
+      ApiConstants.TOKEN_TEXT
     );
     ValidationUtil.hasTextWithMaxLength(
       commerceCode,
@@ -295,7 +292,7 @@ public class MallFullTransaction extends BaseTransaction {
     ValidationUtil.hasTextWithMaxLength(
       buyOrder,
       ApiConstants.BUY_ORDER_LENGTH,
-      MallFullTransaction.BUY_ORDER_TEXT
+      ApiConstants.BUY_ORDER_TEXT
     );
     ValidationUtil.hasTextWithMaxLength(
       authorizationCode,

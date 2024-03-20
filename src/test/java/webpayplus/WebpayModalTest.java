@@ -57,7 +57,7 @@ public class WebpayModalTest extends TestBase {
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", testToken);
+        mapResponse.put(ApiConstants.TOKEN_TEXT, testToken);
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);

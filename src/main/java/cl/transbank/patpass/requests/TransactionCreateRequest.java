@@ -29,16 +29,7 @@ public class TransactionCreateRequest extends WebpayApiRequest {
 
   /**
    * Sets the details for the transaction.
-   * @param serviceId The service ID.
-   * @param cardHolderId The card holder ID.
-   * @param cardHolderName The card holder name.
-   * @param cardHolderLastName1 The card holder's first last name.
-   * @param cardHolderLastName2 The card holder's second last name.
-   * @param cardHolderMail The card holder's mail.
-   * @param cellphoneNumber The cellphone number.
-   * @param expirationDate The expiration date.
-   * @param commerceMail The commerce mail.
-   * @param ufFlag The UF flag.
+   * @param detail The details for the transaction.
    */
 
   public void setDetails(Detail detail) {

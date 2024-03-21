@@ -40,6 +40,7 @@ public class TransbankException extends Exception {
    * Constructs a new TransbankException with the specified detail message, error code, and cause.
    * @param code The error code.
    * @param message The detail message.
+   * @param cause The cause.
    */
   public TransbankException(int code, String message, Throwable cause) {
     super(message, cause);

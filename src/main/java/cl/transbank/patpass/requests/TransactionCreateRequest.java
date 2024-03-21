@@ -41,31 +41,8 @@ public class TransactionCreateRequest extends WebpayApiRequest {
    * @param ufFlag The UF flag.
    */
 
-  public void setDetails(
-    String serviceId,
-    String cardHolderId,
-    String cardHolderName,
-    String cardHolderLastName1,
-    String cardHolderLastName2,
-    String cardHolderMail,
-    String cellphoneNumber,
-    String expirationDate,
-    String commerceMail,
-    boolean ufFlag
-  ) {
-    wpmDetail =
-      new Detail(
-        serviceId,
-        cardHolderId,
-        cardHolderName,
-        cardHolderLastName1,
-        cardHolderLastName2,
-        cardHolderMail,
-        cellphoneNumber,
-        expirationDate,
-        commerceMail,
-        ufFlag
-      );
+  public void setDetails(Detail detail) {
+    wpmDetail = detail;
   }
 
   /**
@@ -88,5 +65,85 @@ public class TransactionCreateRequest extends WebpayApiRequest {
     private String expirationDate;
     private String commerceMail;
     private boolean ufFlag;
+
+    public String getServiceId() {
+      return serviceId;
+    }
+
+    public void setServiceId(String serviceId) {
+      this.serviceId = serviceId;
+    }
+
+    public String getCardHolderId() {
+      return cardHolderId;
+    }
+
+    public void setCardHolderId(String cardHolderId) {
+      this.cardHolderId = cardHolderId;
+    }
+
+    public String getCardHolderName() {
+      return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+      this.cardHolderName = cardHolderName;
+    }
+
+    public String getCardHolderLastName1() {
+      return cardHolderLastName1;
+    }
+
+    public void setCardHolderLastName1(String cardHolderLastName1) {
+      this.cardHolderLastName1 = cardHolderLastName1;
+    }
+
+    public String getCardHolderLastName2() {
+      return cardHolderLastName2;
+    }
+
+    public void setCardHolderLastName2(String cardHolderLastName2) {
+      this.cardHolderLastName2 = cardHolderLastName2;
+    }
+
+    public String getCardHolderMail() {
+      return cardHolderMail;
+    }
+
+    public void setCardHolderMail(String cardHolderMail) {
+      this.cardHolderMail = cardHolderMail;
+    }
+
+    public String getCellphoneNumber() {
+      return cellphoneNumber;
+    }
+
+    public void setCellphoneNumber(String cellphoneNumber) {
+      this.cellphoneNumber = cellphoneNumber;
+    }
+
+    public String getExpirationDate() {
+      return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+      this.expirationDate = expirationDate;
+    }
+
+    public String getCommerceMail() {
+      return commerceMail;
+    }
+
+    public void setCommerceMail(String commerceMail) {
+      this.commerceMail = commerceMail;
+    }
+
+    public boolean isUfFlag() {
+      return ufFlag;
+    }
+
+    public void setUfFlag(boolean ufFlag) {
+      this.ufFlag = ufFlag;
+    }
   }
 }

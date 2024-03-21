@@ -19,6 +19,7 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified detail message.
+   * @param message The detail message.
    */
   public TransbankException(String message) {
     super(message);

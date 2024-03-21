@@ -12,6 +12,7 @@ public class InscriptionFinishException extends WebpayException {
 
   /**
    * Constructs a new InscriptionFinishException with the specified cause.
+   * @param e Exception that caused the error.
    */
   public InscriptionFinishException(Exception e) {
     super(e);
@@ -19,6 +20,7 @@ public class InscriptionFinishException extends WebpayException {
 
   /**
    * Constructs a new InscriptionFinishException with the specified detail message.
+   * @param message The detail message.
    */
   public InscriptionFinishException(String message) {
     super(message);

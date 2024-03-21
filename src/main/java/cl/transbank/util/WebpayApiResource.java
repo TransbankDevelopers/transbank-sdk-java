@@ -44,12 +44,14 @@ public abstract class WebpayApiResource {
 
   /**
    * Executes a Webpay API request.
+   * @param <T> The type of the response.
    * @param endpoint The endpoint for the request.
    * @param method The HTTP method for the request.
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
+   * @throws IOException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -62,12 +64,14 @@ public abstract class WebpayApiResource {
 
   /**
    * Executes a Webpay API request with a request body.
+   * @param <T> The type of the response.
    * @param endpoint The endpoint for the request.
    * @param method The HTTP method for the request.
    * @param request The request body.
    * @param options The options for the request.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
+   * @throws IOException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -80,6 +84,7 @@ public abstract class WebpayApiResource {
 
   /**
    * Executes a Webpay API request with a request body.
+   * @param <T> The type of the response.
    * @param endpoint The endpoint for the request.
    * @param method The HTTP method for the request.
    * @param request The request body.
@@ -87,6 +92,7 @@ public abstract class WebpayApiResource {
    * @param clazz The class of the response.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
+   * @throws IOException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -128,12 +134,14 @@ public abstract class WebpayApiResource {
 
   /**
    * Executes a Webpay API request and returns a list of responses.
+   * @param <T> The type of the response.
    * @param endpoint The endpoint for the request.
    * @param method The HTTP method for the request.
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return A list of responses to the request.
    * @throws TransbankException If an error occurs during the request.
+   * @throws IOException If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
     final String endpoint,
@@ -146,6 +154,7 @@ public abstract class WebpayApiResource {
 
   /**
    * Executes a Webpay API request with a request body and returns a list of responses.
+   * @param <T> The type of the response.
    * @param endpoint The endpoint for the request.
    * @param method The HTTP method for the request.
    * @param request The request body.
@@ -153,6 +162,7 @@ public abstract class WebpayApiResource {
    * @param clazz The class of the response.
    * @return A list of responses to the request.
    * @throws TransbankException If an error occurs during the request.
+   * @throws IOException If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
     final String endpoint,

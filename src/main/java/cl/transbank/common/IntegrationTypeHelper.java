@@ -7,6 +7,8 @@ public class IntegrationTypeHelper {
 
   /**
    * Returns the Webpay integration type based on the provided integration type.
+   * @param integrationType The integration type.
+   * @return The Webpay integration URL.
    */
   public static String getWebpayIntegrationType(
     IntegrationType integrationType
@@ -27,6 +29,8 @@ public class IntegrationTypeHelper {
 
   /**
    * Returns the Patpass integration type based on the provided integration type.
+   * @param integrationType The integration type.
+   * @return The Patpass integration URL.
    */
   public static String getPatpassIntegrationType(
     IntegrationType integrationType

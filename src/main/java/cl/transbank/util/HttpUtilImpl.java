@@ -361,6 +361,7 @@ public class HttpUtilImpl implements HttpUtil {
   /**
    * Returns the singleton instance of HttpUtilImpl.
    * If the instance does not exist, it is created.
+   * @return The singleton instance of HttpUtilImpl.
    */
   public static HttpUtilImpl getInstance() {
     if (null == instance) synchronized (HttpUtilImpl.class) {

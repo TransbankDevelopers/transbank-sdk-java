@@ -49,6 +49,7 @@ public abstract class WebpayApiResource {
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return The response to the request.
+   * @throws TransbankException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -66,6 +67,7 @@ public abstract class WebpayApiResource {
    * @param request The request body.
    * @param options The options for the request.
    * @return The response to the request.
+   * @throws TransbankException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -84,6 +86,7 @@ public abstract class WebpayApiResource {
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return The response to the request.
+   * @throws TransbankException If an error occurs during the request.
    */
   public static <T> T execute(
     final String endpoint,
@@ -130,6 +133,7 @@ public abstract class WebpayApiResource {
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return A list of responses to the request.
+   * @throws TransbankException If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
     final String endpoint,
@@ -148,6 +152,7 @@ public abstract class WebpayApiResource {
    * @param options The options for the request.
    * @param clazz The class of the response.
    * @return A list of responses to the request.
+   * @throws TransbankException If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
     final String endpoint,

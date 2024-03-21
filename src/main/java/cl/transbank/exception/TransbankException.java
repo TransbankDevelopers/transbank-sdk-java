@@ -27,6 +27,8 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified detail message and error code.
+   * @param code The error code.
+   * @param message The detail message.
    */
   public TransbankException(int code, String message) {
     super(message);
@@ -35,6 +37,8 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified detail message, error code, and cause.
+   * @param code The error code.
+   * @param message The detail message.
    */
   public TransbankException(int code, String message, Throwable cause) {
     super(message, cause);
@@ -43,6 +47,7 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified cause.
+   * @param cause The cause.
    */
   public TransbankException(Throwable cause) {
     super(cause);
@@ -50,6 +55,8 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified Ccode and cause.
+   * @param code The error code.
+   * @param cause The cause.
    */
   public TransbankException(int code, Throwable cause) {
     super(cause);
@@ -58,6 +65,11 @@ public class TransbankException extends Exception {
 
   /**
    * Constructs a new TransbankException with the specified error code and cause.
+   * @param code The error code.
+   * @param message The detail message.
+   * @param cause The cause.
+   * @param enableSuppression Whether or not suppression is enabled or disabled.
+   * @param writableStackTrace Whether or not the stack trace should be writable.
    */
   public TransbankException(
     int code,

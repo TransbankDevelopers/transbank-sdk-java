@@ -15,6 +15,7 @@ public class MallFullTransactionInstallmentsResponse {
 
   /**
    * Builds a new MallFullTransactionInstallmentsResponse.
+   * @return A new MallFullTransactionInstallmentsResponse.
    */
   public static MallFullTransactionInstallmentsResponse build() {
     return new MallFullTransactionInstallmentsResponse();
@@ -22,6 +23,8 @@ public class MallFullTransactionInstallmentsResponse {
 
   /**
    * Builds a new MallFullTransactionInstallmentsResponse with the provided list of responses.
+   * @param response The list of responses.
+   * @return A new MallFullTransactionInstallmentsResponse.
    */
   public static MallFullTransactionInstallmentsResponse build(
     MallFullTransactionInstallmentResponse response
@@ -31,6 +34,8 @@ public class MallFullTransactionInstallmentsResponse {
 
   /**
    * Adds a new item to the response list.
+   * @param response The response to add.
+   * @return The same MallFullTransactionInstallmentsResponse instance.
    */
   public MallFullTransactionInstallmentsResponse add(
     MallFullTransactionInstallmentResponse response
@@ -41,6 +46,8 @@ public class MallFullTransactionInstallmentsResponse {
 
   /**
    * Removes an item from the response list.
+   * @param response The response to remove.
+   * @return True if the response was removed, false otherwise.
    */
   public boolean remove(MallFullTransactionInstallmentResponse response) {
     return getResponseList().remove(response);
@@ -48,6 +55,7 @@ public class MallFullTransactionInstallmentsResponse {
 
   /**
    * Returns the response list.
+   * @return The response list.
    */
   public List<MallFullTransactionInstallmentResponse> getResponseList() {
     return Collections.unmodifiableList(responseList);

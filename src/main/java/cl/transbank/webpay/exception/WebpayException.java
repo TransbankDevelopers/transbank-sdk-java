@@ -16,6 +16,7 @@ public class WebpayException extends TransbankException {
 
   /**
    * Constructs a new WebpayException with the specified cause.
+   * @param e Exception that caused the error.
    */
   public WebpayException(Exception e) {
     super(e);
@@ -23,6 +24,7 @@ public class WebpayException extends TransbankException {
 
   /**
    * Constructs a new WebpayException with the specified detail message.
+   * @param message The detail message.
    */
   public WebpayException(String message) {
     super(message);
@@ -30,6 +32,8 @@ public class WebpayException extends TransbankException {
 
   /**
    * Constructs a new WebpayException with the specified detail message and error code.
+   * @param code The error code.
+   * @param message The detail message.
    */
   public WebpayException(int code, String message) {
     super(code, message);

@@ -119,6 +119,8 @@ public class FullTransaction extends BaseTransaction {
    * @param token The token of the transaction.
    * @param installmentsNumber The number of installments.
    * @return The response of the installments creation process.
+   * @throws TransactionInstallmentException If there's an error in the creation of the installments.
+   * @throws IOException If there's an error in the communication with the server.
    */
   public FullTransactionInstallmentResponse installments(
     String token,
@@ -153,7 +155,12 @@ public class FullTransaction extends BaseTransaction {
   /**
    * Commits the transaction.
    * @param token The token of the transaction.
+   * @param idQueryInstallments The id of the query installments.
+   * @param deferredPeriodIndex The index of the deferred period.
+   * @param gracePeriod The grace period.
    * @return The response of the commit process.
+   * @throws IOException If there's an error in the communication with the server.
+   * @throws TransactionCommitException If there's an error in the commit process.
    */
   public FullTransactionCommitResponse commit(
     String token,
@@ -193,6 +200,8 @@ public class FullTransaction extends BaseTransaction {
    * Gets the status of the transaction.
    * @param token The token of the transaction.
    * @return The status of the transaction.
+   * @throws IOException If there's an error in the communication with the server.
+   * @throws TransactionStatusException If there's an error in the status process.
    */
   public FullTransactionStatusResponse status(String token)
     throws IOException, TransactionStatusException {
@@ -223,6 +232,8 @@ public class FullTransaction extends BaseTransaction {
    * @param token The token of the transaction.
    * @param amount The amount to be refunded.
    * @return The response of the refund process.
+   * @throws IOException If there's an error in the communication with the server.
+   * @throws TransactionRefundException If there's an error in the refund process.
    */
   public FullTransactionRefundResponse refund(String token, double amount)
     throws IOException, TransactionRefundException {
@@ -257,6 +268,8 @@ public class FullTransaction extends BaseTransaction {
    * @param authorizationCode The authorization code of the transaction.
    * @param captureAmount The amount to be captured.
    * @return The response of the capture process.
+   * @throws IOException If there's an error in the communication with the server.
+   * @throws TransactionCaptureException If there's an error in the capture process.
    */
   public FullTransactionCaptureResponse capture(
     String token,
@@ -311,6 +324,8 @@ public class FullTransaction extends BaseTransaction {
 
   /**
    * Configures the transaction for integration environment.
+   * @param commerceCode The commerce code.
+   * @param apiKey The api key.
    */
   public static void configureForIntegration(
     String commerceCode,
@@ -322,6 +337,8 @@ public class FullTransaction extends BaseTransaction {
 
   /**
    * Configures the transaction for production environment.
+   * @param commerceCode The commerce code.
+   * @param apiKey The api key.
    */
   public static void configureForProduction(
     String commerceCode,

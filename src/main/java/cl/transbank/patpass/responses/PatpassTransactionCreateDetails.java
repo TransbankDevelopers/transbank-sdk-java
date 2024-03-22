@@ -19,6 +19,7 @@ public class PatpassTransactionCreateDetails {
 
   /**
    * Configures the environment for mock testing.
+   * @return A new PatpassTransactionCreateDetails.
    */
   public static PatpassTransactionCreateDetails build() {
     return new PatpassTransactionCreateDetails();

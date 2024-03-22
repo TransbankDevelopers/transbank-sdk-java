@@ -28,6 +28,7 @@ public class HttpUtilImpl implements HttpUtil {
   private static Logger logger = Logger.getLogger(HttpUtilImpl.class.getName());
 
   private static volatile HttpUtilImpl instance;
+  private static final String ERROR_MESSAGE = "error_message";
 
   @Setter
   @Getter(AccessLevel.PRIVATE)
@@ -45,7 +46,7 @@ public class HttpUtilImpl implements HttpUtil {
     Class<T> clazz
   ) throws IOException, WebpayException {
     final String jsonIn = getJsonUtil().jsonEncode(request);
-    final String jsonOut = request(url, method, jsonIn, headers, true);
+    final String jsonOut = request(url, method, jsonIn, headers);
     return getJsonUtil().jsonDecode(jsonOut, clazz);
   }
 
@@ -57,7 +58,7 @@ public class HttpUtilImpl implements HttpUtil {
     Class<T[]> clazz
   ) throws IOException, WebpayException {
     final String jsonIn = getJsonUtil().jsonEncode(request);
-    final String jsonOut = request(url, method, jsonIn, headers, true);
+    final String jsonOut = request(url, method, jsonIn, headers);
     return getJsonUtil().jsonDecodeToList(jsonOut, clazz);
   }
 
@@ -101,21 +102,6 @@ public class HttpUtilImpl implements HttpUtil {
     RequestMethod method,
     String query,
     Map<String, String> headers
-  ) throws IOException, WebpayException {
-    return request(url, method, query, null, headers);
-  }
-
-  /**
-   * Sends a HTTP request and returns the response.
-   * This method uses the provided URL and request method to send the request.
-   * It uses default headers, a default response type, and does not send a request body.
-   */
-  public String request(
-    @NonNull URL url,
-    RequestMethod method,
-    String query,
-    Map<String, String> headers,
-    boolean useException
   ) throws IOException, WebpayException {
     return request(url, method, query, null, headers);
   }
@@ -232,7 +218,7 @@ public class HttpUtilImpl implements HttpUtil {
         final Map<String, Object> errorMap = (Map<String, Object>) getJsonUtil()
           .jsonDecode(responseBody, HashMap.class);
 
-        errorMessage = errorMap.get("error_message");
+        errorMessage = errorMap.get(ERROR_MESSAGE);
       }
 
       if (null == errorMessage) errorMessage =
@@ -246,10 +232,9 @@ public class HttpUtilImpl implements HttpUtil {
     if (responseBody != null && !responseBody.trim().startsWith("[")) {
       final Map tempMap = getJsonUtil().jsonDecode(responseBody, HashMap.class);
       if (
-        tempMap.containsKey("error_message") &&
-        tempMap.get("error_message") != null
+        tempMap.containsKey(ERROR_MESSAGE) && tempMap.get(ERROR_MESSAGE) != null
       ) {
-        throw new WebpayException(tempMap.get("error_message").toString());
+        throw new WebpayException(tempMap.get(ERROR_MESSAGE).toString());
       }
     }
   }
@@ -376,6 +361,7 @@ public class HttpUtilImpl implements HttpUtil {
   /**
    * Returns the singleton instance of HttpUtilImpl.
    * If the instance does not exist, it is created.
+   * @return The singleton instance of HttpUtilImpl.
    */
   public static HttpUtilImpl getInstance() {
     if (null == instance) synchronized (HttpUtilImpl.class) {

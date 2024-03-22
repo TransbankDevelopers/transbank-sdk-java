@@ -8,13 +8,14 @@ import lombok.Getter;
 public class TransbankException extends Exception {
 
   @Getter
-  private int code;
+  private final int code;
 
   /**
    * Constructs a new TransbankException with no detail message.
    */
   public TransbankException() {
     super();
+    this.code = -1;
   }
 
   /**
@@ -53,6 +54,7 @@ public class TransbankException extends Exception {
    */
   public TransbankException(Throwable cause) {
     super(cause);
+    this.code = -1;
   }
 
   /**

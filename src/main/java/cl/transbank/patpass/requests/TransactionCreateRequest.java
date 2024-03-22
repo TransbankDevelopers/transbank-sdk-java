@@ -32,8 +32,31 @@ public class TransactionCreateRequest extends WebpayApiRequest {
    * @param detail The details for the transaction.
    */
 
-  public void setDetails(Detail detail) {
-    wpmDetail = detail;
+  public void setDetails(
+    String serviceId,
+    String cardHolderId,
+    String cardHolderName,
+    String cardHolderLastName1,
+    String cardHolderLastName2,
+    String cardHolderMail,
+    String cellphoneNumber,
+    String expirationDate,
+    String commerceMail,
+    boolean ufFlag
+  ) {
+    wpmDetail =
+      new Detail(
+        serviceId,
+        cardHolderId,
+        cardHolderName,
+        cardHolderLastName1,
+        cardHolderLastName2,
+        cardHolderMail,
+        cellphoneNumber,
+        expirationDate,
+        commerceMail,
+        ufFlag
+      );
   }
 
   /**

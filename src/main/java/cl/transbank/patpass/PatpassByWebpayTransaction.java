@@ -26,19 +26,8 @@ abstract class PatpassByWebpayTransaction extends BaseTransaction {
             String expirationDate, String commerceMail, boolean ufFlag) throws IOException, TransactionCreateException {
         String endpoint = String.format("%s/transactions", ApiConstants.WEBPAY_ENDPOINT);
         final TransactionCreateRequest request = new TransactionCreateRequest(buyOrder, sessionId, amount, returnUrl);
-        TransactionCreateRequest.Detail transactionDetails = request.new Detail();
-        transactionDetails.setServiceId(serviceId);
-        transactionDetails.setCardHolderId(cardHolderId);
-        transactionDetails.setCardHolderName(cardHolderName);
-        transactionDetails.setCardHolderLastName1(cardHolderLastName1);
-        transactionDetails.setCardHolderLastName2(cardHolderLastName2);
-        transactionDetails.setCardHolderMail(cardHolderMail);
-        transactionDetails.setCellphoneNumber(cellphoneNumber);
-        transactionDetails.setExpirationDate(expirationDate);
-        transactionDetails.setCommerceMail(commerceMail);
-        transactionDetails.setUfFlag(ufFlag);
-
-        request.setDetails(transactionDetails);
+        request.setDetails(serviceId, cardHolderId, cardHolderName, cardHolderLastName1, cardHolderLastName2,
+                cardHolderMail, cellphoneNumber, expirationDate, commerceMail, ufFlag);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, request, options, PatpassByWebpayTransactionCreateResponse.class);
         } catch (TransbankException e) {

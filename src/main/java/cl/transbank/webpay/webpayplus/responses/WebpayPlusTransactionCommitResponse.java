@@ -1,5 +1,7 @@
 package cl.transbank.webpay.webpayplus.responses;
 
-public class WebpayPlusTransactionCommitResponse extends WebpayPlusTransactionStatusResponse {
-
-}
+/**
+ * This class represents a response to a commit operation for a Webpay Plus transaction.
+ */
+public class WebpayPlusTransactionCommitResponse
+  extends WebpayPlusTransactionStatusResponse {}

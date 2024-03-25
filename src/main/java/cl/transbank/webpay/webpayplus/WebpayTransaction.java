@@ -38,7 +38,7 @@ abstract class WebpayTransaction extends BaseTransaction {
 
     public WebpayPlusTransactionCommitResponse commit(String token) throws IOException, TransactionCommitException {
 
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
 
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
@@ -49,7 +49,7 @@ abstract class WebpayTransaction extends BaseTransaction {
     }
 
     public WebpayPlusTransactionStatusResponse status(String token) throws IOException, TransactionStatusException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         String endpoint = String.format("%s/transactions/%s", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.GET, options, WebpayPlusTransactionStatusResponse.class);
@@ -59,7 +59,7 @@ abstract class WebpayTransaction extends BaseTransaction {
     }
 
     public WebpayPlusTransactionRefundResponse refund(String token, double amount) throws IOException, TransactionRefundException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         String endpoint = String.format("%s/transactions/%s/refunds", ApiConstants.WEBPAY_ENDPOINT,token);
         try {
             return WebpayApiResource.execute(endpoint, HttpUtil.RequestMethod.POST, new TransactionRefundRequest(amount), options, WebpayPlusTransactionRefundResponse.class);
@@ -69,7 +69,7 @@ abstract class WebpayTransaction extends BaseTransaction {
     }
 
     public WebpayPlusTransactionCaptureResponse capture(String token, String buyOrder, String authorizationCode, double captureAmount) throws IOException, TransactionCaptureException {
-        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, "token");
+        ValidationUtil.hasTextWithMaxLength(token, ApiConstants.TOKEN_LENGTH, ApiConstants.TOKEN_TEXT);
         ValidationUtil.hasTextWithMaxLength(buyOrder, ApiConstants.BUY_ORDER_LENGTH, "buyOrder");
         ValidationUtil.hasTextWithMaxLength(authorizationCode, ApiConstants.AUTHORIZATION_CODE_LENGTH, "authorizationCode");
         String endpoint = String.format("%s/transactions/%s/capture", ApiConstants.WEBPAY_ENDPOINT, token);

@@ -67,7 +67,7 @@ public class OneclickMallTest  extends TestBase {
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("token", testToken);
+        mapResponse.put(ApiConstants.TOKEN_TEXT, testToken);
         mapResponse.put("url_webpay", urlResponse);
 
         Gson gson = new GsonBuilder().create();

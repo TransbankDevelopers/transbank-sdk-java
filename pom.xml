@@ -29,7 +29,7 @@
 
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>5.0.0</version>
     <name>Transbank Java SDK</name>
 
     <inceptionYear>2018</inceptionYear>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
 

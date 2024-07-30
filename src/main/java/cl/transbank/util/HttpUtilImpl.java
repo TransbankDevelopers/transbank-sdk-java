@@ -2,6 +2,7 @@ package cl.transbank.util;
 
 import static cl.transbank.util.HttpUtil.RequestMethod.*;
 
+import cl.transbank.common.ApiConstants;
 import cl.transbank.webpay.exception.TransbankHttpApiException;
 import cl.transbank.webpay.exception.WebpayException;
 import java.io.*;
@@ -33,6 +34,17 @@ public class HttpUtilImpl implements HttpUtil {
   @Setter
   @Getter(AccessLevel.PRIVATE)
   private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
+
+  private int connectTimeout = ApiConstants.REQUEST_TIMEOUT;
+  private int readTimeout = ApiConstants.REQUEST_TIMEOUT;
+
+  public void setConnectTimeout(int connectTimeout) {
+    this.connectTimeout = connectTimeout;
+  }
+
+  public void setReadTimeout(int readTimeout) {
+    this.readTimeout = readTimeout;
+  }
 
   /**
    * Sends a HTTP request and returns the response.
@@ -264,6 +276,9 @@ public class HttpUtilImpl implements HttpUtil {
       }
     }
 
+    conn.setConnectTimeout(connectTimeout);
+    conn.setReadTimeout(readTimeout);
+
     return conn;
   }
 
@@ -315,6 +330,8 @@ public class HttpUtilImpl implements HttpUtil {
           StandardCharsets.UTF_8.name().toLowerCase()
         )
       );
+      conn.setConnectTimeout(connectTimeout);
+      conn.setReadTimeout(readTimeout);
 
       if (null != headers) {
         for (Map.Entry<String, String> header : headers.entrySet()) {

@@ -26,7 +26,7 @@ public class ApiConstants {
   public static final int EMAIL_LENGTH = 100;
   public static final String TOKEN_TEXT = "token";
   public static final String BUY_ORDER_TEXT = "buyOrder";
-  public static final int REQUEST_TIMEOUT = 30000;
+  public static final int REQUEST_TIMEOUT = 600000;
 
   /**
    * Private constructor to prevent instantiation.

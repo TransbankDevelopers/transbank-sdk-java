@@ -115,15 +115,18 @@ public abstract class WebpayApiResource {
     }
     final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
 
-    final T out = WebpayApiResource
-      .getHttpUtil()
-      .request(
-        url,
-        method,
-        request,
-        WebpayApiResource.buildHeaders(options),
-        clazz
-      );
+    HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
+
+    requestInstance.setConnectTimeout(options.getTimeout());
+    requestInstance.setReadTimeout(options.getTimeout());
+
+    final T out = requestInstance.request(
+      url,
+      method,
+      request,
+      WebpayApiResource.buildHeaders(options),
+      clazz
+    );
 
     if (null == out) return null;
 
@@ -185,15 +188,18 @@ public abstract class WebpayApiResource {
     }
     final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
 
-    final List<T> out = WebpayApiResource
-      .getHttpUtil()
-      .requestList(
-        url,
-        method,
-        request,
-        WebpayApiResource.buildHeaders(options),
-        clazz
-      );
+    HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
+
+    requestInstance.setConnectTimeout(options.getTimeout());
+    requestInstance.setReadTimeout(options.getTimeout());
+
+    final List<T> out = requestInstance.requestList(
+      url,
+      method,
+      request,
+      WebpayApiResource.buildHeaders(options),
+      clazz
+    );
 
     if (null == out) return Collections.emptyList();
 

@@ -1,13 +1,12 @@
 package cl.transbank.model;
 
+import cl.transbank.common.ApiConstants;
 import cl.transbank.common.IntegrationType;
 import lombok.*;
 
 /**
  * This abstract class represents the options that can be set for a transaction.
  */
-@NoArgsConstructor
-@AllArgsConstructor
 public abstract class Options implements Cloneable {
 
   @Setter
@@ -21,6 +20,46 @@ public abstract class Options implements Cloneable {
   @Setter
   @Getter
   private IntegrationType integrationType;
+
+  @Setter
+  @Getter
+  private int timeout;
+
+  /**
+   * Constructs a new Options with the specified commerce code, API key, and integration type.
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key.
+   * @param integrationType The integration type.
+   */
+  protected Options(
+    String commerceCode,
+    String apiKey,
+    IntegrationType integrationType
+  ) {
+    this.commerceCode = commerceCode;
+    this.apiKey = apiKey;
+    this.integrationType = integrationType;
+    this.timeout = ApiConstants.REQUEST_TIMEOUT;
+  }
+
+  /**
+   * Constructs a new Options with the specified commerce code, API key, integration type, and timeout.
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key.
+   * @param integrationType The integration type.
+   * @param timeout The time in ms to wait for a response.
+   */
+  protected Options(
+    String commerceCode,
+    String apiKey,
+    IntegrationType integrationType,
+    int timeout
+  ) {
+    this.commerceCode = commerceCode;
+    this.apiKey = apiKey;
+    this.integrationType = integrationType;
+    this.timeout = timeout;
+  }
 
   /**
    * Builds the options for a transaction.
@@ -44,6 +83,8 @@ public abstract class Options implements Cloneable {
       if (null != options.getIntegrationType()) alt.setIntegrationType(
         options.getIntegrationType()
       );
+
+      alt.setTimeout(options.getTimeout());
     }
 
     return alt;

@@ -63,4 +63,8 @@ public interface HttpUtil {
     DELETE,
     PUT,
   }
+
+  public void setConnectTimeout(int connectTimeout);
+
+  public void setReadTimeout(int readTimeout);
 }

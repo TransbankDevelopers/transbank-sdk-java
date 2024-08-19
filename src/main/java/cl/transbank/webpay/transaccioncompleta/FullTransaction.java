@@ -33,6 +33,30 @@ public class FullTransaction extends BaseTransaction {
   }
 
   /**
+   * Creates and returns an instance of `FullTransaction` configured for the integration environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `FullTransaction` configured for the test environment (IntegrationType.TEST).
+   */
+  public static FullTransaction buildForIntegration(String commerceCode, String apiKey)
+  {
+    return new FullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+  }
+
+  /**
+   * Creates and returns an instance of `FullTransaction` configured for the production environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `FullTransaction` configured for the production environment (IntegrationType.LIVE).
+   */
+  public static FullTransaction buildForProduction(String commerceCode, String apiKey)
+  {
+    return new FullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
+  }
+
+  /**
    * Creates a new FullTransaction.
    * @param buyOrder The buy order.
    * @param sessionId The session id.

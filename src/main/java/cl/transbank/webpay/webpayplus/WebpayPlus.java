@@ -1,6 +1,8 @@
 package cl.transbank.webpay.webpayplus;
 
+import cl.transbank.common.IntegrationType;
 import cl.transbank.model.Options;
+import cl.transbank.webpay.common.WebpayOptions;
 
 /**
  * This class provides methods to configure and perform transactions with the WebpayPlus service.
@@ -19,6 +21,30 @@ public class WebpayPlus {
     public Transaction(Options options) {
       super(options);
     }
+
+    /**
+     * Creates and returns an instance of `Transaction` configured for the integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `Transaction` configured for the test environment (IntegrationType.TEST).
+     */
+    public static Transaction buildForIntegration(String commerceCode, String apiKey)
+    {
+      return new Transaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
+
+    /**
+     * Creates and returns an instance of `Transaction` configured for the production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `Transaction` configured for the production environment (IntegrationType.LIVE).
+     */
+    public static Transaction buildForProduction(String commerceCode, String apiKey)
+    {
+      return new Transaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
+    }
   }
 
   /**
@@ -32,6 +58,30 @@ public class WebpayPlus {
      */
     public MallTransaction(Options options) {
       super(options);
+    }
+
+    /**
+     * Creates and returns an instance of `MallTransaction` configured for the integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the test environment (IntegrationType.TEST).
+     */
+    public static MallTransaction buildForIntegration(String commerceCode, String apiKey)
+    {
+      return new MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
+
+    /**
+     * Creates and returns an instance of `MallTransaction` configured for the production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the production environment (IntegrationType.LIVE).
+     */
+    public static MallTransaction buildForProduction(String commerceCode, String apiKey)
+    {
+      return new MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
     }
   }
 

@@ -10,6 +10,7 @@ import cl.transbank.util.ValidationUtil;
 import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.common.MallTransactionCaptureRequest;
 import cl.transbank.webpay.common.MallTransactionRefundRequest;
+import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.transaccioncompleta.model.*;
 import cl.transbank.webpay.transaccioncompleta.requests.*;
@@ -27,6 +28,30 @@ public class MallFullTransaction extends BaseTransaction {
    */
   public MallFullTransaction(Options options) {
     super(options);
+  }
+
+  /**
+   * Creates and returns an instance of `MallFullTransaction` configured for the integration environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `MallFullTransaction` configured for the test environment (IntegrationType.TEST).
+   */
+  public static MallFullTransaction buildForIntegration(String commerceCode, String apiKey)
+  {
+    return new MallFullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+  }
+
+  /**
+   * Creates and returns an instance of `MallFullTransaction` configured for the production environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `MallFullTransaction` configured for the production environment (IntegrationType.LIVE).
+   */
+  public static MallFullTransaction buildForProduction(String commerceCode, String apiKey)
+  {
+    return new MallFullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
   }
 
   public MallFullTransactionCreateResponse create(

@@ -26,7 +26,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
    * This abstract class represents the OneclickMallInscription and provides methods to handle Oneclick Mall Inscriptions.
    */
   public OneclickMallInscription(Options options) {
-    this.options = options;
+    super(options);
   }
 
   /**

@@ -11,4 +11,11 @@ public abstract class BaseTransaction {
    * The options for the transaction.
    */
   protected Options options = null;
+
+  public BaseTransaction(Options options){
+    if (options == null){
+      throw new IllegalArgumentException("Options can't be null.");
+    }
+    this.options = options;
+  }
 }

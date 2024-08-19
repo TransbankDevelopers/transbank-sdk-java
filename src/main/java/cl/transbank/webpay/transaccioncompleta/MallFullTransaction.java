@@ -10,7 +10,6 @@ import cl.transbank.util.ValidationUtil;
 import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.common.MallTransactionCaptureRequest;
 import cl.transbank.webpay.common.MallTransactionRefundRequest;
-import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.transaccioncompleta.model.*;
 import cl.transbank.webpay.transaccioncompleta.requests.*;
@@ -22,28 +21,12 @@ import java.io.IOException;
  */
 public class MallFullTransaction extends BaseTransaction {
 
-  private static Options defaultOptions = null;
-
-  /**
-   * Default constructor. Uses default options if none are provided.
-   */
-  public MallFullTransaction() {
-    this.options =
-      MallFullTransaction.defaultOptions != null
-        ? MallFullTransaction.defaultOptions
-        : new WebpayOptions(
-          IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL,
-          IntegrationApiKeys.WEBPAY,
-          IntegrationType.TEST
-        );
-  }
-
   /**
    * Constructor with options. Uses provided options.
    * @param options The options to use for this transaction.
    */
   public MallFullTransaction(Options options) {
-    this.options = options;
+    super(options);
   }
 
   public MallFullTransactionCreateResponse create(
@@ -324,39 +307,4 @@ public class MallFullTransaction extends BaseTransaction {
     }
   }
 
-  /*
-    |--------------------------------------------------------------------------
-    | Environment Configuration
-    |--------------------------------------------------------------------------
-    */
-
-  public static void configureForIntegration(
-    String commerceCode,
-    String apiKey
-  ) {
-    MallFullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST);
-  }
-
-  public static void configureForProduction(
-    String commerceCode,
-    String apiKey
-  ) {
-    MallFullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE);
-  }
-
-  public static void configureForTesting() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
-
-  public static void configureForTestingDeferred() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL_DEFERRED,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
 }

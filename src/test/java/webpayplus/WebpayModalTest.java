@@ -1,6 +1,11 @@
 package webpayplus;
 
 import cl.transbank.common.ApiConstants;
+import cl.transbank.common.IntegrationApiKeys;
+import cl.transbank.common.IntegrationCommerceCodes;
+import cl.transbank.common.IntegrationType;
+import cl.transbank.model.Options;
+import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.modal.WebpayPlusModal;
 import cl.transbank.webpay.modal.responses.*;
@@ -21,7 +26,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 public class WebpayModalTest extends TestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
-
+    private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_MODAL,
+            IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
     private static String vci = "TSY";
     private static double amount = 1000d;
     private static String status = "AUTHORIZED";
@@ -52,7 +58,7 @@ public class WebpayModalTest extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
 
-        WebpayPlusModal.configureForMock();
+        
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -68,7 +74,7 @@ public class WebpayModalTest extends TestBase {
         double amount = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final ModalTransactionCreateResponse response = (new WebpayPlusModal.Transaction()).create(buyOrder, sessionId, amount);
+        final ModalTransactionCreateResponse response = (new WebpayPlusModal.Transaction(option)).create(buyOrder, sessionId, amount);
         assertEquals(testToken, response.getToken());
     }
 
@@ -96,14 +102,14 @@ public class WebpayModalTest extends TestBase {
 
     @Test
     public void commit() throws IOException, TransactionCommitException {
-        WebpayPlusModal.configureForMock();
+        
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponsePut(url, gson.toJson(mapResponse));
 
-        final ModalTransactionCommitResponse response = (new WebpayPlusModal.Transaction()).commit(testToken);
+        final ModalTransactionCommitResponse response = (new WebpayPlusModal.Transaction(option)).commit(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());
@@ -122,7 +128,7 @@ public class WebpayModalTest extends TestBase {
 
     @Test
     public void refund() throws IOException, TransactionRefundException {
-        WebpayPlusModal.configureForMock();
+        
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
         double amount = 1000d;
@@ -135,21 +141,21 @@ public class WebpayModalTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final ModalTransactionRefundResponse response = (new WebpayPlusModal.Transaction()).refund(testToken, amount);
+        final ModalTransactionRefundResponse response = (new WebpayPlusModal.Transaction(option)).refund(testToken, amount);
         assertEquals(type, response.getType());
 
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        WebpayPlusModal.configureForMock();
+        
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final ModalTransactionStatusResponse response = (new WebpayPlusModal.Transaction()).status(testToken);
+        final ModalTransactionStatusResponse response = (new WebpayPlusModal.Transaction(option)).status(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());

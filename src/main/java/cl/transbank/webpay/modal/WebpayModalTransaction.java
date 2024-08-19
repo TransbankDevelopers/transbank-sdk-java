@@ -18,7 +18,7 @@ import java.io.IOException;
 abstract class WebpayModalTransaction extends BaseTransaction {
 
     public WebpayModalTransaction(Options options){
-        this.options = options;
+        super(options);
     }
 
     public ModalTransactionCreateResponse create(String buyOrder, String sessionId, double amount) throws IOException, TransactionCreateException {

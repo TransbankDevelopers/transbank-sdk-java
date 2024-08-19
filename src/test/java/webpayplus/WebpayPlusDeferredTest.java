@@ -1,6 +1,11 @@
 package webpayplus;
 
 import cl.transbank.common.ApiConstants;
+import cl.transbank.common.IntegrationApiKeys;
+import cl.transbank.common.IntegrationCommerceCodes;
+import cl.transbank.common.IntegrationType;
+import cl.transbank.model.Options;
+import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.webpayplus.WebpayPlus;
 import cl.transbank.webpay.webpayplus.responses.*;
@@ -21,7 +26,8 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 public class WebpayPlusDeferredTest extends TestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
-
+    private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_DEFERRED,
+            IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
     private static String vci = "TSY";
     private static double amount = 1000d;
     private static String status = "AUTHORIZED";
@@ -52,7 +58,7 @@ public class WebpayPlusDeferredTest extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
         //WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        WebpayPlus.configureForMock();
+        
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -69,7 +75,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         double amount = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction()).create(buyOrder, sessionId, amount, returnUrl);
+        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
         assertEquals(testToken, response.getToken());
         assertEquals(urlResponse, response.getUrl());
     }
@@ -98,7 +104,7 @@ public class WebpayPlusDeferredTest extends TestBase {
 
     @Test
     public void commit() throws IOException, TransactionCommitException {
-        WebpayPlus.configureForMock();
+        
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         String vci = "TSY";
@@ -123,7 +129,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         //System.out.println("jsonResponse: " + jsonResponse);
         //System.out.println("url: " + url);
 
-        final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction()).commit(testToken);
+        final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction(option)).commit(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());
@@ -142,7 +148,7 @@ public class WebpayPlusDeferredTest extends TestBase {
 
     @Test
     public void refund() throws IOException, TransactionRefundException {
-        WebpayPlus.configureForMock();
+        
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
         double amount = 1000d;
@@ -155,21 +161,21 @@ public class WebpayPlusDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction()).refund(testToken, amount);
+        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction(option)).refund(testToken, amount);
         assertEquals(response.getType(), type);
 
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        WebpayPlus.configureForMock();
+        
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
         setResponseGet(url, gson.toJson(mapResponse));
 
-        final WebpayPlusTransactionStatusResponse response = (new WebpayPlus.Transaction()).status(testToken);
+        final WebpayPlusTransactionStatusResponse response = (new WebpayPlus.Transaction(option)).status(testToken);
         assertEquals(vci, response.getVci());
         assertEquals(amount, response.getAmount());
         assertEquals(status, response.getStatus());
@@ -187,7 +193,7 @@ public class WebpayPlusDeferredTest extends TestBase {
 
     @Test
     public void capture() throws IOException, TransactionCaptureException {
-        WebpayPlus.configureForMock();
+        
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
 
         String authorizationCode = "1213";
@@ -208,7 +214,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         String authorization = "1213";
         double amount = 1000;
 
-        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction()).capture(testToken, buyOrder, authorization, amount);
+        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder, authorization, amount);
         assertEquals(authorizationCode, response.getAuthorizationCode());
         assertEquals(authorizationDate, response.getAuthorizationDate());
         assertEquals(capturedAmount, response.getCapturedAmount());

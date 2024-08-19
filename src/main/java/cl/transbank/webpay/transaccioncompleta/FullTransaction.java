@@ -24,28 +24,12 @@ import java.io.IOException;
  */
 public class FullTransaction extends BaseTransaction {
 
-  private static Options defaultOptions = null;
-
-  /**
-   * Default constructor. Uses default options if none are provided.
-   */
-  public FullTransaction() {
-    this.options =
-      FullTransaction.defaultOptions != null
-        ? FullTransaction.defaultOptions
-        : new WebpayOptions(
-          IntegrationCommerceCodes.TRANSACCION_COMPLETA,
-          IntegrationApiKeys.WEBPAY,
-          IntegrationType.TEST
-        );
-  }
-
   /**
    * Constructor with options. Uses provided options.
    * @param options The options to use for this transaction.
    */
   public FullTransaction(Options options) {
-    this.options = options;
+    super(options);
   }
 
   /**
@@ -316,55 +300,4 @@ public class FullTransaction extends BaseTransaction {
     }
   }
 
-  /*
-    |--------------------------------------------------------------------------
-    | Environment Configuration
-    |--------------------------------------------------------------------------
-    */
-
-  /**
-   * Configures the transaction for integration environment.
-   * @param commerceCode The commerce code.
-   * @param apiKey The api key.
-   */
-  public static void configureForIntegration(
-    String commerceCode,
-    String apiKey
-  ) {
-    FullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST);
-  }
-
-  /**
-   * Configures the transaction for production environment.
-   * @param commerceCode The commerce code.
-   * @param apiKey The api key.
-   */
-  public static void configureForProduction(
-    String commerceCode,
-    String apiKey
-  ) {
-    FullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE);
-  }
-
-  /**
-   * Configures the transaction for testing environment.
-   */
-  public static void configureForTesting() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
-
-  /**
-   * Configures the transaction for testing deferred environment.
-   */
-  public static void configureForTestingDeferred() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA_DEFERRED,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
 }

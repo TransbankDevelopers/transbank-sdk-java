@@ -141,7 +141,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         assertEquals(authorizationCode, response.getAuthorizationCode());
         assertEquals(paymentTypeCode, response.getPaymentTypeCode());
         assertEquals(responseCode, response.getResponseCode());
-        //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
+        
         assertEquals(installmentsNumber, response.getInstallmentsNumber());
     }
 
@@ -187,7 +187,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         assertEquals(authorizationCode, response.getAuthorizationCode());
         assertEquals(paymentTypeCode, response.getPaymentTypeCode());
         assertEquals(responseCode, response.getResponseCode());
-        //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
+        
         assertEquals(installmentsNumber, response.getInstallmentsNumber());
     }
 

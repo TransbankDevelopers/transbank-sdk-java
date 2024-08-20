@@ -139,7 +139,7 @@ public class PatpassByWebpayTest  extends TestBase {
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getPaymentTypeCode(), paymentTypeCode);
         assertEquals(response.getResponseCode(), responseCode);
-        //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
+        
         assertEquals(response.getInstallmentsNumber(), installmentsNumber);
     }
 
@@ -165,7 +165,7 @@ public class PatpassByWebpayTest  extends TestBase {
         assertEquals(response.getTransactionDate(), transactionDate);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getPaymentTypeCode(), paymentTypeCode);
-        //assertEquals(response.getInstallmentsAmount(), mapResponse.get("amount"));
+        
         assertEquals(response.getInstallmentsNumber(), installmentsNumber);
     }
 

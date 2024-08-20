@@ -66,8 +66,6 @@ public class WebpayPlusTest extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
 
-        
-        //WebpayPlus.configureForTesting();
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -79,12 +77,12 @@ public class WebpayPlusTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        double amount = 1000;
+        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        double amount3 = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
+        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder3, sessionId3, amount3, returnUrl);
         assertEquals(testToken, response.getToken());
         assertEquals(urlResponse, response.getUrl());
     }

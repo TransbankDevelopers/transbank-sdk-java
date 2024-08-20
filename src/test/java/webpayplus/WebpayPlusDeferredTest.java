@@ -57,8 +57,7 @@ public class WebpayPlusDeferredTest extends TestBase {
 
     @Test
     public void create() throws IOException, TransactionCreateException {
-        //WebpayPlus.Transaction.setIntegrationType(IntegrationType.SERVER_MOCK);
-        
+
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -70,12 +69,12 @@ public class WebpayPlusDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        double amount = 1000;
+        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        double amount3 = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
+        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder3, sessionId3, amount3, returnUrl);
         assertEquals(testToken, response.getToken());
         assertEquals(urlResponse, response.getUrl());
     }
@@ -107,17 +106,17 @@ public class WebpayPlusDeferredTest extends TestBase {
         
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
 
-        String vci = "TSY";
-        double amount = 1000d;
-        String status = "AUTHORIZED";
-        String buyOrder = "1643997337";
-        String sessionId = "1134425622";
-        String cardNumber = "6623";
-        String accountingDate = "0731";
-        String transactionDate = "2021-07-31T23:31:14.249Z";
-        String authorizationCode = "1213";
-        String paymentTypeCode = "VN";
-        byte responseCode = 0;
+        String vci3 = "TSY";
+        double amount3 = 1000d;
+        String status3 = "AUTHORIZED";
+        String buyOrder3 = "1643997337";
+        String sessionId3 = "1134425622";
+        String cardNumber3 = "6623";
+        String accountingDate3 = "0731";
+        String transactionDate3 = "2021-07-31T23:31:14.249Z";
+        String authorizationCode3 = "1213";
+        String paymentTypeCode3 = "VN";
+        byte responseCode3 = 0;
         double installmentsAmount;
         byte installmentsNumber = 0;
         double balance;
@@ -126,21 +125,18 @@ public class WebpayPlusDeferredTest extends TestBase {
         Gson gson = new GsonBuilder().create();
         setResponsePut(url, gson.toJson(mapResponse));
 
-        //System.out.println("jsonResponse: " + jsonResponse);
-        //System.out.println("url: " + url);
-
         final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction(option)).commit(testToken);
-        assertEquals(vci, response.getVci());
-        assertEquals(amount, response.getAmount());
-        assertEquals(status, response.getStatus());
-        assertEquals(buyOrder, response.getBuyOrder());
-        assertEquals(sessionId, response.getSessionId());
-        assertEquals(cardNumber, response.getCardDetail().getCardNumber());
-        assertEquals(accountingDate, response.getAccountingDate());
-        assertEquals(transactionDate, response.getTransactionDate());
-        assertEquals(authorizationCode, response.getAuthorizationCode());
-        assertEquals(paymentTypeCode, response.getPaymentTypeCode());
-        assertEquals(responseCode, response.getResponseCode());
+        assertEquals(vci3, response.getVci());
+        assertEquals(amount3, response.getAmount());
+        assertEquals(status3, response.getStatus());
+        assertEquals(buyOrder3, response.getBuyOrder());
+        assertEquals(sessionId3, response.getSessionId());
+        assertEquals(cardNumber3, response.getCardDetail().getCardNumber());
+        assertEquals(accountingDate3, response.getAccountingDate());
+        assertEquals(transactionDate3, response.getTransactionDate());
+        assertEquals(authorizationCode3, response.getAuthorizationCode());
+        assertEquals(paymentTypeCode3, response.getPaymentTypeCode());
+        assertEquals(responseCode3, response.getResponseCode());
         
         assertEquals(installmentsNumber, response.getInstallmentsNumber());
     }

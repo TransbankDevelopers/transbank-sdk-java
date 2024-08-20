@@ -84,9 +84,7 @@ public class WebpayPlusTest extends TestBase {
         double amount = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        //final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
-        WebpayPlus.Transaction transaction = WebpayPlus.Transaction.buildForIntegration(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY);
-        final WebpayPlusTransactionCreateResponse response = transaction.create(buyOrder, sessionId, amount, returnUrl);
+        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
         assertEquals(testToken, response.getToken());
         assertEquals(urlResponse, response.getUrl());
     }

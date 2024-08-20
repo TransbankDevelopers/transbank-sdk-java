@@ -9,17 +9,35 @@ import lombok.*;
 @AllArgsConstructor
 public abstract class Options implements Cloneable {
 
-  @Setter
   @Getter
   private String commerceCode;
 
-  @Setter
   @Getter
   private String apiKey;
 
-  @Setter
   @Getter
   private IntegrationType integrationType;
+
+  public void setCommerceCode(String commerceCode){
+    if (commerceCode == null){
+      throw new IllegalArgumentException("CommerceCode can't be null.");
+    }
+    this.commerceCode = commerceCode;
+  }
+
+  public void setApiKey(String apiKey){
+    if (apiKey == null){
+      throw new IllegalArgumentException("ApiKey can't be null.");
+    }
+    this.apiKey = apiKey;
+  }
+
+  public void setIntegrationType(IntegrationType integrationType){
+    if (integrationType == null){
+      throw new IllegalArgumentException("IntegrationType can't be null.");
+    }
+    this.integrationType = integrationType;
+  }
 
   /**
    * Builds the options for a transaction.

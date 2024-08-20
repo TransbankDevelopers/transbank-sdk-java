@@ -6,7 +6,6 @@ import lombok.*;
 /**
  * This abstract class represents the options that can be set for a transaction.
  */
-@NoArgsConstructor
 @AllArgsConstructor
 public abstract class Options implements Cloneable {
 

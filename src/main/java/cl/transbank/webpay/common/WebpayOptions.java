@@ -8,7 +8,6 @@ import lombok.*;
  * This class represents the options for a Webpay transaction.
  */
 @ToString
-@AllArgsConstructor
 public class WebpayOptions extends Options {
 
   /**

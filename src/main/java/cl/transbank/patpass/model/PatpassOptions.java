@@ -8,7 +8,6 @@ import lombok.*;
  * This class represents the options for a Patpass transaction.
  */
 @ToString
-@AllArgsConstructor
 public class PatpassOptions extends Options {
 
   /**

@@ -117,9 +117,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         String authorizationCode3 = "1213";
         String paymentTypeCode3 = "VN";
         byte responseCode3 = 0;
-        double installmentsAmount;
-        byte installmentsNumber = 0;
-        double balance;
+        byte installmentsNumber3 = 0;
 
         Map<String, Object> mapResponse = generateCommitJsonResponse();
         Gson gson = new GsonBuilder().create();
@@ -138,7 +136,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         assertEquals(paymentTypeCode3, response.getPaymentTypeCode());
         assertEquals(responseCode3, response.getResponseCode());
         
-        assertEquals(installmentsNumber, response.getInstallmentsNumber());
+        assertEquals(installmentsNumber3, response.getInstallmentsNumber());
     }
 
 
@@ -147,7 +145,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
-        double amount = 1000d;
+        double amount3 = 1000d;
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -157,7 +155,7 @@ public class WebpayPlusDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction(option)).refund(testToken, amount);
+        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction(option)).refund(testToken, amount3);
         assertEquals(response.getType(), type);
 
     }
@@ -192,13 +190,13 @@ public class WebpayPlusDeferredTest extends TestBase {
         
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
 
-        String authorizationCode = "1213";
-        String authorizationDate = "2021-08-01T03:17:42.785Z";
+        String authorizationCode3 = "1213";
+        String authorizationDate3 = "2021-08-01T03:17:42.785Z";
         double capturedAmount = 1000.0;
         byte responseCode = 0;
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("authorization_code", authorizationCode);
-        mapResponse.put("authorization_date", authorizationDate);
+        mapResponse.put("authorization_code", authorizationCode3);
+        mapResponse.put("authorization_date", authorizationDate3);
         mapResponse.put("captured_amount", capturedAmount);
         mapResponse.put("response_code", responseCode);
 
@@ -211,8 +209,8 @@ public class WebpayPlusDeferredTest extends TestBase {
         double amount = 1000;
 
         final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder, authorization, amount);
-        assertEquals(authorizationCode, response.getAuthorizationCode());
-        assertEquals(authorizationDate, response.getAuthorizationDate());
+        assertEquals(authorizationCode3, response.getAuthorizationCode());
+        assertEquals(authorizationDate3, response.getAuthorizationDate());
         assertEquals(capturedAmount, response.getCapturedAmount());
         assertEquals(responseCode, response.getResponseCode());
     }

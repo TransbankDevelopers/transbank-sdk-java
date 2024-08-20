@@ -87,8 +87,8 @@ public class WebpayPlusMallTest extends TestBase {
         setResponsePost(url, jsonResponse);
         String returnUrl = "http://wwww.google.com";
 
-        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
 
         String buyOrderMallOne = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         double amountMallOne = 1000;
@@ -102,7 +102,7 @@ public class WebpayPlusMallTest extends TestBase {
                 .add(amountMallOne, mallOneCommerceCode, buyOrderMallOne)
                 .add(amountMallTwo, mallTwoCommerceCode, buyOrderMallTwo);
 
-        final WebpayPlusMallTransactionCreateResponse response = (new WebpayPlus.MallTransaction(option)).create(buyOrder, sessionId, returnUrl, mallDetails);
+        final WebpayPlusMallTransactionCreateResponse response = (new WebpayPlus.MallTransaction(option)).create(buyOrder3, sessionId3, returnUrl, mallDetails);
         assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrl(), urlResponse);
     }

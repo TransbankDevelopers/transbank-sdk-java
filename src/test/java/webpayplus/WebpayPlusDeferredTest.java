@@ -193,26 +193,26 @@ public class WebpayPlusDeferredTest extends TestBase {
         String authorizationCode3 = "1213";
         String authorizationDate3 = "2021-08-01T03:17:42.785Z";
         double capturedAmount = 1000.0;
-        byte responseCode = 0;
+        byte responseCode3 = 0;
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         mapResponse.put("authorization_code", authorizationCode3);
         mapResponse.put("authorization_date", authorizationDate3);
         mapResponse.put("captured_amount", capturedAmount);
-        mapResponse.put("response_code", responseCode);
+        mapResponse.put("response_code", responseCode3);
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String authorization = "1213";
-        double amount = 1000;
+        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String authorization3 = "1213";
+        double amount3 = 1000;
 
-        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder, authorization, amount);
+        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder3, authorization3, amount3);
         assertEquals(authorizationCode3, response.getAuthorizationCode());
         assertEquals(authorizationDate3, response.getAuthorizationDate());
         assertEquals(capturedAmount, response.getCapturedAmount());
-        assertEquals(responseCode, response.getResponseCode());
+        assertEquals(responseCode3, response.getResponseCode());
     }
 
 }

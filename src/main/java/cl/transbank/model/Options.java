@@ -9,15 +9,12 @@ import lombok.*;
  */
 public abstract class Options implements Cloneable {
 
-  @Setter
   @Getter
   private String commerceCode;
 
-  @Setter
   @Getter
   private String apiKey;
 
-  @Setter
   @Getter
   private IntegrationType integrationType;
 

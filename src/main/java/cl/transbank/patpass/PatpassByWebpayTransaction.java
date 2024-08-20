@@ -20,7 +20,7 @@ import cl.transbank.webpay.common.TransactionRefundRequest;
 import java.io.IOException;
 
 abstract class PatpassByWebpayTransaction extends BaseTransaction {
-    public PatpassByWebpayTransaction(Options options){
+    protected PatpassByWebpayTransaction(Options options){
         super(options);
     }
     public PatpassByWebpayTransactionCreateResponse create(

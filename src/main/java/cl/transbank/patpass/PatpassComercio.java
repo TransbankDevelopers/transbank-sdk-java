@@ -3,8 +3,6 @@ package cl.transbank.patpass;
 import cl.transbank.common.IntegrationType;
 import cl.transbank.model.Options;
 import cl.transbank.patpass.model.PatpassOptions;
-import cl.transbank.webpay.common.WebpayOptions;
-import cl.transbank.webpay.webpayplus.WebpayPlus;
 
 /**
  * This class represents the details of a MallTransactionCommit.

@@ -12,7 +12,7 @@ public abstract class BaseTransaction {
    */
   protected Options options = null;
 
-  public BaseTransaction(Options options){
+  protected BaseTransaction(Options options){
     if (options == null){
       throw new IllegalArgumentException("Options can't be null.");
     }

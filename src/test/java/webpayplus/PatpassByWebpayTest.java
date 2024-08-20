@@ -174,7 +174,7 @@ public class PatpassByWebpayTest  extends TestBase {
         
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
-        double amount = 1000d;
+        double amount3 = 1000d;
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -184,7 +184,7 @@ public class PatpassByWebpayTest  extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final PatpassByWebpayTransactionRefundResponse response = (new PatpassByWebpay.Transaction(option)).refund(testToken, amount);
+        final PatpassByWebpayTransactionRefundResponse response = (new PatpassByWebpay.Transaction(option)).refund(testToken, amount3);
         assertEquals(response.getType(), type);
 
     }

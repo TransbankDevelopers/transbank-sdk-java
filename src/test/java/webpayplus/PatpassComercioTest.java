@@ -62,7 +62,6 @@ public class PatpassComercioTest extends TestBase {
         String rut = "14140066-5";
         String serviceId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
         String finalUrl = "http://localhost:8081/patpass-comercio/final";
-        String commerceCode = "28299257";
         double maxAmount = 0;
         String phoneNumber = "123456734";
         String mobileNumber = "123456723";
@@ -72,7 +71,6 @@ public class PatpassComercioTest extends TestBase {
         String address = "huerfanos 101";
         String city = "Santiago";
 
-        //PatpassComercio.setCommerceCode(commerceCode);
         final PatpassComercioInscriptionStartResponse response = (new PatpassComercio.Inscription(option)).start(urlRequest,
                 name,
                 firstLastName,
@@ -107,8 +105,6 @@ public class PatpassComercioTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        String commerceCode = "28299257";
-        //PatpassComercio.setCommerceCode(commerceCode);
         final PatpassComercioTransactionStatusResponse response = (new PatpassComercio.Inscription(option)).status(testToken);
 
         assertEquals(response.isAuthorized(), true);

@@ -58,10 +58,8 @@ public class WebpayModalTest extends TestBase {
     @Test
     public void create() throws IOException, TransactionCreateException {
 
-        
         String url = String.format("/%s/transactions", apiUrl);
 
-        String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
         mapResponse.put(ApiConstants.TOKEN_TEXT, testToken);
 
@@ -69,12 +67,11 @@ public class WebpayModalTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        double amount = 1000;
-        String returnUrl = "http://wwww.google.com";
+        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        double amount3 = 1000;
 
-        final ModalTransactionCreateResponse response = (new WebpayPlusModal.Transaction(option)).create(buyOrder, sessionId, amount);
+        final ModalTransactionCreateResponse response = (new WebpayPlusModal.Transaction(option)).create(buyOrder3, sessionId3, amount3);
         assertEquals(testToken, response.getToken());
     }
 
@@ -131,7 +128,7 @@ public class WebpayModalTest extends TestBase {
         
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
 
-        double amount = 1000d;
+        double amount3 = 1000d;
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -141,7 +138,7 @@ public class WebpayModalTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final ModalTransactionRefundResponse response = (new WebpayPlusModal.Transaction(option)).refund(testToken, amount);
+        final ModalTransactionRefundResponse response = (new WebpayPlusModal.Transaction(option)).refund(testToken, amount3);
         assertEquals(type, response.getType());
 
     }

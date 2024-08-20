@@ -257,19 +257,4 @@ public class OneclickMallTest  extends TestBase {
         assertEquals(response.getDetails().get(1).getBuyOrder(), buyOrder2);
     }
 
-
-    //{"username":"goncafa","tbk_user":"aaaaaaaaaaaaa-bbbbbbbb-cccccc"}
-    /*
-    @Test
-    public void delete() throws IOException, InscriptionDeleteException {
-        Oneclick.configureForMock();
-        String url = "/rswebpaytransaction/api/oneclick/v1.0/inscriptions";
-
-        //String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
-        Map<String, Object> mapResponse = new HashMap<>();
-        Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
-        Oneclick.MallInscription.delete(username, tbkUser);
-
-    }*/
 }

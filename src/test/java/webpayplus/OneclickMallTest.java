@@ -90,28 +90,28 @@ public class OneclickMallTest  extends TestBase {
     public void finish() throws IOException, InscriptionFinishException {
         String url = String.format("/%s/inscriptions/%s", apiUrl, testToken);
 
-        byte responseCode = 0;
-        String authorizationCode = "1213";
+        byte responseCode3 = 0;
+        String authorizationCode3 = "1213";
         String cardType = "Visa";
-        String cardNumber = "XXXXXXXXXXXX6623";
+        String cardNumber3 = "XXXXXXXXXXXX6623";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("response_code", responseCode);
+        mapResponse.put("response_code", responseCode3);
         mapResponse.put("tbk_user", tbkUser);
-        mapResponse.put("authorization_code", authorizationCode);
+        mapResponse.put("authorization_code", authorizationCode3);
         mapResponse.put("card_type", cardType);
-        mapResponse.put("card_number", cardNumber);
+        mapResponse.put("card_number", cardNumber3);
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
         final OneclickMallInscriptionFinishResponse response = (new Oneclick.MallInscription(option)).finish(testToken);
-        assertEquals(response.getResponseCode(), responseCode);
+        assertEquals(response.getResponseCode(), responseCode3);
         assertEquals(response.getTbkUser(), tbkUser);
-        assertEquals(response.getAuthorizationCode(), authorizationCode);
+        assertEquals(response.getAuthorizationCode(), authorizationCode3);
         assertEquals(response.getCardType(), cardType);
-        assertEquals(response.getCardNumber(), cardNumber);
+        assertEquals(response.getCardNumber(), cardNumber3);
 
     }
 

@@ -18,54 +18,6 @@ public abstract class Options implements Cloneable {
   @Getter
   private IntegrationType integrationType;
 
-  public void setCommerceCode(String commerceCode){
-    if (commerceCode == null){
-      throw new IllegalArgumentException("CommerceCode can't be null.");
-    }
-    this.commerceCode = commerceCode;
-  }
-
-  public void setApiKey(String apiKey){
-    if (apiKey == null){
-      throw new IllegalArgumentException("ApiKey can't be null.");
-    }
-    this.apiKey = apiKey;
-  }
-
-  public void setIntegrationType(IntegrationType integrationType){
-    if (integrationType == null){
-      throw new IllegalArgumentException("IntegrationType can't be null.");
-    }
-    this.integrationType = integrationType;
-  }
-
-  /**
-   * Builds the options for a transaction.
-   * @param options The options to set.
-   * @return The built options.
-   */
-  public Options buildOptions(Options options) {
-    Options alt = clone();
-
-    // If the method receives an options object then rewrite each property, this is mandatory
-    if (null != options) {
-      if (
-        null != options.getCommerceCode() &&
-        !options.getCommerceCode().trim().isEmpty()
-      ) alt.setCommerceCode(options.getCommerceCode());
-
-      if (
-        null != options.getApiKey() && !options.getApiKey().trim().isEmpty()
-      ) alt.setApiKey(options.getApiKey());
-
-      if (null != options.getIntegrationType()) alt.setIntegrationType(
-        options.getIntegrationType()
-      );
-    }
-
-    return alt;
-  }
-
   /**
    * Creates and returns a copy of this object.
    * @return A clone of this instance.

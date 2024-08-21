@@ -21,30 +21,30 @@ public class PatpassComercio {
     public Inscription(Options options) {
       super(options);
     }
-  }
 
-  /**
-   * Creates and returns an instance of `Inscription` configured for the integration environment.
-   *
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key used for authentication.
-   * @return A new instance of `Inscription` configured for the test environment (IntegrationType.TEST).
-   */
-  public static Inscription buildForIntegration(String commerceCode, String apiKey)
-  {
-    return new Inscription(new PatpassOptions(commerceCode, apiKey, IntegrationType.TEST));
-  }
+    /**
+     * Creates and returns an instance of `Inscription` configured for the integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `Inscription` configured for the test environment (IntegrationType.TEST).
+     */
+    public static Inscription buildForIntegration(String commerceCode, String apiKey)
+    {
+      return new Inscription(new PatpassOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
 
-  /**
-   * Creates and returns an instance of `Inscription` configured for the production environment.
-   *
-   * @param commerceCode The commerce code.
-   * @param apiKey The API key used for authentication.
-   * @return A new instance of `Inscription` configured for the production environment (IntegrationType.LIVE).
-   */
-  public static Inscription buildForProduction(String commerceCode, String apiKey)
-  {
-    return new Inscription(new PatpassOptions(commerceCode, apiKey, IntegrationType.LIVE));
+    /**
+     * Creates and returns an instance of `Inscription` configured for the production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `Inscription` configured for the production environment (IntegrationType.LIVE).
+     */
+    public static Inscription buildForProduction(String commerceCode, String apiKey)
+    {
+      return new Inscription(new PatpassOptions(commerceCode, apiKey, IntegrationType.LIVE));
+    }
   }
 
 }

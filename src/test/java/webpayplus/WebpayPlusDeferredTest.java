@@ -23,26 +23,10 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebpayPlusDeferredTest extends TestBase {
-
+public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_DEFERRED,
             IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
-    private static String vci = "TSY";
-    private static double amount = 1000d;
-    private static String status = "AUTHORIZED";
-    private static String buyOrder = "1643997337";
-    private static String sessionId = "1134425622";
-    private static String cardNumber = "6623";
-    private static String accountingDate = "0731";
-    private static String transactionDate = "2021-07-31T23:31:14.249Z";
-    private static String authorizationCode = "1213";
-    private static String paymentTypeCode = "VN";
-    private static byte responseCode = 0;
-    private static double installmentsAmount;
-    private static byte installmentsNumber = 0;
-    private static double balance;
-
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
@@ -57,7 +41,6 @@ public class WebpayPlusDeferredTest extends TestBase {
 
     @Test
     public void create() throws IOException, TransactionCreateException {
-
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -69,83 +52,41 @@ public class WebpayPlusDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String sessionId3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        double amount3 = 1000;
+        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String sessionId = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        double amount = 1000;
         String returnUrl = "http://wwww.google.com";
 
-        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder3, sessionId3, amount3, returnUrl);
+        final WebpayPlusTransactionCreateResponse response = (new WebpayPlus.Transaction(option)).create(buyOrder, sessionId, amount, returnUrl);
         assertEquals(testToken, response.getToken());
         assertEquals(urlResponse, response.getUrl());
     }
 
-    private Map<String, Object> generateCommitJsonResponse(){
-
-        Map<String, String> mapResponseDetail = new HashMap<String, String>();
-        mapResponseDetail.put("card_number", cardNumber);
-
-        Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("vci", vci);
-        mapResponse.put("amount", amount);
-        mapResponse.put("status", status);
-        mapResponse.put("buy_order", buyOrder);
-        mapResponse.put("session_id", sessionId);
-        mapResponse.put("card_detail", mapResponseDetail);
-        mapResponse.put("accounting_date", accountingDate);
-        mapResponse.put("transaction_date", transactionDate);
-        mapResponse.put("authorization_code", authorizationCode);
-        mapResponse.put("payment_type_code", paymentTypeCode);
-        mapResponse.put("response_code", responseCode);
-        mapResponse.put("installments_number", installmentsNumber);
-
-        return mapResponse;
-    }
-
     @Test
     public void commit() throws IOException, TransactionCommitException {
-        
+        WebpayPlusTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
-
-        String vci3 = "TSY";
-        double amount3 = 1000d;
-        String status3 = "AUTHORIZED";
-        String buyOrder3 = "1643997337";
-        String sessionId3 = "1134425622";
-        String cardNumber3 = "6623";
-        String accountingDate3 = "0731";
-        String transactionDate3 = "2021-07-31T23:31:14.249Z";
-        String authorizationCode3 = "1213";
-        String paymentTypeCode3 = "VN";
-        byte responseCode3 = 0;
-        byte installmentsNumber3 = 0;
-
-        Map<String, Object> mapResponse = generateCommitJsonResponse();
-        Gson gson = new GsonBuilder().create();
-        setResponsePut(url, gson.toJson(mapResponse));
+        setResponsePut(url, generateCommitJsonResponse());
 
         final WebpayPlusTransactionCommitResponse response = (new WebpayPlus.Transaction(option)).commit(testToken);
-        assertEquals(vci3, response.getVci());
-        assertEquals(amount3, response.getAmount());
-        assertEquals(status3, response.getStatus());
-        assertEquals(buyOrder3, response.getBuyOrder());
-        assertEquals(sessionId3, response.getSessionId());
-        assertEquals(cardNumber3, response.getCardDetail().getCardNumber());
-        assertEquals(accountingDate3, response.getAccountingDate());
-        assertEquals(transactionDate3, response.getTransactionDate());
-        assertEquals(authorizationCode3, response.getAuthorizationCode());
-        assertEquals(paymentTypeCode3, response.getPaymentTypeCode());
-        assertEquals(responseCode3, response.getResponseCode());
-        
-        assertEquals(installmentsNumber3, response.getInstallmentsNumber());
+        assertEquals(expectedResponse.getVci(), response.getVci());
+        assertEquals(expectedResponse.getAmount(), response.getAmount());
+        assertEquals(expectedResponse.getStatus(), response.getStatus());
+        assertEquals(expectedResponse.getBuyOrder(), response.getBuyOrder());
+        assertEquals(expectedResponse.getSessionId(), response.getSessionId());
+        assertEquals(expectedResponse.getCardDetail().getCardNumber(), response.getCardDetail().getCardNumber());
+        assertEquals(expectedResponse.getAccountingDate(), response.getAccountingDate());
+        assertEquals(expectedResponse.getTransactionDate(), response.getTransactionDate());
+        assertEquals(expectedResponse.getAuthorizationCode(), response.getAuthorizationCode());
+        assertEquals(expectedResponse.getPaymentTypeCode(), response.getPaymentTypeCode());
+        assertEquals(expectedResponse.getResponseCode(), response.getResponseCode());
+        assertEquals(expectedResponse.getInstallmentsNumber(), response.getInstallmentsNumber());
     }
-
 
     @Test
     public void refund() throws IOException, TransactionRefundException {
-        
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
-
-        double amount3 = 1000d;
+        double amount = 1000d;
         String type = "REVERSED";
 
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -155,64 +96,58 @@ public class WebpayPlusDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePost(url, jsonResponse);
 
-        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction(option)).refund(testToken, amount3);
-        assertEquals(response.getType(), type);
-
+        final WebpayPlusTransactionRefundResponse response = (new WebpayPlus.Transaction(option)).refund(testToken, amount);
+        assertEquals(type, response.getType());
     }
 
     @Test
     public void status() throws IOException, TransactionStatusException {
-        
+        WebpayPlusTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
-
-        Map<String, Object> mapResponse = generateCommitJsonResponse();
-        Gson gson = new GsonBuilder().create();
-        setResponseGet(url, gson.toJson(mapResponse));
+        setResponseGet(url, generateCommitJsonResponse());
 
         final WebpayPlusTransactionStatusResponse response = (new WebpayPlus.Transaction(option)).status(testToken);
-        assertEquals(vci, response.getVci());
-        assertEquals(amount, response.getAmount());
-        assertEquals(status, response.getStatus());
-        assertEquals(buyOrder, response.getBuyOrder());
-        assertEquals(sessionId, response.getSessionId());
-        assertEquals(cardNumber, response.getCardDetail().getCardNumber());
-        assertEquals(accountingDate, response.getAccountingDate());
-        assertEquals(transactionDate, response.getTransactionDate());
-        assertEquals(authorizationCode, response.getAuthorizationCode());
-        assertEquals(paymentTypeCode, response.getPaymentTypeCode());
-        assertEquals(responseCode, response.getResponseCode());
-        
-        assertEquals(installmentsNumber, response.getInstallmentsNumber());
+        assertEquals(expectedResponse.getVci(), response.getVci());
+        assertEquals(expectedResponse.getAmount(), response.getAmount());
+        assertEquals(expectedResponse.getStatus(), response.getStatus());
+        assertEquals(expectedResponse.getBuyOrder(), response.getBuyOrder());
+        assertEquals(expectedResponse.getSessionId(), response.getSessionId());
+        assertEquals(expectedResponse.getCardDetail().getCardNumber(), response.getCardDetail().getCardNumber());
+        assertEquals(expectedResponse.getAccountingDate(), response.getAccountingDate());
+        assertEquals(expectedResponse.getTransactionDate(), response.getTransactionDate());
+        assertEquals(expectedResponse.getAuthorizationCode(), response.getAuthorizationCode());
+        assertEquals(expectedResponse.getPaymentTypeCode(), response.getPaymentTypeCode());
+        assertEquals(expectedResponse.getResponseCode(), response.getResponseCode());
+        assertEquals(expectedResponse.getInstallmentsNumber(), response.getInstallmentsNumber());
     }
 
     @Test
     public void capture() throws IOException, TransactionCaptureException {
-        
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
-
-        String authorizationCode3 = "1213";
-        String authorizationDate3 = "2021-08-01T03:17:42.785Z";
+        String authorizationCode = "1213";
+        String authorizationDate = "2021-08-01T03:17:42.785Z";
         double capturedAmount = 1000.0;
-        byte responseCode3 = 0;
+        byte responseCode = 0;
+
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("authorization_code", authorizationCode3);
-        mapResponse.put("authorization_date", authorizationDate3);
+        mapResponse.put("authorization_code", authorizationCode);
+        mapResponse.put("authorization_date", authorizationDate);
         mapResponse.put("captured_amount", capturedAmount);
-        mapResponse.put("response_code", responseCode3);
+        mapResponse.put("response_code", responseCode);
 
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        String buyOrder3 = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
-        String authorization3 = "1213";
-        double amount3 = 1000;
+        String buyOrder = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
+        String authorization = "1213";
+        double amount = 1000;
 
-        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder3, authorization3, amount3);
-        assertEquals(authorizationCode3, response.getAuthorizationCode());
-        assertEquals(authorizationDate3, response.getAuthorizationDate());
+        final WebpayPlusTransactionCaptureResponse response = (new WebpayPlus.Transaction(option)).capture(testToken, buyOrder, authorization, amount);
+        assertEquals(authorizationCode, response.getAuthorizationCode());
+        assertEquals(authorizationDate, response.getAuthorizationDate());
         assertEquals(capturedAmount, response.getCapturedAmount());
-        assertEquals(responseCode3, response.getResponseCode());
+        assertEquals(responseCode, response.getResponseCode());
     }
 
 }

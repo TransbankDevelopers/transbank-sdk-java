@@ -17,8 +17,8 @@ import cl.transbank.webpay.webpayplus.responses.*;
 import java.io.IOException;
 
 abstract class WebpayMallTransaction extends BaseTransaction {
-    public WebpayMallTransaction(Options options){
-        this.options = options;
+    protected WebpayMallTransaction(Options options){
+        super(options);
     }
 
     public WebpayPlusMallTransactionCreateResponse create(String buyOrder, String sessionId, String returnUrl, MallTransactionCreateDetails details) throws IOException, TransactionCreateException {

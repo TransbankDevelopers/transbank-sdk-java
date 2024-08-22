@@ -17,8 +17,8 @@ import java.io.IOException;
 
 abstract class WebpayTransaction extends BaseTransaction {
 
-    public WebpayTransaction(Options options){
-        this.options = options;
+    protected WebpayTransaction(Options options){
+        super(options);
     }
 
     public WebpayPlusTransactionCreateResponse create(String buyOrder, String sessionId, double amount, String returnUrl) throws IOException, TransactionCreateException {

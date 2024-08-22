@@ -3,6 +3,7 @@ package cl.transbank.patpass;
 import cl.transbank.common.ApiConstants;
 import cl.transbank.common.BaseTransaction;
 import cl.transbank.exception.TransbankException;
+import cl.transbank.model.Options;
 import cl.transbank.patpass.requests.TransactionCreateRequest;
 import cl.transbank.patpass.responses.PatpassByWebpayTransactionCommitResponse;
 import cl.transbank.patpass.responses.PatpassByWebpayTransactionCreateResponse;
@@ -19,7 +20,9 @@ import cl.transbank.webpay.common.TransactionRefundRequest;
 import java.io.IOException;
 
 abstract class PatpassByWebpayTransaction extends BaseTransaction {
-
+    protected PatpassByWebpayTransaction(Options options){
+        super(options);
+    }
     public PatpassByWebpayTransactionCreateResponse create(
             String buyOrder, String sessionId, double amount, String returnUrl, String serviceId, String cardHolderId,
             String cardHolderName, String cardHolderLastName1, String cardHolderLastName2, String cardHolderMail, String cellphoneNumber,

@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class PatpassComercioTest extends TestBase {
@@ -98,7 +99,7 @@ public class PatpassComercioTest extends TestBase {
 
         String urlResponse = "https://pagoautomaticocontarjetasint.transbank.cl/nuevo-ic-rest/tokenVoucherLogin";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("authorized", true);
+        mapResponse.put("authorized", (Boolean)true);
         mapResponse.put("voucherUrl", urlResponse);
 
         Gson gson = new GsonBuilder().create();
@@ -107,7 +108,7 @@ public class PatpassComercioTest extends TestBase {
 
         final PatpassComercioTransactionStatusResponse response = (new PatpassComercio.Inscription(option)).status(testToken);
 
-        assertEquals(response.isAuthorized(), true);
+        assertTrue(response.isAuthorized());
         assertEquals(response.getVoucherUrl(), urlResponse);
     }
 }

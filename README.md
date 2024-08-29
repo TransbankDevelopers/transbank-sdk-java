@@ -83,6 +83,11 @@ mvn clean compile
 mvn test
 ```
 
+### Generar un reporte de los test ejecutados localmente
+```bash
+mvn surefire-report:report
+```
+
 ### Generar un jar local
 
 ````bash

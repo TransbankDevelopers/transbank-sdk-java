@@ -11,6 +11,7 @@ import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.exception.InscriptionDeleteException;
 import cl.transbank.webpay.exception.InscriptionFinishException;
 import cl.transbank.webpay.exception.InscriptionStartException;
+import cl.transbank.webpay.exception.TransbankHttpApiException;
 import cl.transbank.webpay.oneclick.requests.InscriptionDeleteRequest;
 import cl.transbank.webpay.oneclick.requests.InscriptionStartRequest;
 import cl.transbank.webpay.oneclick.responses.OneclickMallInscriptionFinishResponse;
@@ -105,7 +106,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
     }
   }
 
-  public void delete(String tbkUser, String username)
+  public boolean delete(String tbkUser, String username)
     throws IOException, InscriptionDeleteException {
     ValidationUtil.hasTextTrimWithMaxLength(
       username,
@@ -129,6 +130,12 @@ abstract class OneclickMallInscription extends BaseTransaction {
         request,
         options
       );
+      return true;
+    } catch (TransbankHttpApiException e) {
+      if (e.getCode() != 204) {
+        return false;
+      }
+      throw new InscriptionDeleteException(e);
     } catch (TransbankException e) {
       throw new InscriptionDeleteException(e);
     }

@@ -13,6 +13,7 @@ import cl.transbank.webpay.webpayplus.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -37,7 +38,10 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
     public static void stopProxy() {
         client.stop();
     }
-
+    @AfterEach
+    public void resetMockServer() {
+        client.reset();
+    }
     @Test
     public void create() throws IOException, TransactionCreateException {
 

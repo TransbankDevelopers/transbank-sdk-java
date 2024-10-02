@@ -14,6 +14,7 @@ import cl.transbank.webpay.exception.TransactionStatusException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -41,7 +42,10 @@ public class PatpassComercioTest extends TestBase {
     public static void stopProxy() {
         client.stop();
     }
-
+    @AfterEach
+    public void resetMockServer() {
+        client.reset();
+    }
     @Test
     public void start() throws IOException, InscriptionStartException {
         

@@ -13,12 +13,15 @@ import cl.transbank.webpay.oneclick.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockserver.model.HttpStatusCode;
+
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 
@@ -42,6 +45,10 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     @AfterAll
     public static void stopProxy() {
         client.stop();
+    }
+    @AfterEach
+    public void resetMockServer() {
+        client.reset();
     }
 
     @Test
@@ -91,6 +98,20 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
         assertEquals(response.getCardType(), cardType);
         assertEquals(response.getCardNumber(), cardNumber);
 
+    }
+    @Test
+    public void delete() throws IOException, InscriptionDeleteException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDelete(url);
+        final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
+        assertTrue(response);
+    }
+    @Test
+    public void deleteNotFound() throws IOException, InscriptionDeleteException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
+        final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
+        assertFalse(response);
     }
     @Test
     public void authorize() throws IOException, TransactionAuthorizeException {

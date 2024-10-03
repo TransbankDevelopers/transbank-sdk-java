@@ -105,7 +105,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
     }
   }
 
-  public void delete(String tbkUser, String username)
+  public boolean delete(String tbkUser, String username)
     throws IOException, InscriptionDeleteException {
     ValidationUtil.hasTextTrimWithMaxLength(
       username,
@@ -129,6 +129,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
         request,
         options
       );
+      return true;
     } catch (TransbankException e) {
       throw new InscriptionDeleteException(e);
     }

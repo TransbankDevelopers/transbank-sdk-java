@@ -42,9 +42,13 @@ public abstract class TestBase {
                         .withBody(jsonResponse));
     }
 
-    protected void setResponseDelete(String url, String jsonResponse){
+    protected void setResponseDelete(String url){
         client.when(new HttpRequest().withMethod("DELETE").withPath(url))
-                .respond(new HttpResponse().withStatusCode(HttpStatusCode.OK_200.code())
-                        .withBody(jsonResponse));
+                .respond(new HttpResponse().withStatusCode(HttpStatusCode.NO_CONTENT_204.code()));
     }
+    protected void setResponseDeleteError(String url, HttpStatusCode statusCode){
+        client.when(new HttpRequest().withMethod("DELETE").withPath(url))
+                .respond(new HttpResponse().withStatusCode(statusCode.code()));
+    }
+
 }

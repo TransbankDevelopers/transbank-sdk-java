@@ -13,11 +13,15 @@ import cl.transbank.webpay.oneclick.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockserver.model.HttpStatusCode;
+
 import java.io.IOException;
 import java.util.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 public class OneclickMallTest  extends OneclickMallTestBase {
@@ -33,17 +37,22 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
 
+    @AfterEach
+    void resetMockServer() {
+        client.reset();
+    }
+
     @Test
-    public void start() throws IOException, InscriptionStartException {
+    void start() throws IOException, InscriptionStartException {
         String url = String.format("/%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
@@ -63,7 +72,7 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     }
 
     @Test
-    public void finish() throws IOException, InscriptionFinishException {
+    void finish() throws IOException, InscriptionFinishException {
         String url = String.format("/%s/inscriptions/%s", apiUrl, testToken);
 
         byte responseCode = 0;
@@ -90,8 +99,30 @@ public class OneclickMallTest  extends OneclickMallTestBase {
         assertEquals(response.getCardNumber(), cardNumber);
 
     }
+
     @Test
-    public void authorize() throws IOException, TransactionAuthorizeException {
+    void delete() throws IOException, InscriptionDeleteException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDelete(url);
+        final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
+        assertTrue(response);
+    }
+
+    @Test
+    void deleteNotFound() throws IOException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
+
+        try {
+            new Oneclick.MallInscription(option).delete(tbkUser, username);
+            fail("Expected InscriptionDeleteException to be thrown");
+        } catch (InscriptionDeleteException e) {
+            assertNotNull(e);
+        }
+    }
+
+    @Test
+    void authorize() throws IOException, TransactionAuthorizeException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions",apiUrl);
         setResponsePost(url, generateJsonResponse());
@@ -140,7 +171,7 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     }
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
+    void refund() throws IOException, TransactionRefundException {
         String buyOrder = "1643997337";
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, buyOrder);
 
@@ -162,7 +193,7 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, expectedResponse.getBuyOrder());
         setResponseGet(url, generateJsonResponse());
@@ -196,5 +227,7 @@ public class OneclickMallTest  extends OneclickMallTestBase {
         assertEquals(detail2.getCommerceCode(), expectedDetail2.getCommerceCode());
         assertEquals(detail2.getBuyOrder(), expectedDetail2.getBuyOrder());
     }
+
+
 
 }

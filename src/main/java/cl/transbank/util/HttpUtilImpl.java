@@ -59,6 +59,8 @@ public class HttpUtilImpl implements HttpUtil {
   ) throws IOException, WebpayException {
     final String jsonIn = getJsonUtil().jsonEncode(request);
     final String jsonOut = request(url, method, jsonIn, headers);
+    if (clazz==null || jsonOut==null)
+      return null;
     return getJsonUtil().jsonDecode(jsonOut, clazz);
   }
 

@@ -13,6 +13,7 @@ import cl.transbank.webpay.webpayplus.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
@@ -29,17 +30,20 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
-
+    @AfterEach
+    void resetMockServer() {
+        client.reset();
+    }
     @Test
-    public void create() throws IOException, TransactionCreateException {
+    void create() throws IOException, TransactionCreateException {
 
         String url = String.format("/%s/transactions", apiUrl);
 
@@ -74,7 +78,7 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
     }
 
     @Test
-    public void commit() throws IOException, TransactionCommitException {
+    void commit() throws IOException, TransactionCommitException {
         WebpayPlusMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
         setResponsePut(url, generateCommitJsonResponse());
@@ -113,7 +117,7 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
 
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
+    void refund() throws IOException, TransactionRefundException {
 
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
         String type = "REVERSED";
@@ -135,7 +139,7 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         WebpayPlusMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s",apiUrl, testToken);
         setResponseGet(url, generateCommitJsonResponse());
@@ -173,7 +177,7 @@ public class WebpayPlusMallDeferredTest extends WebpayPlusMallTestBase {
     }
 
     @Test
-    public void capture() throws IOException, TransactionCaptureException {
+    void capture() throws IOException, TransactionCaptureException {
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
 
         String commerceCode = "597055555537";

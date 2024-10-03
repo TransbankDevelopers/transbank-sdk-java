@@ -109,7 +109,7 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     }
 
     @Test
-    public void deleteNotFound() throws IOException {
+    void deleteNotFound() throws IOException {
         String url = String.format("/%s/inscriptions", apiUrl);
         setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
 

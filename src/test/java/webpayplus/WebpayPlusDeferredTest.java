@@ -24,7 +24,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-class WebpayPlusDeferredTest extends WebpayPlusTestBase {
+public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_DEFERRED,
             IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);

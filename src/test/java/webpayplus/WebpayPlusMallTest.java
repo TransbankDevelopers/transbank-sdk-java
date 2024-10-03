@@ -25,7 +25,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-class WebpayPlusMallTest extends WebpayPlusMallTestBase {
+public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_MALL,

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-class PatpassComercioTest extends TestBase {
+public class PatpassComercioTest extends TestBase {
 
     private static String apiUrl = ApiConstants.PATPASS_COMERCIO_ENDPOINT;
     private static Options option = new PatpassOptions(IntegrationCommerceCodes.PATPASS_COMERCIO,

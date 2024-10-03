@@ -25,7 +25,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
+class WebpayPlusMallTest extends WebpayPlusMallTestBase {
 
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_MALL,
@@ -33,20 +33,20 @@ public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
     @AfterEach
-    public void resetMockServer() {
+    void resetMockServer() {
         client.reset();
     }
     @Test
-    public void create() throws IOException, TransactionCreateException {
+    void create() throws IOException, TransactionCreateException {
         
         String url = String.format("/%s/transactions", apiUrl);
 
@@ -81,7 +81,7 @@ public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
     }
 
     @Test
-    public void commit() throws IOException, TransactionCommitException {
+    void commit() throws IOException, TransactionCommitException {
         WebpayPlusMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
         setResponsePut(url, generateCommitJsonResponse());
@@ -120,7 +120,7 @@ public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
 
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
+    void refund() throws IOException, TransactionRefundException {
         
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
         String type = "REVERSED";
@@ -142,7 +142,7 @@ public class WebpayPlusMallTest extends WebpayPlusMallTestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         WebpayPlusMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s",apiUrl, testToken);
         setResponseGet(url, generateCommitJsonResponse());

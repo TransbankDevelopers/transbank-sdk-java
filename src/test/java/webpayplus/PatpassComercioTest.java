@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class PatpassComercioTest extends TestBase {
+class PatpassComercioTest extends TestBase {
 
     private static String apiUrl = ApiConstants.PATPASS_COMERCIO_ENDPOINT;
     private static Options option = new PatpassOptions(IntegrationCommerceCodes.PATPASS_COMERCIO,
@@ -34,20 +34,20 @@ public class PatpassComercioTest extends TestBase {
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
     @AfterEach
-    public void resetMockServer() {
+    void resetMockServer() {
         client.reset();
     }
     @Test
-    public void start() throws IOException, InscriptionStartException {
+    void start() throws IOException, InscriptionStartException {
         
         String url = String.format("/%s/patInscription", apiUrl);
 
@@ -97,7 +97,7 @@ public class PatpassComercioTest extends TestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         
         String url = String.format("/%s/status", apiUrl);
 

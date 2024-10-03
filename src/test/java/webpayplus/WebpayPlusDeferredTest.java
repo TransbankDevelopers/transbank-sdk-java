@@ -24,27 +24,27 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
+class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS_DEFERRED,
             IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
     @AfterEach
-    public void resetMockServer() {
+    void resetMockServer() {
         client.reset();
     }
     @Test
-    public void create() throws IOException, TransactionCreateException {
+    void create() throws IOException, TransactionCreateException {
         String url = String.format("/%s/transactions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/initTransaction";
@@ -67,7 +67,7 @@ public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     }
 
     @Test
-    public void commit() throws IOException, TransactionCommitException {
+    void commit() throws IOException, TransactionCommitException {
         WebpayPlusTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
         setResponsePut(url, generateCommitJsonResponse());
@@ -88,7 +88,7 @@ public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     }
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
+    void refund() throws IOException, TransactionRefundException {
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, testToken);
         double amount = 1000d;
         String type = "REVERSED";
@@ -105,7 +105,7 @@ public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         WebpayPlusTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, testToken);
         setResponseGet(url, generateCommitJsonResponse());
@@ -126,7 +126,7 @@ public class WebpayPlusDeferredTest extends WebpayPlusTestBase {
     }
 
     @Test
-    public void capture() throws IOException, TransactionCaptureException {
+    void capture() throws IOException, TransactionCaptureException {
         String url = String.format("/%s/transactions/%s/capture", apiUrl, testToken);
         String authorizationCode = "1213";
         String authorizationDate = "2021-08-01T03:17:42.785Z";

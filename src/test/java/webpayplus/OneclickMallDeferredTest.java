@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 
-public class OneclickMallDeferredTest extends OneclickMallTestBase {
+class OneclickMallDeferredTest extends OneclickMallTestBase {
 
     private static String apiUrl = ApiConstants.ONECLICK_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.ONECLICK_MALL_DEFERRED,
@@ -38,21 +38,21 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
     }
     @AfterEach
-    public void resetMockServer() {
+    void resetMockServer() {
         client.reset();
     }
 
     @Test
-    public void start() throws IOException, InscriptionStartException {
+    void start() throws IOException, InscriptionStartException {
         String url = String.format("/%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
@@ -72,7 +72,7 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     }
 
     @Test
-    public void finish() throws IOException, InscriptionFinishException {
+    void finish() throws IOException, InscriptionFinishException {
         String url = String.format("/%s/inscriptions/%s", apiUrl, testToken);
 
         byte responseCode = 0;
@@ -100,21 +100,21 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
 
     }
     @Test
-    public void delete() throws IOException, InscriptionDeleteException {
+    void delete() throws IOException, InscriptionDeleteException {
         String url = String.format("/%s/inscriptions", apiUrl);
         setResponseDelete(url);
         final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
         assertTrue(response);
     }
     @Test
-    public void deleteNotFound() throws IOException, InscriptionDeleteException {
+    void deleteNotFound() throws IOException, InscriptionDeleteException {
         String url = String.format("/%s/inscriptions", apiUrl);
         setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
         final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
         assertFalse(response);
     }
     @Test
-    public void authorize() throws IOException, TransactionAuthorizeException {
+    void authorize() throws IOException, TransactionAuthorizeException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions",apiUrl);
         setResponsePost(url, generateJsonResponse());
@@ -163,7 +163,7 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     }
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
+    void refund() throws IOException, TransactionRefundException {
         String buyOrder = "1643997337";
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, buyOrder);
 
@@ -185,7 +185,7 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
+    void status() throws IOException, TransactionStatusException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
         String url = String.format("/%s/transactions/%s", apiUrl, expectedResponse.getBuyOrder());
         setResponseGet(url, generateJsonResponse());
@@ -221,7 +221,7 @@ public class OneclickMallDeferredTest extends OneclickMallTestBase {
     }
 
     @Test
-    public void capture() throws IOException, TransactionCaptureException {
+    void capture() throws IOException, TransactionCaptureException {
         String url = String.format("/%s/transactions/capture",apiUrl);
 
         String authorizationCode = "138248";

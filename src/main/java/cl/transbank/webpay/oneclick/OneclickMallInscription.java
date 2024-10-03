@@ -132,10 +132,7 @@ abstract class OneclickMallInscription extends BaseTransaction {
       );
       return true;
     } catch (TransbankHttpApiException e) {
-      if (e.getCode() != 204) {
         return false;
-      }
-      throw new InscriptionDeleteException(e);
     } catch (TransbankException e) {
       throw new InscriptionDeleteException(e);
     }

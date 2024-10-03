@@ -11,7 +11,6 @@ import cl.transbank.util.WebpayApiResource;
 import cl.transbank.webpay.exception.InscriptionDeleteException;
 import cl.transbank.webpay.exception.InscriptionFinishException;
 import cl.transbank.webpay.exception.InscriptionStartException;
-import cl.transbank.webpay.exception.TransbankHttpApiException;
 import cl.transbank.webpay.oneclick.requests.InscriptionDeleteRequest;
 import cl.transbank.webpay.oneclick.requests.InscriptionStartRequest;
 import cl.transbank.webpay.oneclick.responses.OneclickMallInscriptionFinishResponse;
@@ -131,8 +130,6 @@ abstract class OneclickMallInscription extends BaseTransaction {
         options
       );
       return true;
-    } catch (TransbankHttpApiException e) {
-        return false;
     } catch (TransbankException e) {
       throw new InscriptionDeleteException(e);
     }

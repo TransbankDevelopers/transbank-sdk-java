@@ -109,12 +109,18 @@ public class OneclickMallTest  extends OneclickMallTestBase {
     }
 
     @Test
-    void deleteNotFound() throws IOException, InscriptionDeleteException {
+    public void deleteNotFound() throws IOException {
         String url = String.format("/%s/inscriptions", apiUrl);
         setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
-        final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
-        assertFalse(response);
+
+        try {
+            new Oneclick.MallInscription(option).delete(tbkUser, username);
+            fail("Expected InscriptionDeleteException to be thrown");
+        } catch (InscriptionDeleteException e) {
+            assertNotNull(e);
+        }
     }
+
     @Test
     void authorize() throws IOException, TransactionAuthorizeException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();

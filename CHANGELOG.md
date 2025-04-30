@@ -11,15 +11,13 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 - Se configura por defecto el timeout a 600 segundos para todas las peticiones.
 - Se actualizan las versiones de las dependencias.
 - Se actualizan los test.
+- Se elimina el producto Webpay Modal.
+- Se elimina el producto PatPass by Webpay.
+- Se eliminan los métodos configureForIntegration, configureForProduction, configureForTesting, configureForTestingDeferred, configureForTestingMall, configureForTestingMallDeferred, configureForMock  de todos los productos que los utilizaban.
 
 ### Added
 - Se agrega el parámetro timeout para las peticiones a la API, para que pueda modificarse en todos los productos.
 - Se agregan los métodos buildForIntegration y buildForProduction a todos los productos.
-
-## Deleted
-- Se elimina el producto Webpay Modal.
-- Se elimina el producto PatPass by Webpay.
-- Se eliminan los métodos configureForIntegration, configureForProduction, configureForTesting, configureForTestingDeferred, configureForTestingMall, configureForTestingMallDeferred, configureForMock  de todos los productos que los utilizaban.
 
 ## [5.0.0] - 2024-03-15
 

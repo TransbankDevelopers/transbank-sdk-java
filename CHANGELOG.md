@@ -5,6 +5,22 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [6.0.0] - 2025-04-30
+
+### Changed
+- Se configura por defecto el timeout a 600 segundos para todas las peticiones.
+- Se actualizan las versiones de las dependencias.
+- Se actualizan los test.
+
+### Added
+- Se agrega el parámetro timeout para las peticiones a la API, para que pueda modificarse en todos los productos.
+- Se agregan los métodos buildForIntegration y buildForProduction a todos los productos.
+
+## Deleted
+- Se elimina el producto Webpay Modal.
+- Se elimina el producto PatPass by Webpay.
+- Se eliminan los métodos configureForIntegration, configureForProduction, configureForTesting, configureForTestingDeferred, configureForTestingMall, configureForTestingMallDeferred, configureForMock  de todos los productos que los utilizaban.
+
 ## [5.0.0] - 2024-03-15
 
 ### Changed

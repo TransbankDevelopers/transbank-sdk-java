@@ -7,17 +7,25 @@ y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 
 ## [6.0.0] - 2025-05-05
 
-### Changed
+Esta versión no tiene cambios en el comportamiento de las funcionalidades de la API.
+
+### ¡Importante!
+
+El SDK ya no apunta por defecto al ambiente de integración. Ahora es necesario configurar de forma explícita las credenciales. Para esto se debe inicializar explícitamente los objetos de los distintos productos, ya sea utilizando la clase Options o a través de los nuevos métodos buildForIntegration y buildForProduction
+
+### Agrega
+- Se agrega el parámetro timeout para las peticiones a la API para que pueda modificarse en todos los productos.
+- Se agregan los métodos buildForIntegration y buildForProduction a todos los productos.
+
+### Actualiza
 - Se configura por defecto el timeout a 600 segundos para todas las peticiones.
 - Se actualizan las versiones de las dependencias.
 - Se actualizan los test.
-- Se elimina el producto Webpay Modal.
-- Se elimina el producto PatPass by Webpay.
-- Se eliminan los métodos configureForIntegration, configureForProduction, configureForTesting, configureForTestingDeferred, configureForTestingMall, configureForTestingMallDeferred, configureForMock  de todos los productos que los utilizaban.
 
-### Added
-- Se agrega el parámetro timeout para las peticiones a la API, para que pueda modificarse en todos los productos.
-- Se agregan los métodos buildForIntegration y buildForProduction a todos los productos.
+### Elimina
+- Se elimina el código que hace referencia al producto Webpay Modal.
+- Se elimina el código que hace referencia al producto PatPass by Webpay.
+- Se eliminan los métodos configureForIntegration, configureForProduction, configureForTesting, configureForTestingDeferred, configureForTestingMall, configureForTestingMallDeferred, configureForMock de todos los productos que los utilizaban.
 
 ## [5.0.0] - 2024-03-15
 

@@ -16,7 +16,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>3.0.1</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 

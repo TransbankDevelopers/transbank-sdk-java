@@ -24,7 +24,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-public class OneclickMallTest  extends OneclickMallTestBase {
+class OneclickMallTest  extends OneclickMallTestBase {
 
     private static String apiUrl = ApiConstants.ONECLICK_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.ONECLICK_MALL,

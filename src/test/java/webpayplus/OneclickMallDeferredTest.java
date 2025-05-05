@@ -1,6 +1,11 @@
 package webpayplus;
 
 import cl.transbank.common.ApiConstants;
+import cl.transbank.common.IntegrationApiKeys;
+import cl.transbank.common.IntegrationCommerceCodes;
+import cl.transbank.common.IntegrationType;
+import cl.transbank.model.Options;
+import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.*;
 import cl.transbank.webpay.oneclick.Oneclick;
 import cl.transbank.webpay.oneclick.model.*;
@@ -8,61 +13,46 @@ import cl.transbank.webpay.oneclick.responses.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockserver.model.HttpStatusCode;
+
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 
-public class OneclickMallDeferredTest extends TestBase {
+class OneclickMallDeferredTest extends OneclickMallTestBase {
 
     private static String apiUrl = ApiConstants.ONECLICK_ENDPOINT;
-
+    private static Options option = new WebpayOptions(IntegrationCommerceCodes.ONECLICK_MALL_DEFERRED,
+            IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
     private static String username = "goncafa";
     private static String email = "gonzalo.castillo@continuum.cl";
     private static String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
-
-    private static String cardNumber = "6623";
-    private static String transactionDate = "2021-08-01T05:30:06.557Z";
-    private static String accountingDate = "0801";
-    private static String buyOrder = "724900565";
-
-    private static double amount1 = 1000d;
-    private static String status1 = "AUTHORIZED";
-    private static String authorizationCode1 = "1213";
-    private static String paymentTypeCode1 = "VN";
-    private static byte installmentsNumber1 = 0;
     private static String commerceCode1 = "597055555542";
-    private static String buyOrder1 = "2019439134";
-    private static byte responseCode1 = 0;
-
-    private static double amount2 = 1000d;
-    private static String status2 = "AUTHORIZED";
-    private static String authorizationCode2 = "1213";
-    private static String paymentTypeCode2 = "VN";
-    private static byte installmentsNumber2 = 0;
     private static String commerceCode2 = "597055555543";
-    private static String buyOrder2 = "353345213";
-    private static byte responseCode2 = 0;
-
     private static String testToken = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     @BeforeAll
-    public static void startProxy() {
+    static void startProxy() {
         client = startClientAndServer(8888);
     }
 
     @AfterAll
-    public static void stopProxy() {
+    static void stopProxy() {
         client.stop();
+    }
+    @AfterEach
+    void resetMockServer() {
+        client.reset();
     }
 
     @Test
-    public void start() throws IOException, InscriptionStartException {
-        Oneclick.configureForMock();
+    void start() throws IOException, InscriptionStartException {
         String url = String.format("/%s/inscriptions",apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
@@ -76,15 +66,13 @@ public class OneclickMallDeferredTest extends TestBase {
 
         String returnUrl = "http://localhost:8081/oneclick-mall/finish";
 
-        final OneclickMallInscriptionStartResponse response = (new Oneclick.MallInscription()).start(username, email, returnUrl);
+        final OneclickMallInscriptionStartResponse response = (new Oneclick.MallInscription(option)).start(username, email, returnUrl);
         assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrlWebpay(), urlResponse);
     }
 
-
     @Test
-    public void finish() throws IOException, InscriptionFinishException {
-        Oneclick.configureForMock();
+    void finish() throws IOException, InscriptionFinishException {
         String url = String.format("/%s/inscriptions/%s", apiUrl, testToken);
 
         byte responseCode = 0;
@@ -103,7 +91,7 @@ public class OneclickMallDeferredTest extends TestBase {
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
 
-        final OneclickMallInscriptionFinishResponse response = (new Oneclick.MallInscription()).finish(testToken);
+        final OneclickMallInscriptionFinishResponse response = (new Oneclick.MallInscription(option)).finish(testToken);
         assertEquals(response.getResponseCode(), responseCode);
         assertEquals(response.getTbkUser(), tbkUser);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
@@ -111,56 +99,30 @@ public class OneclickMallDeferredTest extends TestBase {
         assertEquals(response.getCardNumber(), cardNumber);
 
     }
-
-
-     private Map<String, Object> generateAutorizeJsonResponse(){
-
-        Map<String, String> mapResponseCardDetail = new HashMap<String, String>();
-        mapResponseCardDetail.put("card_number", cardNumber);
-
-        Map<String, Object> mapResponseDetail1 = new HashMap<String, Object>();
-        mapResponseDetail1.put("amount", amount1);
-        mapResponseDetail1.put("status", status1);
-        mapResponseDetail1.put("authorization_code", authorizationCode1);
-        mapResponseDetail1.put("payment_type_code", paymentTypeCode1);
-        mapResponseDetail1.put("response_code", responseCode1);
-        mapResponseDetail1.put("installments_number", installmentsNumber1);
-        mapResponseDetail1.put("commerce_code", commerceCode1);
-        mapResponseDetail1.put("buy_order", buyOrder1);
-
-        Map<String, Object> mapResponseDetail2 = new HashMap<String, Object>();
-        mapResponseDetail2.put("amount", amount2);
-        mapResponseDetail2.put("status", status2);
-        mapResponseDetail2.put("authorization_code", authorizationCode2);
-        mapResponseDetail2.put("payment_type_code", paymentTypeCode2);
-        mapResponseDetail2.put("response_code", responseCode2);
-        mapResponseDetail2.put("installments_number", installmentsNumber2);
-        mapResponseDetail2.put("commerce_code", commerceCode2);
-        mapResponseDetail2.put("buy_order", buyOrder2);
-
-
-        Map<String, Object> mapResponse = new HashMap<String, Object>();
-        mapResponse.put("buy_order", buyOrder);
-        mapResponse.put("card_detail", mapResponseCardDetail);
-        mapResponse.put("accounting_date", accountingDate);
-        mapResponse.put("transaction_date", transactionDate);
-        //details
-        List<Map<String, Object>> lstDetail = new ArrayList<Map<String, Object>>();
-        lstDetail.add(mapResponseDetail1);
-        lstDetail.add(mapResponseDetail2);
-        mapResponse.put("details", lstDetail);
-
-        return mapResponse;
-    }
-
     @Test
-    public void authorize() throws IOException, TransactionAuthorizeException {
-        Oneclick.configureForMock();
-        String url = String.format("/%s/transactions",apiUrl);
+    void delete() throws IOException, InscriptionDeleteException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDelete(url);
+        final boolean response = (new Oneclick.MallInscription(option)).delete(tbkUser, username);
+        assertTrue(response);
+    }
+    @Test
+    void deleteNotFound() throws IOException {
+        String url = String.format("/%s/inscriptions", apiUrl);
+        setResponseDeleteError(url, HttpStatusCode.NOT_FOUND_404);
 
-        Map<String, Object> mapResponse = generateAutorizeJsonResponse();
-        Gson gson = new GsonBuilder().create();
-        setResponsePost(url, gson.toJson(mapResponse));
+        try {
+            new Oneclick.MallInscription(option).delete(tbkUser, username);
+            fail("Expected InscriptionDeleteException to be thrown");
+        } catch (InscriptionDeleteException e) {
+            assertNotNull(e);
+        }
+    }
+    @Test
+    void authorize() throws IOException, TransactionAuthorizeException {
+        OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
+        String url = String.format("/%s/transactions",apiUrl);
+        setResponsePost(url, generateJsonResponse());
 
         String tbkUserReq = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
         String buyOrderReq = String.valueOf(new Random().nextInt(Integer.MAX_VALUE));
@@ -175,35 +137,39 @@ public class OneclickMallDeferredTest extends TestBase {
                 .add(amountMallOne, commerceCode1, buyOrderMallOne, installmentsNumberMallOne)
                 .add(amountMallTwo, commerceCode2, buyOrderMallTwo, installmentsNumberMallTwo);
 
-        final OneclickMallTransactionAuthorizeResponse response = (new Oneclick.MallTransaction()).authorize(username, tbkUserReq, buyOrderReq, details);
+        final OneclickMallTransactionAuthorizeResponse response = (new Oneclick.MallTransaction(option)).authorize(username, tbkUserReq, buyOrderReq, details);
 
-        assertEquals(response.getBuyOrder(), buyOrder);
-        assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
-        assertEquals(response.getAccountingDate(), accountingDate);
-        assertEquals(response.getTransactionDate(), transactionDate);
+        assertEquals(response.getBuyOrder(), expectedResponse.getBuyOrder());
+        assertEquals(response.getCardDetail().getCardNumber(), expectedResponse.getCardDetail().getCardNumber());
+        assertEquals(response.getAccountingDate(), expectedResponse.getAccountingDate());
+        assertEquals(response.getTransactionDate(), expectedResponse.getTransactionDate());
         //details1
-        assertEquals(response.getDetails().get(0).getAmount(), amount1);
-        assertEquals(response.getDetails().get(0).getStatus(), status1);
-        assertEquals(response.getDetails().get(0).getAuthorizationCode(), authorizationCode1);
-        assertEquals(response.getDetails().get(0).getPaymentTypeCode(), paymentTypeCode1);
-        assertEquals(response.getDetails().get(0).getResponseCode(), responseCode1);
-        assertEquals(response.getDetails().get(0).getInstallmentsNumber(), installmentsNumber1);
-        assertEquals(response.getDetails().get(0).getCommerceCode(), commerceCode1);
-        assertEquals(response.getDetails().get(0).getBuyOrder(), buyOrder1);
+        OneclickMallTransactionStatusResponse.Detail expectedDetail1 = expectedResponse.getDetails().get(0);
+        OneclickMallTransactionAuthorizeResponse.Detail detail1 = response.getDetails().get(0);
+        assertEquals(detail1.getAmount(), expectedDetail1.getAmount());
+        assertEquals(detail1.getStatus(), expectedDetail1.getStatus());
+        assertEquals(detail1.getAuthorizationCode(), expectedDetail1.getAuthorizationCode());
+        assertEquals(detail1.getPaymentTypeCode(), expectedDetail1.getPaymentTypeCode());
+        assertEquals(detail1.getResponseCode(), expectedDetail1.getResponseCode());
+        assertEquals(detail1.getInstallmentsNumber(), expectedDetail1.getInstallmentsNumber());
+        assertEquals(detail1.getCommerceCode(), expectedDetail1.getCommerceCode());
+        assertEquals(detail1.getBuyOrder(), expectedDetail1.getBuyOrder());
         //details2
-        assertEquals(response.getDetails().get(1).getAmount(), amount2);
-        assertEquals(response.getDetails().get(1).getStatus(), status2);
-        assertEquals(response.getDetails().get(1).getAuthorizationCode(), authorizationCode2);
-        assertEquals(response.getDetails().get(1).getPaymentTypeCode(), paymentTypeCode2);
-        assertEquals(response.getDetails().get(1).getResponseCode(), responseCode2);
-        assertEquals(response.getDetails().get(1).getInstallmentsNumber(), installmentsNumber2);
-        assertEquals(response.getDetails().get(1).getCommerceCode(), commerceCode2);
-        assertEquals(response.getDetails().get(1).getBuyOrder(), buyOrder2);
+        OneclickMallTransactionStatusResponse.Detail expectedDetail2 = expectedResponse.getDetails().get(1);
+        OneclickMallTransactionAuthorizeResponse.Detail detail2 = response.getDetails().get(1);
+        assertEquals(detail2.getAmount(), expectedDetail2.getAmount());
+        assertEquals(detail2.getStatus(), expectedDetail2.getStatus());
+        assertEquals(detail2.getAuthorizationCode(), expectedDetail2.getAuthorizationCode());
+        assertEquals(detail2.getPaymentTypeCode(), expectedDetail2.getPaymentTypeCode());
+        assertEquals(detail2.getResponseCode(), expectedDetail2.getResponseCode());
+        assertEquals(detail2.getInstallmentsNumber(), expectedDetail2.getInstallmentsNumber());
+        assertEquals(detail2.getCommerceCode(), expectedDetail2.getCommerceCode());
+        assertEquals(detail2.getBuyOrder(), expectedDetail2.getBuyOrder());
     }
 
     @Test
-    public void refund() throws IOException, TransactionRefundException {
-        Oneclick.configureForMock();
+    void refund() throws IOException, TransactionRefundException {
+        String buyOrder = "1643997337";
         String url = String.format("/%s/transactions/%s/refunds", apiUrl, buyOrder);
 
         String type = "REVERSED";
@@ -218,49 +184,49 @@ public class OneclickMallDeferredTest extends TestBase {
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
         double amount = 1000d;
-        final OneclickMallTransactionRefundResponse response = (new Oneclick.MallTransaction()).refund(buyOrder, childCommerceCode, childBuyOrder, amount);
+        final OneclickMallTransactionRefundResponse response = (new Oneclick.MallTransaction(option)).refund(buyOrder, childCommerceCode, childBuyOrder, amount);
 
         assertEquals(response.getType(), type);
     }
 
     @Test
-    public void status() throws IOException, TransactionStatusException {
-        Oneclick.configureForMock();
-        String url = String.format("/%s/transactions/%s", apiUrl, buyOrder);
+    void status() throws IOException, TransactionStatusException {
+        OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
+        String url = String.format("/%s/transactions/%s", apiUrl, expectedResponse.getBuyOrder());
+        setResponseGet(url, generateJsonResponse());
 
-        Map<String, Object> mapResponse = generateAutorizeJsonResponse();
-        Gson gson = new GsonBuilder().create();
-        setResponseGet(url, gson.toJson(mapResponse));
+        final OneclickMallTransactionStatusResponse response = (new Oneclick.MallTransaction(option)).status(expectedResponse.getBuyOrder());
 
-        final OneclickMallTransactionStatusResponse response = (new Oneclick.MallTransaction()).status(buyOrder);
-
-        assertEquals(response.getBuyOrder(), buyOrder);
-        assertEquals(response.getCardDetail().getCardNumber(), cardNumber);
-        assertEquals(response.getAccountingDate(), accountingDate);
-        assertEquals(response.getTransactionDate(), transactionDate);
+        assertEquals(response.getBuyOrder(), expectedResponse.getBuyOrder());
+        assertEquals(response.getCardDetail().getCardNumber(), expectedResponse.getCardDetail().getCardNumber());
+        assertEquals(response.getAccountingDate(), expectedResponse.getAccountingDate());
+        assertEquals(response.getTransactionDate(), expectedResponse.getTransactionDate());
         //details1
-        assertEquals(response.getDetails().get(0).getAmount(), amount1);
-        assertEquals(response.getDetails().get(0).getStatus(), status1);
-        assertEquals(response.getDetails().get(0).getAuthorizationCode(), authorizationCode1);
-        assertEquals(response.getDetails().get(0).getPaymentTypeCode(), paymentTypeCode1);
-        assertEquals(response.getDetails().get(0).getResponseCode(), responseCode1);
-        assertEquals(response.getDetails().get(0).getInstallmentsNumber(), installmentsNumber1);
-        assertEquals(response.getDetails().get(0).getCommerceCode(), commerceCode1);
-        assertEquals(response.getDetails().get(0).getBuyOrder(), buyOrder1);
+        OneclickMallTransactionStatusResponse.Detail expectedDetail1 = expectedResponse.getDetails().get(0);
+        OneclickMallTransactionStatusResponse.Detail detail1 = response.getDetails().get(0);
+        assertEquals(detail1.getAmount(), expectedDetail1.getAmount());
+        assertEquals(detail1.getStatus(), expectedDetail1.getStatus());
+        assertEquals(detail1.getAuthorizationCode(), expectedDetail1.getAuthorizationCode());
+        assertEquals(detail1.getPaymentTypeCode(), expectedDetail1.getPaymentTypeCode());
+        assertEquals(detail1.getResponseCode(), expectedDetail1.getResponseCode());
+        assertEquals(detail1.getInstallmentsNumber(), expectedDetail1.getInstallmentsNumber());
+        assertEquals(detail1.getCommerceCode(), expectedDetail1.getCommerceCode());
+        assertEquals(detail1.getBuyOrder(), expectedDetail1.getBuyOrder());
         //details2
-        assertEquals(response.getDetails().get(1).getAmount(), amount2);
-        assertEquals(response.getDetails().get(1).getStatus(), status2);
-        assertEquals(response.getDetails().get(1).getAuthorizationCode(), authorizationCode2);
-        assertEquals(response.getDetails().get(1).getPaymentTypeCode(), paymentTypeCode2);
-        assertEquals(response.getDetails().get(1).getResponseCode(), responseCode2);
-        assertEquals(response.getDetails().get(1).getInstallmentsNumber(), installmentsNumber2);
-        assertEquals(response.getDetails().get(1).getCommerceCode(), commerceCode2);
-        assertEquals(response.getDetails().get(1).getBuyOrder(), buyOrder2);
+        OneclickMallTransactionStatusResponse.Detail expectedDetail2 = expectedResponse.getDetails().get(1);
+        OneclickMallTransactionStatusResponse.Detail detail2 = response.getDetails().get(1);
+        assertEquals(detail2.getAmount(), expectedDetail2.getAmount());
+        assertEquals(detail2.getStatus(), expectedDetail2.getStatus());
+        assertEquals(detail2.getAuthorizationCode(), expectedDetail2.getAuthorizationCode());
+        assertEquals(detail2.getPaymentTypeCode(), expectedDetail2.getPaymentTypeCode());
+        assertEquals(detail2.getResponseCode(), expectedDetail2.getResponseCode());
+        assertEquals(detail2.getInstallmentsNumber(), expectedDetail2.getInstallmentsNumber());
+        assertEquals(detail2.getCommerceCode(), expectedDetail2.getCommerceCode());
+        assertEquals(detail2.getBuyOrder(), expectedDetail2.getBuyOrder());
     }
 
     @Test
-    public void capture() throws IOException, TransactionCaptureException {
-        Oneclick.configureForMock();
+    void capture() throws IOException, TransactionCaptureException {
         String url = String.format("/%s/transactions/capture",apiUrl);
 
         String authorizationCode = "138248";
@@ -276,29 +242,14 @@ public class OneclickMallDeferredTest extends TestBase {
         Gson gson = new GsonBuilder().create();
         String jsonResponse = gson.toJson(mapResponse);
         setResponsePut(url, jsonResponse);
-
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
-        double amount = 1000d;
-        final OneclickMallTransactionCaptureResponse response = (new Oneclick.MallTransaction()).capture(childCommerceCode, childBuyOrder, authorizationCode, amount);
+
+        final OneclickMallTransactionCaptureResponse response = (new Oneclick.MallTransaction(option)).capture(childCommerceCode, childBuyOrder, authorizationCode, capturedAmount);
         assertEquals(response.getAuthorizationCode(), authorizationCode);
         assertEquals(response.getAuthorizationDate(), authorizationDate);
         assertEquals(response.getCapturedAmount(), capturedAmount);
         assertEquals(response.getResponseCode(), responseCode);
     }
 
-    //{"username":"goncafa","tbk_user":"aaaaaaaaaaaaa-bbbbbbbb-cccccc"}
-    /*
-    @Test
-    public void delete() throws IOException, InscriptionDeleteException {
-        Oneclick.setIntegrationType(IntegrationType.SERVER_MOCK);
-        String url = "/rswebpaytransaction/api/oneclick/v1.0/inscriptions";
-
-        //String tbkUser = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
-        Map<String, Object> mapResponse = new HashMap<>();
-        Gson gson = new GsonBuilder().create();
-        setResponse(url, gson.toJson(mapResponse));
-        Oneclick.MallDeferredInscription.delete(username, tbkUser);
-
-    }*/
 }

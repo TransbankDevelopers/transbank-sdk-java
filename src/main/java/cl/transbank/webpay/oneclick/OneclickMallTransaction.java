@@ -18,7 +18,7 @@ import java.io.IOException;
 abstract class OneclickMallTransaction extends BaseTransaction {
 
     public OneclickMallTransaction(Options options){
-        this.options = options;
+        super(options);
     }
     public OneclickMallTransactionAuthorizeResponse authorize(String username, String tbkUser, String parentBuyOrder, MallTransactionCreateDetails details) throws IOException, TransactionAuthorizeException {
 

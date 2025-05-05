@@ -3,6 +3,7 @@ package cl.transbank.patpass;
 import cl.transbank.common.ApiConstants;
 import cl.transbank.common.BaseTransaction;
 import cl.transbank.exception.TransbankException;
+import cl.transbank.model.Options;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.patpass.requests.PatpassComercioTransactionStatusRequest;
 import cl.transbank.patpass.responses.PatpassComercioInscriptionStartResponse;
@@ -16,7 +17,9 @@ import cl.transbank.webpay.exception.TransactionStatusException;
 import java.io.IOException;
 
 abstract class PatpassComercioInscription extends BaseTransaction {
-
+    protected PatpassComercioInscription(Options options){
+        super(options);
+    }
     public PatpassComercioInscriptionStartResponse start(String url,
                                                                 String name,
                                                                 String lastName,

@@ -2,6 +2,7 @@ package cl.transbank.util;
 
 import static cl.transbank.util.HttpUtil.RequestMethod.*;
 
+import cl.transbank.common.ApiConstants;
 import cl.transbank.webpay.exception.TransbankHttpApiException;
 import cl.transbank.webpay.exception.WebpayException;
 import java.io.*;
@@ -34,6 +35,17 @@ public class HttpUtilImpl implements HttpUtil {
   @Getter(AccessLevel.PRIVATE)
   private JsonUtil jsonUtil = JsonUtilImpl.getInstance();
 
+  private int connectTimeout = ApiConstants.REQUEST_TIMEOUT;
+  private int readTimeout = ApiConstants.REQUEST_TIMEOUT;
+
+  public void setConnectTimeout(int connectTimeout) {
+    this.connectTimeout = connectTimeout;
+  }
+
+  public void setReadTimeout(int readTimeout) {
+    this.readTimeout = readTimeout;
+  }
+
   /**
    * Sends a HTTP request and returns the response.
    * This method uses the provided URL, request method, request body, headers, and response type to send the request.
@@ -47,6 +59,8 @@ public class HttpUtilImpl implements HttpUtil {
   ) throws IOException, WebpayException {
     final String jsonIn = getJsonUtil().jsonEncode(request);
     final String jsonOut = request(url, method, jsonIn, headers);
+    if (clazz==null || jsonOut==null)
+      return null;
     return getJsonUtil().jsonDecode(jsonOut, clazz);
   }
 
@@ -264,6 +278,9 @@ public class HttpUtilImpl implements HttpUtil {
       }
     }
 
+    conn.setConnectTimeout(connectTimeout);
+    conn.setReadTimeout(readTimeout);
+
     return conn;
   }
 
@@ -315,6 +332,8 @@ public class HttpUtilImpl implements HttpUtil {
           StandardCharsets.UTF_8.name().toLowerCase()
         )
       );
+      conn.setConnectTimeout(connectTimeout);
+      conn.setReadTimeout(readTimeout);
 
       if (null != headers) {
         for (Map.Entry<String, String> header : headers.entrySet()) {

@@ -22,28 +22,36 @@ import java.io.IOException;
  */
 public class MallFullTransaction extends BaseTransaction {
 
-  private static Options defaultOptions = null;
-
-  /**
-   * Default constructor. Uses default options if none are provided.
-   */
-  public MallFullTransaction() {
-    this.options =
-      MallFullTransaction.defaultOptions != null
-        ? MallFullTransaction.defaultOptions
-        : new WebpayOptions(
-          IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL,
-          IntegrationApiKeys.WEBPAY,
-          IntegrationType.TEST
-        );
-  }
-
   /**
    * Constructor with options. Uses provided options.
    * @param options The options to use for this transaction.
    */
   public MallFullTransaction(Options options) {
-    this.options = options;
+    super(options);
+  }
+
+  /**
+   * Creates and returns an instance of `MallFullTransaction` configured for the integration environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `MallFullTransaction` configured for the test environment (IntegrationType.TEST).
+   */
+  public static MallFullTransaction buildForIntegration(String commerceCode, String apiKey)
+  {
+    return new MallFullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+  }
+
+  /**
+   * Creates and returns an instance of `MallFullTransaction` configured for the production environment.
+   *
+   * @param commerceCode The commerce code.
+   * @param apiKey The API key used for authentication.
+   * @return A new instance of `MallFullTransaction` configured for the production environment (IntegrationType.LIVE).
+   */
+  public static MallFullTransaction buildForProduction(String commerceCode, String apiKey)
+  {
+    return new MallFullTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
   }
 
   public MallFullTransactionCreateResponse create(
@@ -324,39 +332,4 @@ public class MallFullTransaction extends BaseTransaction {
     }
   }
 
-  /*
-    |--------------------------------------------------------------------------
-    | Environment Configuration
-    |--------------------------------------------------------------------------
-    */
-
-  public static void configureForIntegration(
-    String commerceCode,
-    String apiKey
-  ) {
-    MallFullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST);
-  }
-
-  public static void configureForProduction(
-    String commerceCode,
-    String apiKey
-  ) {
-    MallFullTransaction.defaultOptions =
-      new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE);
-  }
-
-  public static void configureForTesting() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
-
-  public static void configureForTestingDeferred() {
-    configureForIntegration(
-      IntegrationCommerceCodes.TRANSACCION_COMPLETA_MALL_DEFERRED,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
 }

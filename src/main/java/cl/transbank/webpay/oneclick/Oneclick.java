@@ -1,7 +1,5 @@
 package cl.transbank.webpay.oneclick;
 
-import cl.transbank.common.IntegrationApiKeys;
-import cl.transbank.common.IntegrationCommerceCodes;
 import cl.transbank.common.IntegrationType;
 import cl.transbank.model.Options;
 import cl.transbank.webpay.common.WebpayOptions;
@@ -11,27 +9,37 @@ import cl.transbank.webpay.common.WebpayOptions;
  */
 public class Oneclick {
 
-  private static Options options;
-
   /**
    * This class provides methods to perform Oneclick Mall Inscriptions.
    */
   public static class MallInscription extends OneclickMallInscription {
 
-    public MallInscription() {
-      super(
-        Oneclick.options != null
-          ? Oneclick.options
-          : new WebpayOptions(
-            IntegrationCommerceCodes.ONECLICK_MALL,
-            IntegrationApiKeys.WEBPAY,
-            IntegrationType.TEST
-          )
-      );
-    }
-
     public MallInscription(Options options) {
       super(options);
+    }
+
+    /**
+     * Creates and returns an instance of `MallInscription` configured for the integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallInscription` configured for the test environment (IntegrationType.TEST).
+     */
+    public static MallInscription buildForIntegration(String commerceCode, String apiKey)
+    {
+      return new Oneclick.MallInscription(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
+
+    /**
+     * Creates and returns an instance of `MallInscription` configured for the production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallInscription` configured for the production environment (IntegrationType.LIVE).
+     */
+    public static MallInscription buildForProduction(String commerceCode, String apiKey)
+    {
+      return new Oneclick.MallInscription(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
     }
   }
 
@@ -40,63 +48,33 @@ public class Oneclick {
    */
   public static class MallTransaction extends OneclickMallTransaction {
 
-    public MallTransaction() {
-      super(
-        Oneclick.options != null
-          ? Oneclick.options
-          : new WebpayOptions(
-            IntegrationCommerceCodes.ONECLICK_MALL,
-            IntegrationApiKeys.WEBPAY,
-            IntegrationType.TEST
-          )
-      );
-    }
-
     public MallTransaction(Options options) {
       super(options);
     }
+
+    /**
+     * Creates and returns an instance of `MallTransaction` configured for the integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the test environment (IntegrationType.TEST).
+     */
+    public static MallTransaction buildForIntegration(String commerceCode, String apiKey)
+    {
+      return new Oneclick.MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
+
+    /**
+     * Creates and returns an instance of `MallTransaction` configured for the production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the production environment (IntegrationType.LIVE).
+     */
+    public static MallTransaction buildForProduction(String commerceCode, String apiKey)
+    {
+      return new Oneclick.MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
+    }
   }
 
-  /*
-    |--------------------------------------------------------------------------
-    | Environment Configuration
-    |--------------------------------------------------------------------------
-    */
-
-  public static void configureForIntegration(
-    String commerceCode,
-    String apiKey
-  ) {
-    options = new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST);
-  }
-
-  public static void configureForProduction(
-    String commerceCode,
-    String apiKey
-  ) {
-    options = new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE);
-  }
-
-  public static void configureForTesting() {
-    configureForIntegration(
-      IntegrationCommerceCodes.ONECLICK_MALL,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
-
-  public static void configureForTestingDeferred() {
-    configureForIntegration(
-      IntegrationCommerceCodes.ONECLICK_MALL_DEFERRED,
-      IntegrationApiKeys.WEBPAY
-    );
-  }
-
-  public static void configureForMock() {
-    options =
-      new WebpayOptions(
-        IntegrationCommerceCodes.ONECLICK_MALL,
-        IntegrationApiKeys.WEBPAY,
-        IntegrationType.SERVER_MOCK
-      );
-  }
 }

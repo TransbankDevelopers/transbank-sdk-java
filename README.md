@@ -6,7 +6,7 @@
 SDK oficial de Transbank
 
 ## Requisitos
-- Java 1.7 o 1.8
+- Java 1.8
 
 ## Instalación
 
@@ -50,7 +50,7 @@ La documentación relevante para usar este SDK es:
 Esta librería usa [Project Lombok][lombok] en su desarrollo. Si bien no es necesario podrías querer instalar el [plugin][lombok-plugins]
 para tu IDE favorito con el fin de evitar que veas errores marcados por la herramienta de desarrollo.
 
-Se recomienda usar Java 7 u 8 para compilar este SDK. En Java 9 o superior la generación de Javadocs falla debido a la introducción de módulos (y a que varias clases de JavaEE en el paquete javax.* han sido movidas a módulos separados).
+Se recomienda usar Java 8 para compilar este SDK. En Java 9 o superior la generación de Javadocs falla debido a la introducción de módulos (y a que varias clases de JavaEE en el paquete javax.* han sido movidas a módulos separados).
 
 ### Standares
 

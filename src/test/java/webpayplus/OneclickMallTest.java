@@ -24,7 +24,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
-class OneclickMallTest  extends OneclickMallTestBase {
+class OneclickMallTest extends OneclickMallTestBase {
 
     private static String apiUrl = ApiConstants.ONECLICK_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.ONECLICK_MALL,
@@ -53,7 +53,7 @@ class OneclickMallTest  extends OneclickMallTestBase {
 
     @Test
     void start() throws IOException, InscriptionStartException {
-        String url = String.format("/%s/inscriptions",apiUrl);
+        String url = String.format("/%s/inscriptions", apiUrl);
 
         String urlResponse = "https://webpay3gint.transbank.cl/webpayserver/bp_multicode_inscription.cgi";
         Map<String, Object> mapResponse = new HashMap<String, Object>();
@@ -66,7 +66,8 @@ class OneclickMallTest  extends OneclickMallTestBase {
 
         String returnUrl = "http://localhost:8081/oneclick-mall/finish";
 
-        final OneclickMallInscriptionStartResponse response = (new Oneclick.MallInscription(option)).start(username, email, returnUrl);
+        final OneclickMallInscriptionStartResponse response = (new Oneclick.MallInscription(option)).start(username,
+                email, returnUrl);
         assertEquals(response.getToken(), testToken);
         assertEquals(response.getUrlWebpay(), urlResponse);
     }
@@ -124,7 +125,7 @@ class OneclickMallTest  extends OneclickMallTestBase {
     @Test
     void authorize() throws IOException, TransactionAuthorizeException {
         OneclickMallTransactionStatusResponse expectedResponse = generateStatusResponse();
-        String url = String.format("/%s/transactions",apiUrl);
+        String url = String.format("/%s/transactions", apiUrl);
         setResponsePost(url, generateJsonResponse());
 
         String tbkUserReq = "aaaaaaaaaaaaa-bbbbbbbb-cccccc";
@@ -140,13 +141,14 @@ class OneclickMallTest  extends OneclickMallTestBase {
                 .add(amountMallOne, commerceCode1, buyOrderMallOne, installmentsNumberMallOne)
                 .add(amountMallTwo, commerceCode2, buyOrderMallTwo, installmentsNumberMallTwo);
 
-        final OneclickMallTransactionAuthorizeResponse response = (new Oneclick.MallTransaction(option)).authorize(username, tbkUserReq, buyOrderReq, details);
+        final OneclickMallTransactionAuthorizeResponse response = (new Oneclick.MallTransaction(option))
+                .authorize(username, tbkUserReq, buyOrderReq, details);
 
         assertEquals(response.getBuyOrder(), expectedResponse.getBuyOrder());
         assertEquals(response.getCardDetail().getCardNumber(), expectedResponse.getCardDetail().getCardNumber());
         assertEquals(response.getAccountingDate(), expectedResponse.getAccountingDate());
         assertEquals(response.getTransactionDate(), expectedResponse.getTransactionDate());
-        //details1
+        // details1
         OneclickMallTransactionStatusResponse.Detail expectedDetail1 = expectedResponse.getDetails().get(0);
         OneclickMallTransactionAuthorizeResponse.Detail detail1 = response.getDetails().get(0);
         assertEquals(detail1.getAmount(), expectedDetail1.getAmount());
@@ -157,7 +159,7 @@ class OneclickMallTest  extends OneclickMallTestBase {
         assertEquals(detail1.getInstallmentsNumber(), expectedDetail1.getInstallmentsNumber());
         assertEquals(detail1.getCommerceCode(), expectedDetail1.getCommerceCode());
         assertEquals(detail1.getBuyOrder(), expectedDetail1.getBuyOrder());
-        //details2
+        // details2
         OneclickMallTransactionStatusResponse.Detail expectedDetail2 = expectedResponse.getDetails().get(1);
         OneclickMallTransactionAuthorizeResponse.Detail detail2 = response.getDetails().get(1);
         assertEquals(detail2.getAmount(), expectedDetail2.getAmount());
@@ -187,7 +189,8 @@ class OneclickMallTest  extends OneclickMallTestBase {
         String childCommerceCode = "597055555542";
         String childBuyOrder = "2019439134";
         double amount = 1000d;
-        final OneclickMallTransactionRefundResponse response = (new Oneclick.MallTransaction(option)).refund(buyOrder, childCommerceCode, childBuyOrder, amount);
+        final OneclickMallTransactionRefundResponse response = (new Oneclick.MallTransaction(option)).refund(buyOrder,
+                childCommerceCode, childBuyOrder, amount);
 
         assertEquals(response.getType(), type);
     }
@@ -198,13 +201,14 @@ class OneclickMallTest  extends OneclickMallTestBase {
         String url = String.format("/%s/transactions/%s", apiUrl, expectedResponse.getBuyOrder());
         setResponseGet(url, generateJsonResponse());
 
-        final OneclickMallTransactionStatusResponse response = (new Oneclick.MallTransaction(option)).status(expectedResponse.getBuyOrder());
+        final OneclickMallTransactionStatusResponse response = (new Oneclick.MallTransaction(option))
+                .status(expectedResponse.getBuyOrder());
 
         assertEquals(response.getBuyOrder(), expectedResponse.getBuyOrder());
         assertEquals(response.getCardDetail().getCardNumber(), expectedResponse.getCardDetail().getCardNumber());
         assertEquals(response.getAccountingDate(), expectedResponse.getAccountingDate());
         assertEquals(response.getTransactionDate(), expectedResponse.getTransactionDate());
-        //details1
+        // details1
         OneclickMallTransactionStatusResponse.Detail expectedDetail1 = expectedResponse.getDetails().get(0);
         OneclickMallTransactionStatusResponse.Detail detail1 = response.getDetails().get(0);
         assertEquals(detail1.getAmount(), expectedDetail1.getAmount());
@@ -215,7 +219,7 @@ class OneclickMallTest  extends OneclickMallTestBase {
         assertEquals(detail1.getInstallmentsNumber(), expectedDetail1.getInstallmentsNumber());
         assertEquals(detail1.getCommerceCode(), expectedDetail1.getCommerceCode());
         assertEquals(detail1.getBuyOrder(), expectedDetail1.getBuyOrder());
-        //details2
+        // details2
         OneclickMallTransactionStatusResponse.Detail expectedDetail2 = expectedResponse.getDetails().get(1);
         OneclickMallTransactionStatusResponse.Detail detail2 = response.getDetails().get(1);
         assertEquals(detail2.getAmount(), expectedDetail2.getAmount());
@@ -228,6 +232,26 @@ class OneclickMallTest  extends OneclickMallTestBase {
         assertEquals(detail2.getBuyOrder(), expectedDetail2.getBuyOrder());
     }
 
+    @Test
+    void queryBin() throws IOException, QueryBinException {
+        String url = String.format("/%s/bin_info", apiUrl);
 
+        String binIssuer = "BANCO TEST";
+        String binPaymentType = "Prepago";
+        String binBrand = "VISA";
 
+        Map<String, Object> mapResponse = new HashMap<String, Object>();
+        mapResponse.put("bin_issuer", binIssuer);
+        mapResponse.put("bin_payment_type", binPaymentType);
+        mapResponse.put("bin_brand", binBrand);
+
+        Gson gson = new GsonBuilder().create();
+        String jsonResponse = gson.toJson(mapResponse);
+        setResponsePost(url, jsonResponse);
+
+        final OneclickMallQueryBinResponse response = (new Oneclick.MallBinInfo(option)).queryBin("fakeTbkUser");
+        assertEquals(response.getBinIssuer(), binIssuer);
+        assertEquals(response.getBinPaymentType(), binPaymentType);
+        assertEquals(response.getBinBrand(), binBrand);
+    }
 }

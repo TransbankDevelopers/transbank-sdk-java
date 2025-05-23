@@ -5,7 +5,8 @@ import cl.transbank.model.Options;
 import cl.transbank.webpay.common.WebpayOptions;
 
 /**
- * This class provides methods to configure and perform transactions with the Oneclick service.
+ * This class provides methods to configure and perform transactions with the
+ * Oneclick service.
  */
 public class Oneclick {
 
@@ -19,26 +20,28 @@ public class Oneclick {
     }
 
     /**
-     * Creates and returns an instance of `MallInscription` configured for the integration environment.
+     * Creates and returns an instance of `MallInscription` configured for the
+     * integration environment.
      *
      * @param commerceCode The commerce code.
-     * @param apiKey The API key used for authentication.
-     * @return A new instance of `MallInscription` configured for the test environment (IntegrationType.TEST).
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallInscription` configured for the test
+     *         environment (IntegrationType.TEST).
      */
-    public static MallInscription buildForIntegration(String commerceCode, String apiKey)
-    {
+    public static MallInscription buildForIntegration(String commerceCode, String apiKey) {
       return new Oneclick.MallInscription(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
     }
 
     /**
-     * Creates and returns an instance of `MallInscription` configured for the production environment.
+     * Creates and returns an instance of `MallInscription` configured for the
+     * production environment.
      *
      * @param commerceCode The commerce code.
-     * @param apiKey The API key used for authentication.
-     * @return A new instance of `MallInscription` configured for the production environment (IntegrationType.LIVE).
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallInscription` configured for the production
+     *         environment (IntegrationType.LIVE).
      */
-    public static MallInscription buildForProduction(String commerceCode, String apiKey)
-    {
+    public static MallInscription buildForProduction(String commerceCode, String apiKey) {
       return new Oneclick.MallInscription(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
     }
   }
@@ -53,27 +56,65 @@ public class Oneclick {
     }
 
     /**
-     * Creates and returns an instance of `MallTransaction` configured for the integration environment.
+     * Creates and returns an instance of `MallTransaction` configured for the
+     * integration environment.
      *
      * @param commerceCode The commerce code.
-     * @param apiKey The API key used for authentication.
-     * @return A new instance of `MallTransaction` configured for the test environment (IntegrationType.TEST).
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the test
+     *         environment (IntegrationType.TEST).
      */
-    public static MallTransaction buildForIntegration(String commerceCode, String apiKey)
-    {
+    public static MallTransaction buildForIntegration(String commerceCode, String apiKey) {
       return new Oneclick.MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
     }
 
     /**
-     * Creates and returns an instance of `MallTransaction` configured for the production environment.
+     * Creates and returns an instance of `MallTransaction` configured for the
+     * production environment.
      *
      * @param commerceCode The commerce code.
-     * @param apiKey The API key used for authentication.
-     * @return A new instance of `MallTransaction` configured for the production environment (IntegrationType.LIVE).
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallTransaction` configured for the production
+     *         environment (IntegrationType.LIVE).
      */
-    public static MallTransaction buildForProduction(String commerceCode, String apiKey)
-    {
+    public static MallTransaction buildForProduction(String commerceCode, String apiKey) {
       return new Oneclick.MallTransaction(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
+    }
+  }
+
+  /**
+   * Default constructor. Uses default options if none are provided.
+   */
+  public static class MallBinInfo extends OneclickMallBinInfo {
+
+    public MallBinInfo(Options options) {
+      super(options);
+    }
+
+    /**
+     * Creates and returns an instance of `MallBinInfo` configured for the
+     * integration environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallBinInfo` configured for the test
+     *         environment (IntegrationType.TEST).
+     */
+    public static MallBinInfo buildForIntegration(String commerceCode, String apiKey) {
+      return new Oneclick.MallBinInfo(new WebpayOptions(commerceCode, apiKey, IntegrationType.TEST));
+    }
+
+    /**
+     * Creates and returns an instance of `MallBinInfo` configured for the
+     * production environment.
+     *
+     * @param commerceCode The commerce code.
+     * @param apiKey       The API key used for authentication.
+     * @return A new instance of `MallBinInfo` configured for the production
+     *         environment (IntegrationType.LIVE).
+     */
+    public static MallBinInfo buildForProduction(String commerceCode, String apiKey) {
+      return new Oneclick.MallBinInfo(new WebpayOptions(commerceCode, apiKey, IntegrationType.LIVE));
     }
   }
 

@@ -28,11 +28,11 @@ abstract class OneclickMallBinInfo extends BaseTransaction {
      * 
      * @param tbkUser The inscription id of the user.
      *
-     * @return The response from the query bin request.
+     * @return The response from the query BIN request.
      * @throws IOException       If there is an error during the execution of the
      *                           request.
-     * @throws QueryBinException If there is an error during the start of the
-     *                           inscription.
+     * @throws QueryBinException If there is an error during the query of the
+     *                           BIN.
      */
     public OneclickMallQueryBinResponse queryBin(
             String tbkUser) throws IOException, QueryBinException {

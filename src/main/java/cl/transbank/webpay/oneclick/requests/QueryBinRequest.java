@@ -4,7 +4,7 @@ import cl.transbank.model.WebpayApiRequest;
 import lombok.*;
 
 /**
- * This class represents a request to authorize a transaction.
+ * This class represents a request to query a BIN.
  */
 @NoArgsConstructor
 @AllArgsConstructor

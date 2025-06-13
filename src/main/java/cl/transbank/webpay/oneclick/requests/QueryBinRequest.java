@@ -12,5 +12,5 @@ import lombok.*;
 @Setter
 @ToString
 public class QueryBinRequest extends WebpayApiRequest {
-    private String username;
+    private String tbkUser;
 }

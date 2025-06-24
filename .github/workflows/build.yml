@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn clean install --no-transfer-progress -DskipGpg=true
+        run: mvn clean install --no-transfer-progress
 
   sonar-cloud-check:
     runs-on: ubuntu-latest
@@ -35,6 +35,8 @@ jobs:
         with:
           java-version: '8'
           distribution: 'temurin'
+          gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -44,7 +46,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Build and analyze with Maven
-        run: mvn verify sonar:sonar --no-transfer-progress -DskipGpg=true
+        run: mvn verify sonar:sonar --no-transfer-progress
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

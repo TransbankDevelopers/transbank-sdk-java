@@ -1,6 +1,11 @@
 name: Java CI + SonarCloud
 
 on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
   pull_request:
     types: [synchronize, opened, reopened]
 

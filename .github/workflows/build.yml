@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn clean install --no-transfer-progress
+        run: mvn clean install --no-transfer-progress -DskipGpg=true
 
   sonar-cloud-check:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Build and analyze with Maven
-        run: mvn verify sonar:sonar --no-transfer-progress
+        run: mvn verify sonar:sonar --no-transfer-progress -DskipGpg=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -30,7 +30,7 @@ jobs:
         run: mvn clean install -P no-gpg --no-transfer-progress
 
       - name: Run SonarCloud Analysis
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         with:
           projectBaseDir: .
         env:

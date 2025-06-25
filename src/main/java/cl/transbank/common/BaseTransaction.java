@@ -1,10 +1,12 @@
 package cl.transbank.common;
 
 import cl.transbank.model.Options;
+import lombok.Getter;
 
 /**
  * This abstract class represents a base transaction with common properties and methods.
  */
+@Getter
 public abstract class BaseTransaction {
 
   /**

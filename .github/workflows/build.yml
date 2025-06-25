@@ -1,16 +1,15 @@
-name: Java CI + SonarCloud
+name: Java CI
 
 on:
   push:
     branches:
-      - main
       - master
       - develop
   pull_request:
     types: [synchronize, opened, reopened]
 
 jobs:
-  sonar-cloud:
+  sonar-cloud-check:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,10 +30,10 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Build with Maven
-        run: mvn clean install -P no-gpg --no-transfer-progress
+      - name: Install dependencies and run tests with coverage
+        run: mvn clean install verify -P no-gpg --no-transfer-progress
 
-      - name: Run SonarCloud Analysis
+      - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
         with:
           projectBaseDir: .

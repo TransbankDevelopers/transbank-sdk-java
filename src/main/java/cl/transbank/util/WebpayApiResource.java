@@ -26,92 +26,112 @@ public abstract class WebpayApiResource {
 
   /**
    * Builds the headers for a Webpay API request.
+   * 
    * @param options The options for the request.
    * @return A map of headers for the request.
    */
   public static Map<String, String> buildHeaders(Options options) {
-    if (null == options) return Collections.emptyMap();
+    if (null == options)
+      return Collections.emptyMap();
 
     Map<String, String> headers = new HashMap<>();
     headers.put(
-      ApiConstants.HEADER_COMMERCE_CODE_NAME,
-      options.getCommerceCode()
-    );
+        ApiConstants.HEADER_COMMERCE_CODE_NAME,
+        options.getCommerceCode());
     headers.put(ApiConstants.HEADER_API_KEY_NAME, options.getApiKey());
 
     return headers;
   }
 
   /**
-   * Executes a Webpay API request.
-   * @param <T> The type of the response.
-   * @param endpoint The endpoint for the request.
-   * @param method The HTTP method for the request.
+   * Builds the headers for a Patpass API request.
+   * 
    * @param options The options for the request.
-   * @param clazz The class of the response.
+   * @return A map of headers for the request.
+   */
+  public static Map<String, String> buildPatpassHeaders(Options options) {
+    if (null == options)
+      return Collections.emptyMap();
+
+    Map<String, String> headers = new HashMap<>();
+    headers.put(
+        ApiConstants.HEADER_PATPASS_COMMERCE_CODE_NAME,
+        options.getCommerceCode());
+    headers.put(ApiConstants.HEADER_PATPASS_API_KEY_NAME, options.getApiKey());
+
+    return headers;
+  }
+
+  /**
+   * Executes a Webpay API request.
+   * 
+   * @param <T>      The type of the response.
+   * @param endpoint The endpoint for the request.
+   * @param method   The HTTP method for the request.
+   * @param options  The options for the request.
+   * @param clazz    The class of the response.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
-   * @throws IOException If an error occurs during the request.
+   * @throws IOException        If an error occurs during the request.
    */
   public static <T> T execute(
-    final String endpoint,
-    HttpUtil.RequestMethod method,
-    final Options options,
-    Class<T> clazz
-  ) throws TransbankException, IOException {
+      final String endpoint,
+      HttpUtil.RequestMethod method,
+      final Options options,
+      Class<T> clazz) throws TransbankException, IOException {
     return execute(endpoint, method, null, options, clazz);
   }
 
   /**
    * Executes a Webpay API request with a request body.
-   * @param <T> The type of the response.
+   * 
+   * @param <T>      The type of the response.
    * @param endpoint The endpoint for the request.
-   * @param method The HTTP method for the request.
-   * @param request The request body.
-   * @param options The options for the request.
+   * @param method   The HTTP method for the request.
+   * @param request  The request body.
+   * @param options  The options for the request.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
-   * @throws IOException If an error occurs during the request.
+   * @throws IOException        If an error occurs during the request.
    */
   public static <T> T execute(
-    final String endpoint,
-    HttpUtil.RequestMethod method,
-    final WebpayApiRequest request,
-    final Options options
-  ) throws TransbankException, IOException {
+      final String endpoint,
+      HttpUtil.RequestMethod method,
+      final WebpayApiRequest request,
+      final Options options) throws TransbankException, IOException {
     return execute(endpoint, method, request, options, null);
   }
 
   /**
    * Executes a Webpay API request with a request body.
-   * @param <T> The type of the response.
+   * 
+   * @param <T>      The type of the response.
    * @param endpoint The endpoint for the request.
-   * @param method The HTTP method for the request.
-   * @param request The request body.
-   * @param options The options for the request.
-   * @param clazz The class of the response.
+   * @param method   The HTTP method for the request.
+   * @param request  The request body.
+   * @param options  The options for the request.
+   * @param clazz    The class of the response.
    * @return The response to the request.
    * @throws TransbankException If an error occurs during the request.
-   * @throws IOException If an error occurs during the request.
+   * @throws IOException        If an error occurs during the request.
    */
   public static <T> T execute(
-    final String endpoint,
-    HttpUtil.RequestMethod method,
-    final WebpayApiRequest request,
-    final Options options,
-    Class<T> clazz
-  ) throws TransbankException, IOException {
+      final String endpoint,
+      HttpUtil.RequestMethod method,
+      final WebpayApiRequest request,
+      final Options options,
+      Class<T> clazz) throws TransbankException, IOException {
     String urlBase = null;
+    Map<String, String> headers = null;
+
     if (options instanceof WebpayOptions) {
-      urlBase =
-        IntegrationTypeHelper.getWebpayIntegrationType(
-          options.getIntegrationType()
-        );
+      urlBase = IntegrationTypeHelper.getWebpayIntegrationType(
+          options.getIntegrationType());
+      headers = WebpayApiResource.buildHeaders(options);
     } else {
-      urlBase =
-        IntegrationTypeHelper.getPatpassIntegrationType(
-          options.getIntegrationType()
-        );
+      urlBase = IntegrationTypeHelper.getPatpassIntegrationType(
+          options.getIntegrationType());
+      headers = WebpayApiResource.buildPatpassHeaders(options);
     }
     final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
 
@@ -121,70 +141,72 @@ public abstract class WebpayApiResource {
     requestInstance.setReadTimeout(options.getTimeout());
 
     final T out = requestInstance.request(
-      url,
-      method,
-      request,
-      WebpayApiResource.buildHeaders(options),
-      clazz
-    );
+        url,
+        method,
+        request,
+        headers,
+        clazz);
 
-    if (null == out) return null;
+    if (null == out)
+      return null;
 
-    if (null == clazz) return null;
+    if (null == clazz)
+      return null;
 
     return out;
   }
 
   /**
    * Executes a Webpay API request and returns a list of responses.
-   * @param <T> The type of the response.
+   * 
+   * @param <T>      The type of the response.
    * @param endpoint The endpoint for the request.
-   * @param method The HTTP method for the request.
-   * @param options The options for the request.
-   * @param clazz The class of the response.
+   * @param method   The HTTP method for the request.
+   * @param options  The options for the request.
+   * @param clazz    The class of the response.
    * @return A list of responses to the request.
    * @throws TransbankException If an error occurs during the request.
-   * @throws IOException If an error occurs during the request.
+   * @throws IOException        If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
-    final String endpoint,
-    HttpUtil.RequestMethod method,
-    final Options options,
-    Class<T[]> clazz
-  ) throws TransbankException, IOException {
+      final String endpoint,
+      HttpUtil.RequestMethod method,
+      final Options options,
+      Class<T[]> clazz) throws TransbankException, IOException {
     return executeToList(endpoint, method, null, options, clazz);
   }
 
   /**
-   * Executes a Webpay API request with a request body and returns a list of responses.
-   * @param <T> The type of the response.
+   * Executes a Webpay API request with a request body and returns a list of
+   * responses.
+   * 
+   * @param <T>      The type of the response.
    * @param endpoint The endpoint for the request.
-   * @param method The HTTP method for the request.
-   * @param request The request body.
-   * @param options The options for the request.
-   * @param clazz The class of the response.
+   * @param method   The HTTP method for the request.
+   * @param request  The request body.
+   * @param options  The options for the request.
+   * @param clazz    The class of the response.
    * @return A list of responses to the request.
    * @throws TransbankException If an error occurs during the request.
-   * @throws IOException If an error occurs during the request.
+   * @throws IOException        If an error occurs during the request.
    */
   public static <T> List<T> executeToList(
-    final String endpoint,
-    HttpUtil.RequestMethod method,
-    final WebpayApiRequest request,
-    final Options options,
-    Class<T[]> clazz
-  ) throws TransbankException, IOException {
+      final String endpoint,
+      HttpUtil.RequestMethod method,
+      final WebpayApiRequest request,
+      final Options options,
+      Class<T[]> clazz) throws TransbankException, IOException {
     String urlBase = null;
+    Map<String, String> headers = null;
+
     if (options instanceof WebpayOptions) {
-      urlBase =
-        IntegrationTypeHelper.getWebpayIntegrationType(
-          options.getIntegrationType()
-        );
+      urlBase = IntegrationTypeHelper.getWebpayIntegrationType(
+          options.getIntegrationType());
+      headers = WebpayApiResource.buildHeaders(options);
     } else {
-      urlBase =
-        IntegrationTypeHelper.getPatpassIntegrationType(
-          options.getIntegrationType()
-        );
+      urlBase = IntegrationTypeHelper.getPatpassIntegrationType(
+          options.getIntegrationType());
+      headers = WebpayApiResource.buildPatpassHeaders(options);
     }
     final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
 
@@ -194,16 +216,17 @@ public abstract class WebpayApiResource {
     requestInstance.setReadTimeout(options.getTimeout());
 
     final List<T> out = requestInstance.requestList(
-      url,
-      method,
-      request,
-      WebpayApiResource.buildHeaders(options),
-      clazz
-    );
+        url,
+        method,
+        request,
+        headers,
+        clazz);
 
-    if (null == out) return Collections.emptyList();
+    if (null == out)
+      return Collections.emptyList();
 
-    if (null == clazz) return Collections.emptyList();
+    if (null == clazz)
+      return Collections.emptyList();
 
     return out;
   }

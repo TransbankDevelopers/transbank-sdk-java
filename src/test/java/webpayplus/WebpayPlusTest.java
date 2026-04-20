@@ -4,6 +4,7 @@ import cl.transbank.common.ApiConstants;
 import cl.transbank.common.IntegrationApiKeys;
 import cl.transbank.common.IntegrationCommerceCodes;
 import cl.transbank.common.IntegrationType;
+import cl.transbank.common.IntegrationTypeHelper;
 import cl.transbank.model.Options;
 import cl.transbank.webpay.common.WebpayOptions;
 import cl.transbank.webpay.exception.TransactionCommitException;
@@ -27,9 +28,15 @@ import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 
 class WebpayPlusTest extends WebpayPlusTestBase {
+    private static final String BUILDER_COMMERCE_CODE = "597012345678";
+    private static final String BUILDER_API_KEY = "webpay_builder_api_key";
+    private static final String WEBPAY_INTEGRATION_URL = "https://webpay3gint.transbank.cl";
+    private static final String WEBPAY_PRODUCTION_URL = "https://webpay3g.transbank.cl";
     private static String apiUrl = ApiConstants.WEBPAY_ENDPOINT;
     private static Options option = new WebpayOptions(IntegrationCommerceCodes.WEBPAY_PLUS,
             IntegrationApiKeys.WEBPAY, IntegrationType.SERVER_MOCK);
@@ -48,6 +55,45 @@ class WebpayPlusTest extends WebpayPlusTestBase {
     void resetMockServer() {
         client.reset();
     }
+
+    @Test
+    void buildForIntegrationSetsExplicitCredentialValuesAndSharedWebpayUrl() {
+        WebpayPlus.Transaction transaction = WebpayPlus.Transaction.buildForIntegration(
+                BUILDER_COMMERCE_CODE,
+                BUILDER_API_KEY);
+
+        assertNotNull(transaction);
+
+        Options options = transaction.getOptions();
+        assertTrue(options instanceof WebpayOptions);
+
+        WebpayOptions webpayOptions = (WebpayOptions) options;
+        assertEquals(BUILDER_COMMERCE_CODE, webpayOptions.getCommerceCode());
+        assertEquals(BUILDER_API_KEY, webpayOptions.getApiKey());
+        assertEquals(IntegrationType.TEST, webpayOptions.getIntegrationType());
+        assertEquals(WEBPAY_INTEGRATION_URL,
+                IntegrationTypeHelper.getWebpayIntegrationType(webpayOptions.getIntegrationType()));
+    }
+
+    @Test
+    void buildForProductionSetsExplicitCredentialValuesAndSharedWebpayUrl() {
+        WebpayPlus.Transaction transaction = WebpayPlus.Transaction.buildForProduction(
+                BUILDER_COMMERCE_CODE,
+                BUILDER_API_KEY);
+
+        assertNotNull(transaction);
+
+        Options options = transaction.getOptions();
+        assertTrue(options instanceof WebpayOptions);
+
+        WebpayOptions webpayOptions = (WebpayOptions) options;
+        assertEquals(BUILDER_COMMERCE_CODE, webpayOptions.getCommerceCode());
+        assertEquals(BUILDER_API_KEY, webpayOptions.getApiKey());
+        assertEquals(IntegrationType.LIVE, webpayOptions.getIntegrationType());
+        assertEquals(WEBPAY_PRODUCTION_URL,
+                IntegrationTypeHelper.getWebpayIntegrationType(webpayOptions.getIntegrationType()));
+    }
+
     @Test
     void create() throws IOException, TransactionCreateException {
         String url = String.format("/%s/transactions", apiUrl);

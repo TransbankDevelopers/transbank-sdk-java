@@ -110,6 +110,35 @@ class WebpayApiResourceTest {
   }
 
   @Test
+  void shouldReturnNullWhenUnderlyingRequestReturnsNull() throws Exception {
+    WebpayOptions options = new WebpayOptions("597012345678", "webpay-api-key", IntegrationType.TEST);
+    when(httpUtil.request(any(URL.class), eq(HttpUtil.RequestMethod.GET), isNull(), anyMap(), eq(String.class)))
+        .thenReturn(null);
+
+    assertNull(WebpayApiResource.execute(
+        "rswebpaytransaction/api/webpay/v1.2/test",
+        HttpUtil.RequestMethod.GET,
+        options,
+        String.class));
+  }
+
+  @Test
+  void shouldReturnListWhenUnderlyingListRequestReturnsValues() throws Exception {
+    PatpassOptions options = new PatpassOptions("28299257", "patpass-api-key", IntegrationType.LIVE);
+    List<String> expected = Arrays.asList("first", "second");
+    when(httpUtil.requestList(any(URL.class), eq(HttpUtil.RequestMethod.POST), isNull(), anyMap(), eq(String[].class)))
+        .thenReturn(expected);
+
+    List<String> response = WebpayApiResource.executeToList(
+        "restpatpass/v1/services/test",
+        HttpUtil.RequestMethod.POST,
+        options,
+        String[].class);
+
+    assertEquals(expected, response);
+  }
+
+  @Test
   void shouldReturnNullOrEmptyListWhenResponseClassIsNull() throws Exception {
     WebpayOptions webpayOptions = new WebpayOptions("597012345678", "webpay-api-key", IntegrationType.LIVE);
     PatpassOptions patpassOptions = new PatpassOptions("28299257", "patpass-api-key", IntegrationType.LIVE);

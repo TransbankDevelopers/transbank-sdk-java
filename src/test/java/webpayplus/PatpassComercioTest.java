@@ -55,7 +55,7 @@ class PatpassComercioTest extends TestBase {
     }
 
     @Test
-    void buildForIntegrationSetsExplicitCredentialValues() {
+    void shouldSetCredentialsAndIntegrationUrlWhenBuildingForIntegration() {
         PatpassComercio.Inscription inscription = PatpassComercio.Inscription.buildForIntegration(
                 BUILDER_COMMERCE_CODE,
                 BUILDER_API_KEY);
@@ -74,7 +74,7 @@ class PatpassComercioTest extends TestBase {
     }
 
     @Test
-    void buildForProductionSetsExplicitCredentialValues() {
+    void shouldSetCredentialsAndProductionUrlWhenBuildingForProduction() {
         PatpassComercio.Inscription inscription = PatpassComercio.Inscription.buildForProduction(
                 BUILDER_COMMERCE_CODE,
                 BUILDER_API_KEY);

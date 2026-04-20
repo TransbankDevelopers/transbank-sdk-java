@@ -20,6 +20,16 @@ import lombok.Setter;
  */
 public abstract class WebpayApiResource {
 
+  private static final class RequestContext {
+    private final String urlBase;
+    private final Map<String, String> headers;
+
+    private RequestContext(String urlBase, Map<String, String> headers) {
+      this.urlBase = urlBase;
+      this.headers = headers;
+    }
+  }
+
   @Getter
   @Setter
   private static HttpUtil httpUtil = HttpUtilImpl.getInstance();
@@ -31,7 +41,7 @@ public abstract class WebpayApiResource {
    * @return A map of headers for the request.
    */
   public static Map<String, String> buildHeaders(Options options) {
-    if (null == options)
+    if (options == null)
       return Collections.emptyMap();
 
     Map<String, String> headers = new HashMap<>();
@@ -50,7 +60,7 @@ public abstract class WebpayApiResource {
    * @return A map of headers for the request.
    */
   public static Map<String, String> buildPatpassHeaders(Options options) {
-    if (null == options)
+    if (options == null)
       return Collections.emptyMap();
 
     Map<String, String> headers = new HashMap<>();
@@ -121,19 +131,8 @@ public abstract class WebpayApiResource {
       final WebpayApiRequest request,
       final Options options,
       Class<T> clazz) throws TransbankException, IOException {
-    String urlBase = null;
-    Map<String, String> headers = null;
-
-    if (options instanceof WebpayOptions) {
-      urlBase = IntegrationTypeHelper.getWebpayIntegrationType(
-          options.getIntegrationType());
-      headers = WebpayApiResource.buildHeaders(options);
-    } else {
-      urlBase = IntegrationTypeHelper.getPatpassIntegrationType(
-          options.getIntegrationType());
-      headers = WebpayApiResource.buildPatpassHeaders(options);
-    }
-    final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
+    RequestContext requestContext = WebpayApiResource.buildRequestContext(options);
+    final URL url = new URL(String.format("%s/%s", requestContext.urlBase, endpoint));
 
     HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
 
@@ -144,13 +143,13 @@ public abstract class WebpayApiResource {
         url,
         method,
         request,
-        headers,
+        requestContext.headers,
         clazz);
 
-    if (null == out)
+    if (out == null)
       return null;
 
-    if (null == clazz)
+    if (clazz == null)
       return null;
 
     return out;
@@ -196,19 +195,8 @@ public abstract class WebpayApiResource {
       final WebpayApiRequest request,
       final Options options,
       Class<T[]> clazz) throws TransbankException, IOException {
-    String urlBase = null;
-    Map<String, String> headers = null;
-
-    if (options instanceof WebpayOptions) {
-      urlBase = IntegrationTypeHelper.getWebpayIntegrationType(
-          options.getIntegrationType());
-      headers = WebpayApiResource.buildHeaders(options);
-    } else {
-      urlBase = IntegrationTypeHelper.getPatpassIntegrationType(
-          options.getIntegrationType());
-      headers = WebpayApiResource.buildPatpassHeaders(options);
-    }
-    final URL url = new URL(String.format("%s/%s", urlBase, endpoint));
+    RequestContext requestContext = WebpayApiResource.buildRequestContext(options);
+    final URL url = new URL(String.format("%s/%s", requestContext.urlBase, endpoint));
 
     HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
 
@@ -219,15 +207,27 @@ public abstract class WebpayApiResource {
         url,
         method,
         request,
-        headers,
+        requestContext.headers,
         clazz);
 
-    if (null == out)
+    if (out == null)
       return Collections.emptyList();
 
-    if (null == clazz)
+    if (clazz == null)
       return Collections.emptyList();
 
     return out;
+  }
+
+  private static RequestContext buildRequestContext(Options options) {
+    if (options instanceof WebpayOptions) {
+      return new RequestContext(
+          IntegrationTypeHelper.getWebpayIntegrationType(options.getIntegrationType()),
+          WebpayApiResource.buildHeaders(options));
+    }
+
+    return new RequestContext(
+        IntegrationTypeHelper.getPatpassIntegrationType(options.getIntegrationType()),
+        WebpayApiResource.buildPatpassHeaders(options));
   }
 }

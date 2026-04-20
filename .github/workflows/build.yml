@@ -6,7 +6,7 @@ on:
       - master
       - develop
   pull_request:
-    types: [synchronize, opened, reopened]
+    types: [ synchronize, opened, reopened ]
 
 jobs:
   sonar-cloud-check:
@@ -20,8 +20,8 @@ jobs:
       - name: Set up JDK 8
         uses: actions/setup-java@v4
         with:
-          java-version: '8'
-          distribution: 'temurin'
+          java-version: "8"
+          distribution: "temurin"
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -34,7 +34,7 @@ jobs:
         run: mvn clean install verify -P no-gpg --no-transfer-progress
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@299e4b793aaa83bf2aba7c9c14bedbb485688ec4
         with:
           projectBaseDir: .
         env:

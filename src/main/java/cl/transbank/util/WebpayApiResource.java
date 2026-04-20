@@ -7,6 +7,7 @@ import cl.transbank.model.Options;
 import cl.transbank.model.WebpayApiRequest;
 import cl.transbank.webpay.common.WebpayOptions;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
@@ -132,7 +133,7 @@ public abstract class WebpayApiResource {
       final Options options,
       Class<T> clazz) throws TransbankException, IOException {
     RequestContext requestContext = WebpayApiResource.buildRequestContext(options);
-    final URL url = new URL(String.format("%s/%s", requestContext.urlBase, endpoint));
+    final URL url = URI.create(String.format("%s/%s", requestContext.urlBase, endpoint)).toURL();
 
     HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
 
@@ -196,7 +197,7 @@ public abstract class WebpayApiResource {
       final Options options,
       Class<T[]> clazz) throws TransbankException, IOException {
     RequestContext requestContext = WebpayApiResource.buildRequestContext(options);
-    final URL url = new URL(String.format("%s/%s", requestContext.urlBase, endpoint));
+    final URL url = URI.create(String.format("%s/%s", requestContext.urlBase, endpoint)).toURL();
 
     HttpUtil requestInstance = WebpayApiResource.getHttpUtil();
 

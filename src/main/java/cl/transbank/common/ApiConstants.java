@@ -5,14 +5,13 @@ package cl.transbank.common;
  */
 public class ApiConstants {
 
-  public static final String WEBPAY_ENDPOINT =
-    "rswebpaytransaction/api/webpay/v1.2";
-  public static final String ONECLICK_ENDPOINT =
-    "rswebpaytransaction/api/oneclick/v1.2";
-  public static final String PATPASS_COMERCIO_ENDPOINT =
-    "restpatpass/v1/services";
+  public static final String WEBPAY_ENDPOINT = "rswebpaytransaction/api/webpay/v1.2";
+  public static final String ONECLICK_ENDPOINT = "rswebpaytransaction/api/oneclick/v1.2";
+  public static final String PATPASS_COMERCIO_ENDPOINT = "restpatpass/v1/services";
   public static final String HEADER_COMMERCE_CODE_NAME = "Tbk-Api-Key-Id";
   public static final String HEADER_API_KEY_NAME = "Tbk-Api-Key-Secret";
+  public static final String HEADER_PATPASS_COMMERCE_CODE_NAME = "Commercecode";
+  public static final String HEADER_PATPASS_API_KEY_NAME = "Authorization";
   public static final int BUY_ORDER_LENGTH = 26;
   public static final int SESSION_ID_LENGTH = 61;
   public static final int RETURN_URL_LENGTH = 255;

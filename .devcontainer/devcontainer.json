@@ -1,0 +1,137 @@
+{
+  "name": "Transbank SDK Java Development Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "sdk-dev",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "mvn clean install -P no-gpg --no-transfer-progress && echo 'Build OK' || echo 'Build FAILED - revisa los errores'",
+  "forwardPorts": [5005],
+  "remoteUser": "vscode",
+  "features": {
+      "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+        "plugins": "git zsh-autosuggestions zsh-syntax-highlighting",
+        "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions https://github.com/zsh-users/zsh-syntax-highlighting"
+      }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",       // Extension Pack for Java (Language Support, Debugger, Test Runner, Maven)
+        "vscjava.vscode-maven",           // Maven for Java
+        "vscjava.vscode-java-test",       // Test Runner for Java (JUnit)
+        "GabrielBB.vscode-lombok",        // Lombok Annotations Support
+        "sonarsource.sonarlint-vscode",   // SonarLint (mismo análisis que el CI)
+        "usernamehw.errorlens",           // Error Lens - Muestra errores inline en el código
+        "ryanluker.vscode-coverage-gutters", // Coverage Gutters - Visualiza cobertura de tests
+        "ms-vsliveshare.vsliveshare",     // Live Share - Colaboración en tiempo real
+        "gruntfuggly.todo-tree",          // TODO Tree - Gestiona TODOs, FIXMEs, etc
+        "aaron-bond.better-comments",     // Better Comments - Comentarios coloreados
+        "redhat.vscode-xml",              // Soporte XML para pom.xml
+        "fill-labs.dependi",              // Dependi - Gestor de dependencias
+        "vscode-icons-team.vscode-icons", // Iconos para archivos
+        "github.vscode-github-actions",   // GitHub Actions - Si usan CI/CD con GitHub
+        "ms-azuretools.vscode-docker",    // Docker support
+        "adpyke.codesnap",                // CodeSnap - Screenshots de código para docs
+        "editorconfig.editorconfig",      // EditorConfig - Consistencia de código
+        "esbenp.prettier-vscode",         // Prettier - Solo para JSON, YAML, MD (NO Java)
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-1.8",
+            "path": "/opt/java/openjdk",
+            "default": true
+          }
+        ],
+        "java.compile.nullAnalysis.mode": "automatic",
+        "java.test.config": {
+          "vmArgs": ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]
+        },
+        // Lombok: habilitar procesador de anotaciones
+        "java.jdt.ls.lombokSupport.enabled": true,
+
+        "maven.executable.preferMavenWrapper": false,
+        "maven.terminal.useJavaHome": true,
+        "maven.view": "hierarchical",
+
+        "explorer.confirmDelete": false,
+        "explorer.confirmDragAndDrop": false,
+
+        "editor.bracketPairColorization.enabled": true,
+        "editor.guides.bracketPairs": true,
+        "editor.guides.bracketPairsHorizontal": true,
+        "editor.autoClosingBrackets": "always",
+        "editor.linkedEditing": true,
+        "editor.fontLigatures": true,
+        "editor.suggestSelection": "first",
+        "editor.inlineSuggest.enabled": true,
+        "editor.codeLens": true,
+        "editor.formatOnSave": true,
+        "editor.rulers": [120],
+        "editor.unicodeHighlight.invisibleCharacters": false,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/usr/bin/zsh"
+          }
+        },
+        "[java]": {
+          "editor.defaultFormatter": "redhat.java",
+          "editor.formatOnSave": true,
+          "editor.tabSize": 4,
+          "editor.insertSpaces": true
+        },
+        "[xml]": {
+          "editor.defaultFormatter": "redhat.vscode-xml",
+          "editor.tabSize": 2,
+          "editor.formatOnSave": true
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.tabSize": 2
+        },
+
+        "files.insertFinalNewline": true,
+        "files.trimTrailingWhitespace": true,
+        "files.watcherExclude": {
+          "**/target/**": true,
+          "**/node_modules/**": true,
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true,
+          "**/.m2/repository/**": true,
+          "**/var/cache/**": true
+        },
+        "files.associations": {
+          "*.java": "java",
+          "pom.xml": "xml"
+        },
+
+        "extensions.autoUpdate": false,
+        "extensions.autoCheckUpdates": false,
+        "extensions.ignoreRecommendations": true,
+        "remote.containers.installRecommendedExtensions": false,
+        "settingsSync.enabled": false,
+        "errorLens.enabledDiagnosticLevels": [
+          "error",
+          "warning",
+          "info"
+        ],
+        "errorLens.excludeBySource": [
+          "cSpell"
+        ],
+        "coverage-gutters.coverageFileNames": [
+          "target/site/jacoco/jacoco.xml",
+          "jacoco.xml",
+          "coverage/lcov.info"
+        ],
+        "coverage-gutters.showLineCoverage": true,
+        "coverage-gutters.showRulerCoverage": true
+      }
+    }
+  }
+}

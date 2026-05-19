@@ -1,0 +1,30 @@
+services:
+  sdk-dev:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+
+    container_name: transbank-sdk-java
+
+    volumes:
+      - ..:/workspace:cached
+      - maven-cache:/home/vscode/.m2
+
+    ports:
+      - "127.0.0.1:5005:5005"
+
+    environment:
+      - JAVA_HOME=/opt/java/openjdk
+      - MAVEN_OPTS=-Xmx1024m
+
+    networks:
+      - sdk-network
+
+volumes:
+  maven-cache:
+    name: transbank-maven-cache
+
+networks:
+  sdk-network:
+    name: transbank-sdk-network
+    driver: bridge

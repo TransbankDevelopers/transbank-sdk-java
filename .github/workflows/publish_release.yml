@@ -9,10 +9,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 1. Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
 
-      - name: Set up Maven Central Repository
-        uses: actions/setup-java@v4
+      - name: 2. Set up Maven Central Repository
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
         with:
           java-version: '8' 
           distribution: 'temurin'
@@ -22,10 +25,10 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
-      - name: Set version from tag
+      - name: 3. Set version from tag
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
 
-      - name: Deploy to Maven Central
+      - name: 4. Deploy to Maven Central
         run: mvn -P release --batch-mode deploy -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}

@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java.svg?branch=master)](https://travis-ci.org/TransbankDevelopers/transbank-sdk-java)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.github.transbankdevelopers%3Atransbank-sdk-java&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.transbankdevelopers%3Atransbank-sdk-java)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.transbankdevelopers/transbank-sdk-java/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.github.transbankdevelopers/transbank-sdk-java)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=TransbankDevelopers_transbank-sdk-java&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=TransbankDevelopers_transbank-sdk-java)
+[![Maven Central](https://maven-badges.sml.io/maven-central/com.github.transbankdevelopers/transbank-sdk-java/badge.svg?style=plastic)](https://central.sonatype.com/artifact/com.github.transbankdevelopers/transbank-sdk-java)
 
 # Transbank Java SDK
 SDK oficial de Transbank
@@ -16,7 +15,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>6.0.0</version>
+    <version>6.2.0</version>
 </dependency>
 ```
 
@@ -108,6 +107,32 @@ La documentación relevante para usar este SDK es:
 3. Abre un Pull Request apuntando tus cambios a develop.
 4. Espera a la revisión de los demás integrantes del equipo.
 5. Para poder mezclar los cambios se debe contar con 2 aprobaciones de los revisores y no tener alertas por parte de las herramientas de inspección.
+
+# Desarrollo con Dev Container (recomendado)
+
+La forma más rápida y consistente de empezar. Un contenedor preconfigurado con Java 8 (Eclipse Temurin), Maven 3.9.9 y herramientas de desarrollo, sin necesidad de instalar nada en la máquina local más allá de Docker y VS Code.
+
+## Requisitos del Dev Container
+
+- **Docker**
+  - **macOS:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) o [OrbStack](https://orbstack.dev) (alternativa más liviana y con mejor rendimiento de I/O)
+  - **Linux / WSL2:** Docker Engine
+- **Visual Studio Code** con la extensión [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+## Levantar el contenedor
+
+1. Clonar el repositorio y abrirlo en VS Code.
+2. VS Code detectará el directorio `.devcontainer/` y ofrecerá la opción **"Reopen in Container"** en la esquina inferior derecha. Si no aparece, abrir la paleta de comandos:
+   - **macOS:** `Cmd + Shift + P`
+   - **Linux / Windows:** `Ctrl + Shift + P`
+   
+   y buscar **"Dev Containers: Reopen in Container"**.
+3. **La primera vez tarda entre 3 y 5 minutos** (descarga la imagen base y ejecuta el setup inicial). Las siguientes aperturas son inmediatas: VS Code reutiliza el contenedor existente.
+
+Durante la creación inicial, el contenedor ejecuta automáticamente:
+- Descarga de la imagen base Eclipse Temurin 8 JDK
+- Instalación de Maven 3.9.9 con verificación de checksum SHA-512
+- `mvn clean install -P no-gpg --no-transfer-progress` (compila el SDK y ejecuta tests)
 
 ### Esquema de flujo con git
 

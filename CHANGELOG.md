@@ -5,6 +5,17 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [6.2.0] - 2026-05-20
+
+Esta versión no tiene cambios en el comportamiento de las funcionalidades de la API.
+
+### Agrega:
+- Se incorporan herramientas de análisis y validación automatizada al flujo de integración continua.
+- Se agrega una configuración de Dev Container para estandarizar el entorno de desarrollo y facilitar el proceso de configuración inicial.
+
+### Actualiza:
+- Se refina el manejo de headers en las peticiones del flujo de Patpass.
+- Se refinan las pruebas de configuración de credenciales y resolución de URLs para ambientes de integración y producción en Patpass y Webpay Plus.
 
 ## [6.1.0] - 2025-06-25
 

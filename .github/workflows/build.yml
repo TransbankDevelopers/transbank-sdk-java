@@ -1,10 +1,6 @@
 name: Java CI
 
 on:
-  push:
-    branches:
-      - master
-      - develop
   pull_request:
     types: [synchronize, opened, reopened]
 
@@ -13,28 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 1. Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 8
-        uses: actions/setup-java@v4
+      - name: 2. Set up JDK 8
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
         with:
-          java-version: '8'
-          distribution: 'temurin'
+          java-version: "8"
+          distribution: "temurin"
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+      - name: 3. Cache SonarCloud packages
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
 
-      - name: Install dependencies and run tests with coverage
-        run: mvn clean install verify -P no-gpg --no-transfer-progress
+      - name: 4. Install dependencies and run tests with coverage
+        run: mvn clean install -P no-gpg --no-transfer-progress
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
+      - name: 5. SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
         with:
           projectBaseDir: .
         env:

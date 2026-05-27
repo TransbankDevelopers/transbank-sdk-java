@@ -15,7 +15,7 @@ Agrega la siguiente dependencia en el archivo pom de tu proyecto Maven:
 <dependency>
     <groupId>com.github.transbankdevelopers</groupId>
     <artifactId>transbank-sdk-java</artifactId>
-    <version>6.2.0</version>
+    <version>6.2.1</version>
 </dependency>
 ```
 
@@ -34,11 +34,11 @@ Ahora, si gestionas las dependencias manualmente 😱 te quedan las siguientes o
 ## Ejecutar Test
 
 ```bash
-mvn test -P no-gpg 
+mvn test -P no-gpg
 ```
 
 
-## Documentación 
+## Documentación
 
 Puedes encontrar toda la documentación de cómo usar este SDK en el sitio https://www.transbankdevelopers.cl.
 
@@ -125,7 +125,7 @@ La forma más rápida y consistente de empezar. Un contenedor preconfigurado con
 2. VS Code detectará el directorio `.devcontainer/` y ofrecerá la opción **"Reopen in Container"** en la esquina inferior derecha. Si no aparece, abrir la paleta de comandos:
    - **macOS:** `Cmd + Shift + P`
    - **Linux / Windows:** `Ctrl + Shift + P`
-   
+
    y buscar **"Dev Containers: Reopen in Container"**.
 3. **La primera vez tarda entre 3 y 5 minutos** (descarga la imagen base y ejecuta el setup inicial). Las siguientes aperturas son inmediatas: VS Code reutiliza el contenedor existente.
 
@@ -149,6 +149,6 @@ En ese PR deben incluirse los siguientes cambios:
 
 Luego de obtener aprobación del PR, debe mezclarse a master e inmediatamente generar un release en GitHub con el tag `vX.Y.Z`. En la descripción del release debes poner lo mismo que agregaste al changelog.
 
-Con eso Github Actions generará automáticamente una nueva versión de la librería y la publicará en Maven Central.
+Una vez generado el release, la publicación de los artefactos en Maven Central se disparará automáticamente. **Dicha publicación requiere aprobación manual**: se debe ingresar al portal de Maven Central, revisar los artefactos generados y aprobar su publicación para que queden disponibles públicamente.
 
 Posterior a la liberación debes mezclar la rama release en develop, finalmente realizar un rebase de la rama develop utilizando como base la rama main.

@@ -5,6 +5,14 @@ Todos los cambios notables a este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 y este proyecto adhiere a [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+# [6.2.1] - 2026-05-26
+
+Esta versión no tiene cambios en el comportamiento de las funcionalidades de la API.
+
+### Actualiza:
+- Se refina la configuración del proceso de construcción del SDK.
+
+
 ## [6.2.0] - 2026-05-20
 
 Esta versión no tiene cambios en el comportamiento de las funcionalidades de la API.
@@ -82,7 +90,7 @@ El SDK ya no apunta por defecto al ambiente de integración. Ahora es necesario 
 - Se refactoriza y migra todos los productos desde clases estáticas a clases instanciables
 - Se unifica 'Transaction' y 'DeferredTransaction' en WebpayPlus
 - Se unifica 'MallTransaction' y 'MallDeferredTransaction' en WebpayPlus y Oneclick
-- Se mueven los responses de cada producto al paquete 'responses' 
+- Se mueven los responses de cada producto al paquete 'responses'
 - Se reordenan los parámetros del método capture de WebpayPlus Mall a 'capture(String childCommerceCode, String token, String buyOrder, String authorizationCode, double captureAmount)'
 - Se reordenan los parámetros del método delete de Oneclick a 'delete(String tbkUser, String username)'
 - Se reordenan los parámetros del método create de Transacción Completa a 'create(String buyOrder, String sessionId, double amount, short cvv, String cardNumber, String cardExpirationDate)'
@@ -100,11 +108,11 @@ El SDK ya no apunta por defecto al ambiente de integración. Ahora es necesario 
 
 ### Changed
 - Se elimina el soporte para SOAP
-- Se eliminan librerías relacionadas al soporte SOAP  
+- Se eliminan librerías relacionadas al soporte SOAP
 - Se agregan los test
 - Se migra el api desde la versión 1.0 a la versión 1.2
 - Ahora el método de retorno al crear la transacción en WebPayPlus debe tener soporte GET (cuando es exitosa) y POST (cuando se retorna sin concluir el ingreso de la tarjeta)
-- Ahora el método de retorno al inscribirse en Oneclick debe tener soporte GET (cuando es exitosa) y POST (cuando se retorna sin concluir la inscripción) 
+- Ahora el método de retorno al inscribirse en Oneclick debe tener soporte GET (cuando es exitosa) y POST (cuando se retorna sin concluir la inscripción)
 
 ## [1.9.3] - 2021-07-07
 
@@ -172,7 +180,7 @@ El SDK ya no apunta por defecto al ambiente de integración. Ahora es necesario 
 
 - Corrige [error en certificado de
   producción](https://github.com/TransbankDevelopers/transbank-sdk-java/issues/60).
-  
+
 ## [1.5.2] - 2018-10-26
 
 ### Changed

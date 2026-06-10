@@ -10,16 +10,16 @@ jobs:
 
     steps:
       - name: 1. Checkout code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0
 
       - name: 2. Set up Maven Central Repository
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
         with:
-          java-version: '8' 
-          distribution: 'temurin'
-          server-id: central  
+          java-version: "8"
+          distribution: "temurin"
+          server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
